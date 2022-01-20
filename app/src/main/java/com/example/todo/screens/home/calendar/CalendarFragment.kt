@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.view.ViewGroup
 import com.example.todo.base.BaseFragment
 import com.example.todo.databinding.FragmentCalendarBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class CalendarFragment : BaseFragment<FragmentCalendarBinding>() {
 
     override fun inflateViewBinding(

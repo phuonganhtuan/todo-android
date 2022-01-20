@@ -2,17 +2,16 @@
     <!-- Base application theme. -->
     <style name="Theme.AndroidBP" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/teal_200</item>
-        <item name="colorPrimaryVariant">@color/teal_700</item>
+        <item name="colorPrimary">@color/color_primary</item>
+        <item name="colorPrimaryVariant">@color/color_primary_variant</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/red_primary</item>
         <item name="colorSecondaryVariant">@color/red_dark</item>
         <item name="colorOnSecondary">@color/black</item>
-        <!-- Status bar color. -->
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:statusBarColor" tools:targetApi="l">@color/color_bg_main_grey</item>
-        <!-- Customize your theme here. -->
+        <item name="android:fontFamily">@font/nunito_regular</item>
     </style>
 
     <style name="Theme.AndroidBP.NoActionBar">
@@ -20,16 +19,32 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="Theme.App.Starting" parent="Theme.AndroidBP">
+        <item name="windowSplashScreenBackground">@android:color/holo_blue_light</item>
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_round</item>
+        <item name="windowSplashScreenAnimationDuration">700</item>
+        <item name="postSplashScreenTheme">@style/Theme.AndroidBP.NoActionBar</item>
+    </style>
+
     <style name="Theme.AndroidBP.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.AndroidBP.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="TabLayoutTextAppearance" parent="Widget.AppCompat.TextView">
-        <item name="textAllCaps">false</item>
-        <item name="android:textColor">@color/color_text_secondary</item>
+    <style name="ToolBarButtonStyle">
+        <item name="android:scaleType">centerCrop</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
+        <item name="android:padding">4dp</item>
     </style>
 
-    <style name="ToolBarButtonStyle" parent="Widget.AppCompat.Button.Borderless">
-        <item name="android:tint">@color/color_button_grey</item>
+    <style name="TabLayoutStyle" parent="Widget.Design.TabLayout">
+        <item name="tabTextAppearance">@style/TabTextAppearance</item>
+        <item name="tabIndicatorColor">@color/color_primary</item>
+    </style>
+
+    <style name="TabTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="textAllCaps">false</item>
+        <item name="fontFamily">@font/nunito_regular</item>
     </style>
 </resources>

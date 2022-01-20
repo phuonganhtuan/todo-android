@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.view.ViewGroup
 import com.example.todo.base.BaseFragment
 import com.example.todo.databinding.FragmentMineBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MineFragment : BaseFragment<FragmentMineBinding>() {
 
     override fun inflateViewBinding(
