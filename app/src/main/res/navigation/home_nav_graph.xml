@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/home_nav_graph"
+    app:startDestination="@id/TasksFragment">
+
+    <fragment
+        android:id="@+id/TasksFragment"
+        android:name="com.example.todo.screens.home.tasks.TasksFragment"
+        android:label="@string/tasks"
+        tools:layout="@layout/fragment_tasks">
+
+        <action
+            android:id="@+id/action_TasksFragment_to_CalendarFragment"
+            app:destination="@id/CalendarFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/CalendarFragment"
+        android:name="com.example.todo.screens.home.calendar.CalendarFragment"
+        android:label="@string/calendar"
+        tools:layout="@layout/fragment_calendar" />
+
+    <fragment
+        android:id="@+id/MineFragment"
+        android:name="com.example.todo.screens.home.mine.MineFragment"
+        android:label="@string/mine"
+        tools:layout="@layout/fragment_mine" />
+</navigation>
