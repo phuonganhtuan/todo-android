@@ -7,6 +7,7 @@ import androidx.fragment.app.viewModels
 import com.example.todo.R
 import com.example.todo.base.BaseFragment
 import com.example.todo.databinding.FragmentTasksBinding
+import com.example.todo.screens.home.HomeActivity
 import com.example.todo.utils.gone
 import com.example.todo.utils.hide
 import dagger.hilt.android.AndroidEntryPoint
@@ -56,7 +57,7 @@ class TasksFragment : BaseFragment<FragmentTasksBinding>() {
     }
 
     private fun toSetting() {
-
+        (activity as? HomeActivity)?.openDrawer()
     }
 
     private fun toSearch() {

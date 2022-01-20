@@ -1,6 +1,8 @@
 package com.example.todo.screens.home
 
 import android.os.Bundle
+import android.widget.Button
+import android.widget.ImageView
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.todo.R
@@ -21,8 +23,15 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
         setupEvents()
     }
 
+    fun openDrawer() {
+        viewBinding.layoutDrawer.open()
+    }
+
     private fun setupEvents() = with(viewBinding) {
         bottomBar.setupWithNavController(findNavController(R.id.home_nav_host_fragment))
+        (navigationSideView.getHeaderView(0).findViewById(R.id.buttonHide) as ImageView).setOnClickListener {
+            layoutDrawer.close()
+        }
     }
 
     private fun toTasks() {
