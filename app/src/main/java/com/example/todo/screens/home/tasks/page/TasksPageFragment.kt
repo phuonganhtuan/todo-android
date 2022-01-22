@@ -40,16 +40,16 @@ class TasksPageFragment : BaseFragment<FragmentTasksPageBinding>() {
 
     private fun initData() {
         // Demo data
-        adapter.submitList(
-            listOf(
-                TaskEntity(0, ""),
-                TaskEntity(1, ""),
-                TaskEntity(2, ""),
-                TaskEntity(3, ""),
-                TaskEntity(4, ""),
-                TaskEntity(5, "")
-            )
-        )
+//        adapter.submitList(
+//            listOf(
+//                TaskEntity(0, ""),
+//                TaskEntity(1, ""),
+//                TaskEntity(2, ""),
+//                TaskEntity(3, ""),
+//                TaskEntity(4, ""),
+//                TaskEntity(5, "")
+//            )
+//        )
     }
 
     private fun observeData() = with(viewModel) {

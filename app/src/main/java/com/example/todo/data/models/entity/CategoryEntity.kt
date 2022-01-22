@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 @Entity
 data class CategoryEntity(
     @PrimaryKey(autoGenerate = true)
-    override var id: Int,
+    override var id: Int = 0,
     var name: String,
     var color: String = "",
 ): BaseEntity()

@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 @Entity
 data class AttachmentEntity(
     @PrimaryKey(autoGenerate = true)
-    override var id: Int,
+    override var id: Int = 0,
     var name: String = "",
     var extension: String = "",
     var path: String = "",

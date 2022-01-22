@@ -9,11 +9,6 @@ import java.util.*
 data class Task(
     @Embedded var task: TaskEntity,
     @Relation(
-        parentColumn = "categoryId",
-        entityColumn = "id"
-    )
-    var category: CategoryEntity,
-    @Relation(
         parentColumn = "id",
         entityColumn = "taskId"
     )
@@ -28,6 +23,16 @@ data class Task(
         entityColumn = "taskId"
     )
     var attachments: List<AttachmentEntity> = emptyList(),
+    @Relation(
+        parentColumn = "categoryId",
+        entityColumn = "id"
+    )
+    var category: CategoryEntity?,
+    @Relation(
+        parentColumn = "markId",
+        entityColumn = "id"
+    )
+    var bookmark: BookmarkEntity?,
 )
 
 data class TaskShort(
@@ -36,16 +41,21 @@ data class TaskShort(
         parentColumn = "categoryId",
         entityColumn = "id"
     )
-    var category: CategoryEntity,
+    var category: CategoryEntity?,
+    @Relation(
+        parentColumn = "markId",
+        entityColumn = "id"
+    )
+    var bookmark: BookmarkEntity?,
 )
 
 @Entity
 data class TaskEntity(
     @PrimaryKey(autoGenerate = true)
-    override var id: Int,
+    override var id: Int = 0,
     var title: String = "",
     var categoryId: Int?,
-    var calendar: Date?,
+    var calendar: Long?,
     var isDone: Boolean = false,
     var isMarked: Boolean = false,
     var markId: Int?,
@@ -54,7 +64,7 @@ data class TaskEntity(
 @Entity
 data class TaskDetailEntity(
     @PrimaryKey(autoGenerate = true)
-    override var id: Int,
+    override var id: Int = 0,
     var taskId: Int,
     var note: String = "",
     var isReminder: Boolean = false,

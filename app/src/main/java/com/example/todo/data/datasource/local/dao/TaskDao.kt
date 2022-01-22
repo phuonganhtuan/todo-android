@@ -1,14 +1,13 @@
 package com.example.todo.data.datasource.local.dao
 
-import androidx.room.Delete
+import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy.REPLACE
 import androidx.room.Query
-import androidx.room.Update
-import com.example.todo.data.models.entity.Task
-import com.example.todo.data.models.entity.TaskShort
+import com.example.todo.data.models.entity.*
 import kotlinx.coroutines.flow.Flow
 
+@Dao
 interface TaskDao {
 
     @Query("select * from TaskEntity")
@@ -18,11 +17,20 @@ interface TaskDao {
     fun getTask(id: Int): Flow<Task>
 
     @Insert(onConflict = REPLACE)
-    suspend fun addTask(entity: Task)
+    suspend fun addTask(entity: TaskEntity): Long
 
-    @Update(onConflict = REPLACE)
-    suspend fun updateTask(entity: Task)
+    @Insert(onConflict = REPLACE)
+    suspend fun addTaskDetail(entity: TaskDetailEntity)
 
-    @Delete
-    suspend fun deleteTask(entity: Task)
+    @Insert(onConflict = REPLACE)
+    suspend fun addSubTasks(entity: SubTaskEntity)
+
+    @Insert(onConflict = REPLACE)
+    suspend fun addAttachment(entity: AttachmentEntity)
+
+    @Insert(onConflict = REPLACE)
+    suspend fun addBookmark(entity: BookmarkEntity)
+
+    @Insert(onConflict = REPLACE)
+    suspend fun addCategory(entity: CategoryEntity): Long
 }

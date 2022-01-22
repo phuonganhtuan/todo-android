@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 @Entity
 data class BookmarkEntity(
     @PrimaryKey(autoGenerate = true)
-    override var id: Int,
+    override var id: Int = 0,
     var type: String = BookmarkType.FLAG.name,
     var icon: String,
     var markedIcon: String,
