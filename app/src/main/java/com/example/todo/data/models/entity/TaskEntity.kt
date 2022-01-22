@@ -4,7 +4,6 @@ import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.Relation
-import java.util.*
 
 data class Task(
     @Embedded var task: TaskEntity,
@@ -59,7 +58,7 @@ data class TaskEntity(
     var isDone: Boolean = false,
     var isMarked: Boolean = false,
     var markId: Int?,
-): BaseEntity()
+) : BaseEntity()
 
 @Entity
 data class TaskDetailEntity(
@@ -70,4 +69,4 @@ data class TaskDetailEntity(
     var isReminder: Boolean = false,
     var reminderTime: Long = 0,
     var isRepeat: Boolean = false,
-): BaseEntity()
+) : BaseEntity()
