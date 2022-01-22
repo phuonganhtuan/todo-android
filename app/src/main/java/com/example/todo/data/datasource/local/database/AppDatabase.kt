@@ -5,16 +5,28 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.todo.data.datasource.local.dao.DemoDao
-import com.example.todo.data.models.entity.DemoEntity
+import com.example.todo.data.datasource.local.dao.TaskDao
+import com.example.todo.data.models.entity.*
 
-@Database(entities = [DemoEntity::class], version = 1, exportSchema = false)
+@Database(
+    entities = [
+        TaskEntity::class,
+        TaskDetailEntity::class,
+        AttachmentEntity::class,
+        CategoryEntity::class,
+        BookmarkEntity::class,
+        SubTaskEntity::class,
+    ],
+    version = 1,
+    exportSchema = false
+)
 abstract class AppDatabase : RoomDatabase() {
 
-    abstract fun demoDao(): DemoDao
+    abstract fun taskDao(): TaskDao
 
     companion object {
 
-        private const val DATABASE_NAME = "DemoDB"
+        private const val DATABASE_NAME = "TodoDB"
 
         @Volatile
         private var instance: AppDatabase? = null

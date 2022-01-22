@@ -2,14 +2,13 @@ package com.example.todo.di
 
 import android.content.Context
 import androidx.fragment.app.FragmentActivity
-import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.example.todo.data.datasource.local.datasource.MainLocalDataSource
-import com.example.todo.data.datasource.local.impl.MainLocalDataSourceImpl
+import com.example.todo.data.datasource.local.datasource.TaskLocalDataSource
+import com.example.todo.data.datasource.local.impl.TaskLocalDataSourceImpl
 import com.example.todo.data.datasource.local.database.AppDatabase
 import com.example.todo.data.datasource.remote.datasource.MainRemoteDataSource
 import com.example.todo.data.datasource.remote.impl.MainRemoteDataSourceImpl
-import com.example.todo.data.repository.MainRepository
-import com.example.todo.data.repository.impl.MainRepositoryImpl
+import com.example.todo.data.repository.TaskRepository
+import com.example.todo.data.repository.impl.TaskRepositoryImpl
 import com.example.todo.screens.home.tasks.TasksPagerAdapter
 import dagger.Binds
 import dagger.Module
@@ -27,13 +26,13 @@ abstract class LocalModules {
 
     @Binds
     abstract fun bindMainRepo(
-        mainRepoImpl: MainRepositoryImpl
-    ): MainRepository
+        mainRepoImpl: TaskRepositoryImpl
+    ): TaskRepository
 
     @Binds
     abstract fun bindMainLocalDataSource(
-        mainLocalDataSource: MainLocalDataSourceImpl
-    ): MainLocalDataSource
+        mainLocalDataSource: TaskLocalDataSourceImpl
+    ): TaskLocalDataSource
 
     @Binds
     abstract fun bindMainRemoteDataSource(
@@ -51,7 +50,7 @@ object DBModules {
     ) = AppDatabase.invoke(app)
 
     @Provides
-    fun provideYourDao(db: AppDatabase) = db.demoDao()
+    fun provideYourDao(db: AppDatabase) = db.taskDao()
 }
 
 @Module

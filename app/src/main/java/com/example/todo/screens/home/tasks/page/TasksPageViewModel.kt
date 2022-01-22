@@ -5,5 +5,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class TasksPageViewModel @Inject constructor(): ViewModel() {
+class TasksPageViewModel @Inject constructor() : ViewModel() {
+
 }
