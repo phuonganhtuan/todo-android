@@ -2,7 +2,7 @@ package com.example.todo.data.repository.impl
 
 import com.example.todo.data.datasource.local.datasource.MainLocalDataSource
 import com.example.todo.data.datasource.remote.datasource.MainRemoteDataSource
-import com.example.todo.data.models.DemoEntity
+import com.example.todo.data.models.entity.DemoEntity
 import com.example.todo.data.repository.MainRepository
 import javax.inject.Inject
 

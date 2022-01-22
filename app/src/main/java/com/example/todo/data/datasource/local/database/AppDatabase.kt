@@ -5,7 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.todo.data.datasource.local.dao.DemoDao
-import com.example.todo.data.models.DemoEntity
+import com.example.todo.data.models.entity.DemoEntity
 
 @Database(entities = [DemoEntity::class], version = 1, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {

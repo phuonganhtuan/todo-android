@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/checkBg"
+        android:width="32dp"
+        android:height="32dp"
+        android:gravity="center">
+        <scale
+            android:drawable="@drawable/ic_checkbox_uncheck_grey"
+            android:level="1" />
+    </item>
+</layer-list>

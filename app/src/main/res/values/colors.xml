@@ -13,4 +13,6 @@
     <color name="color_bg_main_grey">#f8f8f8</color>
     <color name="color_text_secondary">#999999</color>
     <color name="color_button_grey">#B5B5B5</color>
+    <color name="color_ripple">#30000000</color>
+    <color name="color_border_grey">#e8eceb</color>
 </resources>

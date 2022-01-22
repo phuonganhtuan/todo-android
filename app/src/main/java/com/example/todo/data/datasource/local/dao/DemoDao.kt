@@ -5,7 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy.REPLACE
 import androidx.room.Query
-import com.example.todo.data.models.DemoEntity
+import com.example.todo.data.models.entity.DemoEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao

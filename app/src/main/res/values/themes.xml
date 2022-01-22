@@ -6,12 +6,12 @@
         <item name="colorPrimaryVariant">@color/color_primary_variant</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/red_primary</item>
-        <item name="colorSecondaryVariant">@color/red_dark</item>
+        <item name="colorSecondary">@color/color_primary</item>
+        <item name="colorSecondaryVariant">@color/color_primary_variant</item>
         <item name="colorOnSecondary">@color/black</item>
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:statusBarColor" tools:targetApi="l">@color/color_bg_main_grey</item>
-        <item name="android:fontFamily">@font/nunito_regular</item>
+        <item name="android:fontFamily">@font/nunito_medium</item>
     </style>
 
     <style name="Theme.AndroidBP.NoActionBar">
@@ -45,6 +45,6 @@
 
     <style name="TabTextAppearance" parent="TextAppearance.Design.Tab">
         <item name="textAllCaps">false</item>
-        <item name="fontFamily">@font/nunito_regular</item>
+        <item name="fontFamily">@font/nunito_medium</item>
     </style>
 </resources>

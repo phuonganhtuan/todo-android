@@ -1,4 +1,4 @@
-package com.example.todo.data.models
+package com.example.todo.data.models.entity
 
 abstract class BaseEntity {
 

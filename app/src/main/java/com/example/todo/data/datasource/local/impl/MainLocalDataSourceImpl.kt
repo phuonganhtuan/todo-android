@@ -2,7 +2,7 @@ package com.example.todo.data.datasource.local.impl
 
 import com.example.todo.data.datasource.local.dao.DemoDao
 import com.example.todo.data.datasource.local.datasource.MainLocalDataSource
-import com.example.todo.data.models.DemoEntity
+import com.example.todo.data.models.entity.DemoEntity
 import javax.inject.Inject
 
 class MainLocalDataSourceImpl @Inject constructor(private val dao: DemoDao) : MainLocalDataSource {

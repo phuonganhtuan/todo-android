@@ -7,7 +7,7 @@
     android:background="@color/color_bg_main_grey"
     tools:context=".screens.home.tasks.TasksFragment">
 
-    <include
-        android:id="@+id/layoutTop"
-        layout="@layout/layout_toolbar" />
+<!--    <include-->
+<!--        android:id="@+id/layoutTop"-->
+<!--        layout="@layout/layout_toolbar" />-->
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,6 +1,6 @@
 package com.example.todo.data.datasource.local.datasource
 
-import com.example.todo.data.models.DemoEntity
+import com.example.todo.data.models.entity.DemoEntity
 import kotlinx.coroutines.flow.Flow
 
 interface MainLocalDataSource {
