@@ -1,5 +1,6 @@
 package com.example.todo.data.datasource.local.datasource
 
+import androidx.room.Query
 import com.example.todo.data.models.entity.*
 import kotlinx.coroutines.flow.Flow
 
@@ -11,6 +12,14 @@ interface TaskLocalDataSource {
     suspend fun addTaskDetail(entity: TaskDetailEntity)
     suspend fun addSubTasks(entity: SubTaskEntity)
     suspend fun addAttachment(entity: AttachmentEntity)
-    suspend fun addBookmark(entity: BookmarkEntity)
+    suspend fun addBookmark(entity: BookmarkEntity): Long
     suspend fun addCategory(entity: CategoryEntity): Long
+
+    // for testing
+    suspend fun deleteCategories()
+    suspend fun deleteTasks()
+    suspend fun deleteTaskDetails()
+    suspend fun deleteBookmarks()
+    suspend fun deleteAttachments()
+    suspend fun deleteSubtasks()
 }

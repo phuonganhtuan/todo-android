@@ -29,8 +29,26 @@ interface TaskDao {
     suspend fun addAttachment(entity: AttachmentEntity)
 
     @Insert(onConflict = REPLACE)
-    suspend fun addBookmark(entity: BookmarkEntity)
+    suspend fun addBookmark(entity: BookmarkEntity): Long
 
     @Insert(onConflict = REPLACE)
     suspend fun addCategory(entity: CategoryEntity): Long
+
+    @Query("delete from CategoryEntity where 1")
+    suspend fun deleteCategories()
+
+    @Query("delete from TaskEntity where 1")
+    suspend fun deleteTasks()
+
+    @Query("delete from TaskDetailEntity where 1")
+    suspend fun deleteTaskDetails()
+
+    @Query("delete from BookmarkEntity where 1")
+    suspend fun deleteBookmarks()
+
+    @Query("delete from AttachmentEntity where 1")
+    suspend fun deleteAttachments()
+
+    @Query("delete from SubTaskEntity where 1")
+    suspend fun deleteSubtasks()
 }

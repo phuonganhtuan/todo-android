@@ -68,6 +68,6 @@ data class TaskDetailEntity(
     var taskId: Int,
     var note: String = "",
     var isReminder: Boolean = false,
-    var reminderTime: Long,
+    var reminderTime: Long = 0,
     var isRepeat: Boolean = false,
 ): BaseEntity()

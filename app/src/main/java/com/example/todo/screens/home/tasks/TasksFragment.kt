@@ -58,7 +58,6 @@ class TasksFragment : BaseFragment<FragmentTasksBinding>() {
             TasksPageFragment.newInstance(TaskPageType.DONE)
         )
         pagerAdapter?.notifyDataSetChanged()
-        viewModel.addDemoData()
     }
 
     private fun setupEvents() = with(viewBinding) {
