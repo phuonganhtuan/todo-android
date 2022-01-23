@@ -1,5 +1,6 @@
 package com.example.todo.screens.home.tasks.page
 
+import android.graphics.Color
 import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,9 +9,12 @@ import androidx.recyclerview.widget.ListAdapter
 import com.example.todo.R
 import com.example.todo.base.BaseDiffCallBack
 import com.example.todo.base.BaseViewHolder
+import com.example.todo.data.models.entity.DefaultCategories
 import com.example.todo.data.models.entity.TaskShort
 import com.example.todo.databinding.ItemTaskBinding
 import com.example.todo.utils.DateTimeUtils
+import com.example.todo.utils.gone
+import com.example.todo.utils.show
 import javax.inject.Inject
 
 class TaskAdapter @Inject constructor() :
@@ -45,7 +49,7 @@ class ActivityViewHolder(
         itemView.setOnClickListener {
             onTaskInteract?.onItemClick(taskId)
         }
-        itemViewBinding.checkStatus.setOnCheckedChangeListener { _, _ ->
+        itemViewBinding.checkStatus.setOnClickListener {
             onTaskInteract?.onStatusChange(taskId)
         }
         itemViewBinding.buttonMark.setOnClickListener {
@@ -54,6 +58,7 @@ class ActivityViewHolder(
     }
 
     override fun displayData(entity: TaskShort) = with(itemViewBinding) {
+        textTaskTime.show()
         taskId = entity.task.id
         textTaskName.text = entity.task.title
         checkStatus.isChecked = entity.task.isDone
@@ -62,7 +67,36 @@ class ActivityViewHolder(
         } else {
             ""
         }
+        if (entity.category == null) {
+            cardCat.gone()
+        } else {
+            cardCat.show()
+            textCatName.text = entity.category!!.name.uppercase()
+            val catColor = when (entity.category!!.name.uppercase()) {
+                DefaultCategories.WORK.name -> ContextCompat.getColor(
+                    itemView.context,
+                    R.color.color_cat_work
+                )
+                DefaultCategories.PERSONAL.name -> ContextCompat.getColor(
+                    itemView.context,
+                    R.color.color_cat_personal
+                )
+                DefaultCategories.BIRTHDAY.name -> ContextCompat.getColor(
+                    itemView.context,
+                    R.color.color_cat_birthday
+                )
+                DefaultCategories.WISHLIST.name -> ContextCompat.getColor(
+                    itemView.context,
+                    R.color.color_cat_wishlist
+                )
+                else -> Color.GRAY
+            }
+            textCatName.setTextColor(catColor)
+            viewCatBg.setBackgroundColor(catColor)
+        }
         if (entity.task.isDone) {
+            cardCat.gone()
+            textTaskTime.gone()
             val textFlag = textTaskName.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
             textTaskName.setTextColor(
                 ContextCompat.getColor(

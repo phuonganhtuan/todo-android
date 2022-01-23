@@ -2,8 +2,10 @@ package com.example.todo.data.datasource.local.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy.IGNORE
 import androidx.room.OnConflictStrategy.REPLACE
 import androidx.room.Query
+import androidx.room.Update
 import com.example.todo.data.models.entity.*
 import kotlinx.coroutines.flow.Flow
 
@@ -33,6 +35,21 @@ interface TaskDao {
 
     @Insert(onConflict = REPLACE)
     suspend fun addCategory(entity: CategoryEntity): Long
+
+    @Update(onConflict = IGNORE)
+    suspend fun updateTask(entity: TaskEntity)
+
+    @Update(onConflict = IGNORE)
+    suspend fun updateCategory(entity: CategoryEntity): Int
+
+    @Update(onConflict = IGNORE)
+    suspend fun updateSubTask(entity: SubTaskEntity): Int
+
+    @Update(onConflict = IGNORE)
+    suspend fun updateAttachment(entity: AttachmentEntity): Int
+
+    @Update(onConflict = IGNORE)
+    suspend fun updateTaskDetail(entity: TaskDetailEntity): Int
 
     @Query("delete from CategoryEntity where 1")
     suspend fun deleteCategories()

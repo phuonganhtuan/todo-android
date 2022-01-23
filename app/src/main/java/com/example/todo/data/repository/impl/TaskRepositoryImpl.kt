@@ -12,13 +12,27 @@ class TaskRepositoryImpl @Inject constructor(
     override fun getShortTasks() = taskDataSource.getShortTasks()
     override fun getTask(id: Int) = taskDataSource.getTask(id)
     override suspend fun addTask(entity: TaskEntity) = taskDataSource.addTask(entity)
-    override suspend fun addTaskDetail(entity: TaskDetailEntity) = taskDataSource.addTaskDetail(entity)
+    override suspend fun addTaskDetail(entity: TaskDetailEntity) =
+        taskDataSource.addTaskDetail(entity)
+
     override suspend fun addSubTasks(entity: SubTaskEntity) = taskDataSource.addSubTasks(entity)
-    override suspend fun addAttachment(entity: AttachmentEntity) = taskDataSource.addAttachment(entity)
+    override suspend fun addAttachment(entity: AttachmentEntity) =
+        taskDataSource.addAttachment(entity)
+
     override suspend fun addBookmark(entity: BookmarkEntity) = taskDataSource.addBookmark(entity)
     override suspend fun addCategory(entity: CategoryEntity) = taskDataSource.addCategory(entity)
 
-    // for testing
+    override suspend fun updateTask(entity: TaskEntity) = taskDataSource.updateTask(entity)
+    override suspend fun updateCategory(entity: CategoryEntity) =
+        taskDataSource.updateCategory(entity)
+
+    override suspend fun updateTaskDetail(entity: TaskDetailEntity) =
+        taskDataSource.updateTaskDetail(entity)
+
+    override suspend fun updateSubTask(entity: SubTaskEntity) = taskDataSource.updateSubTask(entity)
+    override suspend fun updateAttachment(entity: AttachmentEntity) =
+        taskDataSource.updateAttachment(entity)
+
     override suspend fun deleteCategories() = taskDataSource.deleteCategories()
     override suspend fun deleteTasks() = taskDataSource.deleteTasks()
     override suspend fun deleteTaskDetails() = taskDataSource.deleteTaskDetails()
