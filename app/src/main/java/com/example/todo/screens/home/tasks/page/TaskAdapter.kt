@@ -1,6 +1,5 @@
 package com.example.todo.screens.home.tasks.page
 
-import android.graphics.Color
 import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -72,25 +71,16 @@ class ActivityViewHolder(
         } else {
             cardCat.show()
             textCatName.text = entity.category!!.name.uppercase()
-            val catColor = when (entity.category!!.name.uppercase()) {
-                DefaultCategories.WORK.name -> ContextCompat.getColor(
-                    itemView.context,
-                    R.color.color_cat_work
-                )
-                DefaultCategories.PERSONAL.name -> ContextCompat.getColor(
-                    itemView.context,
-                    R.color.color_cat_personal
-                )
-                DefaultCategories.BIRTHDAY.name -> ContextCompat.getColor(
-                    itemView.context,
-                    R.color.color_cat_birthday
-                )
-                DefaultCategories.WISHLIST.name -> ContextCompat.getColor(
-                    itemView.context,
-                    R.color.color_cat_wishlist
-                )
-                else -> Color.GRAY
-            }
+            val catColor: Int = ContextCompat.getColor(
+                itemView.context,
+                when (entity.category!!.name.uppercase()) {
+                    DefaultCategories.WORK.name -> R.color.color_cat_work
+                    DefaultCategories.PERSONAL.name -> R.color.color_cat_personal
+                    DefaultCategories.BIRTHDAY.name -> R.color.color_cat_birthday
+                    DefaultCategories.WISHLIST.name -> R.color.color_cat_wishlist
+                    else -> R.color.color_text_secondary
+                }
+            )
             textCatName.setTextColor(catColor)
             viewCatBg.setBackgroundColor(catColor)
         }

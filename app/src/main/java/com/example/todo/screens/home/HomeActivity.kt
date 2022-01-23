@@ -22,7 +22,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
     }
 
     override fun onActivityReady() {
-//        viewModel.createDemoData()
+        viewModel.createDemoData()
         setupEvents()
     }
 
