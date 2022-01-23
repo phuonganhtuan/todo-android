@@ -1,6 +1,7 @@
 package com.example.todo.screens.home.tasks
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -13,10 +14,13 @@ import com.example.todo.data.models.model.TaskPageType
 import com.example.todo.databinding.FragmentTasksBinding
 import com.example.todo.screens.home.HomeActivity
 import com.example.todo.screens.home.tasks.page.TasksPageFragment
+import com.example.todo.screens.newtask.NewTaskActivity
 import com.example.todo.utils.hide
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class TasksFragment : BaseFragment<FragmentTasksBinding>() {
 
@@ -96,6 +100,6 @@ class TasksFragment : BaseFragment<FragmentTasksBinding>() {
     }
 
     private fun toNewTask() {
-
+        requireActivity().startActivity(Intent(requireContext(), NewTaskActivity::class.java))
     }
 }

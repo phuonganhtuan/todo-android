@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -44,4 +45,12 @@ class TasksPageViewModel @Inject constructor(private val repository: TaskReposit
             SharingStarted.WhileSubscribed(2000),
             emptyList()
         )
+
+    fun updateStatus(id: Int) = viewModelScope.launch {
+
+    }
+
+    fun updateMark(id: Int) = viewModelScope.launch {
+
+    }
 }
