@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="16dp"
@@ -18,8 +19,8 @@
 
     <androidx.appcompat.widget.AppCompatCheckBox
         android:id="@+id/checkStatus"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
         android:layout_margin="16dp"
         android:button="@drawable/bg_checkbox_grey"
         app:layout_constraintStart_toStartOf="parent"
@@ -27,8 +28,8 @@
 
     <ImageView
         android:id="@+id/buttonMark"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="12dp"
         android:contentDescription="@null"
@@ -40,10 +41,11 @@
         android:id="@+id/textTaskName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
         android:ellipsize="end"
+        android:paddingStart="10dp"
+        android:paddingTop="16dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="16dp"
         android:text="Start making user flow for a new mobile application"
         android:textColor="@android:color/black"
         android:textSize="18sp"
@@ -56,7 +58,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="12dp"
         android:layout_marginBottom="16dp"
         android:text="04:00"
         android:textColor="@color/color_text_secondary"
@@ -64,4 +65,47 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/checkStatus"
         app:layout_constraintTop_toBottomOf="@id/textTaskName" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardCat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        app:cardBackgroundColor="@android:color/transparent"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="0dp"
+        app:layout_constraintBottom_toBottomOf="@id/textTaskTime"
+        app:layout_constraintStart_toEndOf="@id/textTaskTime"
+        app:layout_constraintTop_toTopOf="@id/textTaskTime">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <View
+                android:id="@+id/viewCatBg"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:alpha="0.2"
+                android:background="@android:color/black"
+                app:layout_constraintBottom_toBottomOf="@id/textCatName"
+                app:layout_constraintEnd_toEndOf="@id/textCatName"
+                app:layout_constraintStart_toStartOf="@id/textCatName"
+                app:layout_constraintTop_toTopOf="@id/textCatName" />
+
+            <TextView
+                android:id="@+id/textCatName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="4dp"
+                android:textColor="@android:color/black"
+                android:fontFamily="@font/nunito_regular"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="BIRTHDAY" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -15,4 +15,10 @@
     <color name="color_button_grey">#B5B5B5</color>
     <color name="color_ripple">#30000000</color>
     <color name="color_border_grey">#e8eceb</color>
+
+    <!--    Category color-->
+    <color name="color_cat_work">#eb5757</color>
+    <color name="color_cat_personal">#6fcf97</color>
+    <color name="color_cat_birthday">#57ccf2</color>
+    <color name="color_cat_wishlist">#bb6bd9</color>
 </resources>

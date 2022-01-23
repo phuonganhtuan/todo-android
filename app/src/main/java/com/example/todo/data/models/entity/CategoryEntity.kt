@@ -10,3 +10,7 @@ data class CategoryEntity(
     var name: String,
     var color: String = "",
 ): BaseEntity()
+
+enum class DefaultCategories {
+    WORK, PERSONAL, BIRTHDAY, WISHLIST
+}

@@ -2,6 +2,7 @@ package com.example.todo.screens.home.tasks.page
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
@@ -13,9 +14,12 @@ import com.example.todo.data.models.model.TaskPageType
 import com.example.todo.databinding.FragmentTasksPageBinding
 import com.example.todo.screens.taskdetail.TaskDetailActivity
 import com.example.todo.utils.Constants.KEY_TASK_ID
+import com.example.todo.utils.gone
+import com.example.todo.utils.show
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
@@ -57,20 +61,38 @@ class TasksPageFragment : BaseFragment<FragmentTasksPageBinding>() {
                     TaskPageType.TODAY -> {
                         todayTasks.collect {
                             adapter.submitList(it)
+                            viewBinding.apply {
+                                textTaskCount.text = "Today task (${it.count()})"
+                            }
+                            showOrHideNoTask(it.isNullOrEmpty())
                         }
                     }
                     TaskPageType.FUTURE -> {
                         futureTasks.collect {
                             adapter.submitList(it)
+                            viewBinding.textTaskCount.text = "Future task (${it.count()})"
+                            showOrHideNoTask(it.isNullOrEmpty())
                         }
                     }
                     TaskPageType.DONE -> {
                         doneTasks.collect {
                             adapter.submitList(it)
+                            viewBinding.textTaskCount.text = "Completed task (${it.count()})"
+                            showOrHideNoTask(it.isNullOrEmpty())
                         }
                     }
                 }
             }
+        }
+    }
+
+    private fun showOrHideNoTask(isShow: Boolean) = with(viewBinding) {
+        if (isShow) {
+            imageNoTask.show()
+            textTaskCount.gone()
+        } else {
+            imageNoTask.gone()
+            textTaskCount.show()
         }
     }
 
@@ -88,6 +110,7 @@ class TasksPageFragment : BaseFragment<FragmentTasksPageBinding>() {
 
             override fun onStatusChange(id: Int) {
                 viewModel.updateStatus(id)
+                onResume()
             }
         })
     }
