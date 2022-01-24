@@ -26,32 +26,32 @@ val cat4 = CategoryEntity(
 
 val bm1 = BookmarkEntity(
     type = BookmarkType.NUMBER.name,
-    icon = "ic_ummark_num_1",
-    markedIcon = "ic_ummark_num_1"
+    number = "3",
+    color = "",
 )
 
 val bm2 = BookmarkEntity(
     type = BookmarkType.NUMBER.name,
-    icon = "ic_ummark_num_2",
-    markedIcon = "ic_ummark_num_2"
+    number = "1",
+    color = "",
 )
 
 val bm3 = BookmarkEntity(
-    type = BookmarkType.NUMBER.name,
-    icon = "ic_ummark_num_3",
-    markedIcon = "ic_ummark_num_3"
+    type = BookmarkType.FLAG3.name,
+    number = "",
+    color = BookMarkColor.ORANGE.name,
 )
 
 val bm4 = BookmarkEntity(
-    type = BookmarkType.FLAG.name,
-    icon = "ic_ummark_flag_1",
-    markedIcon = "ic_ummark_flag_1"
+    type = BookmarkType.FLAG2.name,
+    number = "",
+    color = BookMarkColor.BLUE.name,
 )
 
 val bm5 = BookmarkEntity(
-    type = BookmarkType.FLAG.name,
-    icon = "ic_ummark_flag_2",
-    markedIcon = "ic_ummark_flag_2"
+    type = BookmarkType.FLAG1.name,
+    number = "",
+    color = BookMarkColor.GREEN.name,
 )
 
 val taskDetail = TaskDetailEntity(
