@@ -40,6 +40,7 @@ class TasksPageViewModel @Inject constructor(private val repository: TaskReposit
 
     private val allTasks = repository
         .getShortTasks()
+        .map { it.reversed() }
         .stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(2000),
@@ -56,6 +57,11 @@ class TasksPageViewModel @Inject constructor(private val repository: TaskReposit
     }
 
     fun updateMark(id: Int) = viewModelScope.launch {
-
+        withContext(Dispatchers.IO) {
+            val taskShortToUpdate = allTasks.value.filter { it.task.id == id }[0]
+            val taskToUpdate = taskShortToUpdate.task.copy()
+            taskToUpdate.isMarked = !taskToUpdate.isMarked
+            repository.updateTask(taskToUpdate)
+        }
     }
 }
