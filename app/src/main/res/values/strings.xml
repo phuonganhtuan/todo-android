@@ -6,4 +6,14 @@
     <string name="calendar">Calendar</string>
     <string name="mine">Mine</string>
     <string name="task_detail">Task detail</string>
+    <string name="create_new_task">Create New Task</string>
+    <string name="task_name">Task name</string>
+    <string name="plus_add">+ Add</string>
+    <string name="subcate_task">Subcate Task</string>
+    <string name="note">Note</string>
+    <string name="category">Category</string>
+    <string name="no_category">No category</string>
+    <string name="add_calendar">Add calendar</string>
+    <string name="attachment">Attachment</string>
+    <string name="select_attachment">Select attachment</string>
 </resources>

@@ -17,7 +17,7 @@ import com.example.todo.utils.show
 import javax.inject.Inject
 
 class TaskAdapter @Inject constructor() :
-    ListAdapter<TaskShort, ActivityViewHolder>(TaskDiffCallback()) {
+    ListAdapter<TaskShort, TaskViewHolder>(TaskDiffCallback()) {
 
     private var onTaskInteractListener: OnTaskInteract? = null
 
@@ -25,18 +25,18 @@ class TaskAdapter @Inject constructor() :
         onTaskInteractListener = onTaskInteract
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActivityViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
         val itemViewBinding =
             ItemTaskBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ActivityViewHolder(itemViewBinding, onTaskInteractListener)
+        return TaskViewHolder(itemViewBinding, onTaskInteractListener)
     }
 
-    override fun onBindViewHolder(holder: ActivityViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
         holder.displayData(getItem(position))
     }
 }
 
-class ActivityViewHolder(
+class TaskViewHolder(
     private val itemViewBinding: ItemTaskBinding,
     private val onTaskInteract: OnTaskInteract?
 ) :

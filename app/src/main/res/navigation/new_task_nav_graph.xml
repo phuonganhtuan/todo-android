@@ -3,11 +3,32 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/detail_nav_graph"
-    app:startDestination="@id/TaskDetailFragment">
+    app:startDestination="@id/NewTaskFragment">
 
     <fragment
-        android:id="@+id/TaskDetailFragment"
+        android:id="@+id/NewTaskFragment"
         android:name="com.example.todo.screens.newtask.NewTaskFragment"
         android:label="@string/task_detail"
-        tools:layout="@layout/fragment_task_detail" />
+        tools:layout="@layout/fragment_new_task">
+
+        <action
+            android:id="@+id/toSelectAttachment"
+            app:destination="@id/SelectAttachmentFragment" />
+
+        <action
+            android:id="@+id/toAddCalendar"
+            app:destination="@id/AddCalendarBottomSheet" />
+    </fragment>
+
+    <dialog
+        android:id="@+id/SelectAttachmentFragment"
+        android:name="com.example.todo.screens.newtask.attachment.SelectAttachmentDialogFragment"
+        android:label="@string/select_attachment"
+        tools:layout="@layout/layout_select_attachment" />
+
+    <dialog
+        android:id="@+id/AddCalendarBottomSheet"
+        android:name="com.example.todo.screens.newtask.calendar.AddCalendarBottomSheetDialogFragment"
+        android:label="@string/add_calendar"
+        tools:layout="@layout/layout_add_calendar" />
 </navigation>

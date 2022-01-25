@@ -1,6 +1,198 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+    android:background="@color/color_bg_main_grey">
 
+    <TextView
+        android:id="@+id/textTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/nunito_extra_bold"
+        android:paddingHorizontal="16dp"
+        android:paddingBottom="8dp"
+        android:text="@string/create_new_task"
+        android:textColor="@color/color_primary"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:animateLayoutChanges="true"
+        android:fillViewport="true"
+        android:paddingHorizontal="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textTitle">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:animateLayoutChanges="true">
+
+            <EditText
+                android:id="@+id/editTaskName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autofillHints="@null"
+                android:backgroundTint="@color/color_border_grey"
+                android:hint="@string/task_name"
+                android:inputType="textMultiLine"
+                android:textColor="@android:color/black"
+                android:textColorHint="@color/color_text_secondary_dark"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:id="@+id/layoutSubTask"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="8dp"
+                android:animateLayoutChanges="true"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/editTaskName">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerSubTasks"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:itemCount="3"
+                    tools:listitem="@layout/item_edit_sub_task" />
+
+                <TextView
+                    android:id="@+id/buttonNewSubTask"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/bg_greybg_rounded_8"
+                    android:padding="8dp"
+                    android:text="@string/plus_add"
+                    android:textColor="@color/color_primary"
+                    android:textSize="16sp"
+                    android:visibility="visible" />
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/editNote"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="8dp"
+                android:autofillHints="@null"
+                android:backgroundTint="@color/color_border_grey"
+                android:drawableStart="@drawable/ic_note"
+                android:drawablePadding="8dp"
+                android:hint="@string/note"
+                android:inputType="textMultiLine"
+                android:textColor="@android:color/black"
+                android:textColorHint="@color/color_text_secondary_dark"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/layoutSubTask" />
+
+            <ImageView
+                android:id="@+id/imageCategory"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="26dp"
+                android:layout_marginTop="32dp"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_category"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/editNote" />
+
+            <TextView
+                android:id="@+id/textSelectCategory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@string/category"
+                android:textColor="@color/color_text_secondary_dark"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="@+id/imageCategory"
+                app:layout_constraintStart_toEndOf="@+id/imageCategory"
+                app:layout_constraintTop_toTopOf="@+id/imageCategory" />
+
+            <TextView
+                android:id="@+id/textCategory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:background="@drawable/bg_rounded_stroke_grey_8"
+                android:drawablePadding="8dp"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="4dp"
+                android:text="@string/no_category"
+                android:textColor="@color/color_text_secondary_dark"
+                android:textSize="16sp"
+                app:drawableEndCompat="@drawable/ic_arrow_down_16"
+                app:layout_constraintBottom_toBottomOf="@+id/textSelectCategory"
+                app:layout_constraintStart_toEndOf="@id/textSelectCategory"
+                app:layout_constraintTop_toTopOf="@+id/textSelectCategory" />
+
+            <ImageView
+                android:id="@+id/imageCalendar"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="26dp"
+                android:layout_marginTop="36dp"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_calendar_outline"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/imageCategory" />
+
+            <TextView
+                android:id="@+id/buttonAddCalendar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/bg_greybg_rounded_8"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="4dp"
+                android:text="@string/add_calendar"
+                android:textColor="@color/color_text_secondary_dark"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="@+id/imageCalendar"
+                app:layout_constraintStart_toEndOf="@+id/imageCalendar"
+                app:layout_constraintTop_toTopOf="@+id/imageCalendar" />
+
+            <ImageView
+                android:id="@+id/imageAttachment"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="26dp"
+                android:layout_marginTop="36dp"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_attachment"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/imageCalendar" />
+
+            <TextView
+                android:id="@+id/buttonAttachment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/bg_greybg_rounded_8"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="4dp"
+                android:text="@string/attachment"
+                android:textColor="@color/color_text_secondary_dark"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="@+id/imageAttachment"
+                app:layout_constraintStart_toEndOf="@+id/imageAttachment"
+                app:layout_constraintTop_toTopOf="@+id/imageAttachment" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

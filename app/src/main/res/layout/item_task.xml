@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="16dp"
     android:layout_marginVertical="8dp"
-    android:background="@drawable/bg_rounded_stroke_grey">
+    android:background="@drawable/bg_rounded_stroke_grey_16">
 
     <View
         android:id="@+id/viewVerticalIndicator"

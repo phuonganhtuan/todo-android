@@ -21,4 +21,6 @@
     <color name="color_cat_personal">#6fcf97</color>
     <color name="color_cat_birthday">#57ccf2</color>
     <color name="color_cat_wishlist">#bb6bd9</color>
+
+    <color name="color_text_secondary_dark">#62626B</color>
 </resources>

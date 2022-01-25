@@ -2,11 +2,9 @@ package com.example.todo.di
 
 import android.content.Context
 import androidx.fragment.app.FragmentActivity
+import com.example.todo.data.datasource.local.database.AppDatabase
 import com.example.todo.data.datasource.local.datasource.TaskLocalDataSource
 import com.example.todo.data.datasource.local.impl.TaskLocalDataSourceImpl
-import com.example.todo.data.datasource.local.database.AppDatabase
-import com.example.todo.data.datasource.remote.datasource.MainRemoteDataSource
-import com.example.todo.data.datasource.remote.impl.MainRemoteDataSourceImpl
 import com.example.todo.data.repository.TaskRepository
 import com.example.todo.data.repository.impl.TaskRepositoryImpl
 import com.example.todo.screens.home.tasks.TasksPagerAdapter
@@ -33,11 +31,6 @@ abstract class LocalModules {
     abstract fun bindMainLocalDataSource(
         mainLocalDataSource: TaskLocalDataSourceImpl
     ): TaskLocalDataSource
-
-    @Binds
-    abstract fun bindMainRemoteDataSource(
-        mainRemoteDataSource: MainRemoteDataSourceImpl
-    ): MainRemoteDataSource
 }
 
 @Module
