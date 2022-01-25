@@ -18,6 +18,10 @@
         <action
             android:id="@+id/toAddCalendar"
             app:destination="@id/AddCalendarBottomSheet" />
+
+        <action
+            android:id="@+id/toCreateCat"
+            app:destination="@id/AddCategoryFragment" />
     </fragment>
 
     <dialog
@@ -31,4 +35,10 @@
         android:name="com.example.todo.screens.newtask.calendar.AddCalendarBottomSheetDialogFragment"
         android:label="@string/add_calendar"
         tools:layout="@layout/layout_add_calendar" />
+
+    <dialog
+        android:id="@+id/AddCategoryFragment"
+        android:name="com.example.todo.screens.newtask.category.CreateCategoryDialogFragment"
+        android:label="@string/create_new_category_title"
+        tools:layout="@layout/layout_create_category" />
 </navigation>

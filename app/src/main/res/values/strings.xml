@@ -16,4 +16,6 @@
     <string name="add_calendar">Add calendar</string>
     <string name="attachment">Attachment</string>
     <string name="select_attachment">Select attachment</string>
+    <string name="create_new_category">Create new</string>
+    <string name="create_new_category_title">Create new category</string>
 </resources>

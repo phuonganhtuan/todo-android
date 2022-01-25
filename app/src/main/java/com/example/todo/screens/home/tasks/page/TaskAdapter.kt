@@ -13,6 +13,7 @@ import com.example.todo.data.models.entity.*
 import com.example.todo.databinding.ItemTaskBinding
 import com.example.todo.utils.DateTimeUtils
 import com.example.todo.utils.gone
+import com.example.todo.utils.helper.getCategoryColor
 import com.example.todo.utils.show
 import javax.inject.Inject
 
@@ -71,16 +72,7 @@ class TaskViewHolder(
         } else {
             cardCat.show()
             textCatName.text = entity.category!!.name.uppercase()
-            val catColor: Int = ContextCompat.getColor(
-                itemView.context,
-                when (entity.category!!.name.uppercase()) {
-                    DefaultCategories.WORK.name -> R.color.color_cat_work
-                    DefaultCategories.PERSONAL.name -> R.color.color_cat_personal
-                    DefaultCategories.BIRTHDAY.name -> R.color.color_cat_birthday
-                    DefaultCategories.WISHLIST.name -> R.color.color_cat_wishlist
-                    else -> R.color.color_text_secondary
-                }
-            )
+            val catColor = getCategoryColor(itemView.context, entity.category!!)
             textCatName.setTextColor(catColor)
             viewCatBg.setBackgroundColor(catColor)
         }

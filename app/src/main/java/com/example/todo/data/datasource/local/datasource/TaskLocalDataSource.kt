@@ -8,6 +8,7 @@ interface TaskLocalDataSource {
 
     fun getShortTasks(): Flow<List<TaskShort>>
     fun getTask(id: Int): Flow<Task>
+    fun getCategories(): Flow<List<CategoryEntity>>
     suspend fun addTask(entity: TaskEntity): Long
     suspend fun addTaskDetail(entity: TaskDetailEntity)
     suspend fun addSubTasks(entity: SubTaskEntity)
