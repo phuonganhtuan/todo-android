@@ -18,4 +18,7 @@
     <string name="select_attachment">Select attachment</string>
     <string name="create_new_category">Create new</string>
     <string name="create_new_category_title">Create new category</string>
+    <string name="add_time">Add time</string>
+    <string name="reminder">Reminder</string>
+    <string name="repeat">Repeat</string>
 </resources>
