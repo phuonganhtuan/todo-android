@@ -1,5 +1,7 @@
 package com.example.todo.screens.newtask.subtask
 
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
@@ -7,6 +9,7 @@ import com.example.todo.base.BaseDiffCallBack
 import com.example.todo.base.BaseViewHolder
 import com.example.todo.data.models.entity.SubTaskEntity
 import com.example.todo.databinding.ItemEditSubTaskBinding
+import com.example.todo.utils.boldWhenFocus
 import javax.inject.Inject
 
 class SubTaskAdapter @Inject constructor() :
@@ -35,14 +38,27 @@ class SubTaskViewHolder(
 ) :
     BaseViewHolder<SubTaskEntity>(itemViewBinding) {
 
-    private var taskId: Int = 0
+    private var subTaskIndex: Int = 0
 
     init {
+        itemViewBinding.editSubTask.boldWhenFocus()
+        itemViewBinding.editSubTask.addTextChangedListener(object : TextWatcher {
+            var currentText = ""
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                currentText = p0.toString()
+            }
 
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+                if (currentText == p0.toString()) return
+                onTaskInteract?.onTitleChanged(absoluteAdapterPosition, p0.toString())
+            }
+        })
     }
 
     override fun displayData(entity: SubTaskEntity) = with(itemViewBinding) {
-
     }
 }
 
@@ -53,5 +69,5 @@ class SubTaskDiffCallback : BaseDiffCallBack<SubTaskEntity>() {
 }
 
 interface OnSubTaskInteract {
-
+    fun onTitleChanged(index: Int, title: String)
 }

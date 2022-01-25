@@ -11,7 +11,11 @@ import androidx.navigation.fragment.findNavController
 import com.example.todo.R
 import com.example.todo.base.BaseFragment
 import com.example.todo.databinding.FragmentNewTaskBinding
+import com.example.todo.screens.newtask.subtask.OnSubTaskInteract
 import com.example.todo.screens.newtask.subtask.SubTaskAdapter
+import com.example.todo.utils.boldWhenFocus
+import com.example.todo.utils.gone
+import com.example.todo.utils.show
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
@@ -58,6 +62,13 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
         textCategory.setOnClickListener {
 
         }
+        editTaskName.boldWhenFocus()
+        editNote.boldWhenFocus()
+        subTaskAdapter.setOnTaskListener(object : OnSubTaskInteract {
+            override fun onTitleChanged(index: Int, title: String) {
+                viewModel.updateSubTask(index, title)
+            }
+        })
     }
 
     private fun observeData() = with(viewModel) {
@@ -65,6 +76,13 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 subTasks.collect {
                     subTaskAdapter.submitList(it)
+                }
+            }
+        }
+        lifecycleScope.launchWhenStarted {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                canAddSubTask.collect {
+                    if (it) viewBinding.buttonNewSubTask.show() else viewBinding.buttonNewSubTask.gone()
                 }
             }
         }
