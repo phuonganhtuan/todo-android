@@ -12,6 +12,7 @@ import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.FrameLayout
 import androidx.viewbinding.ViewBinding
 import com.example.todo.utils.windowHeight
+import com.example.todo.utils.windowWidth
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -52,8 +53,8 @@ abstract class BaseBottomSheetDialogFragment<VB : ViewBinding> : BottomSheetDial
     override fun onResume() {
         super.onResume()
         dialog?.window?.setLayout(
-            MATCH_PARENT,
-            MATCH_PARENT
+            windowWidth,
+            windowHeight
         )
     }
 }
