@@ -18,4 +18,17 @@
     <string name="select_attachment">Select attachment</string>
     <string name="create_new_category">Create new</string>
     <string name="create_new_category_title">Create new category</string>
+
+    <string name="jan">January</string>
+    <string name="feb">February</string>
+    <string name="mar">March</string>
+    <string name="apr">April</string>
+    <string name="may">May</string>
+    <string name="jun">Jun</string>
+    <string name="jul">July</string>
+    <string name="aug">August</string>
+    <string name="sep">September</string>
+    <string name="oct">October</string>
+    <string name="nov">November</string>
+    <string name="dec">December</string>
 </resources>
