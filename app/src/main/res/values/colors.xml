@@ -23,4 +23,7 @@
     <color name="color_cat_wishlist">#bb6bd9</color>
 
     <color name="color_text_secondary_dark">#62626B</color>
+
+    <color name="color_cal_secondary">#aaaab0</color>
+    <color name="color_cal_primary">#62626b</color>
 </resources>
