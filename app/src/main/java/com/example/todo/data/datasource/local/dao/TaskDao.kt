@@ -71,4 +71,7 @@ interface TaskDao {
 
     @Query("delete from SubTaskEntity where 1")
     suspend fun deleteSubtasks()
+
+    @Query("select * from TaskEntity where title like '%' || :name || '%'")
+    fun searchTaskByName(name: String): List<TaskEntity>
 }

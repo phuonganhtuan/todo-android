@@ -36,4 +36,6 @@
     <string name="save">Save</string>
     <string name="cat_name_empty_error">Category name can not be empty</string>
     <string name="cat_name_existed_error">Category name existed</string>
+    <string name="search_task">Search task</string>
+    <string name="recent_search">Recent searches</string>
 </resources>

@@ -15,6 +15,7 @@ import com.example.todo.databinding.FragmentTasksBinding
 import com.example.todo.screens.home.HomeActivity
 import com.example.todo.screens.home.tasks.page.TasksPageFragment
 import com.example.todo.screens.newtask.NewTaskActivity
+import com.example.todo.screens.search.SearchTaskActivity
 import com.example.todo.utils.hide
 import com.google.android.material.tabs.TabLayout
 import dagger.hilt.android.AndroidEntryPoint
@@ -96,10 +97,10 @@ class TasksFragment : BaseFragment<FragmentTasksBinding>() {
     }
 
     private fun toSearch() {
-
+        startActivity(Intent(activity, SearchTaskActivity::class.java))
     }
 
     private fun toNewTask() {
-        requireActivity().startActivity(Intent(requireContext(), NewTaskActivity::class.java))
+        requireActivity().startActivity(Intent(activity, NewTaskActivity::class.java))
     }
 }

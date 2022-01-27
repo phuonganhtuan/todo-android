@@ -30,6 +30,7 @@
         </activity>
         <activity android:name=".screens.taskdetail.TaskDetailActivity" />
         <activity android:name=".screens.newtask.NewTaskActivity" />
+        <activity android:name=".screens.search.SearchTaskActivity" />
     </application>
 
 </manifest>
