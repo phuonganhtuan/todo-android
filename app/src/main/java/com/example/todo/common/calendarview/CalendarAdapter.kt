@@ -63,7 +63,7 @@ class CalendarViewHolder(
         }
         textDay.setTextColor(ContextCompat.getColor(itemView.context, textColor))
         val bgId =
-            if (isSelected) R.drawable.bg_primary_rounded_8 else R.drawable.bg_greybg_rounded_8
+            if (isSelected) R.drawable.bg_primary_rounded_8 else R.drawable.bg_white_rounded
         textDay.background = ContextCompat.getDrawable(itemView.context, bgId)
     }
 }

@@ -6,42 +6,41 @@
     android:layout_height="match_parent"
     android:layout_marginTop="64dp"
     android:background="@drawable/bg_white_top_rounded"
-    android:padding="16dp"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/textTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/add_calendar"
-        android:textColor="@android:color/black"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_below="@id/textTitle"
         android:layout_height="match_parent"
+        android:layout_marginVertical="16dp"
         android:animateLayoutChanges="true"
         android:fillViewport="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textTitle">
+        app:layout_constraintStart_toStartOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginVertical="8dp"
             android:orientation="vertical">
+            <!--calendar-->
+            <com.example.todo.common.calendarview.TaskCalendarView
+                android:id="@+id/calendarView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginBottom="16dp"/>
+
             <!-- Selected Date-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginVertical="8dp"
+                android:paddingHorizontal="16dp">
 
                 <ImageView
                     android:id="@+id/imgSelectedDate"
@@ -71,7 +70,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="8dp"
-                android:orientation="horizontal">>
+                android:orientation="horizontal"
+                android:paddingHorizontal="16dp">>
 
                 <ImageView
                     android:id="@+id/imgAddTime"
@@ -100,7 +100,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="8dp"
-                android:orientation="horizontal">>
+                android:orientation="horizontal"
+                android:paddingHorizontal="16dp">>
 
                 <ImageView
                     android:id="@+id/imgReminder"
@@ -134,15 +135,15 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
                     android:thumb="@drawable/custom_thumb"
-                    app:track="@drawable/custom_track"
-                    />
+                    app:track="@drawable/custom_track" />
             </LinearLayout>
             <!--Repeat-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="8dp"
-                android:orientation="horizontal">>
+                android:orientation="horizontal"
+                android:paddingHorizontal="16dp">>
 
                 <ImageView
                     android:id="@+id/imgRepeat"
@@ -176,8 +177,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
                     android:thumb="@drawable/custom_thumb"
-                    app:track="@drawable/custom_track"
-                    />
+                    app:track="@drawable/custom_track" />
             </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
