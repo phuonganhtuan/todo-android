@@ -41,4 +41,6 @@ class TaskRepositoryImpl @Inject constructor(
     override suspend fun deleteSubtasks() = taskDataSource.deleteSubtasks()
 
     override fun getCategories() = taskDataSource.getCategories()
+
+    override fun searchTaskByName(name: String) = taskDataSource.searchTaskByName(name)
 }

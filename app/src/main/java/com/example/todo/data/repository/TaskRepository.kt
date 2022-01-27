@@ -27,4 +27,6 @@ interface TaskRepository {
     suspend fun deleteBookmarks()
     suspend fun deleteAttachments()
     suspend fun deleteSubtasks()
+
+    fun searchTaskByName(name: String): List<TaskEntity>
 }

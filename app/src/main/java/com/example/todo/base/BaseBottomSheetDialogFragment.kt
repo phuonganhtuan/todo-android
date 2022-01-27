@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.FrameLayout
+import android.widget.Toast
 import androidx.viewbinding.ViewBinding
 import com.example.todo.utils.windowHeight
 import com.example.todo.utils.windowWidth
@@ -56,5 +57,9 @@ abstract class BaseBottomSheetDialogFragment<VB : ViewBinding> : BottomSheetDial
             windowWidth,
             windowHeight
         )
+    }
+
+    protected fun showToastMessage(message: String) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 }

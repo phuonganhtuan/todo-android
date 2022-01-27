@@ -6,8 +6,13 @@ import com.example.todo.data.models.entity.CategoryEntity
 import com.example.todo.data.models.entity.SubTaskEntity
 import com.example.todo.data.repository.TaskRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import kotlin.random.Random
 
@@ -60,5 +65,15 @@ class NewTaskViewModel @Inject constructor(private val repository: TaskRepositor
 
     fun removeSubTask(index: Int) {
         _subTasks.value.removeAt(index)
+    }
+
+    fun isCatNameExisted(name: String) =
+        _categories.value.map { it.name.lowercase() }.contains(name.lowercase())
+
+    fun createCategory(name: String) = viewModelScope.launch {
+        withContext(Dispatchers.IO) {
+            val entity = CategoryEntity(name = name)
+            repository.addCategory(entity)
+        }
     }
 }

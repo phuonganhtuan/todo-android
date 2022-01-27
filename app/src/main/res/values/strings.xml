@@ -33,4 +33,11 @@
     <string name="oct">October</string>
     <string name="nov">November</string>
     <string name="dec">December</string>
+    <string name="category_names">Category names</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+    <string name="cat_name_empty_error">Category name can not be empty</string>
+    <string name="cat_name_existed_error">Category name existed</string>
+    <string name="search_task">Search task</string>
+    <string name="recent_search">Recent searches</string>
 </resources>

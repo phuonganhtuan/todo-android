@@ -103,7 +103,7 @@ class AddCalendarBottomSheetDialogFragment :
     }
 
     private fun onClickRepeat(view: View){
-        mSetReminderDialog.show(childFragmentManager, "Open Repeat Dialog")
+        mSetRepeatDialog.show(childFragmentManager, "Open Repeat Dialog")
     }
 
 }
