@@ -30,4 +30,5 @@ interface TaskLocalDataSource {
     suspend fun deleteSubtasks()
 
     fun searchTaskByName(name: String): List<TaskEntity>
+    fun getTaskInDay(dayString: String): List<TaskShort>
 }

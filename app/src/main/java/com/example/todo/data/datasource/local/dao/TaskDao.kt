@@ -1,20 +1,19 @@
 package com.example.todo.data.datasource.local.dao
 
-import androidx.room.Dao
-import androidx.room.Insert
+import androidx.room.*
 import androidx.room.OnConflictStrategy.IGNORE
 import androidx.room.OnConflictStrategy.REPLACE
-import androidx.room.Query
-import androidx.room.Update
 import com.example.todo.data.models.entity.*
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface TaskDao {
 
+    @Transaction
     @Query("select * from TaskEntity")
     fun getShortTasks(): Flow<List<TaskShort>>
 
+    @Transaction
     @Query("select * from TaskEntity where id = :id limit 1")
     fun getTask(id: Int): Flow<Task>
 
@@ -74,4 +73,7 @@ interface TaskDao {
 
     @Query("select * from TaskEntity where title like '%' || :name || '%'")
     fun searchTaskByName(name: String): List<TaskEntity>
+
+    @Query("select * from TaskEntity where dueDate == :dayString")
+    fun getTaskInDay(dayString: String): List<TaskShort>
 }

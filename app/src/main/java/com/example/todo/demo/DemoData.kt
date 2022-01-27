@@ -3,6 +3,7 @@ package com.example.todo.demo
 import android.util.Log
 import com.example.todo.data.models.entity.*
 import com.example.todo.data.repository.TaskRepository
+import com.example.todo.utils.DateTimeUtils
 import java.util.*
 
 val cat1 = CategoryEntity(
@@ -115,6 +116,7 @@ val tasks = listOf<TaskEntity>(
         isDone = true,
         isMarked = false,
         markId = null,
+        dueDate = DateTimeUtils.getComparableDateString(Calendar.getInstance().time),
     ),
     TaskEntity(
         title = "Happy birthday to me",
@@ -123,6 +125,7 @@ val tasks = listOf<TaskEntity>(
         isDone = false,
         isMarked = true,
         markId = null,
+        dueDate = DateTimeUtils.getComparableDateString(Calendar.getInstance().time),
     ),
     TaskEntity(
         title = "Start making user flow for a new mobile application 2",
@@ -131,6 +134,7 @@ val tasks = listOf<TaskEntity>(
         isDone = false,
         isMarked = false,
         markId = null,
+        dueDate = DateTimeUtils.getComparableDateString(Calendar.getInstance().time),
     ),
     TaskEntity(
         title = "Reseach product for DAP",
@@ -139,6 +143,7 @@ val tasks = listOf<TaskEntity>(
         isDone = true,
         isMarked = true,
         markId = null,
+        dueDate = DateTimeUtils.getComparableDateString(Calendar.getInstance().time),
     ),
     TaskEntity(
         title = "Task 5 title demo",
@@ -147,6 +152,7 @@ val tasks = listOf<TaskEntity>(
         isDone = false,
         isMarked = true,
         markId = null,
+        dueDate = DateTimeUtils.getComparableDateString(Calendar.getInstance().time),
     ),
     TaskEntity(
         title = "Task 6 title demo",
@@ -155,6 +161,7 @@ val tasks = listOf<TaskEntity>(
         isDone = true,
         isMarked = false,
         markId = null,
+        dueDate = DateTimeUtils.getComparableDateString(Calendar.getInstance().time),
     ),
     TaskEntity(
         title = "Task 7 title demo",
@@ -163,6 +170,7 @@ val tasks = listOf<TaskEntity>(
         isDone = false,
         isMarked = false,
         markId = null,
+        dueDate = DateTimeUtils.getComparableDateString(Calendar.getInstance().time),
     ),
     TaskEntity(
         title = "Task 8 title demo",
@@ -171,6 +179,7 @@ val tasks = listOf<TaskEntity>(
         isDone = false,
         isMarked = false,
         markId = null,
+        dueDate = DateTimeUtils.getComparableDateString(Calendar.getInstance().time),
     ),
     TaskEntity(
         title = "Task 9 title demo",
@@ -179,6 +188,7 @@ val tasks = listOf<TaskEntity>(
         isDone = false,
         isMarked = false,
         markId = null,
+        dueDate = DateTimeUtils.getComparableDateString(Calendar.getInstance().time),
     ),
     TaskEntity(
         title = "Task 10 title demo",
@@ -187,6 +197,7 @@ val tasks = listOf<TaskEntity>(
         isDone = true,
         isMarked = true,
         markId = null,
+        dueDate = DateTimeUtils.getComparableDateString(Calendar.getInstance().time),
     ),
 )
 

@@ -43,4 +43,5 @@ class TaskRepositoryImpl @Inject constructor(
     override fun getCategories() = taskDataSource.getCategories()
 
     override fun searchTaskByName(name: String) = taskDataSource.searchTaskByName(name)
+    override fun getTaskInDay(dayString: String) = taskDataSource.getTaskInDay(dayString)
 }
