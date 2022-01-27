@@ -128,12 +128,14 @@
                     android:layout_height="0dp"
                     android:layout_weight="1" />
 
-                <Switch
-                    android:id="@+id/swRemider"
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/swReminder"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
-                    android:theme="@style/customSwitch"/>
+                    android:thumb="@drawable/custom_thumb"
+                    app:track="@drawable/custom_track"
+                    />
             </LinearLayout>
             <!--Repeat-->
             <LinearLayout
@@ -168,12 +170,13 @@
                     android:layout_height="0dp"
                     android:layout_weight="1" />
 
-                <Switch
+                <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/swRepeat"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
-                    android:theme="@style/customSwitch"
+                    android:thumb="@drawable/custom_thumb"
+                    app:track="@drawable/custom_track"
                     />
             </LinearLayout>
         </LinearLayout>
