@@ -4,10 +4,12 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import com.example.todo.R
 import com.example.todo.base.BaseDialogFragment
 import com.example.todo.databinding.LayoutCreateCategoryBinding
 import com.example.todo.databinding.LayoutSelectAttachmentBinding
 import com.example.todo.screens.newtask.NewTaskViewModel
+import com.example.todo.screens.newtask.subtask.OnSubTaskInteract
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -22,6 +24,10 @@ class CreateCategoryDialogFragment : BaseDialogFragment<LayoutCreateCategoryBind
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+    }
+
+    private fun setupEvents() = with(viewBinding) {
 
     }
 }
