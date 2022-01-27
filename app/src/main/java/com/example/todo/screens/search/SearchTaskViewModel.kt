@@ -45,6 +45,6 @@ class SearchTaskViewModel @Inject constructor(private val repository: TaskReposi
             add(0, name)
             if (size > 3) removeAt(size - 1)
         }
-        SPUtils.saveRecentSearch(context, _recentSearch.value)
+        SPUtils.saveRecentSearch(context, currentRecent)
     }
 }

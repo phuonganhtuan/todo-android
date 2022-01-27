@@ -89,10 +89,10 @@ class SearchTaskActivity : BaseActivity<ActivitySearchTaskBinding>() {
             finish()
         }
         searchAdapter.taskSelectListener = { id, name ->
+            viewModel.addRecentSearch(this@SearchTaskActivity, name)
             startActivity(Intent(this@SearchTaskActivity, TaskDetailActivity::class.java).apply {
                 putExtra(Constants.KEY_TASK_ID, id)
             })
-            viewModel.addRecentSearch(this@SearchTaskActivity, name)
             finish()
         }
         recentAdapter.recentSelectListener = {
