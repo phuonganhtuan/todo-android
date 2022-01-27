@@ -8,11 +8,15 @@ import android.view.ViewGroup
 import android.widget.TimePicker
 import androidx.coordinatorlayout.R
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.example.todo.base.BaseBottomSheetDialogFragment
 import com.example.todo.common.calendarview.TaskCalendarView
 import com.example.todo.databinding.LayoutAddCalendarBinding
 import com.example.todo.screens.newtask.NewTaskViewModel
 import com.example.todo.utils.DateTimeUtils
+import kotlinx.coroutines.flow.collect
 import java.util.*
 import kotlin.math.log
 
@@ -40,6 +44,7 @@ class AddCalendarBottomSheetDialogFragment :
         initView()
         initData()
         setupEvent()
+        observeData()
     }
 
     private fun initView() = with(viewBinding) {
@@ -81,11 +86,20 @@ class AddCalendarBottomSheetDialogFragment :
         tvRepeat.setOnClickListener { onClickRepeat(it) }
     }
 
+    private fun observeData() = with(viewModel) {
+        lifecycleScope.launchWhenStarted {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                selectedDate.collect {
+                    viewBinding.tvSelectedDate.text = DateTimeUtils.getComparableDateString(it)
+                }
+            }
+        }
+    }
+
     private fun onDateSelected(date: Date)= with(viewBinding) {
+        viewModel.selectedDate.value = date
         selDate = date
-        tvSelectedDate.setText(
-            DateTimeUtils.getComparableDateString(selDate)
-        )
+
     }
 
     private fun onClickAddTime() {

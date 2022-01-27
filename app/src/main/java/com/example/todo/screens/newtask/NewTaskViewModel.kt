@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.*
 import javax.inject.Inject
 import kotlin.random.Random
 
@@ -24,6 +25,8 @@ class NewTaskViewModel @Inject constructor(private val repository: TaskRepositor
 
     val canAddSubTask: StateFlow<Boolean> get() = _canAddSubTask
     private val _canAddSubTask = MutableStateFlow(false)
+
+    val selectedDate = MutableStateFlow(Calendar.getInstance().time)
 
     val categories: StateFlow<List<CategoryEntity>> get() = _categories
     private val _categories = repository

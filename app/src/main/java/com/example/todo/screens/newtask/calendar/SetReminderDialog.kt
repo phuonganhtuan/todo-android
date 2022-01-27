@@ -6,12 +6,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import androidx.annotation.MenuRes
+import androidx.fragment.app.activityViewModels
 import com.example.todo.R
 import com.example.todo.base.BaseDialogFragment
 import com.example.todo.databinding.FragmentSetReminderBinding
 import com.example.todo.databinding.LayoutSelectAttachmentBinding
+import com.example.todo.screens.newtask.NewTaskViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SetReminderDialog: BaseDialogFragment<FragmentSetReminderBinding>() {
+
+    private val viewModel: NewTaskViewModel by activityViewModels()
+
     override fun inflateViewBinding(
         container: ViewGroup?,
         savedInstanceState: Bundle?
