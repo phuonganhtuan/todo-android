@@ -35,7 +35,7 @@ class SearchTaskViewModel @Inject constructor(private val repository: TaskReposi
     }
 
     fun getRecentSearch(context: Context) {
-        _recentSearch.value = SPUtils.getRecentSearch(context)?.toMutableList() ?: mutableListOf()
+        _recentSearch.value = SPUtils.getRecentSearch(context).toMutableList()
     }
 
     fun addRecentSearch(context: Context, name: String) = viewModelScope.launch {
@@ -45,7 +45,6 @@ class SearchTaskViewModel @Inject constructor(private val repository: TaskReposi
             add(0, name)
             if (size > 3) removeAt(size - 1)
         }
-        _recentSearch.value = currentRecent
         SPUtils.saveRecentSearch(context, _recentSearch.value)
     }
 }
