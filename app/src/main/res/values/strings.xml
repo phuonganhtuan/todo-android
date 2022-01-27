@@ -34,4 +34,6 @@
     <string name="category_names">Category names</string>
     <string name="cancel">Cancel</string>
     <string name="save">Save</string>
+    <string name="cat_name_empty_error">Category name can not be empty</string>
+    <string name="cat_name_existed_error">Category name existed</string>
 </resources>

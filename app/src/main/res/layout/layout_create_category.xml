@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="48dp"
@@ -34,6 +35,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textTitle" />
 
+    <TextView
+        android:id="@+id/textInvalidate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingTop="8dp"
+        android:textColor="@color/design_default_color_error"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/editCatName"
+        tools:text="@string/cat_name_empty_error" />
+
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/buttonGuideline"
         android:layout_width="0dp"
@@ -41,7 +53,7 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.5" />
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/buttonCancel"
         style="@style/ButtonSecondaryWhite"
         android:layout_width="0dp"
@@ -52,19 +64,18 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/buttonGuideline"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editCatName" />
+        app:layout_constraintTop_toBottomOf="@+id/textInvalidate" />
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/buttonSave"
         style="@style/ButtonPrimary"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:enabled="false"
         android:text="@string/save"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/buttonGuideline"
-        app:layout_constraintTop_toBottomOf="@+id/editCatName" />
+        app:layout_constraintTop_toBottomOf="@+id/textInvalidate" />
 </androidx.constraintlayout.widget.ConstraintLayout>

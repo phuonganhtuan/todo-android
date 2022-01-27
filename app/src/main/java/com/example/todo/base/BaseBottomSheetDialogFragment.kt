@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.FrameLayout
+import android.widget.Toast
 import androidx.viewbinding.ViewBinding
 import com.example.todo.utils.windowHeight
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -55,5 +56,9 @@ abstract class BaseBottomSheetDialogFragment<VB : ViewBinding> : BottomSheetDial
             MATCH_PARENT,
             MATCH_PARENT
         )
+    }
+
+    protected fun showToastMessage(message: String) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 }
