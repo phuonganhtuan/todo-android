@@ -1,6 +1,7 @@
 package com.example.todo.screens.newtask.calendar
 
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
@@ -39,13 +40,15 @@ class SetRepeatAtDialog: BaseDialogFragment<FragmentSetRepeatBinding>() {
         dismiss()
     }
 
-    private fun showMenu(v: View, @MenuRes menuRes: Int) {
+    private fun showMenu(v: View, @MenuRes menuRes: Int)= with(viewBinding) {
         val popup = PopupMenu(context!!, v)
         popup.menuInflater.inflate(menuRes, popup.menu)
 
-//        popup.setOnMenuItemClickListener { menuItem: MenuItem ->
-//            // Respond to menu item click.
-//        }
+        popup.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener { item: MenuItem? ->
+
+            tvRepeatAtValue.setText(item?.title)
+            true
+        })
         popup.setOnDismissListener {
             // Respond to popup being dismissed.
         }

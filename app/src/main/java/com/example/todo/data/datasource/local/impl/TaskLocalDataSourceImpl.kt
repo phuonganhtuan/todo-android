@@ -32,4 +32,5 @@ class TaskLocalDataSourceImpl @Inject constructor(private val dao: TaskDao) : Ta
     override fun getCategories() = dao.getCategories()
 
     override fun searchTaskByName(name: String) = dao.searchTaskByName(name)
+    override fun getTaskInDay(dayString: String) = dao.getTaskInDay(dayString)
 }

@@ -54,35 +54,36 @@ class AddCalendarBottomSheetDialogFragment :
             false
         )
         mSetReminderDialog = SetReminderDialog()
+
         mSetRepeatDialog = SetRepeatAtDialog()
     }
 
     private fun initData() = with(viewBinding) {
-        viewBinding.tvSelectedDate.setText(
+        tvSelectedDate.setText(
             DateTimeUtils.getComparableDateString(selDate)
         )
     }
 
     private fun setupEvent() = with(viewBinding) {
         // SelectDate event
-        viewBinding.calendarView.onDateSelectedListener = { onDateSelected(it) }
+        calendarView.onDateSelectedListener = { onDateSelected(it) }
 
         // AddTime
-        viewBinding.tvAddTime.setOnClickListener { onClickAddTime() }
-        viewBinding.imgAddTime.setOnClickListener { onClickAddTime() }
+        tvAddTime.setOnClickListener { onClickAddTime() }
+        imgAddTime.setOnClickListener { onClickAddTime() }
 
         // Reminder
-        viewBinding.imgReminder.setOnClickListener { onClickReminder(it) }
-        viewBinding.tvReminder.setOnClickListener { onClickReminder(it) }
+        imgReminder.setOnClickListener { onClickReminder(it) }
+        tvReminder.setOnClickListener { onClickReminder(it) }
 
         // Repeat
-        viewBinding.imgRepeat.setOnClickListener { onClickRepeat(it) }
-        viewBinding.tvRepeat.setOnClickListener { onClickRepeat(it) }
+        imgRepeat.setOnClickListener { onClickRepeat(it) }
+        tvRepeat.setOnClickListener { onClickRepeat(it) }
     }
 
-    private fun onDateSelected(date: Date) {
+    private fun onDateSelected(date: Date)= with(viewBinding) {
         selDate = date
-        viewBinding.tvSelectedDate.setText(
+        tvSelectedDate.setText(
             DateTimeUtils.getComparableDateString(selDate)
         )
     }
@@ -91,11 +92,11 @@ class AddCalendarBottomSheetDialogFragment :
         mTimePicker.show()
     }
 
-    private fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
+    private fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int)= with(viewBinding) {
         selHour = hourOfDay
         selMinute = minute
         val time = "${selHour.toString()}:${selMinute.toString()}"
-        viewBinding.tvAddTime.setText(time)
+        tvAddTime.setText(time)
     }
 
     private fun onClickReminder(view: View){

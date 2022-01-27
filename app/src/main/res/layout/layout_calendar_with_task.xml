@@ -3,54 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <TextView
-        android:id="@+id/textMonthYear"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/nunito_bold"
-        android:padding="16dp"
-        android:text="January 2022"
-        android:textColor="@android:color/black"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/imageNextMonth"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:layout_marginEnd="16dp"
-        android:background="@drawable/bg_greybg_rounded_8"
-        android:padding="4dp"
-        android:src="@drawable/ic_next"
-        app:layout_constraintBottom_toBottomOf="@+id/textMonthYear"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textMonthYear" />
-
-    <ImageView
-        android:id="@+id/imagePreviousMonth"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:layout_marginEnd="16dp"
-        android:background="@drawable/bg_greybg_rounded_8"
-        android:padding="4dp"
-        android:src="@drawable/ic_previous"
-        app:layout_constraintBottom_toBottomOf="@+id/textMonthYear"
-        app:layout_constraintEnd_toStartOf="@id/imageNextMonth"
-        app:layout_constraintTop_toTopOf="@+id/textMonthYear" />
+    android:layout_height="wrap_content">
 
     <LinearLayout
         android:id="@+id/layoutDays"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textMonthYear">
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/textDay1"
@@ -131,10 +95,11 @@
         android:layout_marginTop="12dp"
         android:overScrollMode="never"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/layoutDays"
         app:spanCount="7"
         tools:itemCount="31"
-        tools:listitem="@layout/item_calendar_day" />
+        tools:listitem="@layout/item_calendar_task" />
 </androidx.constraintlayout.widget.ConstraintLayout>

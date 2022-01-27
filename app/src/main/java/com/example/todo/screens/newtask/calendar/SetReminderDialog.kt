@@ -49,7 +49,23 @@ class SetReminderDialog: BaseDialogFragment<FragmentSetReminderBinding>() {
     private fun showMenu(v: View, @MenuRes menuRes: Int) = with(viewBinding) {
         val popup = PopupMenu(context!!, v)
         popup.menuInflater.inflate(menuRes, popup.menu)
-        
+
+        popup.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener { item: MenuItem? ->
+            when(menuRes){
+                R.menu.reminder_menu -> {
+                    tvReminderAtValue.setText(item?.title)
+                }
+                R.menu.reminder_type_menu -> {
+                    tvReminderTypeValue.setText(item?.title)
+                }
+                R.menu.screen_lock_menu -> {
+                    tvScreenLockValue.setText(item?.title)
+                }
+                else -> {}
+            }
+            true
+        })
+
         popup.setOnDismissListener {
             // Respond to popup being dismissed.
         }

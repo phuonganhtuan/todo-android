@@ -55,6 +55,7 @@ data class TaskEntity(
     var title: String = "",
     var categoryId: Int?,
     var calendar: Long?,
+    var dueDate: String?,
     var isDone: Boolean = false,
     var isMarked: Boolean = false,
     var markId: Int?,
