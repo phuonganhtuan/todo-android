@@ -24,7 +24,10 @@ class SubTaskAdapter @Inject constructor() :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SubTaskViewHolder {
         val itemViewBinding =
             ItemEditSubTaskBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return SubTaskViewHolder(itemViewBinding, onTaskInteractListener)
+        return SubTaskViewHolder(
+            itemViewBinding,
+            onTaskInteractListener
+        )
     }
 
     override fun onBindViewHolder(holder: SubTaskViewHolder, position: Int) {

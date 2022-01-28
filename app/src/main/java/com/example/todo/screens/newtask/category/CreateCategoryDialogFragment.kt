@@ -8,9 +8,7 @@ import androidx.fragment.app.activityViewModels
 import com.example.todo.R
 import com.example.todo.base.BaseDialogFragment
 import com.example.todo.databinding.LayoutCreateCategoryBinding
-import com.example.todo.databinding.LayoutSelectAttachmentBinding
 import com.example.todo.screens.newtask.NewTaskViewModel
-import com.example.todo.screens.newtask.subtask.OnSubTaskInteract
 import com.example.todo.utils.gone
 import com.example.todo.utils.show
 import dagger.hilt.android.AndroidEntryPoint

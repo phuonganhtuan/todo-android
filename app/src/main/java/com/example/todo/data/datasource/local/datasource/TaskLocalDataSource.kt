@@ -1,13 +1,12 @@
 package com.example.todo.data.datasource.local.datasource
 
-import androidx.room.Query
 import com.example.todo.data.models.entity.*
 import kotlinx.coroutines.flow.Flow
 
 interface TaskLocalDataSource {
 
     fun getShortTasks(): Flow<List<TaskShort>>
-    fun getTask(id: Int): Flow<Task>
+    fun getTask(id: Int): Task
     fun getCategories(): Flow<List<CategoryEntity>>
     suspend fun addTask(entity: TaskEntity): Long
     suspend fun addTaskDetail(entity: TaskDetailEntity)

@@ -15,7 +15,7 @@ interface TaskDao {
 
     @Transaction
     @Query("select * from TaskEntity where id = :id limit 1")
-    fun getTask(id: Int): Flow<Task>
+    fun getTask(id: Int): Task
 
     @Query("select * from CategoryEntity")
     fun getCategories(): Flow<List<CategoryEntity>>
