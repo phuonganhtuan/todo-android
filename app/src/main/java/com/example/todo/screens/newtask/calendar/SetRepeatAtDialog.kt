@@ -1,6 +1,7 @@
 package com.example.todo.screens.newtask.calendar
 
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
@@ -53,6 +54,17 @@ class SetRepeatAtDialog: BaseDialogFragment<FragmentSetRepeatBinding>() {
             // Respond to popup being dismissed.
         }
         // Show the popup menu.
-        popup.show()
+        try {
+            val fieldMPopup = PopupMenu::class.java.getDeclaredField("mPopup")
+            fieldMPopup.isAccessible = true
+            val mPopup = fieldMPopup.get(popup)
+            mPopup.javaClass.getDeclaredMethod("setForceShowIcon", Boolean::class.java)
+                .invoke(mPopup, true)
+
+        } catch (e: Exception) {
+            Log.e("SetReminderDialog", "Error show popup", e)
+        } finally {
+            popup.show()
+        }
     }
 }

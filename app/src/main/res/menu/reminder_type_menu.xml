@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/option_1"
-        android:title="notification" />
-    <item android:id="@+id/option_2"
-        android:title="notification" />
-    <item android:id="@+id/option_3"
-        android:title="notification" />
+    <item
+        android:id="@+id/option_notification"
+        android:icon="@drawable/bg_checkbox_grey"
+        android:title="@string/notification" />
+    <item
+        android:id="@+id/option_alarm"
+        android:icon="@drawable/bg_checkbox_grey"
+        android:title="@string/alarm" />
 </menu>

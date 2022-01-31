@@ -51,7 +51,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
-                android:text="5 minute before"
+                android:text="@string/five_minutes_before"
                 android:textSize="16sp"
                 android:drawablePadding="8dp"
                 app:drawableEndCompat="@drawable/ic_arrow_down_16" />
@@ -83,7 +83,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
-                android:text="Notification"
+                android:text="@string/notification"
                 android:textSize="16sp"
                 android:drawablePadding="8dp"
                 app:drawableEndCompat="@drawable/ic_arrow_down_16" />
@@ -115,7 +115,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
-                android:text="Off"
+                android:text="@string/off"
                 android:textSize="16sp"
                 android:drawablePadding="8dp"
                 app:drawableEndCompat="@drawable/ic_arrow_down_16" />

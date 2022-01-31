@@ -143,71 +143,73 @@
                         android:thumb="@drawable/custom_thumb"
                         app:track="@drawable/custom_track" />
                 </LinearLayout>
+
                 <TextView
+                    android:id="@+id/tvReminderValue"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
-                    android:text="5 minute before"
                     android:layout_marginLeft="40dp"
+                    android:text="5 minute before"
                     android:textColor="@color/color_text_secondary_dark"
-                    android:textSize="18sp"
-                    />
+                    android:textSize="18sp" />
             </LinearLayout>
             <!--Repeat-->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="8dp"
-            android:orientation="vertical"
-            android:paddingHorizontal="16dp">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                >
+                android:layout_marginVertical="8dp"
+                android:orientation="vertical"
+                android:paddingHorizontal="16dp">
 
-                <ImageView
-                    android:id="@+id/imgRepeat"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:contentDescription="@null"
-                    android:src="@drawable/ic_repeat" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/imgRepeat"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:contentDescription="@null"
+                        android:src="@drawable/ic_repeat" />
+
+                    <TextView
+                        android:id="@+id/tvRepeat"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="8dp"
+                        android:paddingHorizontal="8dp"
+                        android:text="@string/repeat"
+                        android:textColor="@color/color_text_secondary_dark"
+                        android:textSize="18sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/imgSelectedDate"
+                        app:layout_constraintStart_toEndOf="@+id/imgSelectedDate"
+                        app:layout_constraintTop_toTopOf="@+id/imgSelectedDate" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/swRepeat"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:thumb="@drawable/custom_thumb"
+                        app:track="@drawable/custom_track" />
+                </LinearLayout>
 
                 <TextView
-                    android:id="@+id/tvRepeat"
+                    android:id="@+id/tvRepeatValue"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="8dp"
-                    android:paddingHorizontal="8dp"
-                    android:text="@string/repeat"
-                    android:textColor="@color/color_text_secondary_dark"
-                    android:textSize="18sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/imgSelectedDate"
-                    app:layout_constraintStart_toEndOf="@+id/imgSelectedDate"
-                    app:layout_constraintTop_toTopOf="@+id/imgSelectedDate" />
-
-                <View
-                    android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:layout_weight="1" />
-
-                <androidx.appcompat.widget.SwitchCompat
-                    android:id="@+id/swRepeat"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:thumb="@drawable/custom_thumb"
-                    app:track="@drawable/custom_track" />
+                    android:layout_marginLeft="40dp"
+                    android:text="hour"
+                    android:textColor="@color/color_text_secondary_dark"
+                    android:textSize="18sp" />
             </LinearLayout>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:text="hour"
-                android:layout_marginLeft="40dp"
-                android:textColor="@color/color_text_secondary_dark"
-                android:textSize="18sp"
-                />
-        </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </RelativeLayout>

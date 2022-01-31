@@ -1,9 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/option_1"
-        android:title="hour" />
-    <item android:id="@+id/option_2"
-        android:title="day" />
-    <item android:id="@+id/option_3"
-        android:title="week" />
+    <item
+        android:id="@+id/option_hour"
+        android:icon="@drawable/bg_checkbox_grey"
+        android:title="@string/hour" />
+    <item
+        android:id="@+id/option_daily"
+        android:icon="@drawable/bg_checkbox_grey"
+        android:title="@string/daily" />
+    <item
+        android:id="@+id/option_weekly"
+        android:icon="@drawable/bg_checkbox_grey"
+        android:title="@string/weekly" />
+    <item
+        android:id="@+id/option_monthly"
+        android:icon="@drawable/bg_checkbox_grey"
+        android:title="@string/monthly" />
+    <item
+        android:id="@+id/option_yearly"
+        android:icon="@drawable/bg_checkbox_grey"
+        android:title="@string/yearly" />
 </menu>
