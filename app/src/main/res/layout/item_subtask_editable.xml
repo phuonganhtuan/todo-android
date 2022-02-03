@@ -15,12 +15,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
+    <EditText
         android:id="@+id/textSubTaskName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:padding="8dp"
+        android:autofillHints="@null"
+        android:background="@android:color/transparent"
+        android:hint="@string/subcate_task"
+        android:inputType="text"
+        android:paddingVertical="8dp"
+        android:paddingStart="0dp"
+        android:paddingEnd="8dp"
         android:textColor="@android:color/black"
         android:textSize="17sp"
         app:layout_constraintBottom_toBottomOf="@id/checkStatus"
@@ -29,11 +35,13 @@
         app:layout_constraintTop_toTopOf="@id/checkStatus"
         tools:text="Subtask title" />
 
-    <ImageView
+    <ImageButton
         android:id="@+id/imageMove"
-        android:layout_width="18dp"
+        android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_marginEnd="16dp"
+        android:background="@drawable/bg_greybg_rounded_8"
+        android:scaleType="centerCrop"
         android:src="@drawable/ic_moving"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -46,5 +54,5 @@
         android:background="@color/color_border_grey"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@id/textSubTaskName"/>
+        app:layout_constraintStart_toStartOf="@id/textSubTaskName" />
 </androidx.constraintlayout.widget.ConstraintLayout>

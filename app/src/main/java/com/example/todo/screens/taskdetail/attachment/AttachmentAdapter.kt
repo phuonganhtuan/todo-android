@@ -14,12 +14,14 @@ import javax.inject.Inject
 class AttachmentAdapter @Inject constructor() :
     ListAdapter<AttachmentEntity, AttachmentViewHolder>(AttachmentDiffCallback()) {
 
+    var onAttachmentRemoveListener: ((Int) -> Unit)? = null
+
     var isEditing = false
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AttachmentViewHolder {
         val itemViewBinding =
             ItemAttachmentBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return AttachmentViewHolder(itemViewBinding)
+        return AttachmentViewHolder(itemViewBinding, onAttachmentRemoveListener)
     }
 
     override fun onBindViewHolder(holder: AttachmentViewHolder, position: Int) {
@@ -27,8 +29,17 @@ class AttachmentAdapter @Inject constructor() :
     }
 }
 
-class AttachmentViewHolder(private val itemViewBinding: ItemAttachmentBinding) :
+class AttachmentViewHolder(
+    private val itemViewBinding: ItemAttachmentBinding,
+    private val onAttachmentRemoveListener: ((Int) -> Unit)?
+) :
     BaseViewHolder<AttachmentEntity>(itemViewBinding) {
+
+    init {
+        itemViewBinding.imageRemove.setOnClickListener {
+            onAttachmentRemoveListener?.let { it(absoluteAdapterPosition) }
+        }
+    }
 
     override fun displayData(entity: AttachmentEntity) {
 
@@ -40,4 +51,4 @@ class AttachmentViewHolder(private val itemViewBinding: ItemAttachmentBinding) :
     }
 }
 
-class AttachmentDiffCallback() : BaseDiffCallBack<AttachmentEntity>()
+class AttachmentDiffCallback : BaseDiffCallBack<AttachmentEntity>()

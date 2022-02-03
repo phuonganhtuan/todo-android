@@ -41,8 +41,6 @@ class SubTaskViewHolder(
 ) :
     BaseViewHolder<SubTaskEntity>(itemViewBinding) {
 
-    private var subTaskIndex: Int = 0
-
     init {
         itemViewBinding.editSubTask.boldWhenFocus()
         itemViewBinding.editSubTask.addTextChangedListener(object : TextWatcher {
@@ -66,6 +64,8 @@ class SubTaskViewHolder(
 }
 
 class SubTaskDiffCallback : BaseDiffCallBack<SubTaskEntity>() {
+
+    override fun areItemsTheSame(oldItem: SubTaskEntity, newItem: SubTaskEntity) = false
 
     override fun areContentsTheSame(oldItem: SubTaskEntity, newItem: SubTaskEntity): Boolean =
         oldItem.id == newItem.id && oldItem.isDone == newItem.isDone && oldItem.name == newItem.name

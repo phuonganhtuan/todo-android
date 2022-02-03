@@ -13,6 +13,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todo.R
 import com.example.todo.base.BaseFragment
@@ -21,12 +22,17 @@ import com.example.todo.databinding.FragmentTaskDetailBinding
 import com.example.todo.screens.newtask.category.OnCatInteractListener
 import com.example.todo.screens.newtask.category.SelectCategoryAdapter
 import com.example.todo.screens.taskdetail.attachment.AttachmentAdapter
+import com.example.todo.screens.taskdetail.subtasks.ItemMoveCallback
+import com.example.todo.screens.taskdetail.subtasks.OnSubTaskDetailInteract
+import com.example.todo.screens.taskdetail.subtasks.SubTaskDetailAdapter
+import com.example.todo.utils.boldWhenFocus
 import com.example.todo.utils.gone
 import com.example.todo.utils.helper.getCategoryColor
 import com.example.todo.utils.show
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
+
 
 @AndroidEntryPoint
 class TaskDetailFragment : BaseFragment<FragmentTaskDetailBinding>() {
@@ -44,6 +50,10 @@ class TaskDetailFragment : BaseFragment<FragmentTaskDetailBinding>() {
     @Inject
     lateinit var attachmentAdapter: AttachmentAdapter
 
+    private var listAnimator: RecyclerView.ItemAnimator? = null
+
+    var touchHelper: ItemTouchHelper? = null
+
     override fun inflateViewBinding(
         container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -59,14 +69,17 @@ class TaskDetailFragment : BaseFragment<FragmentTaskDetailBinding>() {
     private fun initViews() = with(viewBinding) {
         recyclerSubTasks.adapter = subTaskAdapter
         recyclerAttachment.adapter = attachmentAdapter
+        listAnimator = recyclerSubTasks.itemAnimator
+        recyclerSubTasks.itemAnimator = null
+        recyclerAttachment.itemAnimator = null
+        editNote.boldWhenFocus()
     }
 
     private fun setupEvents() = with(viewBinding) {
+        touchHelper = ItemTouchHelper(ItemMoveCallback(subTaskAdapter))
+        touchHelper?.attachToRecyclerView(recyclerSubTasks)
         textCategory.setOnClickListener {
             categoriesPopup?.showAsDropDown(it, 0, 12)
-        }
-        buttonNewSubTask.setOnClickListener {
-//            viewModel.addSubTask()
         }
         buttonAttachment.setOnClickListener {
             findNavController().navigate(R.id.toSelectAttachment)
@@ -81,6 +94,31 @@ class TaskDetailFragment : BaseFragment<FragmentTaskDetailBinding>() {
                 categoriesPopup?.dismiss()
             }
         })
+        attachmentAdapter.onAttachmentRemoveListener = {
+            viewModel.removeAttachment(it)
+        }
+        subTaskAdapter.setOnTaskListener(object : OnSubTaskDetailInteract {
+            override fun onStateChange(index: Int, state: Boolean) {
+                viewModel.updateSubTaskState(index, state)
+            }
+
+            override fun onTitleChanged(index: Int, title: String) {
+                viewModel.updateSubTaskTitle(index, title)
+            }
+
+            override fun startDrag(viewHolder: RecyclerView.ViewHolder) {
+                recyclerSubTasks.itemAnimator = listAnimator
+                touchHelper?.startDrag(viewHolder)
+            }
+
+            override fun endDrag() {
+                recyclerSubTasks.itemAnimator = null
+                viewModel.setSubTasks(subTaskAdapter.newOrders)
+            }
+        })
+        buttonNewSubTask.setOnClickListener {
+            viewModel.addSubTask()
+        }
     }
 
     private fun observeData() = with(viewModel) {
@@ -88,8 +126,8 @@ class TaskDetailFragment : BaseFragment<FragmentTaskDetailBinding>() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 task.collect {
                     viewBinding.apply {
-                        textTaskName.text = it.task.title
-                        editNote.setText("")
+                        textTaskName.setText(it.task.title)
+                        editNote.setText(it.detail.note)
                         if (it.category == null) {
                             textCategory.setTextColor(
                                 ContextCompat.getColor(
@@ -103,9 +141,22 @@ class TaskDetailFragment : BaseFragment<FragmentTaskDetailBinding>() {
                             textCategory.setTextColor(catColor)
                             textCategory.text = it.category?.name
                         }
-                        subTaskAdapter.submitList(it.subTasks)
-                        attachmentAdapter.submitList(it.attachments)
                     }
+                }
+            }
+        }
+        lifecycleScope.launchWhenStarted {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                attachments.collect {
+                    attachmentAdapter.submitList(it)
+                }
+            }
+        }
+        lifecycleScope.launchWhenStarted {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                subtasks.collect {
+                    subTaskAdapter.newOrders = it.toMutableList()
+                    subTaskAdapter.submitList(it)
                 }
             }
         }
@@ -157,6 +208,7 @@ class TaskDetailFragment : BaseFragment<FragmentTaskDetailBinding>() {
     private fun toViewMode() = with(viewBinding) {
         subTaskAdapter.isEditing = false
         attachmentAdapter.isEditing = false
+        textTaskName.isEnabled = false
         attachmentAdapter.notifyDataSetChanged()
         subTaskAdapter.notifyDataSetChanged()
         editNote.isEnabled = false
@@ -177,6 +229,7 @@ class TaskDetailFragment : BaseFragment<FragmentTaskDetailBinding>() {
     private fun toEditMode() = with(viewBinding) {
         subTaskAdapter.isEditing = true
         attachmentAdapter.isEditing = true
+        textTaskName.isEnabled = true
         attachmentAdapter.notifyDataSetChanged()
         subTaskAdapter.notifyDataSetChanged()
         editNote.background.setColorFilter(

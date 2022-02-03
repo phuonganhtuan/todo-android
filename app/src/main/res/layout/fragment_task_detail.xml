@@ -4,14 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_bg_main_grey"
-    android:animateLayoutChanges="true">
+    android:animateLayoutChanges="true"
+    android:background="@color/color_bg_main_grey">
 
-    <TextView
+    <EditText
         android:id="@+id/textTaskName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:autofillHints="@null"
+        android:background="@android:color/transparent"
         android:fontFamily="@font/nunito_extra_bold"
+        android:hint="@string/task_name"
+        android:inputType="textMultiLine"
         android:paddingHorizontal="16dp"
         android:paddingBottom="8dp"
         android:textColor="@color/black"
@@ -36,7 +40,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:animateLayoutChanges="true"
-            android:paddingBottom="56dp">
+            android:paddingBottom="130dp">
 
             <LinearLayout
                 android:id="@+id/layoutSubTask"
@@ -116,14 +120,14 @@
                 app:layout_constraintTop_toTopOf="@+id/imageAttachment" />
 
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerAttachment"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:id="@+id/recyclerAttachment"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:itemCount="3"
-                tools:listitem="@layout/item_attachment"
                 app:layout_constraintStart_toStartOf="@id/buttonAttachment"
-                app:layout_constraintTop_toBottomOf="@id/buttonAttachment"/>
+                app:layout_constraintTop_toBottomOf="@id/buttonAttachment"
+                tools:itemCount="3"
+                tools:listitem="@layout/item_attachment" />
 
             <TextView
                 android:id="@+id/textCategory"
