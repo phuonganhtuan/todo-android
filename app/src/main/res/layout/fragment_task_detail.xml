@@ -143,6 +143,16 @@
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="@id/recyclerAttachment"
                 app:layout_constraintTop_toBottomOf="@id/recyclerAttachment" />
+
+            <ImageView
+                android:id="@+id/imageDone"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:layout_marginTop="64dp"
+                android:src="@drawable/ic_mark_as_done"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textCategory" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

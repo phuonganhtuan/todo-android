@@ -33,4 +33,9 @@ class TaskLocalDataSourceImpl @Inject constructor(private val dao: TaskDao) : Ta
 
     override fun searchTaskByName(name: String) = dao.searchTaskByName(name)
     override fun getTaskInDay(dayString: String) = dao.getTaskInDay(dayString)
+
+    override suspend fun deleteAttachment(id: Int) = dao.deleteAttachment(id)
+    override suspend fun deleteSubtask(id: Int) = dao.deleteSubtask(id)
+    override suspend fun deleteTaskDetail(id: Int) = dao.deleteTaskDetail(id)
+    override suspend fun deleteTask(id: Int) = dao.deleteTask(id)
 }

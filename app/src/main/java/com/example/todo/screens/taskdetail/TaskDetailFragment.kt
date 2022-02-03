@@ -1,5 +1,6 @@
 package com.example.todo.screens.taskdetail
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.PorterDuff
 import android.os.Bundle
@@ -121,6 +122,7 @@ class TaskDetailFragment : BaseFragment<FragmentTaskDetailBinding>() {
         }
     }
 
+    @SuppressLint("UnsafeRepeatOnLifecycleDetector")
     private fun observeData() = with(viewModel) {
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -141,6 +143,7 @@ class TaskDetailFragment : BaseFragment<FragmentTaskDetailBinding>() {
                             textCategory.setTextColor(catColor)
                             textCategory.text = it.category?.name
                         }
+                        if (it.task.isDone) imageDone.show() else imageDone.gone()
                     }
                 }
             }

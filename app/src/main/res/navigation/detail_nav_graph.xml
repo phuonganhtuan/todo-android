@@ -22,6 +22,14 @@
         <action
             android:id="@+id/toCreateCat"
             app:destination="@id/AddCategoryFragment" />
+
+        <action
+            android:id="@+id/toDeleteTask"
+            app:destination="@id/DeleteTaskFragment"/>
+
+        <action
+            android:id="@+id/toBookmark"
+            app:destination="@id/BookmarkFragment"/>
     </fragment>
 
     <dialog
@@ -41,4 +49,16 @@
         android:name="com.example.todo.screens.newtask.category.CreateCategoryDialogFragment"
         android:label="@string/create_new_category_title"
         tools:layout="@layout/layout_create_category" />
+
+    <dialog
+        android:id="@+id/DeleteTaskFragment"
+        android:name="com.example.todo.screens.taskdetail.DeleteTaskDialogFragment"
+        android:label="@string/delete_repeat_task_reminder"
+        tools:layout="@layout/layout_delete_task"/>
+
+    <dialog
+        android:id="@+id/BookmarkFragment"
+        android:name="com.example.todo.screens.taskdetail.BookmarkDialogFragment"
+        android:label="@string/bookmark"
+        tools:layout="@layout/layout_bookmark"/>
 </navigation>

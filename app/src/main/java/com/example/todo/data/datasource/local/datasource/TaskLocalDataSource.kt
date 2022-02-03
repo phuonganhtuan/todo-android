@@ -30,4 +30,9 @@ interface TaskLocalDataSource {
 
     fun searchTaskByName(name: String): List<TaskEntity>
     fun getTaskInDay(dayString: String): List<TaskShort>
+
+    suspend fun deleteAttachment(id: Int)
+    suspend fun deleteSubtask(id: Int)
+    suspend fun deleteTaskDetail(id: Int)
+    suspend fun deleteTask(id: Int)
 }

@@ -2,10 +2,7 @@ package com.example.todo.screens.taskdetail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.todo.data.models.entity.AttachmentEntity
-import com.example.todo.data.models.entity.CategoryEntity
-import com.example.todo.data.models.entity.SubTaskEntity
-import com.example.todo.data.models.entity.Task
+import com.example.todo.data.models.entity.*
 import com.example.todo.data.repository.TaskRepository
 import com.example.todo.demo.bm5
 import com.example.todo.demo.cat1
@@ -27,6 +24,9 @@ class TaskDetailViewModel @Inject constructor(private val repository: TaskReposi
     ViewModel() {
 
     private var taskId = 0
+
+    val isRemoved: StateFlow<Boolean> get() = _isRemoved
+    private val _isRemoved = MutableStateFlow(false)
 
     val task: StateFlow<Task> get() = _task
     private val _task = MutableStateFlow(
@@ -65,6 +65,15 @@ class TaskDetailViewModel @Inject constructor(private val repository: TaskReposi
 
     fun toViewMode() {
         _isEditing.value = false
+    }
+
+    fun markAsDone() = viewModelScope.launch {
+        withContext(Dispatchers.IO) {
+            val task = _task.value.task.copy()
+            task.isDone = !task.isDone
+            repository.updateTask(task)
+            _task.value = repository.getTask(taskId)
+        }
     }
 
     fun initData(taskId: Int) = viewModelScope.launch {
@@ -132,6 +141,64 @@ class TaskDetailViewModel @Inject constructor(private val repository: TaskReposi
         withContext(Dispatchers.IO) {
             val entity = CategoryEntity(name = name)
             repository.addCategory(entity)
+        }
+    }
+
+    fun duplicateTask() = viewModelScope.launch {
+        withContext(Dispatchers.IO) {
+            val newTask = _task.value.copy()
+            val newTaskEntity = TaskEntity(
+                title = newTask.task.title,
+                categoryId = newTask.task.categoryId,
+                calendar = newTask.task.calendar,
+                dueDate = newTask.task.dueDate,
+                isDone = newTask.task.isDone,
+                isMarked = newTask.task.isMarked,
+                markId = newTask.task.markId,
+            )
+            val taskId = repository.addTask(newTaskEntity)
+            val newDetail = TaskDetailEntity(
+                taskId = taskId.toInt(),
+                note = newTask.detail.note,
+                isReminder = newTask.detail.isReminder,
+                isRepeat = newTask.detail.isRepeat,
+                reminderTime = newTask.detail.reminderTime,
+            )
+            repository.addTaskDetail(newDetail)
+            newTask.attachments.forEach { att ->
+                val newAtt = AttachmentEntity(
+                    name = att.name,
+                    extension = att.extension,
+                    path = att.path,
+                    taskId = taskId.toInt(),
+                    type = att.type,
+                )
+                repository.addAttachment(newAtt)
+            }
+            newTask.subTasks.forEach { sub ->
+                val newSubTask = SubTaskEntity(
+                    name = sub.name,
+                    taskId = taskId.toInt(),
+                    isDone = sub.isDone,
+                )
+                repository.addSubTasks(newSubTask)
+            }
+        }
+    }
+
+    fun deleteTask() = viewModelScope.launch {
+        withContext(Dispatchers.IO) {
+            task.value.apply {
+                attachments.forEach {
+                    repository.deleteAttachment(it.id)
+                }
+                subTasks.forEach {
+                    repository.deleteSubtask(it.id)
+                }
+                repository.deleteTaskDetail(taskDetail.id)
+                repository.deleteTask(task.id)
+                _isRemoved.value = true
+            }
         }
     }
 }
