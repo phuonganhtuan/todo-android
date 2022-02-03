@@ -12,19 +12,13 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.todo.base.BaseBottomSheetDialogFragment
-import com.example.todo.common.calendarview.TaskCalendarView
 import com.example.todo.databinding.LayoutAddCalendarBinding
-import com.example.todo.screens.newtask.NewTaskViewModel
 import com.example.todo.utils.DateTimeUtils
 import kotlinx.coroutines.flow.*
 import java.util.*
-import kotlin.math.log
-import android.R
 
-import android.widget.LinearLayout
 import android.widget.TextView
-import com.example.todo.screens.newtask.ReminderStatusEnum
-import com.example.todo.screens.newtask.ReminderTimeEnum
+import com.example.todo.screens.newtask.*
 
 
 class AddCalendarBottomSheetDialogFragment :
@@ -52,11 +46,11 @@ class AddCalendarBottomSheetDialogFragment :
     }
 
     private fun initView() = with(viewBinding) {
-        val slHour = when (viewModel.selectedHour.value > -1){
+        val slHour = when (viewModel.selectedHour.value > -1) {
             true -> viewModel.selectedHour.value
             else -> mCurrentTime.get(Calendar.HOUR_OF_DAY)
         }
-        val slMinute =  when (viewModel.selectedMinute.value > -1){
+        val slMinute = when (viewModel.selectedMinute.value > -1) {
             true -> viewModel.selectedMinute.value
             else -> mCurrentTime.get(Calendar.MINUTE)
         }
@@ -92,26 +86,12 @@ class AddCalendarBottomSheetDialogFragment :
         // Reminder
         imgReminder.setOnClickListener { onClickReminder(it) }
         tvReminder.setOnClickListener { onClickReminder(it) }
-        swReminder.setOnClickListener {
-            if (swReminder.isChecked){
-                swReminder.isChecked = false
-                onClickReminder(swReminder)
-            }else{
-                swReminder.isChecked = false
-            }
-        }
+        swReminder.setOnClickListener { onCheckChangeReminder() }
 
         // Repeat
         imgRepeat.setOnClickListener { onClickRepeat(it) }
         tvRepeat.setOnClickListener { onClickRepeat(it) }
-        swRepeat.setOnClickListener {
-            if (swRepeat.isChecked){
-                swRepeat.isChecked = false
-                onClickRepeat(swRepeat)
-            }else{
-                swRepeat.isChecked = false
-            }
-        }
+        swRepeat.setOnClickListener { onCheckChangeRepeat() }
     }
 
     private fun observeData() = with(viewModel) {
@@ -123,45 +103,73 @@ class AddCalendarBottomSheetDialogFragment :
             }
         }
         lifecycleScope.launchWhenStarted {
-            repeatOnLifecycle(Lifecycle.State.STARTED){
-                selectedHour.filter { it > -1 }.zip(selectedMinute.filter { it > -1 }) { hour, minute ->
-                    val hourValue = when (hour > 9){
-                        true -> "$hour"
-                        else -> "0$hour"
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                selectedHour.filter { it > -1 }
+                    .zip(selectedMinute.filter { it > -1 }) { hour, minute ->
+                        val hourValue = when (hour > 9) {
+                            true -> "$hour"
+                            else -> "0$hour"
+                        }
+                        val minuteValue = when (minute > 9) {
+                            true -> "$minute"
+                            else -> ")$minute"
+                        }
+                        "$hourValue:$minuteValue"
+                    }.collect {
+                        Log.e("observeData: ", it)
+                        viewBinding.tvAddTime.setText(it)
+                        viewBinding.tvAddTime.setTextColor(Color.BLACK)
                     }
-                    val minuteValue = when(minute > 9){
-                        true -> "$minute"
-                        else -> ")$minute"
+            }
+        }
+
+        lifecycleScope.launchWhenStarted {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.selectedReminderTime.filter { it != ReminderTimeEnum.NONE && viewModel.isCheckedReminder.value }
+                    .collect {
+                        viewBinding.tvReminderValue.setText(resources.getString(it.getStringid()))
+                        viewBinding.tvReminderValue.setTextColor(Color.BLACK)
+                        val layout: TextView = viewBinding.tvReminderValue
+                        val params: ViewGroup.LayoutParams = layout.layoutParams
+                        params.height = 100
+                        viewBinding.tvReminderValue.layoutParams = params
                     }
-                    "$hourValue:$minuteValue"
-                }.collect {
-                    Log.e("observeData: ", it)
-                    viewBinding.tvAddTime.setText(it)
-                    viewBinding.tvAddTime.setTextColor(Color.BLACK)
+            }
+        }
+
+        lifecycleScope.launchWhenStarted {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.isCheckedReminder.collect {
+                    viewBinding.swReminder.isChecked = it
                 }
             }
         }
 
         lifecycleScope.launchWhenStarted {
-            repeatOnLifecycle(Lifecycle.State.STARTED){
-                viewModel.reminderTimeMinuteBefore.filter { it != ReminderTimeEnum.NONE }.collect {
-                    viewBinding.tvReminderValue.setText(resources.getString(it.getStringid()))
-                    viewBinding.tvReminderValue.setTextColor(Color.BLACK)
-                    val layout: TextView = viewBinding.tvReminderValue
-                    val params: ViewGroup.LayoutParams = layout.layoutParams
-                    params.height = 100
-                    viewBinding.tvReminderValue.layoutParams = params
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.selectedRepeatAt.filter { it != RepeatAtEnum.NONE && viewModel.isCheckedRepeat.value }
+                    .collect {
+                        viewBinding.tvRepeatValue.setText(resources.getString(it.getStringid()))
+                        viewBinding.tvRepeatValue.setTextColor(Color.BLACK)
+                        val layout: TextView = viewBinding.tvRepeatValue
+                        val params: ViewGroup.LayoutParams = layout.layoutParams
+                        params.height = 100
+                        viewBinding.tvRepeatValue.layoutParams = params
+                    }
+            }
+        }
 
-                    viewBinding.swReminder.isChecked = true
-                    viewModel.reminderStatus.value = ReminderStatusEnum.ON
+        lifecycleScope.launchWhenStarted {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.isCheckedRepeat.collect {
+                    viewBinding.swRepeat.isChecked = it
                 }
             }
         }
     }
 
     private fun onDateSelected(date: Date) = with(viewBinding) {
-        viewModel.selectedDate.value = date
-
+        viewModel.selectDate(date)
     }
 
     private fun onClickAddTime() {
@@ -169,21 +177,36 @@ class AddCalendarBottomSheetDialogFragment :
     }
 
     private fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) = with(viewBinding) {
-        viewModel.selectedHour.value = hourOfDay
-        viewModel.selectedMinute.value = minute
+        viewModel.selectHourAndMinute(hourOfDay, minute)
+    }
+
+    private fun onCheckChangeReminder() = with(viewBinding) {
+        if (swReminder.isChecked) {
+            viewModel.onCheckChangeReminder(false)
+            onClickReminder(swReminder)
+        } else {
+            viewModel.resetReminderDefault()
+        }
     }
 
     private fun onClickReminder(view: View) {
-        if(mSetReminderDialog.isAdded())
-        {
+        if (mSetReminderDialog.isAdded()) {
             return; //or return false/true, based on where you are calling from
         }
         mSetReminderDialog.show(childFragmentManager, "Open Reminder Dialog")
     }
 
+    private fun onCheckChangeRepeat() = with(viewBinding) {
+        if (swRepeat.isChecked) {
+            viewModel.onCheckChangeRepeat(false)
+            onClickRepeat(swRepeat)
+        } else {
+            viewModel.resetRepeatDefaul()
+        }
+    }
+
     private fun onClickRepeat(view: View) {
-        if(mSetRepeatDialog.isAdded())
-        {
+        if (mSetRepeatDialog.isAdded()) {
             return; //or return false/true, based on where you are calling from
         }
         mSetRepeatDialog.show(childFragmentManager, "Open Repeat Dialog")

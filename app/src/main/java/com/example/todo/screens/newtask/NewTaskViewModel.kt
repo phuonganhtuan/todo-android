@@ -18,49 +18,51 @@ import java.util.*
 import javax.inject.Inject
 import kotlin.random.Random
 
-enum class ReminderStatusEnum{
-    OFF,
-    ON
+
+enum class ReminderTypeEnum {
+    NOTIFICATION {
+        override fun getStringid(): Int = R.string.notification
+    },
+    ALARM {
+        override fun getStringid(): Int = R.string.alarm
+    };
+
+    abstract fun getStringid(): Int
 }
 
-enum class ReminderTypeEnum{
-    NOTIFICATION,
-    ALARM
-}
-
-enum class ReminderTimeEnum{
+enum class ReminderTimeEnum {
     NONE {
-        override fun getStringid(): Int  = -1
+        override fun getStringid(): Int = -1
     },
     SAME_DUE_DATE {
         override fun getStringid(): Int =
             R.string.same_with_due_date
     },
-    FIVE_MINUTES_BEFORE{
+    FIVE_MINUTES_BEFORE {
         override fun getStringid(): Int =
             R.string.five_minutes_before
     },
-    TEN_MINUTES_BEFORE{
+    TEN_MINUTES_BEFORE {
         override fun getStringid(): Int =
             R.string.ten_minutes_before
     },
-    FIFTEEN_MINUTES_BEFORE{
+    FIFTEEN_MINUTES_BEFORE {
         override fun getStringid(): Int =
             R.string.fifteen_minutes_before
     },
-    THIRTY_MINUTES_BEFORE{
+    THIRTY_MINUTES_BEFORE {
         override fun getStringid(): Int =
             R.string.thirty_minutes_before
     },
-    ONE_DAY_BEFORE{
+    ONE_DAY_BEFORE {
         override fun getStringid(): Int =
             R.string.one_day_before
     },
-    TWO_DAYS_BEFORE{
+    TWO_DAYS_BEFORE {
         override fun getStringid(): Int =
             R.string.two_days_before
     },
-    CUSTOM_DAY_BEFORE{
+    CUSTOM_DAY_BEFORE {
         override fun getStringid(): Int =
             R.string.set_reminder_time
     };
@@ -68,9 +70,27 @@ enum class ReminderTimeEnum{
     abstract fun getStringid(): Int
 }
 
-enum class ReminderScreenLockEnum{
-    OFF,
-    ON
+enum class RepeatAtEnum {
+    NONE {
+        override fun getStringid(): Int = -1
+    },
+    HOUR {
+        override fun getStringid(): Int = R.string.hour
+    },
+    DAILY {
+        override fun getStringid(): Int = R.string.daily
+    },
+    WEEKLY {
+        override fun getStringid(): Int = R.string.weekly
+    },
+    MONTHLY {
+        override fun getStringid(): Int = R.string.monthly
+    },
+    YEARLY {
+        override fun getStringid(): Int = R.string.yearly
+    };
+
+    abstract fun getStringid(): Int
 }
 
 @HiltViewModel
@@ -81,14 +101,32 @@ class NewTaskViewModel @Inject constructor(private val repository: TaskRepositor
     val canAddSubTask: StateFlow<Boolean> get() = _canAddSubTask
     private val _canAddSubTask = MutableStateFlow(false)
 
-    val selectedDate = MutableStateFlow(Calendar.getInstance().time)
-    val selectedHour = MutableStateFlow(-1)
-    val selectedMinute = MutableStateFlow(-1)
+    val selectedDate: StateFlow<Date> get() = _selectedDate
+    private val _selectedDate = MutableStateFlow(Calendar.getInstance().time)
 
-    val reminderStatus = MutableStateFlow(ReminderStatusEnum.OFF)
-    val reminderTimeMinuteBefore = MutableStateFlow(ReminderTimeEnum.NONE)
-    val reminderType = MutableStateFlow(ReminderTypeEnum.NOTIFICATION)
-    val reminderScreenLock = MutableStateFlow(ReminderScreenLockEnum.OFF)
+    val selectedHour: StateFlow<Int> get() = _selectedHour
+    private val _selectedHour = MutableStateFlow(-1)
+
+    val selectedMinute: StateFlow<Int> get() = _selectedMinute
+    private val _selectedMinute = MutableStateFlow(-1)
+
+    val isCheckedReminder: StateFlow<Boolean> get() = _isCheckedReminder
+    private val _isCheckedReminder = MutableStateFlow(false)
+
+    val selectedReminderTime: StateFlow<ReminderTimeEnum> get() = _selectedReminderTime
+    private val _selectedReminderTime = MutableStateFlow(ReminderTimeEnum.FIVE_MINUTES_BEFORE)
+
+    val selectedReminderType: StateFlow<ReminderTypeEnum> get() = _selectedReminderType
+    private val _selectedReminderType = MutableStateFlow(ReminderTypeEnum.NOTIFICATION)
+
+    val selectedReminderScreenLock: StateFlow<Boolean> get() = _selectedReminderScreenLock
+    private val _selectedReminderScreenLock = MutableStateFlow(false)
+
+    val isCheckedRepeat: StateFlow<Boolean> get() = _isCheckedRepeat
+    private val _isCheckedRepeat = MutableStateFlow(false)
+
+    val selectedRepeatAt: StateFlow<RepeatAtEnum> get() = _selectedRepeatAt
+    private val _selectedRepeatAt = MutableStateFlow(RepeatAtEnum.HOUR)
 
     val categories: StateFlow<List<CategoryEntity>> get() = _categories
     private val _categories = repository
@@ -140,5 +178,94 @@ class NewTaskViewModel @Inject constructor(private val repository: TaskRepositor
             val entity = CategoryEntity(name = name)
             repository.addCategory(entity)
         }
+    }
+
+    /**
+     * Select date
+     */
+    fun selectDate(date: Date) {
+        _selectedDate.value = date
+    }
+
+    /**
+     * Select Hour
+     */
+    fun selectHour(hour: Int) {
+        _selectedHour.value = hour
+    }
+
+    /**
+     * Select minute
+     */
+    fun selectMinute(minute: Int) {
+        _selectedMinute.value = minute
+    }
+
+    /**
+     * select hour and minute
+     */
+    fun selectHourAndMinute(hour: Int, minute: Int) {
+        selectHour(hour)
+        selectMinute(minute)
+    }
+
+    /**
+     * on/off Reminder switch
+     */
+    fun onCheckChangeReminder(checked: Boolean = false) {
+        _isCheckedReminder.value = checked
+    }
+
+    /**
+     * select reminder at
+     */
+    fun selectReminderAt(reminderTime: ReminderTimeEnum = ReminderTimeEnum.NONE) {
+        _selectedReminderTime.value = reminderTime
+    }
+
+    /**
+     * select reminder type
+     */
+    fun selectReminderType(reminderType: ReminderTypeEnum = ReminderTypeEnum.NOTIFICATION) {
+        _selectedReminderType.value = reminderType
+    }
+
+    /**
+     * select reminder screenlock
+     */
+    fun selectReminderScreenlock(isAllowScreenLock: Boolean = false) {
+        _selectedReminderScreenLock.value = isAllowScreenLock
+    }
+
+    /**
+     * reset reminder default
+     */
+    fun resetReminderDefault(){
+        _isCheckedReminder.value = false
+        _selectedReminderTime.value = ReminderTimeEnum.FIVE_MINUTES_BEFORE
+        _selectedReminderType.value = ReminderTypeEnum.NOTIFICATION
+        _selectedReminderScreenLock.value = false
+    }
+
+
+    /**
+     * on/off Reminder switch
+     */
+    fun onCheckChangeRepeat(checked: Boolean = false) {
+        _isCheckedRepeat.value = checked
+    }
+
+    /**
+     * select repeat at
+     */
+    fun selectRepeatAt(repeatAt: RepeatAtEnum = RepeatAtEnum.NONE) {
+        _selectedRepeatAt.value = repeatAt
+    }
+
+    /**
+     * reset Repeat
+     */
+    fun resetRepeatDefaul(){
+        _selectedRepeatAt.value = RepeatAtEnum.HOUR
     }
 }

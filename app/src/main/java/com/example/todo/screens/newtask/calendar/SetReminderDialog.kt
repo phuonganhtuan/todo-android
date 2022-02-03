@@ -8,14 +8,18 @@ import android.view.ViewGroup
 import android.widget.PopupMenu
 import androidx.annotation.MenuRes
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.example.todo.R
 import com.example.todo.base.BaseDialogFragment
 import com.example.todo.databinding.FragmentSetReminderBinding
 import com.example.todo.screens.newtask.NewTaskViewModel
 import com.example.todo.screens.newtask.ReminderTypeEnum
-import com.example.todo.screens.newtask.ReminderScreenLockEnum
 import com.example.todo.screens.newtask.ReminderTimeEnum
+import com.example.todo.utils.DateTimeUtils
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class SetReminderDialog : BaseDialogFragment<FragmentSetReminderBinding>() {
@@ -37,9 +41,10 @@ class SetReminderDialog : BaseDialogFragment<FragmentSetReminderBinding>() {
         super.onViewCreated(view, savedInstanceState)
         initData()
         setEvents()
+        observeData()
     }
 
-    private fun initData() = with(viewBinding){
+    private fun initData() = with(viewBinding) {
 
     }
 
@@ -54,47 +59,60 @@ class SetReminderDialog : BaseDialogFragment<FragmentSetReminderBinding>() {
         btnDone.setOnClickListener { onClickDone(it) }
     }
 
+    private fun observeData() = with(viewModel) {
+        lifecycleScope.launchWhenStarted {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                selectedReminderTime.collect {
+                    viewBinding.tvReminderAtValue.setText(resources.getString(it.getStringid()))
+                }
+            }
+        }
+
+        lifecycleScope.launchWhenStarted {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                selectedReminderType.collect {
+                    viewBinding.tvReminderTypeValue.setText(resources.getString(it.getStringid()))
+                }
+            }
+        }
+
+        lifecycleScope.launchWhenStarted {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                selectedReminderScreenLock.collect {
+                    val reminderScreenLockTxt =
+                        if (it) resources.getString(R.string.on) else resources.getString(R.string.off)
+                    viewBinding.tvScreenLockValue.setText(reminderScreenLockTxt)
+                }
+            }
+        }
+    }
+
     private fun onClickCancel(view: View) {
         dismiss()
     }
 
     private fun onClickDone(view: View) {
-        when (selReminderItem?.itemId){
-            R.id.option_same_with_due_date -> {
-                viewModel.reminderTimeMinuteBefore.value = ReminderTimeEnum.SAME_DUE_DATE
-            }
-            R.id.option_5_minutes_before -> {
-                viewModel.reminderTimeMinuteBefore.value = ReminderTimeEnum.FIVE_MINUTES_BEFORE
-            }
-            R.id.option_10_minutes_before -> {
-                viewModel.reminderTimeMinuteBefore.value = ReminderTimeEnum.TEN_MINUTES_BEFORE
-            }
-            R.id.option_15_minutes_before -> {
-                viewModel.reminderTimeMinuteBefore.value = ReminderTimeEnum.FIFTEEN_MINUTES_BEFORE
-            }
-            R.id.option_30_minutes_before -> {
-                viewModel.reminderTimeMinuteBefore.value = ReminderTimeEnum.THIRTY_MINUTES_BEFORE
-            }
-            R.id.option_1_day_before -> {
-                viewModel.reminderTimeMinuteBefore.value = ReminderTimeEnum.ONE_DAY_BEFORE
-            }
-            R.id.option_2_day_before -> {
-                viewModel.reminderTimeMinuteBefore.value = ReminderTimeEnum.TWO_DAYS_BEFORE
-            }
+        viewModel.onCheckChangeReminder(true)
+        when (selReminderItem?.itemId) {
+            R.id.option_same_with_due_date -> viewModel.selectReminderAt(ReminderTimeEnum.SAME_DUE_DATE)
+            R.id.option_5_minutes_before -> viewModel.selectReminderAt(ReminderTimeEnum.FIVE_MINUTES_BEFORE)
+            R.id.option_10_minutes_before -> viewModel.selectReminderAt(ReminderTimeEnum.TEN_MINUTES_BEFORE)
+            R.id.option_15_minutes_before -> viewModel.selectReminderAt(ReminderTimeEnum.FIFTEEN_MINUTES_BEFORE)
+            R.id.option_30_minutes_before -> viewModel.selectReminderAt(ReminderTimeEnum.THIRTY_MINUTES_BEFORE)
+            R.id.option_1_day_before -> viewModel.selectReminderAt(ReminderTimeEnum.ONE_DAY_BEFORE)
+            R.id.option_2_day_before -> viewModel.selectReminderAt(ReminderTimeEnum.TWO_DAYS_BEFORE)
         }
 
-        when (selReminerType?.itemId){
-            R.id.option_notification -> viewModel.reminderType.value = ReminderTypeEnum.NOTIFICATION
-            R.id.option_alarm -> viewModel.reminderType.value = ReminderTypeEnum.ALARM
-            else -> {}
+        when (selReminerType?.itemId) {
+            R.id.option_notification -> viewModel.selectReminderType(ReminderTypeEnum.NOTIFICATION)
+            R.id.option_alarm -> viewModel.selectReminderType(ReminderTypeEnum.ALARM)
         }
 
-        when (selReminderScreenLock?.itemId){
-            R.id.option_off -> viewModel.reminderScreenLock.value = ReminderScreenLockEnum.OFF
-            R.id.option_on -> viewModel.reminderScreenLock.value = ReminderScreenLockEnum.ON
-            else -> {}
+        when (selReminderScreenLock?.itemId) {
+            R.id.option_off -> viewModel.selectReminderScreenlock(false)
+            R.id.option_on -> viewModel.selectReminderScreenlock(true)
         }
-
+        viewModel.onCheckChangeReminder(true)
         dismiss()
     }
 
