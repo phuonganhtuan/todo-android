@@ -49,4 +49,6 @@ class TaskRepositoryImpl @Inject constructor(
     override suspend fun deleteSubtask(id: Int) = taskDataSource.deleteSubtask(id)
     override suspend fun deleteTaskDetail(id: Int) = taskDataSource.deleteTaskDetail(id)
     override suspend fun deleteTask(id: Int) = taskDataSource.deleteTask(id)
+
+    override fun getBookmarks() = taskDataSource.getBookmarks()
 }

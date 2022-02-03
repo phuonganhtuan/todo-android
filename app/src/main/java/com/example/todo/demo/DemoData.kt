@@ -25,34 +25,122 @@ val cat4 = CategoryEntity(
     color = "#000000"
 )
 
-val bm1 = BookmarkEntity(
-    type = BookmarkType.NUMBER.name,
-    number = "3",
-    color = "",
-)
-
-val bm2 = BookmarkEntity(
-    type = BookmarkType.NUMBER.name,
-    number = "1",
-    color = "",
-)
-
-val bm3 = BookmarkEntity(
-    type = BookmarkType.FLAG3.name,
-    number = "",
-    color = BookMarkColor.ORANGE.name,
-)
-
-val bm4 = BookmarkEntity(
-    type = BookmarkType.FLAG2.name,
-    number = "",
-    color = BookMarkColor.BLUE.name,
-)
-
-val bm5 = BookmarkEntity(
-    type = BookmarkType.FLAG1.name,
-    number = "",
-    color = BookMarkColor.GREEN.name,
+val bms = listOf(
+    BookmarkEntity(
+        type = BookmarkType.FLAG1.name,
+        number = "",
+        color = BookMarkColor.GREEN.name,
+    ),
+    BookmarkEntity(
+        type = BookmarkType.FLAG1.name,
+        number = "",
+        color = BookMarkColor.BLACK.name,
+    ),
+    BookmarkEntity(
+        type = BookmarkType.FLAG1.name,
+        number = "",
+        color = BookMarkColor.RED.name,
+    ),
+    BookmarkEntity(
+        type = BookmarkType.FLAG1.name,
+        number = "",
+        color = BookMarkColor.ORANGE.name,
+    ),
+    BookmarkEntity(
+        type = BookmarkType.FLAG1.name,
+        number = "",
+        color = BookMarkColor.BLUE.name,
+    ),
+    BookmarkEntity(
+        type = BookmarkType.FLAG1.name,
+        number = "",
+        color = BookMarkColor.PURPLE.name,
+    ),
+    BookmarkEntity(
+        type = BookmarkType.FLAG2.name,
+        number = "",
+        color = BookMarkColor.GREEN.name,
+    ),
+    BookmarkEntity(
+        type = BookmarkType.FLAG2.name,
+        number = "",
+        color = BookMarkColor.BLACK.name,
+    ),
+    BookmarkEntity(
+        type = BookmarkType.FLAG2.name,
+        number = "",
+        color = BookMarkColor.RED.name,
+    ),
+    BookmarkEntity(
+        type = BookmarkType.FLAG2.name,
+        number = "",
+        color = BookMarkColor.ORANGE.name,
+    ),
+    BookmarkEntity(
+        type = BookmarkType.FLAG2.name,
+        number = "",
+        color = BookMarkColor.BLUE.name,
+    ),
+    BookmarkEntity(
+        type = BookmarkType.FLAG2.name,
+        number = "",
+        color = BookMarkColor.PURPLE.name,
+    ),
+    BookmarkEntity(
+        type = BookmarkType.FLAG3.name,
+        number = "",
+        color = BookMarkColor.GREEN.name,
+    ),
+    BookmarkEntity(
+        type = BookmarkType.FLAG3.name,
+        number = "",
+        color = BookMarkColor.BLACK.name,
+    ),
+    BookmarkEntity(
+        type = BookmarkType.FLAG3.name,
+        number = "",
+        color = BookMarkColor.RED.name,
+    ),
+    BookmarkEntity(
+        type = BookmarkType.FLAG3.name,
+        number = "",
+        color = BookMarkColor.ORANGE.name,
+    ),
+    BookmarkEntity(
+        type = BookmarkType.FLAG3.name,
+        number = "",
+        color = BookMarkColor.BLUE.name,
+    ),
+    BookmarkEntity(
+        type = BookmarkType.FLAG3.name,
+        number = "",
+        color = BookMarkColor.PURPLE.name,
+    ),
+    BookmarkEntity(
+        type = BookmarkType.NUMBER.name,
+        number = "1",
+        color = BookMarkColor.GREEN.name,
+    ),
+    BookmarkEntity(
+        type = BookmarkType.NUMBER.name,
+        number = "2",
+        color = BookMarkColor.GREEN.name,
+    ),
+    BookmarkEntity(
+        type = BookmarkType.NUMBER.name,
+        number = "3",
+        color = BookMarkColor.GREEN.name,
+    ),
+    BookmarkEntity(
+        type = BookmarkType.NUMBER.name,
+        number = "4",
+        color = BookMarkColor.GREEN.name,
+    ),
+    BookmarkEntity(
+        type = BookmarkType.NUMBER.name,
+        number = "5",
+        color = BookMarkColor.GREEN.name,
+    ),
 )
 
 val taskDetail = TaskDetailEntity(
@@ -225,23 +313,17 @@ suspend fun createDemoData(repository: TaskRepository) {
     Log.d("demo_data", "cat with id $cat4Id created!")
 
     // Add bookmarks
-    val bm1Id = repository.addBookmark(bm1)
-    val bm2Id = repository.addBookmark(bm2)
-    val bm3Id = repository.addBookmark(bm3)
-    val bm4Id = repository.addBookmark(bm4)
-    val bm5Id = repository.addBookmark(bm5)
+    val bookmarkIds = mutableListOf<Long>()
+    bms.forEach {
+        val id = repository.addBookmark(it)
+        Log.d("demo_data", "bookmark with id $id created!")
+        bookmarkIds.add(id)
+    }
 
-    Log.d("demo_data", "bookmark with id $bm1Id created!")
-    Log.d("demo_data", "bookmark with id $bm2Id created!")
-    Log.d("demo_data", "bookmark with id $bm3Id created!")
-    Log.d("demo_data", "bookmark with id $bm4Id created!")
-    Log.d("demo_data", "bookmark with id $bm5Id created!")
-
-    val bmIds = listOf(bm1Id, bm2Id, bm3Id, bm4Id, bm5Id)
     val catIds = listOf(cat1Id, cat2Id, cat3Id, cat4Id)
 
     tasks.forEach {
-        it.markId = bmIds.random().toInt()
+        it.markId = bookmarkIds.random().toInt()
         it.categoryId = catIds.random().toInt()
 
         // Add task

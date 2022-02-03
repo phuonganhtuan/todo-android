@@ -46,4 +46,8 @@
     <string name="bookmark">Bookmark</string>
     <string name="delete_repeat_task_reminder">Delete repeat task reminder</string>
     <string name="all_future_occurrences_will_be_deleted">All future occurrences will be deleted.</string>
+    <string name="duplicated">Duplicated.</string>
+    <string name="flag">Flag</string>
+    <string name="number">Number</string>
+    <string name="marked">Marked.</string>
 </resources>

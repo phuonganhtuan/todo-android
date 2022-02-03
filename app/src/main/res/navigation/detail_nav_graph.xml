@@ -58,7 +58,7 @@
 
     <dialog
         android:id="@+id/BookmarkFragment"
-        android:name="com.example.todo.screens.taskdetail.BookmarkDialogFragment"
+        android:name="com.example.todo.screens.taskdetail.bookmark.BookmarkDialogFragment"
         android:label="@string/bookmark"
         tools:layout="@layout/layout_bookmark"/>
 </navigation>

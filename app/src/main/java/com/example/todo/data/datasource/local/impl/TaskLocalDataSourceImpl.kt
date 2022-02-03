@@ -38,4 +38,6 @@ class TaskLocalDataSourceImpl @Inject constructor(private val dao: TaskDao) : Ta
     override suspend fun deleteSubtask(id: Int) = dao.deleteSubtask(id)
     override suspend fun deleteTaskDetail(id: Int) = dao.deleteTaskDetail(id)
     override suspend fun deleteTask(id: Int) = dao.deleteTask(id)
+
+    override fun getBookmarks() = dao.getBookmarks()
 }

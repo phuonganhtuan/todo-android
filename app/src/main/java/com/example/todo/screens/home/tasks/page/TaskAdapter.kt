@@ -9,10 +9,13 @@ import androidx.recyclerview.widget.ListAdapter
 import com.example.todo.R
 import com.example.todo.base.BaseDiffCallBack
 import com.example.todo.base.BaseViewHolder
-import com.example.todo.data.models.entity.*
+import com.example.todo.data.models.entity.BookmarkEntity
+import com.example.todo.data.models.entity.BookmarkType
+import com.example.todo.data.models.entity.TaskShort
 import com.example.todo.databinding.ItemTaskBinding
 import com.example.todo.utils.DateTimeUtils
 import com.example.todo.utils.gone
+import com.example.todo.utils.helper.getBookmarkIcon
 import com.example.todo.utils.helper.getCategoryColor
 import com.example.todo.utils.show
 import javax.inject.Inject
@@ -96,7 +99,7 @@ class TaskViewHolder(
         }
         entity.bookmark?.let {
             val markIcon = if (entity.task.isMarked) {
-                getMarkIcon(it)
+                getBookmarkIcon(itemView.context, it)
             } else {
                 getUnmarkIcon(it)
             }
@@ -118,56 +121,6 @@ class TaskViewHolder(
                     "4" -> R.drawable.ic_num4_outline
                     "5" -> R.drawable.ic_num5_outline
                     else -> return null
-                }
-            }
-            else -> return null
-        }
-        return ContextCompat.getDrawable(itemView.context, iconId)
-    }
-
-    private fun getMarkIcon(bookmark: BookmarkEntity): Drawable? {
-        val iconId = when (bookmark.type) {
-            BookmarkType.FLAG1.name -> {
-                when (bookmark.color) {
-                    BookMarkColor.GREEN.name -> R.drawable.ic_flag1_green_fill
-                    BookMarkColor.BLACK.name -> R.drawable.ic_flag1_grey_fill
-                    BookMarkColor.RED.name -> R.drawable.ic_flag1_red_fill
-                    BookMarkColor.ORANGE.name -> R.drawable.ic_flag1_orange_fill
-                    BookMarkColor.BLUE.name -> R.drawable.ic_flag1_blue_fill
-                    BookMarkColor.PURPLE.name -> R.drawable.ic_flag1_purple_fill
-                    else -> R.drawable.ic_flag1_green_fill
-                }
-            }
-            BookmarkType.FLAG2.name -> {
-                when (bookmark.color) {
-                    BookMarkColor.GREEN.name -> R.drawable.ic_flag2_green_fill
-                    BookMarkColor.BLACK.name -> R.drawable.ic_flag2_grey_fill
-                    BookMarkColor.RED.name -> R.drawable.ic_flag2_red_fill
-                    BookMarkColor.ORANGE.name -> R.drawable.ic_flag2_orange_fill
-                    BookMarkColor.BLUE.name -> R.drawable.ic_flag2_blue_fill
-                    BookMarkColor.PURPLE.name -> R.drawable.ic_flag2_purple_fill
-                    else -> R.drawable.ic_flag1_green_fill
-                }
-            }
-            BookmarkType.FLAG3.name -> {
-                when (bookmark.color) {
-                    BookMarkColor.GREEN.name -> R.drawable.ic_flag3_green_fill
-                    BookMarkColor.BLACK.name -> R.drawable.ic_flag3_grey_fill
-                    BookMarkColor.RED.name -> R.drawable.ic_flag3_red_fill
-                    BookMarkColor.ORANGE.name -> R.drawable.ic_flag3_orange_fill
-                    BookMarkColor.BLUE.name -> R.drawable.ic_flag3_blue_fill
-                    BookMarkColor.PURPLE.name -> R.drawable.ic_flag3_purple_fill
-                    else -> R.drawable.ic_flag1_green_fill
-                }
-            }
-            BookmarkType.NUMBER.name -> {
-                when (bookmark.number) {
-                    "1" -> R.drawable.ic_num1_fill
-                    "2" -> R.drawable.ic_num2_fill
-                    "3" -> R.drawable.ic_num3_fill
-                    "4" -> R.drawable.ic_num4_fill
-                    "5" -> R.drawable.ic_num5_fill
-                    else -> R.drawable.ic_num1_fill
                 }
             }
             else -> return null

@@ -35,4 +35,6 @@ interface TaskLocalDataSource {
     suspend fun deleteSubtask(id: Int)
     suspend fun deleteTaskDetail(id: Int)
     suspend fun deleteTask(id: Int)
+
+    fun getBookmarks(): Flow<List<BookmarkEntity>>
 }

@@ -102,7 +102,7 @@ class TaskDetailActivity : BaseActivity<ActivityTaskDetailBinding>() {
 
     private fun duplicateTask() {
         viewModel.duplicateTask()
-        showToastMessage("Duplicated.")
+        showToastMessage(getString(R.string.duplicated))
     }
 
     private fun bookmark() {

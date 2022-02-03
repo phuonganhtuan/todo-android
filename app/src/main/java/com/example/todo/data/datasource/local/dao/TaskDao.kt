@@ -88,4 +88,7 @@ interface TaskDao {
 
     @Query("delete from TaskEntity where id = :id")
     suspend fun deleteTask(id: Int)
+
+    @Query("select * from BookmarkEntity")
+    fun getBookmarks(): Flow<List<BookmarkEntity>>
 }

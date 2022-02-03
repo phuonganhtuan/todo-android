@@ -4,16 +4,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.todo.data.models.entity.*
 import com.example.todo.data.repository.TaskRepository
-import com.example.todo.demo.bm5
+import com.example.todo.demo.bms
 import com.example.todo.demo.cat1
 import com.example.todo.demo.taskDetail
 import com.example.todo.demo.tasks
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -34,9 +31,17 @@ class TaskDetailViewModel @Inject constructor(private val repository: TaskReposi
             task = tasks[0],
             category = cat1,
             detail = taskDetail,
-            bookmark = bm5
+            bookmark = bms[0]
         )
     )
+
+    var selectedBookmark: BookmarkEntity? = null
+
+    val bookmarks: StateFlow<List<BookmarkEntity>>
+        get() = _bookmarks
+
+    private val _bookmarks = repository.getBookmarks()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), emptyList())
 
     val attachments: StateFlow<List<AttachmentEntity>> get() = _attachments
     private val _attachments = MutableStateFlow(emptyList<AttachmentEntity>())
@@ -199,6 +204,15 @@ class TaskDetailViewModel @Inject constructor(private val repository: TaskReposi
                 repository.deleteTask(task.id)
                 _isRemoved.value = true
             }
+        }
+    }
+
+    fun updateBookmark() = viewModelScope.launch {
+        withContext(Dispatchers.IO) {
+            _task.value.task.markId = selectedBookmark?.id
+            _task.value.task.isMarked = true
+            _task.value.bookmark = selectedBookmark
+            repository.updateTask(_task.value.task)
         }
     }
 }
