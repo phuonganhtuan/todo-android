@@ -7,6 +7,7 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.activityViewModels
 import com.example.todo.R
 import com.example.todo.base.BaseDialogFragment
+import com.example.todo.databinding.FragmentSetRepeatBinding
 import com.example.todo.databinding.LayoutCreateCategoryBinding
 import com.example.todo.screens.newtask.NewTaskViewModel
 import com.example.todo.utils.gone
@@ -21,7 +22,10 @@ class CreateCategoryDialogFragment : BaseDialogFragment<LayoutCreateCategoryBind
     override fun inflateViewBinding(
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ) = LayoutCreateCategoryBinding.inflate(layoutInflater, container, false)
+    ): LayoutCreateCategoryBinding {
+        val rootView = LayoutCreateCategoryBinding.inflate(layoutInflater, container, false)
+        return rootView
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

@@ -18,7 +18,9 @@
     <string name="select_attachment">Select attachment</string>
     <string name="create_new_category">Create new</string>
     <string name="create_new_category_title">Create new category</string>
-
+    <string name="add_time">Add time</string>
+    <string name="reminder">Reminder</string>
+    <string name="repeat">Repeat</string>
     <string name="jan">January</string>
     <string name="feb">February</string>
     <string name="mar">March</string>
@@ -50,4 +52,21 @@
     <string name="flag">Flag</string>
     <string name="number">Number</string>
     <string name="marked">Marked.</string>
+    <string name="hour">Hour</string>
+    <string name="daily">Daily</string>
+    <string name="weekly">Weekly</string>
+    <string name="monthly">Monthly</string>
+    <string name="yearly">Yearly</string>
+    <string name="notification">Notification</string>
+    <string name="alarm">Alarm</string>
+    <string name="same_with_due_date">Same with due date</string>
+    <string name="five_minutes_before">5 minutes before</string>
+    <string name="ten_minutes_before">10 minutes before</string>
+    <string name="fifteen_minutes_before">15 minutes before</string>
+    <string name="thirty_minutes_before">30 minutes before</string>
+    <string name="one_day_before">1 day before</string>
+    <string name="set_reminder_time">Set Reminder Time</string>
+    <string name="off">Off</string>
+    <string name="on">On</string>
+    <string name="two_days_before">2 days before</string>
 </resources>

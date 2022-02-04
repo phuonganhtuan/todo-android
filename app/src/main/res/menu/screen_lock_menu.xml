@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/option_off"
+        android:title="@string/off"
+        android:icon="@drawable/ic_uncheck"/>
+    <item android:id="@+id/option_on"
+        android:title="@string/on"
+        android:icon="@drawable/ic_uncheck"/>
+</menu>

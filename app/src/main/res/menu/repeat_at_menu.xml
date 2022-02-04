@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/option_hour"
+        android:icon="@drawable/ic_uncheck"
+        android:title="@string/hour" />
+    <item
+        android:id="@+id/option_daily"
+        android:icon="@drawable/ic_uncheck"
+        android:title="@string/daily" />
+    <item
+        android:id="@+id/option_weekly"
+        android:icon="@drawable/ic_uncheck"
+        android:title="@string/weekly" />
+    <item
+        android:id="@+id/option_monthly"
+        android:icon="@drawable/ic_uncheck"
+        android:title="@string/monthly" />
+    <item
+        android:id="@+id/option_yearly"
+        android:icon="@drawable/ic_uncheck"
+        android:title="@string/yearly" />
+</menu>
