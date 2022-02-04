@@ -22,7 +22,7 @@ class MineViewModel @Inject constructor(private val repository: TaskRepository) 
         it.filter { task -> !task.task.isDone }.size
     }
 
-    val next7DaysTasks: StateFlow<List<TaskShort>>
+    val next7DaysTasks: Flow<List<TaskShort>>
         get() = _tasks.map {
             val next7Days = mutableListOf<String>()
             val calendar = Calendar.getInstance()
@@ -35,9 +35,9 @@ class MineViewModel @Inject constructor(private val repository: TaskRepository) 
                     DateTimeUtils.getComparableDateString(
                         Calendar.getInstance().apply { timeInMillis = task.task.calendar ?: 0 }.time
                     )
-                )
+                ) && !task.task.isDone
             }
-        }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), emptyList())
+        }
 
     private val _tasks = repository.getShortTasks()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), emptyList())

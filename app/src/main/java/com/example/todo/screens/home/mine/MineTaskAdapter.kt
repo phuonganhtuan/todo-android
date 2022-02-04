@@ -44,7 +44,7 @@ class MineTaskViewHolder(
         taskId = entity.task.id
         textTaskName.text = entity.task.title
         textTaskTime.text = if (entity.task.calendar != null) {
-            DateTimeUtils.getHourMinuteFromMillisecond(entity.task.calendar!!)
+            DateTimeUtils.getDayMonthFromMillisecond(entity.task.calendar!!)
         } else {
             ""
         }

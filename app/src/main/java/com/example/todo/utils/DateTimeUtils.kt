@@ -33,6 +33,12 @@ object DateTimeUtils {
         return simpleDate.format(date)
     }
 
+    fun getDayMonthFromMillisecond(milis: Long): String {
+        val date = Date().apply { time = milis }
+        val simpleDate = SimpleDateFormat("dd/MM")
+        return simpleDate.format(date)
+    }
+
     fun getDaysOfMonth(month: Calendar, startFromMonday: Boolean = false): List<Date> {
 
         val result = mutableListOf<Date>()
