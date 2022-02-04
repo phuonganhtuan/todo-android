@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="app/src/main/res/drawable/custom_thumb.xml" value="0.1885" />
+        <entry key="app/src/main/res/drawable/custom_track.xml" value="0.1885" />
+        <entry key="app/src/main/res/layout/fragment_new_task.xml" value="0.30833333333333335" />
+        <entry key="app/src/main/res/layout/layout_add_calendar.xml" value="0.30833333333333335" />
+      </map>
+    </option>
+  </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="11" project-jdk-type="JavaSDK" />
 </project>

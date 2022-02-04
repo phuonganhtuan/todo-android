@@ -6,19 +6,25 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.TimePicker
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
+import com.example.todo.R
 import com.example.todo.base.BaseBottomSheetDialogFragment
 import com.example.todo.databinding.LayoutAddCalendarBinding
+import com.example.todo.screens.newtask.NewTaskViewModel
+import com.example.todo.screens.newtask.ReminderTimeEnum
+import com.example.todo.screens.newtask.RepeatAtEnum
 import com.example.todo.utils.DateTimeUtils
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.zip
 import java.util.*
-
-import android.widget.TextView
-import com.example.todo.screens.newtask.*
 
 
 class AddCalendarBottomSheetDialogFragment :
@@ -27,8 +33,6 @@ class AddCalendarBottomSheetDialogFragment :
     private val viewModel: NewTaskViewModel by activityViewModels()
 
     private lateinit var mTimePicker: TimePickerDialog
-    private lateinit var mSetReminderDialog: SetReminderDialog
-    private lateinit var mSetRepeatDialog: SetRepeatAtDialog
 
     val mCurrentTime = Calendar.getInstance()
 
@@ -64,9 +68,6 @@ class AddCalendarBottomSheetDialogFragment :
             slMinute,
             false
         )
-        mSetReminderDialog = SetReminderDialog()
-
-        mSetRepeatDialog = SetRepeatAtDialog()
     }
 
     private fun initData() = with(viewBinding) {
@@ -105,14 +106,14 @@ class AddCalendarBottomSheetDialogFragment :
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 selectedHour.filter { it > -1 }
-                    .zip(selectedMinute.filter { it > -1 }) { hour, minute ->
+                    .combine(selectedMinute.filter { it > -1 }) { hour, minute ->
                         val hourValue = when (hour > 9) {
                             true -> "$hour"
                             else -> "0$hour"
                         }
                         val minuteValue = when (minute > 9) {
                             true -> "$minute"
-                            else -> ")$minute"
+                            else -> "0$minute"
                         }
                         "$hourValue:$minuteValue"
                     }.collect {
@@ -190,10 +191,7 @@ class AddCalendarBottomSheetDialogFragment :
     }
 
     private fun onClickReminder(view: View) {
-        if (mSetReminderDialog.isAdded()) {
-            return; //or return false/true, based on where you are calling from
-        }
-        mSetReminderDialog.show(childFragmentManager, "Open Reminder Dialog")
+        findNavController().navigate(R.id.toAddReminder)
     }
 
     private fun onCheckChangeRepeat() = with(viewBinding) {
@@ -206,10 +204,6 @@ class AddCalendarBottomSheetDialogFragment :
     }
 
     private fun onClickRepeat(view: View) {
-        if (mSetRepeatDialog.isAdded()) {
-            return; //or return false/true, based on where you are calling from
-        }
-        mSetRepeatDialog.show(childFragmentManager, "Open Repeat Dialog")
+        findNavController().navigate(R.id.toAddRepeat)
     }
-
 }

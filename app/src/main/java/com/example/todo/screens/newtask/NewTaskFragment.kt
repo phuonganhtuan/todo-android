@@ -1,12 +1,16 @@
 package com.example.todo.screens.newtask
 
+import android.annotation.SuppressLint
 import android.content.Context.LAYOUT_INFLATER_SERVICE
+import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.PopupWindow
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
@@ -22,12 +26,16 @@ import com.example.todo.screens.newtask.category.OnCatInteractListener
 import com.example.todo.screens.newtask.category.SelectCategoryAdapter
 import com.example.todo.screens.newtask.subtask.OnSubTaskInteract
 import com.example.todo.screens.newtask.subtask.SubTaskAdapter
+import com.example.todo.utils.DateTimeUtils
 import com.example.todo.utils.boldWhenFocus
 import com.example.todo.utils.gone
 import com.example.todo.utils.helper.getCategoryColor
 import com.example.todo.utils.show
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.zip
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -62,6 +70,7 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
 
     private fun initViews() = with(viewBinding) {
         recyclerSubTasks.adapter = subTaskAdapter
+        hideDateTime()
     }
 
     private fun setupEvents() = with(viewBinding) {
@@ -94,8 +103,15 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
                 categoriesPopup?.dismiss()
             }
         })
+        switchRepeat.setOnClickListener {
+            onCheckChangeRepeat()
+        }
+        switchReminder.setOnClickListener {
+            onCheckChangeReminder()
+        }
     }
 
+    @SuppressLint("UnsafeRepeatOnLifecycleDetector")
     private fun observeData() = with(viewModel) {
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -139,7 +155,7 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 categories.collect {
-                    val catIdSum = it.map { cat -> cat.id }.sum()
+                    val catIdSum = it.sumOf { cat -> cat.id }
                     val listCats = it.toMutableList().apply {
                         add(
                             CategoryEntity(
@@ -150,6 +166,65 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
                     }
                     categoryAdapter.submitList(listCats)
                     setupCatsPopup(listCats)
+                }
+            }
+        }
+        lifecycleScope.launchWhenStarted {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                selectedDate.collect {
+                    viewBinding.textTime.text = DateTimeUtils.getComparableDateString(it)
+                }
+            }
+        }
+        lifecycleScope.launchWhenStarted {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                selectedHour.filter { it > -1 }
+                    .combine(selectedMinute.filter { it > -1 }) { hour, minute ->
+                        val hourValue = when (hour > 9) {
+                            true -> "$hour"
+                            else -> "0$hour"
+                        }
+                        val minuteValue = when (minute > 9) {
+                            true -> "$minute"
+                            else -> "0$minute"
+                        }
+                        "$hourValue:$minuteValue"
+                    }.collect {
+                        showDateTime()
+                        viewBinding.buttonAddCalendar.text = it
+                    }
+            }
+        }
+        lifecycleScope.launchWhenStarted {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.selectedReminderTime.filter { it != ReminderTimeEnum.NONE && viewModel.isCheckedReminder.value }
+                    .collect {
+                        viewBinding.textReminderTime.text = resources.getString(it.getStringid())
+                    }
+            }
+        }
+        lifecycleScope.launchWhenStarted {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.isCheckedReminder.collect {
+                    viewBinding.switchReminder.isChecked = it
+                    if (it) viewBinding.textReminderTime.show()
+                }
+            }
+        }
+        lifecycleScope.launchWhenStarted {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.selectedRepeatAt.filter { it != RepeatAtEnum.NONE && viewModel.isCheckedRepeat.value }
+                    .collect {
+                        viewBinding.textRepeatTime.text = resources.getString(it.getStringid())
+                    }
+            }
+        }
+        lifecycleScope.launchWhenStarted {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.isCheckedRepeat.collect {
+                    viewBinding.switchRepeat.isChecked = it
+                    if (it) viewBinding.textRepeatTime.show()
+
                 }
             }
         }
@@ -173,5 +248,59 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
                 if (cats.size <= 5) WRAP_CONTENT else 600,
                 true
             )
+    }
+
+    private fun showDateTime() = with(viewBinding) {
+        imageTime.show()
+        textTime.show()
+        imageReminder.show()
+        textReminder.show()
+        switchReminder.show()
+        imageRepeat.show()
+        textRepeat.show()
+        switchRepeat.show()
+        buttonAddCalendar.setTextColor(Color.BLACK)
+    }
+
+    private fun hideDateTime() = with(viewBinding) {
+        imageTime.gone()
+        textTime.gone()
+        imageReminder.gone()
+        textReminder.gone()
+        textReminderTime.gone()
+        switchReminder.gone()
+        imageRepeat.gone()
+        textRepeat.gone()
+        textRepeatTime.gone()
+        switchRepeat.gone()
+        buttonAddCalendar.setTextColor(ContextCompat.getColor(requireContext(), R.color.color_text_secondary_dark))
+    }
+
+    private fun onCheckChangeReminder() = with(viewBinding) {
+        if (switchReminder.isChecked) {
+            viewModel.onCheckChangeReminder(false)
+            onClickReminder()
+        } else {
+            textReminderTime.gone()
+            viewModel.resetReminderDefault()
+        }
+    }
+
+    private fun onClickReminder() {
+        findNavController().navigate(R.id.toAddReminderOut)
+    }
+
+    private fun onCheckChangeRepeat() = with(viewBinding) {
+        if (switchRepeat.isChecked) {
+            viewModel.onCheckChangeRepeat(false)
+            onClickRepeat()
+        } else {
+            textRepeatTime.gone()
+            viewModel.resetRepeatDefault()
+        }
+    }
+
+    private fun onClickRepeat() {
+        findNavController().navigate(R.id.toAddRepeatOut)
     }
 }

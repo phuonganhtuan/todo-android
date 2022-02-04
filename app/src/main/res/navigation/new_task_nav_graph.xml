@@ -22,6 +22,12 @@
         <action
             android:id="@+id/toCreateCat"
             app:destination="@id/AddCategoryFragment" />
+
+        <action android:id="@+id/toAddReminderOut"
+            app:destination="@id/AddReminderFragment"/>
+
+        <action android:id="@+id/toAddRepeatOut"
+            app:destination="@id/AddRepeatFragment"/>
     </fragment>
 
     <dialog
@@ -34,12 +40,30 @@
         android:id="@+id/AddCalendarBottomSheet"
         android:name="com.example.todo.screens.newtask.calendar.AddCalendarBottomSheetDialogFragment"
         android:label="@string/add_calendar"
-        tools:layout="@layout/layout_add_calendar"
-        />
+        tools:layout="@layout/layout_add_calendar">
+
+        <action android:id="@+id/toAddReminder"
+            app:destination="@id/AddReminderFragment"/>
+
+        <action android:id="@+id/toAddRepeat"
+            app:destination="@id/AddRepeatFragment"/>
+    </dialog>
 
     <dialog
         android:id="@+id/AddCategoryFragment"
         android:name="com.example.todo.screens.newtask.category.CreateCategoryDialogFragment"
         android:label="@string/create_new_category_title"
         tools:layout="@layout/layout_create_category" />
+
+    <dialog
+        android:id="@+id/AddReminderFragment"
+        android:name="com.example.todo.screens.newtask.calendar.SetReminderDialog"
+        android:label="@string/reminder"
+        tools:layout="@layout/fragment_set_reminder"/>
+
+    <dialog
+        android:id="@+id/AddRepeatFragment"
+        android:name="com.example.todo.screens.newtask.calendar.SetRepeatAtDialog"
+        android:label="@string/repeat"
+        tools:layout="@layout/fragment_set_repeat"/>
 </navigation>

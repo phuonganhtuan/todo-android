@@ -9,6 +9,7 @@ import android.view.MotionEvent
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.todo.base.BaseDiffCallBack
 import com.example.todo.base.BaseViewHolder
 import com.example.todo.data.models.entity.SubTaskEntity
 import com.example.todo.databinding.ItemSubtaskEditableBinding
@@ -21,7 +22,7 @@ import javax.inject.Inject
 
 
 class SubTaskDetailAdapter @Inject constructor() :
-    ListAdapter<SubTaskEntity, SubTaskDetailViewHolder>(SubTaskDiffCallback()),
+    ListAdapter<SubTaskEntity, SubTaskDetailViewHolder>(SubTaskDetailDiffCallback()),
     ItemMoveCallback.ItemTouchHelperContract {
 
     private var onTaskInteractListener: OnSubTaskDetailInteract? = null
@@ -126,6 +127,14 @@ class SubTaskDetailViewHolder(
     override fun displayData(entity: SubTaskEntity) = with(itemViewBinding) {
 
     }
+}
+
+class SubTaskDetailDiffCallback : BaseDiffCallBack<SubTaskEntity>() {
+
+    override fun areItemsTheSame(oldItem: SubTaskEntity, newItem: SubTaskEntity) = false
+
+    override fun areContentsTheSame(oldItem: SubTaskEntity, newItem: SubTaskEntity): Boolean =
+        oldItem.id == newItem.id && oldItem.isDone == newItem.isDone && oldItem.name == newItem.name
 }
 
 interface OnSubTaskDetailInteract {
