@@ -3,82 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/tuanpa47/AndroidStudioProjects/AndroidBP/app/src/main/res/layout/activity_main.xml" value="0.23697916666666666" />
-        <entry key="..\:/Users/tuanpa47/AndroidStudioProjects/AndroidBP/app/src/main/res/layout/content_main.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/tuanpa47/AndroidStudioProjects/AndroidBP/app/src/main/res/layout/fragment_home.xml" value="0.19322916666666667" />
-        <entry key="..\:/Users/tuanpa47/AndroidStudioProjects/AndroidBP/app/src/main/res/layout/fragment_second.xml" value="0.36666666666666664" />
-        <entry key="app/src/main/res/drawable/bg_checkbox_grey.xml" value="0.3351851851851852" />
-        <entry key="app/src/main/res/drawable/bg_greybg_rounded_8.xml" value="0.33059360730593607" />
-        <entry key="app/src/main/res/drawable/bg_primary_rounded_20.xml" value="0.3351851851851852" />
-        <entry key="app/src/main/res/drawable/bg_primary_rounded_24.xml" value="0.3351851851851852" />
-        <entry key="app/src/main/res/drawable/bg_primary_rounded_8.xml" value="0.3770833333333333" />
-        <entry key="app/src/main/res/drawable/bg_rounded_stroke_grey.xml" value="0.3351851851851852" />
-        <entry key="app/src/main/res/drawable/bg_rounded_stroke_grey_8.xml" value="0.33059360730593607" />
-        <entry key="app/src/main/res/drawable/bg_search_input.xml" value="0.287962962962963" />
-        <entry key="app/src/main/res/drawable/bg_today_calendar_task.xml" value="0.3770833333333333" />
-        <entry key="app/src/main/res/drawable/bg_white_ripple_rounded_stroke_grey_8.xml" value="0.33059360730593607" />
-        <entry key="app/src/main/res/drawable/bg_white_rounded.xml" value="0.33059360730593607" />
-        <entry key="app/src/main/res/drawable/bg_white_rounded_16.xml" value="0.181" />
-        <entry key="app/src/main/res/drawable/bg_white_rounded_8.xml" value="0.3770833333333333" />
-        <entry key="app/src/main/res/drawable/bg_white_top_rounded.xml" value="0.3037037037037037" />
-        <entry key="app/src/main/res/drawable/ic_arrow_down_16.xml" value="0.20833333333333334" />
-        <entry key="app/src/main/res/drawable/ic_arrow_down_24.xml" value="0.33059360730593607" />
-        <entry key="app/src/main/res/drawable/ic_checked.xml" value="0.3351851851851852" />
-        <entry key="app/src/main/res/drawable/ic_note.xml" value="0.33059360730593607" />
-        <entry key="app/src/main/res/drawable/ic_tab_calendar.xml" value="0.3351851851851852" />
-        <entry key="app/src/main/res/drawable/ic_tab_mine.xml" value="0.3351851851851852" />
-        <entry key="app/src/main/res/drawable/ic_tab_tasks.xml" value="0.3351851851851852" />
-        <entry key="app/src/main/res/drawable/ic_uncheck.xml" value="0.3351851851851852" />
-        <entry key="app/src/main/res/layout/activity_home.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/activity_new_task.xml" value="0.21203703703703702" />
-        <entry key="app/src/main/res/layout/activity_search_task.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/activity_splash.xml" value="0.1865740740740741" />
-        <entry key="app/src/main/res/layout/activity_task_detail.xml" value="0.26296296296296295" />
-        <entry key="app/src/main/res/layout/content_detail.xml" value="0.32083333333333336" />
-        <entry key="app/src/main/res/layout/content_home.xml" value="0.32083333333333336" />
-        <entry key="app/src/main/res/layout/fragment_calendar.xml" value="0.335" />
-        <entry key="app/src/main/res/layout/fragment_mine.xml" value="0.24351851851851852" />
-        <entry key="app/src/main/res/layout/fragment_new_task.xml" value="0.335" />
-        <entry key="app/src/main/res/layout/fragment_task_detail.xml" value="0.32083333333333336" />
-        <entry key="app/src/main/res/layout/fragment_tasks.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/fragment_tasks_page.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/item_attachment.xml" value="0.335" />
-        <entry key="app/src/main/res/layout/item_bookmark.xml" value="0.3609375" />
-        <entry key="app/src/main/res/layout/item_calendar_day.xml" value="0.3609375" />
-        <entry key="app/src/main/res/layout/item_calendar_task.xml" value="0.49444444444444446" />
-        <entry key="app/src/main/res/layout/item_random_activity.xml" value="0.32083333333333336" />
-        <entry key="app/src/main/res/layout/item_recent_search.xml" value="0.24722222222222223" />
-        <entry key="app/src/main/res/layout/item_select_category.xml" value="0.32083333333333336" />
-        <entry key="app/src/main/res/layout/item_subtask_editable.xml" value="0.375" />
-        <entry key="app/src/main/res/layout/item_task.xml" value="0.335" />
-        <entry key="app/src/main/res/layout/item_task_search.xml" value="0.335" />
-        <entry key="app/src/main/res/layout/layout_add_calendar.xml" value="0.32083333333333336" />
-        <entry key="app/src/main/res/layout/layout_alert_dialog.xml" value="0.3609375" />
-        <entry key="app/src/main/res/layout/layout_bookmark.xml" value="0.3609375" />
-        <entry key="app/src/main/res/layout/layout_calendar.xml" value="0.3553846153846154" />
-        <entry key="app/src/main/res/layout/layout_calendar_with_task.xml" value="0.335" />
-        <entry key="app/src/main/res/layout/layout_category_task.xml" value="0.32083333333333336" />
-        <entry key="app/src/main/res/layout/layout_create_category.xml" value="0.31643835616438354" />
-        <entry key="app/src/main/res/layout/layout_delete_task.xml" value="0.3609375" />
-        <entry key="app/src/main/res/layout/layout_select_attachment.xml" value="0.32083333333333336" />
-        <entry key="app/src/main/res/layout/layout_select_category.xml" value="0.32083333333333336" />
-        <entry key="app/src/main/res/layout/layout_side_navigation_header.xml" value="0.32083333333333336" />
-        <entry key="app/src/main/res/layout/layout_toolbar.xml" value="0.3609375" />
-        <entry key="app/src/main/res/layout/view_edit_with_dot.xml" value="0.32083333333333336" />
-        <entry key="app/src/main/res/menu/main_bottom_menu.xml" value="0.32083333333333336" />
-        <entry key="app/src/main/res/menu/menu_main.xml" value="0.32083333333333336" />
-        <entry key="app/src/main/res/menu/reminder_menu.xml" value="0.184375" />
-        <entry key="app/src/main/res/menu/reminder_type_menu.xml" value="0.184375" />
-        <entry key="app/src/main/res/menu/task_detail_menu.xml" value="0.3609375" />
-        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.33059360730593607" />
-        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.33059360730593607" />
+        <entry key="app/src/main/res/drawable/bg_fade_grey.xml" value="0.181" />
+        <entry key="app/src/main/res/layout/bg_fade_grey.xml" value="0.3609375" />
+        <entry key="app/src/main/res/layout/fragment_mine.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/item_task_mine.xml" value="0.3609375" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
-    <output url="file://$PROJECT_DIR$/build/classes" />
-  </component>
-  <component name="ProjectType">
-    <option name="id" value="Android" />
-  </component>
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="11" project-jdk-type="JavaSDK" />
 </project>
