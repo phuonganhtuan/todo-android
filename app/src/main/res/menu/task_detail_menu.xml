@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/markAsDone"
+        android:title="@string/mark_as_done" />
+
+    <item
+        android:id="@+id/share"
+        android:title="@string/share" />
+
+    <item
+        android:id="@+id/delete"
+        android:title="@string/delete" />
+
+    <item
+        android:id="@+id/duplicateTask"
+        android:title="@string/duplicate_task" />
+
+    <item
+        android:id="@+id/bookmark"
+        android:title="@string/bookmark" />
+</menu>

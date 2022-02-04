@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 interface TaskRepository {
 
     fun getShortTasks(): Flow<List<TaskShort>>
-    fun getTask(id: Int): Flow<Task>
+    fun getTask(id: Int): Task
     fun getCategories(): Flow<List<CategoryEntity>>
     suspend fun addTask(entity: TaskEntity): Long
     suspend fun addTaskDetail(entity: TaskDetailEntity)
@@ -30,4 +30,11 @@ interface TaskRepository {
 
     fun searchTaskByName(name: String): List<TaskEntity>
     fun getTaskInDay(dayString: String): List<TaskShort>
+
+    suspend fun deleteAttachment(id: Int)
+    suspend fun deleteSubtask(id: Int)
+    suspend fun deleteTaskDetail(id: Int)
+    suspend fun deleteTask(id: Int)
+
+    fun getBookmarks(): Flow<List<BookmarkEntity>>
 }

@@ -1,6 +1,158 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+    android:background="@color/color_bg_main_grey">
 
+    <EditText
+        android:id="@+id/textTaskName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:autofillHints="@null"
+        android:background="@android:color/transparent"
+        android:fontFamily="@font/nunito_extra_bold"
+        android:hint="@string/task_name"
+        android:inputType="textMultiLine"
+        android:paddingHorizontal="16dp"
+        android:paddingBottom="8dp"
+        android:textColor="@color/black"
+        android:textSize="22sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Happy birthday to me" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:animateLayoutChanges="true"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textTaskName">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:animateLayoutChanges="true"
+            android:paddingBottom="130dp">
+
+            <LinearLayout
+                android:id="@+id/layoutSubTask"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:animateLayoutChanges="true"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerSubTasks"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:overScrollMode="never"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:itemCount="3"
+                    tools:listitem="@layout/item_subtask_editable" />
+
+                <TextView
+                    android:id="@+id/buttonNewSubTask"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/bg_greybg_rounded_8"
+                    android:padding="8dp"
+                    android:text="@string/plus_add"
+                    android:textColor="@color/color_primary"
+                    android:textSize="16sp"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/editNote"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:autofillHints="@null"
+                android:backgroundTint="@color/color_border_grey"
+                android:drawableStart="@drawable/ic_note"
+                android:drawablePadding="8dp"
+                android:hint="@string/note"
+                android:inputType="textMultiLine"
+                android:textColor="@android:color/black"
+                android:textColorHint="@color/color_text_secondary_dark"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/layoutSubTask" />
+
+            <ImageView
+                android:id="@+id/imageAttachment"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="18dp"
+                android:layout_marginTop="24dp"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_attachment"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/editNote" />
+
+            <TextView
+                android:id="@+id/buttonAttachment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/bg_greybg_rounded_8"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="4dp"
+                android:text="@string/attachment"
+                android:textColor="@color/color_text_secondary_dark"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="@+id/imageAttachment"
+                app:layout_constraintStart_toEndOf="@+id/imageAttachment"
+                app:layout_constraintTop_toTopOf="@+id/imageAttachment" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerAttachment"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintStart_toStartOf="@id/buttonAttachment"
+                app:layout_constraintTop_toBottomOf="@id/buttonAttachment"
+                tools:itemCount="3"
+                tools:listitem="@layout/item_attachment" />
+
+            <TextView
+                android:id="@+id/textCategory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/bg_rounded_stroke_grey_8"
+                android:drawablePadding="8dp"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="8dp"
+                android:text="@string/no_category"
+                android:textColor="@color/color_text_secondary_dark"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@id/recyclerAttachment"
+                app:layout_constraintTop_toBottomOf="@id/recyclerAttachment" />
+
+            <ImageView
+                android:id="@+id/imageDone"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:layout_marginTop="64dp"
+                android:src="@drawable/ic_mark_as_done"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textCategory" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

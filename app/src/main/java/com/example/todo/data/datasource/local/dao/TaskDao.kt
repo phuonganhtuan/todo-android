@@ -15,21 +15,21 @@ interface TaskDao {
 
     @Transaction
     @Query("select * from TaskEntity where id = :id limit 1")
-    fun getTask(id: Int): Flow<Task>
+    fun getTask(id: Int): Task
 
     @Query("select * from CategoryEntity")
     fun getCategories(): Flow<List<CategoryEntity>>
 
-    @Insert(onConflict = REPLACE)
+    @Insert(onConflict = IGNORE)
     suspend fun addTask(entity: TaskEntity): Long
 
-    @Insert(onConflict = REPLACE)
+    @Insert(onConflict = IGNORE)
     suspend fun addTaskDetail(entity: TaskDetailEntity)
 
-    @Insert(onConflict = REPLACE)
+    @Insert(onConflict = IGNORE)
     suspend fun addSubTasks(entity: SubTaskEntity)
 
-    @Insert(onConflict = REPLACE)
+    @Insert(onConflict = IGNORE)
     suspend fun addAttachment(entity: AttachmentEntity)
 
     @Insert(onConflict = REPLACE)
@@ -76,4 +76,19 @@ interface TaskDao {
 
     @Query("select * from TaskEntity where dueDate == :dayString")
     fun getTaskInDay(dayString: String): List<TaskShort>
+
+    @Query("delete from AttachmentEntity where id = :id")
+    suspend fun deleteAttachment(id: Int)
+
+    @Query("delete from SubTaskEntity where id = :id")
+    suspend fun deleteSubtask(id: Int)
+
+    @Query("delete from TaskDetailEntity where id = :id")
+    suspend fun deleteTaskDetail(id: Int)
+
+    @Query("delete from TaskEntity where id = :id")
+    suspend fun deleteTask(id: Int)
+
+    @Query("select * from BookmarkEntity")
+    fun getBookmarks(): Flow<List<BookmarkEntity>>
 }

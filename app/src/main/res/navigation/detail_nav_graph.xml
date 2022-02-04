@@ -9,5 +9,56 @@
         android:id="@+id/TaskDetailFragment"
         android:name="com.example.todo.screens.taskdetail.TaskDetailFragment"
         android:label="@string/task_detail"
-        tools:layout="@layout/fragment_task_detail" />
+        tools:layout="@layout/fragment_task_detail" >
+
+        <action
+            android:id="@+id/toSelectAttachment"
+            app:destination="@id/SelectAttachmentFragment" />
+
+        <action
+            android:id="@+id/toAddCalendar"
+            app:destination="@id/AddCalendarBottomSheet" />
+
+        <action
+            android:id="@+id/toCreateCat"
+            app:destination="@id/AddCategoryFragment" />
+
+        <action
+            android:id="@+id/toDeleteTask"
+            app:destination="@id/DeleteTaskFragment"/>
+
+        <action
+            android:id="@+id/toBookmark"
+            app:destination="@id/BookmarkFragment"/>
+    </fragment>
+
+    <dialog
+        android:id="@+id/SelectAttachmentFragment"
+        android:name="com.example.todo.screens.newtask.attachment.SelectAttachmentDialogFragment"
+        android:label="@string/select_attachment"
+        tools:layout="@layout/layout_select_attachment" />
+
+    <dialog
+        android:id="@+id/AddCalendarBottomSheet"
+        android:name="com.example.todo.screens.newtask.calendar.AddCalendarBottomSheetDialogFragment"
+        android:label="@string/add_calendar"
+        tools:layout="@layout/layout_add_calendar" />
+
+    <dialog
+        android:id="@+id/AddCategoryFragment"
+        android:name="com.example.todo.screens.newtask.category.CreateCategoryDialogFragment"
+        android:label="@string/create_new_category_title"
+        tools:layout="@layout/layout_create_category" />
+
+    <dialog
+        android:id="@+id/DeleteTaskFragment"
+        android:name="com.example.todo.screens.taskdetail.DeleteTaskDialogFragment"
+        android:label="@string/delete_repeat_task_reminder"
+        tools:layout="@layout/layout_delete_task"/>
+
+    <dialog
+        android:id="@+id/BookmarkFragment"
+        android:name="com.example.todo.screens.taskdetail.bookmark.BookmarkDialogFragment"
+        android:label="@string/bookmark"
+        tools:layout="@layout/layout_bookmark"/>
 </navigation>

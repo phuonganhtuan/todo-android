@@ -29,4 +29,5 @@
     <color name="color_cal_primary">#62626b</color>
 
     <color name="color_search_input_background">#e0e0e1</color>
+    <color name="color_menu_text_default">#222429</color>
 </resources>

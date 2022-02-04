@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="48dp"
@@ -12,39 +11,24 @@
         android:id="@+id/textTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/create_new_category_title"
+        android:text="@string/delete_repeat_task_reminder"
         android:textColor="@android:color/black"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/editCatName"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:autofillHints="@null"
-        android:backgroundTint="@color/color_border_grey"
-        android:hint="@string/category_names"
-        android:inputType="textMultiLine"
-        android:textColor="@android:color/black"
-        android:textColorHint="@color/color_text_secondary_dark"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textTitle" />
-
     <TextView
-        android:id="@+id/textInvalidate"
+        android:id="@+id/textContent"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:paddingTop="8dp"
-        android:textColor="@color/design_default_color_error"
+        android:text="@string/all_future_occurrences_will_be_deleted"
+        android:textColor="@color/color_menu_text_default"
+        android:textSize="17sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/editCatName"
-        tools:text="@string/cat_name_empty_error" />
+        app:layout_constraintTop_toBottomOf="@id/textTitle" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/buttonGuideline"
@@ -58,24 +42,24 @@
         style="@style/ButtonSecondaryWhite"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="8dp"
         android:text="@string/cancel"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/buttonGuideline"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInvalidate" />
+        app:layout_constraintTop_toBottomOf="@+id/textContent" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/buttonSave"
+        android:id="@+id/buttonDelete"
         style="@style/ButtonPrimary"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:text="@string/save"
+        android:layout_marginTop="32dp"
+        android:text="@string/delete"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/buttonGuideline"
-        app:layout_constraintTop_toBottomOf="@+id/textInvalidate" />
+        app:layout_constraintTop_toBottomOf="@+id/textContent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

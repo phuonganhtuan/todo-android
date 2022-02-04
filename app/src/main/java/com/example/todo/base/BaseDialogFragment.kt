@@ -33,7 +33,7 @@ abstract class BaseDialogFragment<VB : ViewBinding> : DialogFragment() {
     override fun onResume() {
         super.onResume()
         dialog?.window?.setLayout(
-            (windowWidth * 0.8).toInt(),
+            (windowWidth * 0.9).toInt(),
             ViewGroup.LayoutParams.WRAP_CONTENT
         )
     }
