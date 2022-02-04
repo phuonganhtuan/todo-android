@@ -52,6 +52,7 @@
     <string name="flag">Flag</string>
     <string name="number">Number</string>
     <string name="marked">Marked.</string>
+<<<<<<< HEAD
     <string name="hour">Hour</string>
     <string name="daily">Daily</string>
     <string name="weekly">Weekly</string>
@@ -69,4 +70,9 @@
     <string name="off">Off</string>
     <string name="on">On</string>
     <string name="two_days_before">2 days before</string>
+
+    <string name="tasks_overview">Tasks Overview</string>
+    <string name="completed_tasks">Completed Tasks</string>
+    <string name="pending_tasks">Pending Tasks</string>
+    <string name="tasks_in_next_7_days">Tasks in next 7 days</string>
 </resources>
