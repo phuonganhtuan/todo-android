@@ -22,75 +22,95 @@ import kotlin.random.Random
 enum class ReminderTypeEnum {
     NOTIFICATION {
         override fun getStringid(): Int = R.string.notification
+        override fun getItemMenuId(): Int = R.id.option_notification
     },
     ALARM {
         override fun getStringid(): Int = R.string.alarm
+        override fun getItemMenuId(): Int = R.id.option_alarm
     };
 
     abstract fun getStringid(): Int
+    abstract fun getItemMenuId(): Int
 }
 
 enum class ReminderTimeEnum {
     NONE {
         override fun getStringid(): Int = -1
+        override fun getItemMenuId(): Int = -1
     },
     SAME_DUE_DATE {
         override fun getStringid(): Int =
             R.string.same_with_due_date
+        override fun getItemMenuId(): Int = R.id.option_same_with_due_date
     },
     FIVE_MINUTES_BEFORE {
         override fun getStringid(): Int =
             R.string.five_minutes_before
+        override fun getItemMenuId(): Int = R.id.option_5_minutes_before
     },
     TEN_MINUTES_BEFORE {
         override fun getStringid(): Int =
             R.string.ten_minutes_before
+        override fun getItemMenuId(): Int = R.id.option_10_minutes_before
     },
     FIFTEEN_MINUTES_BEFORE {
         override fun getStringid(): Int =
             R.string.fifteen_minutes_before
+        override fun getItemMenuId(): Int = R.id.option_10_minutes_before
     },
     THIRTY_MINUTES_BEFORE {
         override fun getStringid(): Int =
             R.string.thirty_minutes_before
+        override fun getItemMenuId(): Int = R.id.option_30_minutes_before
     },
     ONE_DAY_BEFORE {
         override fun getStringid(): Int =
             R.string.one_day_before
+        override fun getItemMenuId(): Int = R.id.option_1_day_before
     },
     TWO_DAYS_BEFORE {
         override fun getStringid(): Int =
             R.string.two_days_before
+        override fun getItemMenuId(): Int = R.id.option_2_day_before
     },
     CUSTOM_DAY_BEFORE {
         override fun getStringid(): Int =
             R.string.set_reminder_time
+        override fun getItemMenuId(): Int = -1
     };
 
     abstract fun getStringid(): Int
+    abstract fun getItemMenuId(): Int
 }
 
 enum class RepeatAtEnum {
     NONE {
         override fun getStringid(): Int = -1
+        override fun getItemMenuId(): Int = -1
     },
     HOUR {
         override fun getStringid(): Int = R.string.hour
+        override fun getItemMenuId(): Int = R.id.option_hour
     },
     DAILY {
         override fun getStringid(): Int = R.string.daily
+        override fun getItemMenuId(): Int = R.id.option_daily
     },
     WEEKLY {
         override fun getStringid(): Int = R.string.weekly
+        override fun getItemMenuId(): Int = R.id.option_weekly
     },
     MONTHLY {
         override fun getStringid(): Int = R.string.monthly
+        override fun getItemMenuId(): Int = R.id.option_monthly
     },
     YEARLY {
         override fun getStringid(): Int = R.string.yearly
+        override fun getItemMenuId(): Int = R.id.option_yearly
     };
 
     abstract fun getStringid(): Int
+    abstract fun getItemMenuId(): Int
 }
 
 @HiltViewModel
@@ -265,7 +285,7 @@ class NewTaskViewModel @Inject constructor(private val repository: TaskRepositor
     /**
      * reset Repeat
      */
-    fun resetRepeatDefaul(){
+    fun resetRepeatDefault(){
         _selectedRepeatAt.value = RepeatAtEnum.HOUR
     }
 }

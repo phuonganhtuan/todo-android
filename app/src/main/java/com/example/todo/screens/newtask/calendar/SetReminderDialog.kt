@@ -64,6 +64,10 @@ class SetReminderDialog : BaseDialogFragment<FragmentSetReminderBinding>() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 selectedReminderTime.collect {
                     viewBinding.tvReminderAtValue.setText(resources.getString(it.getStringid()))
+
+                    val popup = PopupMenu(context!!, viewBinding.tvReminderAtValue)
+                    popup.menuInflater.inflate(R.menu.reminder_menu, popup.menu)
+                    selReminderItem = popup.menu.findItem(it.getItemMenuId())
                 }
             }
         }
@@ -72,6 +76,10 @@ class SetReminderDialog : BaseDialogFragment<FragmentSetReminderBinding>() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 selectedReminderType.collect {
                     viewBinding.tvReminderTypeValue.setText(resources.getString(it.getStringid()))
+
+                    val popup = PopupMenu(context!!, viewBinding.tvReminderTypeValue)
+                    popup.menuInflater.inflate(R.menu.reminder_type_menu, popup.menu)
+                    selReminerType = popup.menu.findItem(it.getItemMenuId())
                 }
             }
         }
@@ -82,6 +90,11 @@ class SetReminderDialog : BaseDialogFragment<FragmentSetReminderBinding>() {
                     val reminderScreenLockTxt =
                         if (it) resources.getString(R.string.on) else resources.getString(R.string.off)
                     viewBinding.tvScreenLockValue.setText(reminderScreenLockTxt)
+
+                    val popup = PopupMenu(context!!, viewBinding.tvScreenLockValue)
+                    popup.menuInflater.inflate(R.menu.screen_lock_menu, popup.menu)
+                    val optionId = if (it) R.id.option_on else R.id.option_off
+                    selReminderScreenLock = popup.menu.findItem(optionId)
                 }
             }
         }
@@ -120,10 +133,28 @@ class SetReminderDialog : BaseDialogFragment<FragmentSetReminderBinding>() {
         val popup = PopupMenu(context!!, v)
         popup.menuInflater.inflate(menuRes, popup.menu)
 
+        when (menuRes) {
+            R.menu.reminder_menu -> {
+                val menuItem = selReminderItem?.let { popup.menu.findItem(it.itemId) }
+                menuItem?.icon = resources.getDrawable(R.drawable.ic_checked)
+            }
+            R.menu.reminder_type_menu -> {
+                val menuItem = selReminerType?.let { popup.menu.findItem(it.itemId) }
+                menuItem?.icon = resources.getDrawable(R.drawable.ic_checked)
+
+            }
+            R.menu.screen_lock_menu -> {
+                val menuItem = selReminderScreenLock?.let { popup.menu.findItem(it.itemId) }
+                menuItem?.icon = resources.getDrawable(R.drawable.ic_checked)
+            }
+            else -> {}
+        }
+
         popup.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener { item: MenuItem? ->
             when (menuRes) {
                 R.menu.reminder_menu -> {
                     selReminderItem = item
+
                     tvReminderAtValue.setText(item?.title)
 
                 }

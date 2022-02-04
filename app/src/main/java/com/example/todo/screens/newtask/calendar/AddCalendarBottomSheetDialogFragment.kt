@@ -201,7 +201,7 @@ class AddCalendarBottomSheetDialogFragment :
             viewModel.onCheckChangeRepeat(false)
             onClickRepeat(swRepeat)
         } else {
-            viewModel.resetRepeatDefaul()
+            viewModel.resetRepeatDefault()
         }
     }
 

@@ -48,6 +48,10 @@ class SetRepeatAtDialog : BaseDialogFragment<FragmentSetRepeatBinding>() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 selectedRepeatAt.collect {
                     viewBinding.tvRepeatAtValue.setText(resources.getString(it.getStringid()))
+
+                    val popup = PopupMenu(context!!, viewBinding.tvRepeatAtValue)
+                    popup.menuInflater.inflate(R.menu.repeat_at_menu, popup.menu)
+                    selRepeatAtItem = popup.menu.findItem(it.getItemMenuId())
                 }
             }
         }
@@ -58,6 +62,7 @@ class SetRepeatAtDialog : BaseDialogFragment<FragmentSetRepeatBinding>() {
     }
 
     private fun onClickDone(view: View) {
+        viewModel.onCheckChangeRepeat(true)
         when (selRepeatAtItem?.itemId) {
             R.id.option_daily -> viewModel.selectRepeatAt(RepeatAtEnum.DAILY)
             R.id.option_hour -> viewModel.selectRepeatAt(RepeatAtEnum.HOUR)
@@ -65,13 +70,20 @@ class SetRepeatAtDialog : BaseDialogFragment<FragmentSetRepeatBinding>() {
             R.id.option_monthly -> viewModel.selectRepeatAt(RepeatAtEnum.MONTHLY)
             R.id.option_yearly -> viewModel.selectRepeatAt(RepeatAtEnum.YEARLY)
         }
-        viewModel.onCheckChangeRepeat(true)
         dismiss()
     }
 
     private fun showMenu(v: View, @MenuRes menuRes: Int) = with(viewBinding) {
         val popup = PopupMenu(context!!, v)
         popup.menuInflater.inflate(menuRes, popup.menu)
+
+        when (menuRes) {
+            R.menu.repeat_at_menu -> {
+                val menuItem = selRepeatAtItem?.let { popup.menu.findItem(it.itemId) }
+                menuItem?.icon = resources.getDrawable(R.drawable.ic_checked)
+            }
+            else -> {}
+        }
 
         popup.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener { item: MenuItem? ->
             when (menuRes) {
