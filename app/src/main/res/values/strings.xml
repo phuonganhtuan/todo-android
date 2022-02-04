@@ -69,4 +69,6 @@
     <string name="off">Off</string>
     <string name="on">On</string>
     <string name="two_days_before">2 days before</string>
+    <string name="photo">Photo</string>
+    <string name="video">Video</string>
 </resources>
