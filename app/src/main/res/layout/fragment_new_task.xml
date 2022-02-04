@@ -25,7 +25,8 @@
         android:layout_height="0dp"
         android:animateLayoutChanges="true"
         android:fillViewport="true"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/buttonCreateTask"
+        android:layout_marginBottom="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textTitle">
@@ -225,14 +226,14 @@
                 app:track="@drawable/custom_track" />
 
             <TextView
+                android:id="@+id/textReminderTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/textReminderTime"
                 android:layout_marginTop="8dp"
-                android:textSize="16sp"
                 android:textColor="@color/color_menu_text_default"
-                app:layout_constraintTop_toBottomOf="@id/textReminder"
-                app:layout_constraintStart_toStartOf="@id/textReminder"/>
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@id/textReminder"
+                app:layout_constraintTop_toBottomOf="@id/textReminder" />
 
             <ImageView
                 android:id="@+id/imageRepeat"
@@ -266,14 +267,14 @@
                 app:track="@drawable/custom_track" />
 
             <TextView
+                android:id="@+id/textRepeatTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/textRepeatTime"
                 android:layout_marginTop="8dp"
-                android:textSize="16sp"
                 android:textColor="@color/color_menu_text_default"
-                app:layout_constraintTop_toBottomOf="@id/textRepeat"
-                app:layout_constraintStart_toStartOf="@id/textRepeat"/>
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@id/textRepeat"
+                app:layout_constraintTop_toBottomOf="@id/textRepeat" />
 
             <ImageView
                 android:id="@+id/imageAttachment"
@@ -302,4 +303,17 @@
                 app:layout_constraintTop_toTopOf="@+id/imageAttachment" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonCreateTask"
+        style="@style/ButtonPrimary"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="24dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/create_task"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

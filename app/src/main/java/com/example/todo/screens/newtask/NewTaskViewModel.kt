@@ -288,4 +288,8 @@ class NewTaskViewModel @Inject constructor(private val repository: TaskRepositor
     fun resetRepeatDefault(){
         _selectedRepeatAt.value = RepeatAtEnum.HOUR
     }
+
+    fun createTask() {
+
+    }
 }

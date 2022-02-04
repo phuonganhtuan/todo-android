@@ -109,6 +109,9 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
         switchReminder.setOnClickListener {
             onCheckChangeReminder()
         }
+        buttonCreateTask.setOnClickListener {
+            viewModel.createTask()
+        }
     }
 
     @SuppressLint("UnsafeRepeatOnLifecycleDetector")
