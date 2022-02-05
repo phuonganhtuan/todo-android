@@ -365,6 +365,8 @@ class NewTaskViewModel @Inject constructor(private val repository: TaskRepositor
     // For task detail and edit task
     private var taskId = 0
 
+    val _hasTime = MutableStateFlow(false)
+
     val isSaving: StateFlow<Boolean> get() = _isSaving
     private val _isSaving = MutableStateFlow(false)
 

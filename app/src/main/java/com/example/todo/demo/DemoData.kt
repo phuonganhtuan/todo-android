@@ -3,6 +3,9 @@ package com.example.todo.demo
 import android.util.Log
 import com.example.todo.data.models.entity.*
 import com.example.todo.data.repository.TaskRepository
+import com.example.todo.screens.newtask.ReminderTimeEnum
+import com.example.todo.screens.newtask.ReminderTypeEnum
+import com.example.todo.screens.newtask.RepeatAtEnum
 import com.example.todo.utils.DateTimeUtils
 import java.util.*
 
@@ -145,8 +148,8 @@ val bms = listOf(
 
 val taskDetail = TaskDetailEntity(
     note = "Create actionable plans for product",
-    isReminder = false,
-    isRepeat = false,
+    isReminder = true,
+    isRepeat = true,
     taskId = 0,
 )
 
@@ -289,7 +292,7 @@ val tasks = listOf<TaskEntity>(
 )
 
 suspend fun createDemoData(repository: TaskRepository) {
-    return
+
     // Remove all existed data
     repository.deleteAttachments()
     repository.deleteTaskDetails()
@@ -331,6 +334,18 @@ suspend fun createDemoData(repository: TaskRepository) {
 
         // Add task detail
         repository.addTaskDetail(taskDetail)
+
+        val reminder = ReminderEntity(
+            reminderType = ReminderTypeEnum.NOTIFICATION.name,
+            reminderTime = ReminderTimeEnum.THIRTY_MINUTES_BEFORE.name,
+            screenLockReminder = false,
+            enableRepeat = true,
+            repeatTime = RepeatAtEnum.WEEKLY.name,
+            taskId = taskId.toInt(),
+            time = it.calendar ?: 0L
+        )
+
+        repository.addReminder(reminder)
 
         // Add attachments
         attachments.forEach { att ->

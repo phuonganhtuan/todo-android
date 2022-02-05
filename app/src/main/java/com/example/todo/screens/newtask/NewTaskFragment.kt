@@ -200,7 +200,9 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 selectedDate.collect {
                     validateTask()
-                    viewBinding.buttonAddCalendar.text = DateTimeUtils.getComparableDateString(it)
+                    if (_hasTime.value)
+                        viewBinding.buttonAddCalendar.text =
+                            DateTimeUtils.getComparableDateString(it)
                 }
             }
         }
@@ -218,6 +220,9 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
                         }
                         "$hourValue:$minuteValue"
                     }.collect {
+                        _hasTime.value = true
+                        viewBinding.buttonAddCalendar.text =
+                            DateTimeUtils.getComparableDateString(selectedDate.value)
                         validateTask()
                         showDateTime()
                         viewBinding.textTime.text = it
@@ -241,7 +246,7 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
         }
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                selectedRepeatAt.filter { it != RepeatAtEnum.NONE}
+                selectedRepeatAt.filter { it != RepeatAtEnum.NONE }
                     .collect {
                         viewBinding.textRepeatTime.text = resources.getString(it.getStringid())
                     }
