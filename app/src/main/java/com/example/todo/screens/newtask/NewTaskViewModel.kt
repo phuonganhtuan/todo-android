@@ -15,8 +15,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.*
-import java.util.Calendar.HOUR
-import java.util.Calendar.MINUTE
+import java.util.Calendar.*
 import javax.inject.Inject
 import kotlin.random.Random
 
@@ -321,7 +320,7 @@ class NewTaskViewModel @Inject constructor(private val repository: TaskRepositor
         withContext(Dispatchers.IO) {
             val calendar = Calendar.getInstance().apply { time = _selectedDate.value }
             calendar.apply {
-                set(HOUR, if (_selectedHour.value == -1) 0 else _selectedHour.value)
+                set(HOUR_OF_DAY, if (_selectedHour.value == -1) 0 else _selectedHour.value)
                 set(MINUTE, if (_selectedMinute.value == -1) 0 else _selectedMinute.value)
             }
             val taskEntity = TaskEntity(
