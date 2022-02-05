@@ -270,7 +270,7 @@ class TaskDetailFragment : BaseFragment<FragmentTaskDetailBinding>() {
             PopupWindow(
                 popupView,
                 350,
-                if (cats.size <= 5) ViewGroup.LayoutParams.WRAP_CONTENT else 600,
+                if (cats.size <= 5) ViewGroup.LayoutParams.WRAP_CONTENT else 400,
                 true
             )
     }

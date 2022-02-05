@@ -3,9 +3,9 @@ package com.example.todo.screens.newtask
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.todo.R
-import com.example.todo.data.models.entity.CategoryEntity
-import com.example.todo.data.models.entity.SubTaskEntity
+import com.example.todo.data.models.entity.*
 import com.example.todo.data.repository.TaskRepository
+import com.example.todo.utils.DateTimeUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,6 +15,8 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.*
+import java.util.Calendar.HOUR
+import java.util.Calendar.MINUTE
 import javax.inject.Inject
 import kotlin.random.Random
 
@@ -41,41 +43,49 @@ enum class ReminderTimeEnum {
     SAME_DUE_DATE {
         override fun getStringid(): Int =
             R.string.same_with_due_date
+
         override fun getItemMenuId(): Int = R.id.option_same_with_due_date
     },
     FIVE_MINUTES_BEFORE {
         override fun getStringid(): Int =
             R.string.five_minutes_before
+
         override fun getItemMenuId(): Int = R.id.option_5_minutes_before
     },
     TEN_MINUTES_BEFORE {
         override fun getStringid(): Int =
             R.string.ten_minutes_before
+
         override fun getItemMenuId(): Int = R.id.option_10_minutes_before
     },
     FIFTEEN_MINUTES_BEFORE {
         override fun getStringid(): Int =
             R.string.fifteen_minutes_before
+
         override fun getItemMenuId(): Int = R.id.option_10_minutes_before
     },
     THIRTY_MINUTES_BEFORE {
         override fun getStringid(): Int =
             R.string.thirty_minutes_before
+
         override fun getItemMenuId(): Int = R.id.option_30_minutes_before
     },
     ONE_DAY_BEFORE {
         override fun getStringid(): Int =
             R.string.one_day_before
+
         override fun getItemMenuId(): Int = R.id.option_1_day_before
     },
     TWO_DAYS_BEFORE {
         override fun getStringid(): Int =
             R.string.two_days_before
+
         override fun getItemMenuId(): Int = R.id.option_2_day_before
     },
     CUSTOM_DAY_BEFORE {
         override fun getStringid(): Int =
             R.string.set_reminder_time
+
         override fun getItemMenuId(): Int = -1
     };
 
@@ -159,6 +169,15 @@ class NewTaskViewModel @Inject constructor(private val repository: TaskRepositor
 
     val selectedCatIndex: StateFlow<Int> get() = _selectedCatIndex
     private val _selectedCatIndex = MutableStateFlow(-1)
+
+    val attachments: StateFlow<List<AttachmentEntity>> get() = _attachments
+    private val _attachments = MutableStateFlow(emptyList<AttachmentEntity>())
+
+    val isAdded: StateFlow<Boolean> get() = _isAdded
+    private val _isAdded = MutableStateFlow(false)
+
+    val validated: StateFlow<Boolean> get() = _validated
+    private val _validated = MutableStateFlow(false)
 
     init {
         addSubTask()
@@ -260,7 +279,7 @@ class NewTaskViewModel @Inject constructor(private val repository: TaskRepositor
     /**
      * reset reminder default
      */
-    fun resetReminderDefault(){
+    fun resetReminderDefault() {
         _isCheckedReminder.value = false
         _selectedReminderTime.value = ReminderTimeEnum.FIVE_MINUTES_BEFORE
         _selectedReminderType.value = ReminderTypeEnum.NOTIFICATION
@@ -285,11 +304,64 @@ class NewTaskViewModel @Inject constructor(private val repository: TaskRepositor
     /**
      * reset Repeat
      */
-    fun resetRepeatDefault(){
+    fun resetRepeatDefault() {
         _selectedRepeatAt.value = RepeatAtEnum.HOUR
     }
 
-    fun createTask() {
+    fun validate(title: String) = viewModelScope.launch {
+        withContext(Dispatchers.IO) {
+            _validated.value =
+                _selectedHour.value != -1 &&
+                        _selectedMinute.value != -1 &&
+                        title.isNotEmpty()
+        }
+    }
 
+    fun createTask(title: String, note: String) = viewModelScope.launch {
+        withContext(Dispatchers.IO) {
+            val calendar = Calendar.getInstance().apply { time = _selectedDate.value }
+            calendar.apply {
+                set(HOUR, if (_selectedHour.value == -1) 0 else _selectedHour.value)
+                set(MINUTE, if (_selectedMinute.value == -1) 0 else _selectedMinute.value)
+            }
+            val taskEntity = TaskEntity(
+                title = title,
+                categoryId = if (_selectedCatIndex.value == -1) null else _categories.value[_selectedCatIndex.value].id,
+                calendar = calendar.timeInMillis,
+                isDone = false,
+                isMarked = false,
+                markId = null,
+                dueDate = DateTimeUtils.getComparableDateString(calendar.time),
+            )
+            val taskId = repository.addTask(taskEntity)
+            _subTasks.value.filter { st -> st.name.isNotEmpty() }.forEach {
+                it.taskId = taskId.toInt()
+                repository.addSubTasks(it)
+            }
+            val taskDetail = TaskDetailEntity(
+                taskId = taskId.toInt(),
+                note = note,
+                isReminder = _isCheckedReminder.value,
+                isRepeat = _isCheckedRepeat.value,
+            )
+            repository.addTaskDetail(taskDetail)
+            _attachments.value.forEach {
+                it.taskId = taskId.toInt()
+                repository.addAttachment(it)
+            }
+            if (_isCheckedReminder.value) {
+                val reminder = ReminderEntity(
+                    reminderType = _selectedReminderType.value.name,
+                    reminderTime = _selectedReminderTime.value.name,
+                    screenLockReminder = _selectedReminderScreenLock.value,
+                    enableRepeat = _isCheckedRepeat.value,
+                    time = calendar.timeInMillis,
+                    taskId = taskId.toInt(),
+                    repeatTime = if (_isCheckedRepeat.value) _selectedRepeatAt.value.name else RepeatAtEnum.NONE.name,
+                )
+                repository.addReminder(reminder)
+            }
+            _isAdded.value = true
+        }
     }
 }

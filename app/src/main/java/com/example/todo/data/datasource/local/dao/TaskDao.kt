@@ -24,6 +24,9 @@ interface TaskDao {
     suspend fun addTask(entity: TaskEntity): Long
 
     @Insert(onConflict = IGNORE)
+    suspend fun addReminder(entity: ReminderEntity): Long
+
+    @Insert(onConflict = IGNORE)
     suspend fun addTaskDetail(entity: TaskDetailEntity)
 
     @Insert(onConflict = IGNORE)

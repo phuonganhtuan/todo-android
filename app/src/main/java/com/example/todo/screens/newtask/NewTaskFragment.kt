@@ -12,6 +12,7 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.PopupWindow
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -65,7 +66,7 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
     }
 
     private fun initData() {
-
+        validateTask()
     }
 
     private fun initViews() = with(viewBinding) {
@@ -110,8 +111,18 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
             onCheckChangeReminder()
         }
         buttonCreateTask.setOnClickListener {
-            viewModel.createTask()
+            viewModel.createTask(
+                editTaskName.text.toString().trim(),
+                editNote.text.toString().trim()
+            )
         }
+        editTaskName.addTextChangedListener {
+            validateTask()
+        }
+    }
+
+    private fun validateTask() {
+        viewModel.validate(viewBinding.editTaskName.text.toString().trim())
     }
 
     @SuppressLint("UnsafeRepeatOnLifecycleDetector")
@@ -119,6 +130,7 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 subTasks.collect {
+                    validateTask()
                     subTaskAdapter.submitList(it)
                 }
             }
@@ -126,6 +138,7 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 canAddSubTask.collect {
+                    validateTask()
                     if (it) viewBinding.buttonNewSubTask.show() else viewBinding.buttonNewSubTask.gone()
                 }
             }
@@ -133,6 +146,7 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 selectedCatIndex.collect {
+                    validateTask()
                     viewBinding.apply {
                         if (it == -1) {
                             textCategory.setTextColor(
@@ -175,6 +189,7 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 selectedDate.collect {
+                    validateTask()
                     viewBinding.textTime.text = DateTimeUtils.getComparableDateString(it)
                 }
             }
@@ -193,6 +208,7 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
                         }
                         "$hourValue:$minuteValue"
                     }.collect {
+                        validateTask()
                         showDateTime()
                         viewBinding.buttonAddCalendar.text = it
                     }
@@ -200,15 +216,14 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
         }
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.selectedReminderTime.filter { it != ReminderTimeEnum.NONE && viewModel.isCheckedReminder.value }
-                    .collect {
-                        viewBinding.textReminderTime.text = resources.getString(it.getStringid())
-                    }
+                selectedReminderTime.filter { it != ReminderTimeEnum.NONE }.collect {
+                    viewBinding.textReminderTime.text = resources.getString(it.getStringid())
+                }
             }
         }
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.isCheckedReminder.collect {
+                isCheckedReminder.collect {
                     viewBinding.switchReminder.isChecked = it
                     if (it) viewBinding.textReminderTime.show()
                 }
@@ -216,7 +231,7 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
         }
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.selectedRepeatAt.filter { it != RepeatAtEnum.NONE && viewModel.isCheckedRepeat.value }
+                selectedRepeatAt.filter { it != RepeatAtEnum.NONE}
                     .collect {
                         viewBinding.textRepeatTime.text = resources.getString(it.getStringid())
                     }
@@ -224,10 +239,17 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
         }
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.isCheckedRepeat.collect {
+                isCheckedRepeat.collect {
                     viewBinding.switchRepeat.isChecked = it
                     if (it) viewBinding.textRepeatTime.show()
 
+                }
+            }
+        }
+        lifecycleScope.launchWhenStarted {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                validated.collect {
+                    viewBinding.buttonCreateTask.isEnabled = it
                 }
             }
         }
@@ -248,7 +270,7 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
             PopupWindow(
                 popupView,
                 350,
-                if (cats.size <= 5) WRAP_CONTENT else 600,
+                if (cats.size <= 5) WRAP_CONTENT else 400,
                 true
             )
     }
@@ -276,7 +298,12 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
         textRepeat.gone()
         textRepeatTime.gone()
         switchRepeat.gone()
-        buttonAddCalendar.setTextColor(ContextCompat.getColor(requireContext(), R.color.color_text_secondary_dark))
+        buttonAddCalendar.setTextColor(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.color_text_secondary_dark
+            )
+        )
     }
 
     private fun onCheckChangeReminder() = with(viewBinding) {

@@ -20,6 +20,8 @@ import com.example.todo.screens.newtask.NewTaskViewModel
 import com.example.todo.screens.newtask.ReminderTimeEnum
 import com.example.todo.screens.newtask.RepeatAtEnum
 import com.example.todo.utils.DateTimeUtils
+import com.example.todo.utils.gone
+import com.example.todo.utils.show
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filter
@@ -68,6 +70,8 @@ class AddCalendarBottomSheetDialogFragment :
             slMinute,
             false
         )
+        tvRepeatValue.gone()
+        tvReminderValue.gone()
     }
 
     private fun initData() = with(viewBinding) {
@@ -126,7 +130,7 @@ class AddCalendarBottomSheetDialogFragment :
 
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.selectedReminderTime.filter { it != ReminderTimeEnum.NONE && viewModel.isCheckedReminder.value }
+                viewModel.selectedReminderTime.filter { it != ReminderTimeEnum.NONE}
                     .collect {
                         viewBinding.tvReminderValue.setText(resources.getString(it.getStringid()))
                         viewBinding.tvReminderValue.setTextColor(Color.BLACK)
@@ -141,14 +145,17 @@ class AddCalendarBottomSheetDialogFragment :
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.isCheckedReminder.collect {
-                    viewBinding.swReminder.isChecked = it
+                    viewBinding.apply {
+                        if (it) tvReminderValue.show()
+                        swReminder.isChecked = it
+                    }
                 }
             }
         }
 
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.selectedRepeatAt.filter { it != RepeatAtEnum.NONE && viewModel.isCheckedRepeat.value }
+                viewModel.selectedRepeatAt.filter { it != RepeatAtEnum.NONE}
                     .collect {
                         viewBinding.tvRepeatValue.setText(resources.getString(it.getStringid()))
                         viewBinding.tvRepeatValue.setTextColor(Color.BLACK)
@@ -163,7 +170,10 @@ class AddCalendarBottomSheetDialogFragment :
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.isCheckedRepeat.collect {
-                    viewBinding.swRepeat.isChecked = it
+                    viewBinding.apply {
+                        if (it) tvRepeatValue.show()
+                        swRepeat.isChecked = it
+                    }
                 }
             }
         }
@@ -186,6 +196,7 @@ class AddCalendarBottomSheetDialogFragment :
             viewModel.onCheckChangeReminder(false)
             onClickReminder(swReminder)
         } else {
+            tvReminderValue.gone()
             viewModel.resetReminderDefault()
         }
     }
@@ -199,6 +210,7 @@ class AddCalendarBottomSheetDialogFragment :
             viewModel.onCheckChangeRepeat(false)
             onClickRepeat(swRepeat)
         } else {
+            tvRepeatValue.gone()
             viewModel.resetRepeatDefault()
         }
     }

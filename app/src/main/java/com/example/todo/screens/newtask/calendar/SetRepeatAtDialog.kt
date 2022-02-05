@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import androidx.annotation.MenuRes
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -25,10 +26,7 @@ class SetRepeatAtDialog : BaseDialogFragment<FragmentSetRepeatBinding>() {
     override fun inflateViewBinding(
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): FragmentSetRepeatBinding {
-        val rootView = FragmentSetRepeatBinding.inflate(layoutInflater, container, false)
-        return rootView
-    }
+    ) = FragmentSetRepeatBinding.inflate(layoutInflater, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -47,9 +45,9 @@ class SetRepeatAtDialog : BaseDialogFragment<FragmentSetRepeatBinding>() {
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 selectedRepeatAt.collect {
-                    viewBinding.tvRepeatAtValue.setText(resources.getString(it.getStringid()))
+                    viewBinding.tvRepeatAtValue.text = resources.getString(it.getStringid())
 
-                    val popup = PopupMenu(context!!, viewBinding.tvRepeatAtValue)
+                    val popup = PopupMenu(requireContext(), viewBinding.tvRepeatAtValue)
                     popup.menuInflater.inflate(R.menu.repeat_at_menu, popup.menu)
                     selRepeatAtItem = popup.menu.findItem(it.getItemMenuId())
                 }
@@ -63,6 +61,10 @@ class SetRepeatAtDialog : BaseDialogFragment<FragmentSetRepeatBinding>() {
 
     private fun onClickDone(view: View) {
         viewModel.onCheckChangeRepeat(true)
+
+        // Default value
+        viewModel.selectRepeatAt(RepeatAtEnum.HOUR)
+
         when (selRepeatAtItem?.itemId) {
             R.id.option_daily -> viewModel.selectRepeatAt(RepeatAtEnum.DAILY)
             R.id.option_hour -> viewModel.selectRepeatAt(RepeatAtEnum.HOUR)
@@ -74,13 +76,13 @@ class SetRepeatAtDialog : BaseDialogFragment<FragmentSetRepeatBinding>() {
     }
 
     private fun showMenu(v: View, @MenuRes menuRes: Int) = with(viewBinding) {
-        val popup = PopupMenu(context!!, v)
+        val popup = PopupMenu(requireContext(), v)
         popup.menuInflater.inflate(menuRes, popup.menu)
 
         when (menuRes) {
             R.menu.repeat_at_menu -> {
                 val menuItem = selRepeatAtItem?.let { popup.menu.findItem(it.itemId) }
-                menuItem?.icon = resources.getDrawable(R.drawable.ic_checked)
+                menuItem?.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_checked)
             }
             else -> {}
         }
@@ -89,7 +91,7 @@ class SetRepeatAtDialog : BaseDialogFragment<FragmentSetRepeatBinding>() {
             when (menuRes) {
                 R.menu.repeat_at_menu -> {
                     selRepeatAtItem = item
-                    tvRepeatAtValue.setText(item?.title)
+                    tvRepeatAtValue.text = item?.title
                 }
                 else -> {
 

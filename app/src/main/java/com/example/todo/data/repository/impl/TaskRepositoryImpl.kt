@@ -21,6 +21,7 @@ class TaskRepositoryImpl @Inject constructor(
 
     override suspend fun addBookmark(entity: BookmarkEntity) = taskDataSource.addBookmark(entity)
     override suspend fun addCategory(entity: CategoryEntity) = taskDataSource.addCategory(entity)
+    override suspend fun addReminder(entity: ReminderEntity) = taskDataSource.addReminder(entity)
 
     override suspend fun updateTask(entity: TaskEntity) = taskDataSource.updateTask(entity)
     override suspend fun updateCategory(entity: CategoryEntity) =

@@ -146,7 +146,6 @@ val bms = listOf(
 val taskDetail = TaskDetailEntity(
     note = "Create actionable plans for product",
     isReminder = false,
-    reminderTime = 0,
     isRepeat = false,
     taskId = 0,
 )

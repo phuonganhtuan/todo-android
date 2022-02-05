@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import androidx.annotation.MenuRes
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -15,9 +16,8 @@ import com.example.todo.R
 import com.example.todo.base.BaseDialogFragment
 import com.example.todo.databinding.FragmentSetReminderBinding
 import com.example.todo.screens.newtask.NewTaskViewModel
-import com.example.todo.screens.newtask.ReminderTypeEnum
 import com.example.todo.screens.newtask.ReminderTimeEnum
-import com.example.todo.utils.DateTimeUtils
+import com.example.todo.screens.newtask.ReminderTypeEnum
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 
@@ -26,16 +26,13 @@ class SetReminderDialog : BaseDialogFragment<FragmentSetReminderBinding>() {
 
     private val viewModel: NewTaskViewModel by activityViewModels()
     private var selReminderItem: MenuItem? = null
-    private var selReminerType: MenuItem? = null
+    private var selReminderType: MenuItem? = null
     private var selReminderScreenLock: MenuItem? = null
 
     override fun inflateViewBinding(
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): FragmentSetReminderBinding {
-        val rootView = FragmentSetReminderBinding.inflate(layoutInflater, container, false)
-        return rootView
-    }
+    )= FragmentSetReminderBinding.inflate(layoutInflater, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -63,9 +60,9 @@ class SetReminderDialog : BaseDialogFragment<FragmentSetReminderBinding>() {
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 selectedReminderTime.collect {
-                    viewBinding.tvReminderAtValue.setText(resources.getString(it.getStringid()))
+                    viewBinding.tvReminderAtValue.text = resources.getString(it.getStringid())
 
-                    val popup = PopupMenu(context!!, viewBinding.tvReminderAtValue)
+                    val popup = PopupMenu(requireContext(), viewBinding.tvReminderAtValue)
                     popup.menuInflater.inflate(R.menu.reminder_menu, popup.menu)
                     selReminderItem = popup.menu.findItem(it.getItemMenuId())
                 }
@@ -75,11 +72,11 @@ class SetReminderDialog : BaseDialogFragment<FragmentSetReminderBinding>() {
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 selectedReminderType.collect {
-                    viewBinding.tvReminderTypeValue.setText(resources.getString(it.getStringid()))
+                    viewBinding.tvReminderTypeValue.text = resources.getString(it.getStringid())
 
-                    val popup = PopupMenu(context!!, viewBinding.tvReminderTypeValue)
+                    val popup = PopupMenu(requireContext(), viewBinding.tvReminderTypeValue)
                     popup.menuInflater.inflate(R.menu.reminder_type_menu, popup.menu)
-                    selReminerType = popup.menu.findItem(it.getItemMenuId())
+                    selReminderType = popup.menu.findItem(it.getItemMenuId())
                 }
             }
         }
@@ -89,9 +86,9 @@ class SetReminderDialog : BaseDialogFragment<FragmentSetReminderBinding>() {
                 selectedReminderScreenLock.collect {
                     val reminderScreenLockTxt =
                         if (it) resources.getString(R.string.on) else resources.getString(R.string.off)
-                    viewBinding.tvScreenLockValue.setText(reminderScreenLockTxt)
+                    viewBinding.tvScreenLockValue.text = reminderScreenLockTxt
 
-                    val popup = PopupMenu(context!!, viewBinding.tvScreenLockValue)
+                    val popup = PopupMenu(requireContext(), viewBinding.tvScreenLockValue)
                     popup.menuInflater.inflate(R.menu.screen_lock_menu, popup.menu)
                     val optionId = if (it) R.id.option_on else R.id.option_off
                     selReminderScreenLock = popup.menu.findItem(optionId)
@@ -106,6 +103,14 @@ class SetReminderDialog : BaseDialogFragment<FragmentSetReminderBinding>() {
 
     private fun onClickDone(view: View) {
         viewModel.onCheckChangeReminder(true)
+
+        // Set default value
+        viewModel.apply {
+            selectReminderAt(ReminderTimeEnum.FIVE_MINUTES_BEFORE)
+            selectReminderType(ReminderTypeEnum.NOTIFICATION)
+            selectReminderScreenlock(false)
+        }
+
         when (selReminderItem?.itemId) {
             R.id.option_same_with_due_date -> viewModel.selectReminderAt(ReminderTimeEnum.SAME_DUE_DATE)
             R.id.option_5_minutes_before -> viewModel.selectReminderAt(ReminderTimeEnum.FIVE_MINUTES_BEFORE)
@@ -116,7 +121,7 @@ class SetReminderDialog : BaseDialogFragment<FragmentSetReminderBinding>() {
             R.id.option_2_day_before -> viewModel.selectReminderAt(ReminderTimeEnum.TWO_DAYS_BEFORE)
         }
 
-        when (selReminerType?.itemId) {
+        when (selReminderType?.itemId) {
             R.id.option_notification -> viewModel.selectReminderType(ReminderTypeEnum.NOTIFICATION)
             R.id.option_alarm -> viewModel.selectReminderType(ReminderTypeEnum.ALARM)
         }
@@ -130,24 +135,25 @@ class SetReminderDialog : BaseDialogFragment<FragmentSetReminderBinding>() {
     }
 
     private fun showMenu(v: View, @MenuRes menuRes: Int) = with(viewBinding) {
-        val popup = PopupMenu(context!!, v)
+        val popup = PopupMenu(requireContext(), v)
         popup.menuInflater.inflate(menuRes, popup.menu)
 
         when (menuRes) {
             R.menu.reminder_menu -> {
                 val menuItem = selReminderItem?.let { popup.menu.findItem(it.itemId) }
-                menuItem?.icon = resources.getDrawable(R.drawable.ic_checked)
+                menuItem?.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_checked)
             }
             R.menu.reminder_type_menu -> {
-                val menuItem = selReminerType?.let { popup.menu.findItem(it.itemId) }
-                menuItem?.icon = resources.getDrawable(R.drawable.ic_checked)
+                val menuItem = selReminderType?.let { popup.menu.findItem(it.itemId) }
+                menuItem?.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_checked)
 
             }
             R.menu.screen_lock_menu -> {
                 val menuItem = selReminderScreenLock?.let { popup.menu.findItem(it.itemId) }
-                menuItem?.icon = resources.getDrawable(R.drawable.ic_checked)
+                menuItem?.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_checked)
             }
-            else -> {}
+            else -> {
+            }
         }
 
         popup.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener { item: MenuItem? ->
@@ -159,7 +165,7 @@ class SetReminderDialog : BaseDialogFragment<FragmentSetReminderBinding>() {
 
                 }
                 R.menu.reminder_type_menu -> {
-                    selReminerType = item
+                    selReminderType = item
                     tvReminderTypeValue.setText(item?.title)
 
                 }
@@ -169,7 +175,8 @@ class SetReminderDialog : BaseDialogFragment<FragmentSetReminderBinding>() {
 
                 }
 
-                else -> {}
+                else -> {
+                }
             }
             true
         })

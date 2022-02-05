@@ -14,6 +14,7 @@ interface TaskLocalDataSource {
     suspend fun addAttachment(entity: AttachmentEntity)
     suspend fun addBookmark(entity: BookmarkEntity): Long
     suspend fun addCategory(entity: CategoryEntity): Long
+    suspend fun addReminder(entity: ReminderEntity): Long
 
     suspend fun updateTask(entity: TaskEntity)
     suspend fun updateCategory(entity: CategoryEntity): Int

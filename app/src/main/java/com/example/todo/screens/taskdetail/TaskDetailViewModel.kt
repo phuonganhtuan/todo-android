@@ -167,7 +167,6 @@ class TaskDetailViewModel @Inject constructor(private val repository: TaskReposi
                 note = newTask.detail.note,
                 isReminder = newTask.detail.isReminder,
                 isRepeat = newTask.detail.isRepeat,
-                reminderTime = newTask.detail.reminderTime,
             )
             repository.addTaskDetail(newDetail)
             newTask.attachments.forEach { att ->
