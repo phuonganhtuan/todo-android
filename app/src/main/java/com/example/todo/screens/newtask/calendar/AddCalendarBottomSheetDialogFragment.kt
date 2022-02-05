@@ -1,6 +1,5 @@
 package com.example.todo.screens.newtask.calendar
 
-import android.app.TimePickerDialog
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -22,10 +21,10 @@ import com.example.todo.screens.newtask.RepeatAtEnum
 import com.example.todo.utils.DateTimeUtils
 import com.example.todo.utils.gone
 import com.example.todo.utils.show
+import com.google.android.material.timepicker.MaterialTimePicker
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.zip
 import java.util.*
 
 
@@ -34,7 +33,7 @@ class AddCalendarBottomSheetDialogFragment :
 
     private val viewModel: NewTaskViewModel by activityViewModels()
 
-    private lateinit var mTimePicker: TimePickerDialog
+    private lateinit var timePicker: MaterialTimePicker
 
     val mCurrentTime = Calendar.getInstance()
 
@@ -61,15 +60,11 @@ class AddCalendarBottomSheetDialogFragment :
             else -> mCurrentTime.get(Calendar.MINUTE)
         }
         // TimePicker
-        mTimePicker = TimePickerDialog(
-            context,
-            TimePickerDialog.OnTimeSetListener { timePicker, hour, minute ->
-                onTimeSet(timePicker, hour, minute)
-            },
-            slHour,
-            slMinute,
-            false
-        )
+        timePicker = MaterialTimePicker
+            .Builder()
+            .setHour(slHour)
+            .setMinute(slMinute)
+            .build()
         tvRepeatValue.gone()
         tvReminderValue.gone()
     }
@@ -97,6 +92,10 @@ class AddCalendarBottomSheetDialogFragment :
         imgRepeat.setOnClickListener { onClickRepeat(it) }
         tvRepeat.setOnClickListener { onClickRepeat(it) }
         swRepeat.setOnClickListener { onCheckChangeRepeat() }
+
+        timePicker.addOnPositiveButtonClickListener {
+            onTimeSet(timePicker.hour, timePicker.minute)
+        }
     }
 
     private fun observeData() = with(viewModel) {
@@ -130,7 +129,7 @@ class AddCalendarBottomSheetDialogFragment :
 
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.selectedReminderTime.filter { it != ReminderTimeEnum.NONE}
+                viewModel.selectedReminderTime.filter { it != ReminderTimeEnum.NONE }
                     .collect {
                         viewBinding.tvReminderValue.setText(resources.getString(it.getStringid()))
                         viewBinding.tvReminderValue.setTextColor(Color.BLACK)
@@ -155,7 +154,7 @@ class AddCalendarBottomSheetDialogFragment :
 
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.selectedRepeatAt.filter { it != RepeatAtEnum.NONE}
+                viewModel.selectedRepeatAt.filter { it != RepeatAtEnum.NONE }
                     .collect {
                         viewBinding.tvRepeatValue.setText(resources.getString(it.getStringid()))
                         viewBinding.tvRepeatValue.setTextColor(Color.BLACK)
@@ -184,10 +183,12 @@ class AddCalendarBottomSheetDialogFragment :
     }
 
     private fun onClickAddTime() {
-        mTimePicker.show()
+        activity?.supportFragmentManager?.let {
+            timePicker.show(it, MaterialTimePicker::class.java.simpleName)
+        }
     }
 
-    private fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) = with(viewBinding) {
+    private fun onTimeSet(hourOfDay: Int, minute: Int) = with(viewBinding) {
         viewModel.selectHourAndMinute(hourOfDay, minute)
     }
 
