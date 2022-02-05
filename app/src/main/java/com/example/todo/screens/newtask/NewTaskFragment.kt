@@ -312,6 +312,9 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
             onClickReminder()
         } else {
             textReminderTime.gone()
+            textRepeatTime.gone()
+            switchRepeat.isChecked = false
+            viewModel.resetRepeatDefault()
             viewModel.resetReminderDefault()
         }
     }
