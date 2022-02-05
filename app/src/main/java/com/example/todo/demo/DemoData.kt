@@ -289,7 +289,7 @@ val tasks = listOf<TaskEntity>(
 )
 
 suspend fun createDemoData(repository: TaskRepository) {
-
+    return
     // Remove all existed data
     repository.deleteAttachments()
     repository.deleteTaskDetails()

@@ -27,6 +27,7 @@ import com.example.todo.screens.newtask.category.OnCatInteractListener
 import com.example.todo.screens.newtask.category.SelectCategoryAdapter
 import com.example.todo.screens.newtask.subtask.OnSubTaskInteract
 import com.example.todo.screens.newtask.subtask.SubTaskAdapter
+import com.example.todo.screens.taskdetail.attachment.AttachmentAdapter
 import com.example.todo.utils.DateTimeUtils
 import com.example.todo.utils.boldWhenFocus
 import com.example.todo.utils.gone
@@ -52,6 +53,9 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
     @Inject
     lateinit var categoryAdapter: SelectCategoryAdapter
 
+    @Inject
+    lateinit var attachmentAdapter: AttachmentAdapter
+
     override fun inflateViewBinding(
         container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -66,11 +70,14 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
     }
 
     private fun initData() {
+        viewModel.addSubTask()
         validateTask()
     }
 
     private fun initViews() = with(viewBinding) {
         recyclerSubTasks.adapter = subTaskAdapter
+        recyclerAttachment.adapter = attachmentAdapter
+        recyclerAttachment.itemAnimator = null
         hideDateTime()
     }
 
@@ -119,6 +126,9 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
         editTaskName.addTextChangedListener {
             validateTask()
         }
+        attachmentAdapter.onAttachmentRemoveListener = {
+            viewModel.removeAttachment(it)
+        }
     }
 
     private fun validateTask() {
@@ -129,7 +139,7 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
     private fun observeData() = with(viewModel) {
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                subTasks.collect {
+                subtasks.collect {
                     validateTask()
                     subTaskAdapter.submitList(it)
                 }
@@ -190,7 +200,7 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 selectedDate.collect {
                     validateTask()
-                    viewBinding.textTime.text = DateTimeUtils.getComparableDateString(it)
+                    viewBinding.buttonAddCalendar.text = DateTimeUtils.getComparableDateString(it)
                 }
             }
         }
@@ -210,7 +220,7 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
                     }.collect {
                         validateTask()
                         showDateTime()
-                        viewBinding.buttonAddCalendar.text = it
+                        viewBinding.textTime.text = it
                     }
             }
         }
@@ -250,6 +260,13 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 validated.collect {
                     viewBinding.buttonCreateTask.isEnabled = it
+                }
+            }
+        }
+        lifecycleScope.launchWhenStarted {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                attachments.collect {
+                    attachmentAdapter.submitList(it)
                 }
             }
         }

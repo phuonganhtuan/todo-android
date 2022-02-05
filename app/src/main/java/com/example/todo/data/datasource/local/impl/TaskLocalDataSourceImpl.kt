@@ -22,6 +22,7 @@ class TaskLocalDataSourceImpl @Inject constructor(private val dao: TaskDao) : Ta
     override suspend fun updateTaskDetail(entity: TaskDetailEntity) = dao.updateTaskDetail(entity)
     override suspend fun updateSubTask(entity: SubTaskEntity) = dao.updateSubTask(entity)
     override suspend fun updateAttachment(entity: AttachmentEntity) = dao.updateAttachment(entity)
+    override suspend fun updateReminder(entity: ReminderEntity) = dao.updateReminder(entity)
 
     override suspend fun deleteCategories() = dao.deleteCategories()
     override suspend fun deleteTasks() = dao.deleteTasks()

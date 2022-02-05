@@ -32,6 +32,12 @@ data class Task(
         entityColumn = "id"
     )
     var bookmark: BookmarkEntity?,
+
+    @Relation(
+        parentColumn = "id",
+        entityColumn = "taskId"
+    )
+    var reminder: ReminderEntity? = null,
 )
 
 data class TaskShort(

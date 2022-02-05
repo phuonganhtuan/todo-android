@@ -6,12 +6,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import com.example.todo.base.BaseDialogFragment
 import com.example.todo.databinding.LayoutDeleteTaskBinding
+import com.example.todo.screens.newtask.NewTaskViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class DeleteTaskDialogFragment : BaseDialogFragment<LayoutDeleteTaskBinding>() {
 
-    private val viewModel: TaskDetailViewModel by activityViewModels()
+    private val viewModel: NewTaskViewModel by activityViewModels()
 
     override fun inflateViewBinding(
         container: ViewGroup?,

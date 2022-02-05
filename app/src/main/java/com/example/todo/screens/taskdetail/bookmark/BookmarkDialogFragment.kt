@@ -10,7 +10,7 @@ import com.example.todo.R
 import com.example.todo.base.BaseDialogFragment
 import com.example.todo.data.models.entity.BookmarkType
 import com.example.todo.databinding.LayoutBookmarkBinding
-import com.example.todo.screens.taskdetail.TaskDetailViewModel
+import com.example.todo.screens.newtask.NewTaskViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
@@ -18,7 +18,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class BookmarkDialogFragment : BaseDialogFragment<LayoutBookmarkBinding>() {
 
-    private val viewModel: TaskDetailViewModel by activityViewModels()
+    private val viewModel: NewTaskViewModel by activityViewModels()
 
     @Inject
     lateinit var flagsAdapter: BookmarkAdapter

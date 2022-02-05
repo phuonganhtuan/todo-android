@@ -21,6 +21,7 @@ interface TaskLocalDataSource {
     suspend fun updateTaskDetail(entity: TaskDetailEntity): Int
     suspend fun updateSubTask(entity: SubTaskEntity): Int
     suspend fun updateAttachment(entity: AttachmentEntity): Int
+    suspend fun updateReminder(entity: ReminderEntity): Int
 
     suspend fun deleteCategories()
     suspend fun deleteTasks()

@@ -34,6 +34,9 @@ class TaskRepositoryImpl @Inject constructor(
     override suspend fun updateAttachment(entity: AttachmentEntity) =
         taskDataSource.updateAttachment(entity)
 
+    override suspend fun updateReminder(entity: ReminderEntity) =
+        taskDataSource.updateReminder(entity)
+
     override suspend fun deleteCategories() = taskDataSource.deleteCategories()
     override suspend fun deleteTasks() = taskDataSource.deleteTasks()
     override suspend fun deleteTaskDetails() = taskDataSource.deleteTaskDetails()

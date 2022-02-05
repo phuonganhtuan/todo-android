@@ -301,6 +301,16 @@
                 app:layout_constraintBottom_toBottomOf="@+id/imageAttachment"
                 app:layout_constraintStart_toEndOf="@+id/imageAttachment"
                 app:layout_constraintTop_toTopOf="@+id/imageAttachment" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerAttachment"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintStart_toStartOf="@id/buttonAttachment"
+                app:layout_constraintTop_toBottomOf="@id/buttonAttachment"
+                tools:itemCount="3"
+                tools:listitem="@layout/item_attachment" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 

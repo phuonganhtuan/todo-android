@@ -39,8 +39,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
-            android:animateLayoutChanges="true"
-            android:paddingBottom="130dp">
+            android:animateLayoutChanges="true">
 
             <LinearLayout
                 android:id="@+id/layoutSubTask"
@@ -153,6 +152,142 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/textCategory" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                app:layout_constraintTop_toBottomOf="@id/imageDone"
+                android:layout_marginTop="64dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:background="@color/color_border_grey"
+                android:id="@+id/viewIndicatorBottom"/>
+
+            <ImageView
+                android:id="@+id/imageCalendar"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="26dp"
+                android:layout_marginTop="36dp"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_calendar_outline"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/viewIndicatorBottom" />
+
+            <TextView
+                android:id="@+id/buttonAddCalendar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/bg_greybg_rounded_8"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="4dp"
+                android:text="@string/add_calendar"
+                android:textColor="@color/color_text_secondary_dark"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="@+id/imageCalendar"
+                app:layout_constraintStart_toEndOf="@+id/imageCalendar"
+                app:layout_constraintTop_toTopOf="@+id/imageCalendar" />
+
+            <TextView
+                android:id="@+id/textTime"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:ellipsize="end"
+                android:textColor="@color/color_menu_text_default"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="@id/buttonAddCalendar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/buttonAddCalendar"
+                app:layout_constraintTop_toTopOf="@id/buttonAddCalendar"
+                tools:text="04:54" />
+
+            <ImageView
+                android:id="@+id/imageReminder"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginTop="36dp"
+                android:src="@drawable/ic_reminder"
+                app:layout_constraintStart_toStartOf="@id/imageCalendar"
+                app:layout_constraintTop_toBottomOf="@id/imageCalendar" />
+
+            <TextView
+                android:id="@+id/textReminder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="@string/reminder"
+                android:textColor="@color/color_text_secondary_dark"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="@+id/imageReminder"
+                app:layout_constraintStart_toEndOf="@+id/imageReminder"
+                app:layout_constraintTop_toTopOf="@+id/imageReminder" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/switchReminder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:thumb="@drawable/custom_thumb"
+                app:layout_constraintBottom_toBottomOf="@id/textReminder"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/textReminder"
+                app:track="@drawable/custom_track" />
+
+            <TextView
+                android:id="@+id/textReminderTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/color_menu_text_default"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@id/textReminder"
+                app:layout_constraintTop_toBottomOf="@id/textReminder" />
+
+            <ImageView
+                android:id="@+id/imageRepeat"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginTop="36dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginBottom="150dp"
+                app:layout_constraintVertical_bias="0"
+                android:src="@drawable/ic_repeat"
+                app:layout_constraintStart_toStartOf="@id/imageReminder"
+                app:layout_constraintTop_toBottomOf="@id/textReminderTime" />
+
+            <TextView
+                android:id="@+id/textRepeat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="@string/repeat"
+                android:textColor="@color/color_text_secondary_dark"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="@+id/imageRepeat"
+                app:layout_constraintStart_toEndOf="@+id/imageRepeat"
+                app:layout_constraintTop_toTopOf="@+id/imageRepeat" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/switchRepeat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:thumb="@drawable/custom_thumb"
+                app:layout_constraintBottom_toBottomOf="@id/textRepeat"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/textRepeat"
+                app:track="@drawable/custom_track" />
+
+            <TextView
+                android:id="@+id/textRepeatTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/color_menu_text_default"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@id/textRepeat"
+                app:layout_constraintTop_toBottomOf="@id/textRepeat" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
