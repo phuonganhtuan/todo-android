@@ -97,6 +97,7 @@ class TaskViewHolder(
             textTaskName.paintFlags = textFlag
             textTaskTime.paintFlags = textFlag
         }
+        buttonMark.setImageDrawable(null)
         entity.bookmark?.let {
             val markIcon = if (entity.task.isMarked) {
                 getBookmarkIcon(itemView.context, it)

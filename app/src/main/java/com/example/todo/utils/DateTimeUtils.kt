@@ -12,24 +12,26 @@ object DateTimeUtils {
 
     fun getTomorrow(): Long {
         val calendar = Calendar.getInstance()
-        calendar.add(Calendar.DAY_OF_YEAR, 1)
+        calendar.add(Calendar.DAY_OF_MONTH, 1)
+        calendar.set(HOUR_OF_DAY, 0)
+        calendar.set(MINUTE, 0)
         return calendar.timeInMillis
     }
 
     fun getShortTimeFromDate(date: Date): String {
-        val simpleDate = SimpleDateFormat("dd/MM hh:mm")
+        val simpleDate = SimpleDateFormat("dd/MM HH:mm")
         return simpleDate.format(date)
     }
 
     fun getShortTimeFromMillisecond(milis: Long): String {
         val date = Date().apply { time = milis }
-        val simpleDate = SimpleDateFormat("dd/MM hh:mm")
+        val simpleDate = SimpleDateFormat("dd/MM HH:mm")
         return simpleDate.format(date)
     }
 
     fun getHourMinuteFromMillisecond(milis: Long): String {
         val date = Date().apply { time = milis }
-        val simpleDate = SimpleDateFormat("hh:mm")
+        val simpleDate = SimpleDateFormat("HH:mm")
         return simpleDate.format(date)
     }
 

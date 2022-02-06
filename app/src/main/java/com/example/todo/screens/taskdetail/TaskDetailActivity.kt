@@ -13,15 +13,18 @@ import androidx.navigation.findNavController
 import com.example.todo.R
 import com.example.todo.base.BaseActivity
 import com.example.todo.databinding.ActivityTaskDetailBinding
+import com.example.todo.screens.newtask.NewTaskViewModel
 import com.example.todo.utils.Constants
+import com.example.todo.utils.gone
 import com.example.todo.utils.hide
+import com.example.todo.utils.show
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class TaskDetailActivity : BaseActivity<ActivityTaskDetailBinding>() {
 
-    private val viewModel: TaskDetailViewModel by viewModels()
+    private val viewModel: NewTaskViewModel by viewModels()
 
     override fun inflateViewBinding() = ActivityTaskDetailBinding.inflate(layoutInflater)
 
@@ -58,7 +61,6 @@ class TaskDetailActivity : BaseActivity<ActivityTaskDetailBinding>() {
             showMoreMenu()
         }
     }
-
 
     private fun showMoreMenu() {
         val popup = PopupMenu(this, viewBinding.layoutTop.button4)
@@ -122,6 +124,26 @@ class TaskDetailActivity : BaseActivity<ActivityTaskDetailBinding>() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 isRemoved.collect {
                     if (it) finish()
+                }
+            }
+        }
+        lifecycleScope.launchWhenStarted {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                validated.collect {
+                    viewBinding.layoutTop.button3.apply {
+                        if (!isEditing.value) {
+                            isEnabled = true
+                        } else {
+                            if (it) show() else gone()
+                        }
+                    }
+                }
+            }
+        }
+        lifecycleScope.launchWhenStarted {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                isAdded.collect {
+                    if (it) showToastMessage(getString(R.string.saved))
                 }
             }
         }

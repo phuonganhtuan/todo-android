@@ -2,6 +2,7 @@ package com.example.todo.screens.taskdetail
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Color
 import android.graphics.PorterDuff
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupWindow
 import androidx.core.content.ContextCompat
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -20,25 +22,31 @@ import com.example.todo.R
 import com.example.todo.base.BaseFragment
 import com.example.todo.data.models.entity.CategoryEntity
 import com.example.todo.databinding.FragmentTaskDetailBinding
+import com.example.todo.screens.newtask.NewTaskViewModel
+import com.example.todo.screens.newtask.ReminderTimeEnum
+import com.example.todo.screens.newtask.RepeatAtEnum
 import com.example.todo.screens.newtask.category.OnCatInteractListener
 import com.example.todo.screens.newtask.category.SelectCategoryAdapter
 import com.example.todo.screens.taskdetail.attachment.AttachmentAdapter
 import com.example.todo.screens.taskdetail.subtasks.ItemMoveCallback
 import com.example.todo.screens.taskdetail.subtasks.OnSubTaskDetailInteract
 import com.example.todo.screens.taskdetail.subtasks.SubTaskDetailAdapter
+import com.example.todo.utils.DateTimeUtils
 import com.example.todo.utils.boldWhenFocus
 import com.example.todo.utils.gone
 import com.example.todo.utils.helper.getCategoryColor
 import com.example.todo.utils.show
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filter
 import javax.inject.Inject
 
 
 @AndroidEntryPoint
 class TaskDetailFragment : BaseFragment<FragmentTaskDetailBinding>() {
 
-    private val viewModel: TaskDetailViewModel by activityViewModels()
+    private val viewModel: NewTaskViewModel by activityViewModels()
 
     @Inject
     lateinit var subTaskAdapter: SubTaskDetailAdapter
@@ -63,6 +71,7 @@ class TaskDetailFragment : BaseFragment<FragmentTaskDetailBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViews()
+        initData()
         setupEvents()
         observeData()
     }
@@ -74,6 +83,15 @@ class TaskDetailFragment : BaseFragment<FragmentTaskDetailBinding>() {
         recyclerSubTasks.itemAnimator = null
         recyclerAttachment.itemAnimator = null
         editNote.boldWhenFocus()
+        hideDateTime()
+    }
+
+    private fun initData() {
+
+    }
+
+    private fun validateTask() {
+        viewModel.validate(viewBinding.textTaskName.text.toString().trim())
     }
 
     private fun setupEvents() = with(viewBinding) {
@@ -119,6 +137,18 @@ class TaskDetailFragment : BaseFragment<FragmentTaskDetailBinding>() {
         })
         buttonNewSubTask.setOnClickListener {
             viewModel.addSubTask()
+        }
+        switchRepeat.setOnClickListener {
+            onCheckChangeRepeat()
+        }
+        switchReminder.setOnClickListener {
+            onCheckChangeReminder()
+        }
+        buttonAddCalendar.setOnClickListener {
+            findNavController().navigate(R.id.toAddCalendar)
+        }
+        textTaskName.addTextChangedListener {
+            validateTask()
         }
     }
 
@@ -206,6 +236,75 @@ class TaskDetailFragment : BaseFragment<FragmentTaskDetailBinding>() {
                 }
             }
         }
+        lifecycleScope.launchWhenStarted {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                selectedDate.collect {
+                    validateTask()
+                    viewBinding.buttonAddCalendar.text = DateTimeUtils.getComparableDateString(it)
+                }
+            }
+        }
+        lifecycleScope.launchWhenStarted {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                selectedHour.filter { it > -1 }
+                    .combine(selectedMinute.filter { it > -1 }) { hour, minute ->
+                        val hourValue = when (hour > 9) {
+                            true -> "$hour"
+                            else -> "0$hour"
+                        }
+                        val minuteValue = when (minute > 9) {
+                            true -> "$minute"
+                            else -> "0$minute"
+                        }
+                        "$hourValue:$minuteValue"
+                    }.collect {
+                        validateTask()
+                        showDateTime()
+                        viewBinding.textTime.text = it
+                    }
+            }
+        }
+        lifecycleScope.launchWhenStarted {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                selectedReminderTime.filter { it != ReminderTimeEnum.NONE }.collect {
+                    viewBinding.textReminderTime.text = resources.getString(it.getStringid())
+                }
+            }
+        }
+        lifecycleScope.launchWhenStarted {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                isCheckedReminder.collect {
+                    viewBinding.switchReminder.isChecked = it
+                    if (it) viewBinding.textReminderTime.show()
+                }
+            }
+        }
+        lifecycleScope.launchWhenStarted {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                selectedRepeatAt.filter { it != RepeatAtEnum.NONE }
+                    .collect {
+                        viewBinding.textRepeatTime.text = resources.getString(it.getStringid())
+                    }
+            }
+        }
+        lifecycleScope.launchWhenStarted {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                isCheckedRepeat.collect {
+                    viewBinding.switchRepeat.isChecked = it
+                    if (it) viewBinding.textRepeatTime.show()
+                }
+            }
+        }
+        lifecycleScope.launchWhenStarted {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                isSaving.collect {
+                    if (it) viewModel.updateTask(
+                        viewBinding.textTaskName.text.toString().trim(),
+                        viewBinding.editNote.text.toString().trim()
+                    )
+                }
+            }
+        }
     }
 
     private fun toViewMode() = with(viewBinding) {
@@ -227,9 +326,13 @@ class TaskDetailFragment : BaseFragment<FragmentTaskDetailBinding>() {
         }
         buttonAttachment.isEnabled = false
         buttonNewSubTask.gone()
+        buttonAddCalendar.isEnabled = false
+        switchReminder.isEnabled = false
+        switchRepeat.isEnabled = false
     }
 
     private fun toEditMode() = with(viewBinding) {
+        validateTask()
         subTaskAdapter.isEditing = true
         attachmentAdapter.isEditing = true
         textTaskName.isEnabled = true
@@ -253,6 +356,9 @@ class TaskDetailFragment : BaseFragment<FragmentTaskDetailBinding>() {
         }
         buttonAttachment.isEnabled = true
         buttonNewSubTask.show()
+        buttonAddCalendar.isEnabled = true
+        switchReminder.isEnabled = true
+        switchRepeat.isEnabled = true
     }
 
     private fun createNewCategory() {
@@ -270,8 +376,68 @@ class TaskDetailFragment : BaseFragment<FragmentTaskDetailBinding>() {
             PopupWindow(
                 popupView,
                 350,
-                if (cats.size <= 5) ViewGroup.LayoutParams.WRAP_CONTENT else 600,
+                if (cats.size <= 5) ViewGroup.LayoutParams.WRAP_CONTENT else 400,
                 true
             )
+    }
+
+    private fun showDateTime() = with(viewBinding) {
+        textTime.show()
+        imageReminder.show()
+        textReminder.show()
+        switchReminder.show()
+        imageRepeat.show()
+        textRepeat.show()
+        switchRepeat.show()
+        buttonAddCalendar.setTextColor(Color.BLACK)
+    }
+
+    private fun hideDateTime() = with(viewBinding) {
+        textTime.gone()
+        imageReminder.gone()
+        textReminder.gone()
+        textReminderTime.gone()
+        switchReminder.gone()
+        imageRepeat.gone()
+        textRepeat.gone()
+        textRepeatTime.gone()
+        switchRepeat.gone()
+        buttonAddCalendar.setTextColor(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.color_text_secondary_dark
+            )
+        )
+    }
+
+    private fun onCheckChangeReminder() = with(viewBinding) {
+        if (switchReminder.isChecked) {
+            viewModel.onCheckChangeReminder(false)
+            onClickReminder()
+        } else {
+            textReminderTime.gone()
+            textRepeatTime.gone()
+            switchRepeat.isChecked = false
+            viewModel.resetRepeatDefault()
+            viewModel.resetReminderDefault()
+        }
+    }
+
+    private fun onClickReminder() {
+        findNavController().navigate(R.id.toAddReminderDetail)
+    }
+
+    private fun onCheckChangeRepeat() = with(viewBinding) {
+        if (switchRepeat.isChecked) {
+            viewModel.onCheckChangeRepeat(false)
+            onClickRepeat()
+        } else {
+            textRepeatTime.gone()
+            viewModel.resetRepeatDefault()
+        }
+    }
+
+    private fun onClickRepeat() {
+        findNavController().navigate(R.id.toAddRepeatDetail)
     }
 }

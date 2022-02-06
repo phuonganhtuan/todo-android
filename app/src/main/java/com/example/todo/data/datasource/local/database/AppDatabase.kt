@@ -15,6 +15,7 @@ import com.example.todo.data.models.entity.*
         CategoryEntity::class,
         BookmarkEntity::class,
         SubTaskEntity::class,
+        ReminderEntity::class,
     ],
     version = 1,
     exportSchema = false

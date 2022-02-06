@@ -73,6 +73,17 @@
     <string name="completed_tasks">Completed Tasks</string>
     <string name="pending_tasks">Pending Tasks</string>
     <string name="tasks_in_next_7_days">Tasks in next 7 days</string>
+    <string name="create_task">Create task</string>
+    <string name="added_task">Added task.</string>
+    <string name="done">Done</string>
+    <string name="screenlock_reminder">Screenlock Reminder</string>
+    <string name="reminder_type">Reminder type</string>
+    <string name="reminder_at">Reminder at</string>
+    <string name="set_reminder">Set reminder</string>
+    <string name="set_as_repeat">Set as repeat</string>
+    <string name="repeat_at">Repeat at</string>
+    <string name="_5_minute_before">5 minute before</string>
+    <string name="saved">Saved.</string>
     <string name="photo">Photo</string>
     <string name="video">Video</string>
 </resources>

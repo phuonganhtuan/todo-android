@@ -65,8 +65,6 @@ class SubTaskViewHolder(
 
 class SubTaskDiffCallback : BaseDiffCallBack<SubTaskEntity>() {
 
-    override fun areItemsTheSame(oldItem: SubTaskEntity, newItem: SubTaskEntity) = false
-
     override fun areContentsTheSame(oldItem: SubTaskEntity, newItem: SubTaskEntity): Boolean =
         oldItem.id == newItem.id && oldItem.isDone == newItem.isDone && oldItem.name == newItem.name
 }

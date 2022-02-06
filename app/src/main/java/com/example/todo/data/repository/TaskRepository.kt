@@ -14,12 +14,14 @@ interface TaskRepository {
     suspend fun addAttachment(entity: AttachmentEntity)
     suspend fun addBookmark(entity: BookmarkEntity): Long
     suspend fun addCategory(entity: CategoryEntity): Long
+    suspend fun addReminder(entity: ReminderEntity): Long
 
     suspend fun updateTask(entity: TaskEntity)
     suspend fun updateCategory(entity: CategoryEntity): Int
     suspend fun updateTaskDetail(entity: TaskDetailEntity): Int
     suspend fun updateSubTask(entity: SubTaskEntity): Int
     suspend fun updateAttachment(entity: AttachmentEntity): Int
+    suspend fun updateReminder(entity: ReminderEntity): Int
 
     suspend fun deleteCategories()
     suspend fun deleteTasks()

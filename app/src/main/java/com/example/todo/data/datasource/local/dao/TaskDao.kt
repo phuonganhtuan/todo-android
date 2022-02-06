@@ -24,6 +24,9 @@ interface TaskDao {
     suspend fun addTask(entity: TaskEntity): Long
 
     @Insert(onConflict = IGNORE)
+    suspend fun addReminder(entity: ReminderEntity): Long
+
+    @Insert(onConflict = IGNORE)
     suspend fun addTaskDetail(entity: TaskDetailEntity)
 
     @Insert(onConflict = IGNORE)
@@ -52,6 +55,9 @@ interface TaskDao {
 
     @Update(onConflict = IGNORE)
     suspend fun updateTaskDetail(entity: TaskDetailEntity): Int
+
+    @Update(onConflict = IGNORE)
+    suspend fun updateReminder(entity: ReminderEntity): Int
 
     @Query("delete from CategoryEntity where 1")
     suspend fun deleteCategories()

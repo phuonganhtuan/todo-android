@@ -21,6 +21,7 @@ class TaskRepositoryImpl @Inject constructor(
 
     override suspend fun addBookmark(entity: BookmarkEntity) = taskDataSource.addBookmark(entity)
     override suspend fun addCategory(entity: CategoryEntity) = taskDataSource.addCategory(entity)
+    override suspend fun addReminder(entity: ReminderEntity) = taskDataSource.addReminder(entity)
 
     override suspend fun updateTask(entity: TaskEntity) = taskDataSource.updateTask(entity)
     override suspend fun updateCategory(entity: CategoryEntity) =
@@ -32,6 +33,9 @@ class TaskRepositoryImpl @Inject constructor(
     override suspend fun updateSubTask(entity: SubTaskEntity) = taskDataSource.updateSubTask(entity)
     override suspend fun updateAttachment(entity: AttachmentEntity) =
         taskDataSource.updateAttachment(entity)
+
+    override suspend fun updateReminder(entity: ReminderEntity) =
+        taskDataSource.updateReminder(entity)
 
     override suspend fun deleteCategories() = taskDataSource.deleteCategories()
     override suspend fun deleteTasks() = taskDataSource.deleteTasks()

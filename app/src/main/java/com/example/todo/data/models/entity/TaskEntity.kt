@@ -32,6 +32,12 @@ data class Task(
         entityColumn = "id"
     )
     var bookmark: BookmarkEntity?,
+
+    @Relation(
+        parentColumn = "id",
+        entityColumn = "taskId"
+    )
+    var reminder: ReminderEntity? = null,
 )
 
 data class TaskShort(
@@ -68,6 +74,5 @@ data class TaskDetailEntity(
     var taskId: Int,
     var note: String = "",
     var isReminder: Boolean = false,
-    var reminderTime: Long = 0,
     var isRepeat: Boolean = false,
 ) : BaseEntity()
