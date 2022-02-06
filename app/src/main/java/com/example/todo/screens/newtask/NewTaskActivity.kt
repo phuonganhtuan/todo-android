@@ -1,10 +1,12 @@
 package com.example.todo.screens.newtask
 
+import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.Navigation.findNavController
 import com.example.todo.R
 import com.example.todo.base.BaseActivity
 import com.example.todo.databinding.ActivityNewTaskBinding

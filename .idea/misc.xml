@@ -16,8 +16,12 @@
         <entry key="app/src/main/res/layout/fragment_task_detail.xml" value="0.25" />
         <entry key="app/src/main/res/layout/layout_add_calendar.xml" value="0.16216216216216217" />
         <entry key="app/src/main/res/layout/layout_add_time.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/layout_calendar.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/layout_calendar_with_task.xml" value="0.10989583333333333" />
         <entry key="app/src/main/res/layout/layout_create_category.xml" value="0.2390625" />
         <entry key="app/src/main/res/layout/layout_select_attachment.xml" value="0.11752786220871327" />
+        <entry key="app/src/main/res/layout/layout_select_attachment_list.xml" value="0.10989583333333333" />
+        <entry key="app/src/main/res/layout/layout_select_category.xml" value="0.11752786220871327" />
       </map>
     </option>
   </component>

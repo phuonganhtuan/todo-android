@@ -36,7 +36,7 @@
         android:label="@string/select_attachment"
         tools:layout="@layout/layout_select_attachment" >
         <action
-            android:id="@+id/action_SelectAttachmentFragment_to_selectAttachmentBottomDialog"
+            android:id="@+id/openAttachmentBottomDialog"
             app:destination="@id/selectAttachmentBottomDialog" />
     </dialog>
 
@@ -73,5 +73,6 @@
     <dialog
         android:id="@+id/selectAttachmentBottomDialog"
         android:name="com.example.todo.screens.newtask.attachment.SelectAttachmentBottomDialog"
-        android:label="SelectAttachmentBottomDialog" />
+        android:label="SelectAttachmentBottomDialog"
+        tools:layout="@layout/layout_select_attachment_list"/>
 </navigation>
