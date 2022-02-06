@@ -12,7 +12,9 @@ data class AttachmentEntity(
     var path: String = "",
     var taskId: Int,
     var type: String = AttachmentType.IMAGE.name,
-): BaseEntity()
+    var size: String = "",
+    var takenDate: String? = ""
+) : BaseEntity()
 
 enum class AttachmentType {
     AUDIO, VIDEO, IMAGE
