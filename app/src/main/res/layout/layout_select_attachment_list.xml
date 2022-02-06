@@ -58,19 +58,31 @@
             android:background="@color/color_border_grey" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerSelectAttachment"
+            android:id="@+id/recyclerSelectPictureVideo"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:overScrollMode="never"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="12dp"
+            android:visibility="gone"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/viewDivider"
-            android:orientation="vertical"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            tools:listitem="@layout/item_attachment_view"
             app:spanCount="3"
-            tools:itemCount="18"/>
+            tools:listitem="@layout/item_attachment_picture_view" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerSelectAlbum"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="12dp"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/viewDivider"
+            app:spanCount="3"
+            tools:listitem="@layout/item_attachment_album_view" />
     </LinearLayout>
 
 </RelativeLayout>

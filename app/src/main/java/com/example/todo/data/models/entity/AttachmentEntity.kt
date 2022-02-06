@@ -1,5 +1,6 @@
 package com.example.todo.data.models.entity
 
+import android.graphics.Bitmap
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -13,9 +14,14 @@ data class AttachmentEntity(
     var taskId: Int,
     var type: String = AttachmentType.IMAGE.name,
     var size: String = "",
-    var takenDate: String? = ""
+    var takenDate: String? = "",
 ) : BaseEntity()
 
 enum class AttachmentType {
-    AUDIO, VIDEO, IMAGE
+    AUDIO, VIDEO, IMAGE, ALBUM
 }
+
+data class AttachmentAlbumEntity(
+    override var id: Int
+
+): BaseEntity()
