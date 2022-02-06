@@ -15,6 +15,11 @@ class SelectAttachmentBottomDialog:
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initView()
+    }
 
+    private fun initView() = with(viewBinding){
+        val adapter = SelectAttachmentListAdapter()
+        recyclerSelectAttachment.adapter = adapter
     }
 }
