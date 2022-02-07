@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:autofillHints="@null"
         android:background="@android:color/transparent"
-        android:fontFamily="@font/nunito_extra_bold"
+        android:fontFamily="@font/sf_rounded_extra_bold"
         android:hint="@string/task_name"
         android:inputType="textMultiLine"
         android:paddingHorizontal="16dp"

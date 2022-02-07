@@ -5,10 +5,10 @@ import androidx.lifecycle.viewModelScope
 import com.example.todo.R
 import com.example.todo.data.models.entity.*
 import com.example.todo.data.repository.TaskRepository
-import com.example.todo.demo.bms
-import com.example.todo.demo.cat1
-import com.example.todo.demo.taskDetail
-import com.example.todo.demo.tasks
+import com.example.todo.initdata.bms
+import com.example.todo.initdata.cat1
+import com.example.todo.initdata.taskDetail
+import com.example.todo.initdata.tasks
 import com.example.todo.utils.DateTimeUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers

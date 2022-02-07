@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:text="My Tasks"
-        android:fontFamily="@font/nunito_extra_bold"
+        android:fontFamily="@font/sf_rounded_extra_bold"
         android:textColor="@android:color/black"
         android:textSize="36sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,6 +25,7 @@
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/homeTabBar"
+        android:layout_marginHorizontal="24dp"
         style="@style/TabLayoutStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

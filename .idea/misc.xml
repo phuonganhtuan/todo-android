@@ -3,9 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable/bg_white_rounded.xml" value="0.17" />
+        <entry key="app/src/main/res/layout/content_home.xml" value="0.32083333333333336" />
         <entry key="app/src/main/res/layout/fragment_mine.xml" value="0.23148148148148148" />
         <entry key="app/src/main/res/layout/fragment_set_reminder.xml" value="0.23148148148148148" />
         <entry key="app/src/main/res/layout/fragment_set_repeat.xml" value="0.23148148148148148" />
+        <entry key="app/src/main/res/layout/fragment_suggest_create_task.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/fragment_tasks.xml" value="0.32083333333333336" />
         <entry key="app/src/main/res/layout/fragment_tasks_page.xml" value="0.23148148148148148" />
         <entry key="app/src/main/res/layout/item_attachment.xml" value="0.23148148148148148" />
         <entry key="app/src/main/res/layout/layout_add_calendar.xml" value="0.23148148148148148" />

@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:fontFamily="@font/nunito_bold"
+        android:fontFamily="@font/sf_rounded_bold"
         android:text="@string/tasks_overview"
         android:textColor="@color/color_menu_text_default"
         android:textSize="20sp"
@@ -48,9 +48,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:fontFamily="@font/nunito_extra_bold"
+            android:fontFamily="@font/sf_rounded_extra_bold"
             android:textColor="@color/color_primary"
-            android:textSize="42sp"
+            android:textSize="36sp"
             tools:text="4" />
 
         <TextView
@@ -85,9 +85,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:fontFamily="@font/nunito_extra_bold"
+            android:fontFamily="@font/sf_rounded_extra_bold"
             android:textColor="@color/color_mine_yellow"
-            android:textSize="42sp"
+            android:textSize="36sp"
             tools:text="12" />
 
         <TextView
@@ -116,7 +116,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:fontFamily="@font/nunito_bold"
+        android:fontFamily="@font/sf_rounded_bold"
         android:paddingBottom="8dp"
         android:text="@string/tasks_in_next_7_days"
         android:textColor="@color/color_menu_text_default"

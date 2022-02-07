@@ -36,7 +36,7 @@
         android:id="@+id/textCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/nunito_extra_bold"
+        android:fontFamily="@font/sf_rounded_extra_bold"
         android:textColor="@android:color/black"
         android:textSize="17sp"
         tools:text="8" />

@@ -21,9 +21,9 @@ fun View.show() {
 fun EditText.boldWhenFocus() {
     this.onFocusChangeListener = View.OnFocusChangeListener { view, isFocus ->
         if (isFocus) {
-            this.setTypeface(ResourcesCompat.getFont(this.context, R.font.nunito_bold), BOLD)
+            this.setTypeface(ResourcesCompat.getFont(this.context, R.font.sf_rounded_bold), BOLD)
         } else {
-            this.setTypeface(ResourcesCompat.getFont(this.context, R.font.nunito_medium), NORMAL)
+            this.setTypeface(ResourcesCompat.getFont(this.context, R.font.sf_rounded_medium), NORMAL)
         }
     }
 }

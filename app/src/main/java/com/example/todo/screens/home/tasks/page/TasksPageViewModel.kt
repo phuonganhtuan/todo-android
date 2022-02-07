@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.todo.data.models.entity.TaskShort
 import com.example.todo.data.repository.TaskRepository
-import com.example.todo.demo.tasks
 import com.example.todo.utils.DateTimeUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
