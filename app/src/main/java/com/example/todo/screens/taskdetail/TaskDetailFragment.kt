@@ -290,8 +290,10 @@ class TaskDetailFragment : BaseFragment<FragmentTaskDetailBinding>() {
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 isCheckedRepeat.collect {
-                    viewBinding.switchRepeat.isChecked = it
-                    if (it) viewBinding.textRepeatTime.show()
+                    if (isCheckedReminder.value) {
+                        viewBinding.switchRepeat.isChecked = it
+                        if (it) viewBinding.textRepeatTime.show()
+                    }
                 }
             }
         }
@@ -429,6 +431,12 @@ class TaskDetailFragment : BaseFragment<FragmentTaskDetailBinding>() {
 
     private fun onCheckChangeRepeat() = with(viewBinding) {
         if (switchRepeat.isChecked) {
+            if (!viewModel.isCheckedReminder.value) {
+                switchRepeat.isChecked = false
+                textRepeatTime.gone()
+                viewModel.resetRepeatDefault()
+                return@with
+            }
             viewModel.onCheckChangeRepeat(false)
             onClickRepeat()
         } else {

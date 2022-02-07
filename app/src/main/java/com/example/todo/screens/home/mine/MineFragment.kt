@@ -13,6 +13,8 @@ import com.example.todo.base.BaseFragment
 import com.example.todo.databinding.FragmentMineBinding
 import com.example.todo.screens.taskdetail.TaskDetailActivity
 import com.example.todo.utils.Constants
+import com.example.todo.utils.gone
+import com.example.todo.utils.show
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
@@ -21,6 +23,9 @@ import javax.inject.Inject
 class MineFragment : BaseFragment<FragmentMineBinding>() {
 
     private val viewModel: MineViewModel by viewModels()
+
+    @Inject
+    lateinit var chartAdapter: CatStatisticAdapter
 
     @Inject
     lateinit var taskAdapter: MineTaskAdapter
@@ -39,6 +44,7 @@ class MineFragment : BaseFragment<FragmentMineBinding>() {
 
     private fun initViews() = with(viewBinding) {
         recyclerNext7Days.adapter = taskAdapter
+        recyclerChart.adapter = chartAdapter
     }
 
     private fun setupEvents() = with(viewBinding) {
@@ -69,6 +75,31 @@ class MineFragment : BaseFragment<FragmentMineBinding>() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 pendingTasksCount.collect {
                     viewBinding.textPendingNum.text = it.toString()
+                }
+            }
+        }
+        lifecycleScope.launchWhenStarted {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                chartData.collect {
+                    chartAdapter.submitList(it)
+                    viewBinding.chart.setData(it.map { item -> item.percent })
+                }
+            }
+        }
+        lifecycleScope.launchWhenStarted {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                tasksCount.collect {
+                    viewBinding.apply {
+                        if (it == 0) {
+                            chart.gone()
+                            recyclerChart.gone()
+                            viewIndicatorBottom.gone()
+                        } else {
+                            chart.show()
+                            recyclerChart.show()
+                            viewIndicatorBottom.show()
+                        }
+                    }
                 }
             }
         }

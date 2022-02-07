@@ -2,6 +2,13 @@
     <string name="app_name">To-Do List</string>
     <string name="action_settings">Settings</string>
 
+    <string name="no_cat">No category</string>
+    <string name="cat_work">Work</string>
+    <string name="cat_birthday">Birthday</string>
+    <string name="cat_wish_list">Wishlist</string>
+    <string name="cat_personal">Personal</string>
+    <string name="cat_other">Others</string>
+
     <string name="tasks">Tasks</string>
     <string name="calendar">Calendar</string>
     <string name="mine">Mine</string>

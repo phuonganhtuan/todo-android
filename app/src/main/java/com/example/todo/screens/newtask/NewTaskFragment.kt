@@ -347,6 +347,12 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
 
     private fun onCheckChangeRepeat() = with(viewBinding) {
         if (switchRepeat.isChecked) {
+            if (!viewModel.isCheckedReminder.value) {
+                switchRepeat.isChecked = false
+                textRepeatTime.gone()
+                viewModel.resetRepeatDefault()
+                return@with
+            }
             viewModel.onCheckChangeRepeat(false)
             onClickRepeat()
         } else {
