@@ -98,7 +98,7 @@ class TaskDetailFragment : BaseFragment<FragmentTaskDetailBinding>() {
         touchHelper = ItemTouchHelper(ItemMoveCallback(subTaskAdapter))
         touchHelper?.attachToRecyclerView(recyclerSubTasks)
         textCategory.setOnClickListener {
-            categoriesPopup?.showAsDropDown(it, 0, 12)
+            categoriesPopup?.showAsDropDown(it, -50, -20)
         }
         buttonAttachment.setOnClickListener {
             findNavController().navigate(R.id.toSelectAttachment)
