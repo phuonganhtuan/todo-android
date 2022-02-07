@@ -276,6 +276,12 @@ class TaskDetailFragment : BaseFragment<FragmentTaskDetailBinding>() {
                 isCheckedReminder.collect {
                     viewBinding.switchReminder.isChecked = it
                     if (it) viewBinding.textReminderTime.show()
+                    if (!it) {
+                        viewBinding.textReminderTime.gone()
+                        viewBinding.textRepeatTime.gone()
+                        viewBinding.switchRepeat.isChecked = false
+                        viewModel.resetRepeatDefault()
+                    }
                 }
             }
         }

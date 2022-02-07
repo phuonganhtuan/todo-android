@@ -138,6 +138,18 @@
         tools:itemCount="24"
         tools:listitem="@layout/item_task_mine" />
 
+    <ImageView
+        android:id="@+id/imageNoTask"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="60dp"
+        android:contentDescription="@null"
+        android:src="@drawable/img_no_task"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <View
         android:layout_width="0dp"
         android:layout_height="80dp"

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.todo">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -16,7 +17,9 @@
         <activity
             android:name="com.example.todo.screens.home.HomeActivity"
             android:label="@string/app_name"
-            android:theme="@style/Theme.AndroidBP.NoActionBar" />
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AndroidBP.NoActionBar"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".screens.splash.SplashActivity"
             android:exported="true"
@@ -28,9 +31,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".screens.taskdetail.TaskDetailActivity" />
-        <activity android:name=".screens.newtask.NewTaskActivity" />
-        <activity android:name=".screens.search.SearchTaskActivity" />
+        <activity
+            android:name=".screens.taskdetail.TaskDetailActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".screens.newtask.NewTaskActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".screens.search.SearchTaskActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
     </application>
-
 </manifest>

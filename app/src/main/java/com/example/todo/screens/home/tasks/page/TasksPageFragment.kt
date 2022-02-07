@@ -48,6 +48,9 @@ class TasksPageFragment : BaseFragment<FragmentTasksPageBinding>() {
 
     private fun initViews() = with(viewBinding) {
         recyclerTasks.adapter = adapter
+        if (type == TaskPageType.TODAY) {
+            adapter.isHideDay = true
+        }
     }
 
     private fun initData() {

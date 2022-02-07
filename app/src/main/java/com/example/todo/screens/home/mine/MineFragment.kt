@@ -61,6 +61,11 @@ class MineFragment : BaseFragment<FragmentMineBinding>() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 next7DaysTasks.collect {
                     taskAdapter.submitList(it)
+                    if (it.isEmpty()) {
+                        viewBinding.imageNoTask.show()
+                    } else {
+                        viewBinding.imageNoTask.gone()
+                    }
                 }
             }
         }
