@@ -186,7 +186,7 @@ class NewTaskViewModel @Inject constructor(private val repository: TaskRepositor
             SubTaskEntity(
                 name = "",
                 isDone = false,
-                taskId = 0,
+                taskId = taskId,
                 id = Random.nextInt()
             )
         )
@@ -565,7 +565,7 @@ class NewTaskViewModel @Inject constructor(private val repository: TaskRepositor
             _task.value.task.apply {
                 this.title = title
                 categoryId =
-                    if (_selectedCatIndex.value == -1) null else _categories.value[_selectedCatIndex.value].id
+                    if (_selectedCatIndex.value == -1) _task.value.task.categoryId else _categories.value[_selectedCatIndex.value].id
                 this.calendar = calendar.timeInMillis
                 dueDate = DateTimeUtils.getComparableDateString(calendar.time)
             }
@@ -607,7 +607,8 @@ class NewTaskViewModel @Inject constructor(private val repository: TaskRepositor
                 screenLockReminder = _selectedReminderScreenLock.value
                 enableRepeat = _isCheckedRepeat.value
                 time = calendar.timeInMillis
-                repeatTime = if (_isCheckedRepeat.value) _selectedRepeatAt.value.name else RepeatAtEnum.NONE.name
+                repeatTime =
+                    if (_isCheckedRepeat.value) _selectedRepeatAt.value.name else RepeatAtEnum.NONE.name
                 repository.updateReminder(this)
             }
             _isAdded.value = false
