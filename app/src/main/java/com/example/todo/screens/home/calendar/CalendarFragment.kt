@@ -8,6 +8,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.bumptech.glide.Glide
 import com.example.todo.R
 import com.example.todo.base.BaseFragment
 import com.example.todo.databinding.FragmentCalendarBinding
@@ -82,6 +83,7 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>() {
             button1.setImageResource(R.drawable.ic_previous)
             button4.setImageResource(R.drawable.ic_next)
         }
+        taskAdapter.isHideDay = true
     }
 
     private fun initData() = with(viewBinding) {

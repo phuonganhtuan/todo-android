@@ -4,18 +4,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="200dp"
-    android:elevation="12dp"
-    app:cardBackgroundColor="@android:color/white"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="12dp">
+    android:background="@android:color/white"
+    app:cardBackgroundColor="@android:color/transparent"
+    app:cardCornerRadius="0dp"
+    app:cardElevation="0dp">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerCategory"
-        android:scrollbarSize="4dp"
         android:layout_width="match_parent"
-        android:orientation="vertical"
         android:layout_height="match_parent"
+        android:layout_margin="24dp"
+        android:background="@drawable/bg_white_rounded_16"
+        android:elevation="8dp"
+        android:orientation="vertical"
+        android:outlineSpotShadowColor="#ABABAB"
+        android:scrollbarSize="4dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:itemCount="5"
-        tools:listitem="@layout/item_select_category" />
+        tools:listitem="@layout/item_select_category"
+        tools:targetApi="p" />
 </androidx.cardview.widget.CardView>

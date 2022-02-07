@@ -129,7 +129,7 @@
                 style="@style/ButtonSecondaryWhite"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
+                android:layout_marginEnd="12dp"
                 android:layout_weight="1"
                 android:text="@string/cancel" />
 
@@ -138,7 +138,7 @@
                 style="@style/ButtonPrimary"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="12dp"
                 android:layout_weight="1"
                 android:text="@string/done" />
         </LinearLayout>

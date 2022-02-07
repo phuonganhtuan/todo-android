@@ -96,6 +96,9 @@ class AddCalendarBottomSheetDialogFragment :
         timePicker.addOnPositiveButtonClickListener {
             onTimeSet(timePicker.hour, timePicker.minute)
         }
+        layoutRoot.setOnClickListener {
+            dismiss()
+        }
     }
 
     private fun observeData() = with(viewModel) {

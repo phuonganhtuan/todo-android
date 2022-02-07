@@ -98,7 +98,7 @@ class TaskDetailFragment : BaseFragment<FragmentTaskDetailBinding>() {
         touchHelper = ItemTouchHelper(ItemMoveCallback(subTaskAdapter))
         touchHelper?.attachToRecyclerView(recyclerSubTasks)
         textCategory.setOnClickListener {
-            categoriesPopup?.showAsDropDown(it, 0, 12)
+            categoriesPopup?.showAsDropDown(it, -50, -20)
         }
         buttonAttachment.setOnClickListener {
             findNavController().navigate(R.id.toSelectAttachment)
@@ -276,6 +276,12 @@ class TaskDetailFragment : BaseFragment<FragmentTaskDetailBinding>() {
                 isCheckedReminder.collect {
                     viewBinding.switchReminder.isChecked = it
                     if (it) viewBinding.textReminderTime.show()
+                    if (!it) {
+                        viewBinding.textReminderTime.gone()
+                        viewBinding.textRepeatTime.gone()
+                        viewBinding.switchRepeat.isChecked = false
+                        viewModel.resetRepeatDefault()
+                    }
                 }
             }
         }
@@ -290,8 +296,10 @@ class TaskDetailFragment : BaseFragment<FragmentTaskDetailBinding>() {
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 isCheckedRepeat.collect {
-                    viewBinding.switchRepeat.isChecked = it
-                    if (it) viewBinding.textRepeatTime.show()
+                    if (isCheckedReminder.value) {
+                        viewBinding.switchRepeat.isChecked = it
+                        if (it) viewBinding.textRepeatTime.show()
+                    }
                 }
             }
         }
@@ -375,7 +383,7 @@ class TaskDetailFragment : BaseFragment<FragmentTaskDetailBinding>() {
         categoriesPopup =
             PopupWindow(
                 popupView,
-                350,
+                460,
                 if (cats.size <= 5) ViewGroup.LayoutParams.WRAP_CONTENT else 400,
                 true
             )
@@ -429,6 +437,12 @@ class TaskDetailFragment : BaseFragment<FragmentTaskDetailBinding>() {
 
     private fun onCheckChangeRepeat() = with(viewBinding) {
         if (switchRepeat.isChecked) {
+            if (!viewModel.isCheckedReminder.value) {
+                switchRepeat.isChecked = false
+                textRepeatTime.gone()
+                viewModel.resetRepeatDefault()
+                return@with
+            }
             viewModel.onCheckChangeRepeat(false)
             onClickRepeat()
         } else {

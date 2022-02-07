@@ -25,6 +25,8 @@ class TaskAdapter @Inject constructor() :
 
     private var onTaskInteractListener: OnTaskInteract? = null
 
+    var isHideDay = false
+
     fun setOnTaskListener(onTaskInteract: OnTaskInteract) {
         onTaskInteractListener = onTaskInteract
     }
@@ -36,7 +38,7 @@ class TaskAdapter @Inject constructor() :
     }
 
     override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
-        holder.displayData(getItem(position))
+        holder.displayData(getItem(position), isHideDay)
     }
 }
 
@@ -60,13 +62,21 @@ class TaskViewHolder(
         }
     }
 
-    override fun displayData(entity: TaskShort) = with(itemViewBinding) {
+    override fun displayData(entity: TaskShort) {
+
+    }
+
+    fun displayData(entity: TaskShort, isHideDay: Boolean) = with(itemViewBinding) {
         textTaskTime.show()
         taskId = entity.task.id
         textTaskName.text = entity.task.title
         checkStatus.isChecked = entity.task.isDone
         textTaskTime.text = if (entity.task.calendar != null) {
-            DateTimeUtils.getShortTimeFromMillisecond(entity.task.calendar!!)
+            if (isHideDay) {
+                DateTimeUtils.getHourMinuteFromMillisecond(entity.task.calendar!!)
+            } else {
+                DateTimeUtils.getShortTimeFromMillisecond(entity.task.calendar!!)
+            }
         } else {
             ""
         }

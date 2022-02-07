@@ -92,7 +92,7 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
             findNavController().navigate(R.id.toSelectAttachment)
         }
         textCategory.setOnClickListener {
-            categoriesPopup?.showAsDropDown(it, 0, 12)
+            categoriesPopup?.showAsDropDown(it, -50, -20)
         }
         editTaskName.boldWhenFocus()
         editNote.boldWhenFocus()
@@ -241,6 +241,12 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
                 isCheckedReminder.collect {
                     viewBinding.switchReminder.isChecked = it
                     if (it) viewBinding.textReminderTime.show()
+                    if (!it) {
+                        viewBinding.textReminderTime.gone()
+                        viewBinding.textRepeatTime.gone()
+                        viewBinding.switchRepeat.isChecked = false
+                        viewModel.resetRepeatDefault()
+                    }
                 }
             }
         }
@@ -291,7 +297,7 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
         categoriesPopup =
             PopupWindow(
                 popupView,
-                350,
+                460,
                 if (cats.size <= 5) WRAP_CONTENT else 400,
                 true
             )
@@ -347,6 +353,12 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
 
     private fun onCheckChangeRepeat() = with(viewBinding) {
         if (switchRepeat.isChecked) {
+            if (!viewModel.isCheckedReminder.value) {
+                switchRepeat.isChecked = false
+                textRepeatTime.gone()
+                viewModel.resetRepeatDefault()
+                return@with
+            }
             viewModel.onCheckChangeRepeat(false)
             onClickRepeat()
         } else {
