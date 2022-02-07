@@ -297,7 +297,7 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
         categoriesPopup =
             PopupWindow(
                 popupView,
-                350,
+                460,
                 if (cats.size <= 5) WRAP_CONTENT else 400,
                 true
             )
