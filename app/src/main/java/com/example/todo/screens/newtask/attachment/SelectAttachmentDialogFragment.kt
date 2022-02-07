@@ -12,6 +12,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.todo.R
 import com.example.todo.base.BaseDialogFragment
+import com.example.todo.data.models.entity.AttachmentType
 import com.example.todo.databinding.LayoutSelectAttachmentBinding
 import com.example.todo.screens.home.HomeActivity
 import com.example.todo.screens.newtask.NewTaskActivity
@@ -58,7 +59,15 @@ class SelectAttachmentDialogFragment : BaseDialogFragment<LayoutSelectAttachment
     }
 
     private fun openBottomDialog(requestCode: Int) = with(viewBinding) {
-        findNavController().navigate(R.id.openAttachmentBottomDialog)
+        val bundle: Bundle = Bundle()
+        val type = when (requestCode){
+            READ_PHOTO_PERMISSION_CODE -> AttachmentType.IMAGE.name
+            READ_VIDEO_PERMISSION_CODE -> AttachmentType.VIDEO.name
+            READ_AUDIO_PERMISSION_CODE -> AttachmentType.AUDIO.name
+            else -> AttachmentType.IMAGE.name
+        }
+        bundle.putString("type", type)
+        findNavController().navigate(R.id.openAttachmentBottomDialog, bundle)
     }
 
     // Function to check and request permission.

@@ -25,6 +25,9 @@ class SelectAttachmentListViewModel @Inject constructor(
     val list: StateFlow<List<AttachmentEntity>> get() = _list
     private val _list = MutableStateFlow(emptyList<AttachmentEntity>())
 
+    val selectedList: StateFlow<List<AttachmentEntity>> get() = _selectedList
+    private val _selectedList = MutableStateFlow(emptyList<AttachmentEntity>())
+
     init {
         getAttachmentFromStorage(type)
     }
@@ -34,6 +37,7 @@ class SelectAttachmentListViewModel @Inject constructor(
             AttachmentType.IMAGE -> getAllImages()
             AttachmentType.ALBUM -> getAllAlbum()
             AttachmentType.VIDEO -> getAllVideo()
+            AttachmentType.AUDIO -> getAllAudio()
         }
     }
 
@@ -85,8 +89,10 @@ class SelectAttachmentListViewModel @Inject constructor(
                 }
             }
         }
-        Log.e("queryImageStorage", listImage.toString() )
-        _list.value = listImage
+        cursor?.close()
+
+        Log.e("queryImageStorage", listImage.toString())
+        _list.value += listImage
     }
 
     fun getAllImages() {
@@ -97,7 +103,7 @@ class SelectAttachmentListViewModel @Inject constructor(
         }
     }
 
-    fun getAllAlbum(){
+    fun getAllAlbum() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
 
@@ -105,22 +111,22 @@ class SelectAttachmentListViewModel @Inject constructor(
         }
     }
 
-    private fun queryVideoStorage(){
+    private fun queryVideoStorage() {
         val videoList = mutableListOf<AttachmentEntity>()
-        val collection =
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                MediaStore.Video.Media.getContentUri(
-                    MediaStore.VOLUME_EXTERNAL
-                )
-            } else {
-                MediaStore.Video.Media.EXTERNAL_CONTENT_URI
-            }
+        val collection = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            MediaStore.Video.Media.getContentUri(
+                MediaStore.VOLUME_EXTERNAL
+            )
+        } else {
+            MediaStore.Video.Media.EXTERNAL_CONTENT_URI
+        }
 
         val projection = arrayOf(
             MediaStore.Video.Media._ID,
             MediaStore.Video.Media.DISPLAY_NAME,
             MediaStore.Video.Media.DATE_TAKEN,
             MediaStore.Video.Media.SIZE,
+            MediaStore.Video.Media.DURATION,
             MediaStore.MediaColumns.DATA
         )
 
@@ -132,39 +138,150 @@ class SelectAttachmentListViewModel @Inject constructor(
             projection,
             null,
             null,
-            sortOrder
+            null
         )
         query?.use { cursor ->
             // Cache column indices.
             cursor?.let {
-            val idColumn = it.getColumnIndexOrThrow(MediaStore.Video.Media._ID)
-            val nameColumn =
-                it.getColumnIndexOrThrow(MediaStore.Video.Media.DISPLAY_NAME)
-            val sizeColumn = it.getColumnIndexOrThrow(MediaStore.Video.Media.SIZE)
-            val dateColumn = it.getColumnIndexOrThrow(MediaStore.Video.Media.DATE_TAKEN)
-            val absolutePathOfVideoColumn =
-                it.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA)
-            while (it.moveToNext()) {
-                // Get values of columns for a given video.
-                val id = it.getInt(idColumn)
-                val name = it.getString(nameColumn)
-                val extension: String = name.substring(name.lastIndexOf("."))
-                val size = it.getString(sizeColumn)
+                val idColumn = it.getColumnIndexOrThrow(MediaStore.Video.Media._ID)
+                val nameColumn =
+                    it.getColumnIndexOrThrow(MediaStore.Video.Media.DISPLAY_NAME)
+                val sizeColumn = it.getColumnIndexOrThrow(MediaStore.Video.Media.SIZE)
+                val dateColumn = it.getColumnIndexOrThrow(MediaStore.Video.Media.DATE_TAKEN)
+                val durationColumn =
+                    it.getColumnIndexOrThrow(MediaStore.Video.Media.DURATION)
+                val absolutePathOfVideoColumn =
+                    it.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA)
+                while (it.moveToNext()) {
+                    // Get values of columns for a given video.
+                    val id = it.getInt(idColumn)
+                    val name = it.getString(nameColumn)
+                    val extension: String = name.substring(name.lastIndexOf("."))
+                    val size = it.getString(sizeColumn)
+                    val duration = it.getInt(durationColumn)
+                    val date = it.getString(dateColumn)
+                    val absolutePathOfVideo = it.getString(absolutePathOfVideoColumn)
+                    Log.e("queryVideoStorage- absolutePathOfVideo", absolutePathOfVideo)
+                    videoList += AttachmentEntity(
+                        id,
+                        name,
+                        extension,
+                        absolutePathOfVideo,
+                        0,
+                        AttachmentType.VIDEO.name,
+                        size,
+                        date,
+                        duration
+                    )
+                }
 
-                val date = it.getString(dateColumn)
-                val absolutePathOfVideo = it.getString(absolutePathOfVideoColumn)
-                videoList += AttachmentEntity(id, name, extension, absolutePathOfVideo, 0, AttachmentType.VIDEO.name, size, date)
-            }}
+            }
+
         }
+        query?.close()
         Log.e("queryVideoStorage", videoList.toString())
-        _list.value = videoList
+        _list.value += videoList
     }
 
-    fun getAllVideo(){
+    fun getAllVideo() {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 queryVideoStorage()
             }
         }
+    }
+
+    private fun queryAudioStorage() {
+        val audioList = mutableListOf<AttachmentEntity>()
+        val collection = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            MediaStore.Audio.Media.getContentUri(
+                MediaStore.VOLUME_EXTERNAL
+            )
+        } else {
+            MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
+        }
+
+        val projection = arrayOf(
+            MediaStore.Audio.Media._ID,
+            MediaStore.Audio.Media.DISPLAY_NAME,
+            MediaStore.Audio.Media.DATE_TAKEN,
+            MediaStore.Audio.Media.SIZE,
+            MediaStore.Video.Media.DURATION,
+            MediaStore.MediaColumns.DATA
+        )
+
+// Display videos in alphabetical order based on their display name.
+        val sortOrder = "${MediaStore.Audio.Media.DISPLAY_NAME} ASC"
+
+        val query = context.applicationContext.contentResolver.query(
+            collection,
+            projection,
+            null,
+            null,
+            null
+        )
+        query?.use { cursor ->
+            // Cache column indices.
+            cursor?.let {
+                val idColumn = it.getColumnIndexOrThrow(MediaStore.Audio.Media._ID)
+                val nameColumn =
+                    it.getColumnIndexOrThrow(MediaStore.Audio.Media.DISPLAY_NAME)
+                val sizeColumn = it.getColumnIndexOrThrow(MediaStore.Audio.Media.SIZE)
+                val dateColumn = it.getColumnIndexOrThrow(MediaStore.Audio.Media.DATE_TAKEN)
+                val durationColumn =
+                    it.getColumnIndexOrThrow(MediaStore.Video.Media.DURATION)
+                val absolutePathOfAudioColumn =
+                    it.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA)
+                while (it.moveToNext()) {
+                    // Get values of columns for a given video.
+                    val id = it.getInt(idColumn)
+                    val name = it.getString(nameColumn)
+                    val extension: String = name.substring(name.lastIndexOf("."))
+                    val size = it.getString(sizeColumn)
+                    val duration = cursor.getInt(durationColumn)
+                    val date = it.getString(dateColumn)
+                    val absolutePathOfAudio = it.getString(absolutePathOfAudioColumn)
+                    Log.e("queryVideoStorage- absolutePathOfAudio", absolutePathOfAudio)
+                    audioList += AttachmentEntity(
+                        id,
+                        name,
+                        extension,
+                        absolutePathOfAudio,
+                        0,
+                        AttachmentType.AUDIO.name,
+                        size,
+                        date,
+                        duration
+                    )
+                }
+
+            }
+        }
+        query?.close()
+        Log.e("queryVideoStorage", audioList.toString())
+        _list.value += audioList
+    }
+
+    fun getAllAudio() {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                queryAudioStorage()
+            }
+        }
+    }
+
+    fun onSelect(entity: AttachmentEntity){
+        var selectListTmp = _selectedList.value.toMutableList()
+        if (selectListTmp.contains(entity)){
+            selectListTmp.remove(entity)
+        }else{
+            selectListTmp.add(entity)
+        }
+        _selectedList.value = selectListTmp
+    }
+
+    fun setSelectedListDefault(attachments: List<AttachmentEntity> = emptyList()){
+        val defaultList = attachments.filter { it.type == type.name }
+        _selectedList.value = defaultList
     }
 }

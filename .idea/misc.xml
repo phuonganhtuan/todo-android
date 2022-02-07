@@ -3,6 +3,14 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable/bg_border_primary.xml" value="0.1195" />
+        <entry key="app/src/main/res/drawable/bg_checkbox_grey.xml" value="0.121" />
+        <entry key="app/src/main/res/drawable/bg_fade_grey.xml" value="0.121" />
+        <entry key="app/src/main/res/drawable/bg_greybg_rounded_8.xml" value="0.121" />
+        <entry key="app/src/main/res/drawable/bg_primary_rounded_20.xml" value="0.1195" />
+        <entry key="app/src/main/res/drawable/bg_primary_rounded_8.xml" value="0.1195" />
+        <entry key="app/src/main/res/drawable/bg_ripple_white_stroke_rounded_8.xml" value="0.1195" />
+        <entry key="app/src/main/res/drawable/bg_rounded_stroke_grey.xml" value="0.121" />
         <entry key="app/src/main/res/drawable/bg_search_input 2.xml" value="0.1175" />
         <entry key="app/src/main/res/drawable/bg_white_rounded_8.xml" value="0.172" />
         <entry key="app/src/main/res/drawable/custom_thumb.xml" value="0.1885" />
@@ -18,6 +26,8 @@
         <entry key="app/src/main/res/layout/fragment_tasks.xml" value="0.19882246376811594" />
         <entry key="app/src/main/res/layout/fragment_tasks_page.xml" value="0.19882246376811594" />
         <entry key="app/src/main/res/layout/item_attachment.xml" value="0.19882246376811594" />
+        <entry key="app/src/main/res/layout/item_attachment_audio_view.xml" value="0.6684056599934896" />
+        <entry key="app/src/main/res/layout/item_attachment_picture_view.xml" value="0.19882246376811594" />
         <entry key="app/src/main/res/layout/item_attachment_view.xml" value="0.19882246376811594" />
         <entry key="app/src/main/res/layout/item_bookmark.xml" value="0.19882246376811594" />
         <entry key="app/src/main/res/layout/item_task_search.xml" value="0.19882246376811594" />

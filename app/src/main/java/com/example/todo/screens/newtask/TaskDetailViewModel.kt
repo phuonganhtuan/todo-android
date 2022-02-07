@@ -614,4 +614,9 @@ class NewTaskViewModel @Inject constructor(private val repository: TaskRepositor
             _isAdded.value = true
         }
     }
+
+    fun selectAttachments(data: List<AttachmentEntity>){
+        val dataTmp = data.filter { !_attachments.value.contains(it) }
+        _attachments.value += dataTmp
+    }
 }

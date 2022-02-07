@@ -15,6 +15,7 @@ data class AttachmentEntity(
     var type: String = AttachmentType.IMAGE.name,
     var size: String = "",
     var takenDate: String? = "",
+    var duration: Int? = 0
 ) : BaseEntity()
 
 enum class AttachmentType {

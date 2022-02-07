@@ -20,10 +20,11 @@
             android:orientation="horizontal">
 
             <ImageView
+                android:id="@+id/imgClose"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:contentDescription="@null"
-                android:src="@drawable/ic_arrow_left" />
+                android:src="@drawable/ic_close" />
 
             <View
                 android:layout_width="0dp"
@@ -31,6 +32,7 @@
                 android:layout_weight="1" />
 
             <TextView
+                android:id="@+id/tvTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Select Album"
@@ -44,9 +46,10 @@
                 android:layout_weight="1" />
 
             <TextView
+                android:id="@+id/tvDone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Done"
+                android:text="@string/done"
                 android:textColor="@color/color_primary"
                 android:textSize="18sp" />
         </LinearLayout>
@@ -63,26 +66,40 @@
             android:layout_height="match_parent"
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="12dp"
-            android:visibility="gone"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/viewDivider"
             app:spanCount="3"
-            tools:listitem="@layout/item_attachment_picture_view" />
+            tools:listitem="@layout/item_attachment_picture_view"
+            android:visibility="invisible"/>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerSelectAlbum"
+            android:id="@+id/recyclerSelectAudio"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="12dp"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/viewDivider"
-            app:spanCount="3"
-            tools:listitem="@layout/item_attachment_album_view" />
+            tools:listitem="@layout/item_attachment_audio_view"
+            android:visibility="invisible"
+            />
+
+<!--        <androidx.recyclerview.widget.RecyclerView-->
+<!--            android:id="@+id/recyclerSelectAlbum"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_marginHorizontal="16dp"-->
+<!--            android:layout_marginTop="12dp"-->
+<!--            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/viewDivider"-->
+<!--            app:spanCount="3"-->
+<!--            tools:listitem="@layout/item_attachment_album_view"-->
+<!--            android:visibility="gone"/>-->
     </LinearLayout>
 
 </RelativeLayout>
