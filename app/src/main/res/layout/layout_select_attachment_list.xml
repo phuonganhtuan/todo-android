@@ -61,18 +61,33 @@
             android:background="@color/color_border_grey" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerSelectPictureVideo"
+            android:id="@+id/recyclerSelectAlbum"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="12dp"
+            android:visibility="gone"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/viewDivider"
             app:spanCount="3"
-            tools:listitem="@layout/item_attachment_picture_view"
-            android:visibility="invisible"/>
+            tools:listitem="@layout/item_attachment_album_view" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerSelectPictureVideo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="12dp"
+            android:visibility="gone"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/viewDivider"
+            app:spanCount="3"
+            tools:itemCount="30"
+            tools:listitem="@layout/item_attachment_picture_view" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerSelectAudio"
@@ -80,26 +95,13 @@
             android:layout_height="match_parent"
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="12dp"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/viewDivider"
-            tools:listitem="@layout/item_attachment_audio_view"
-            android:visibility="invisible"
-            />
+            tools:listitem="@layout/item_attachment_audio_view" />
 
-<!--        <androidx.recyclerview.widget.RecyclerView-->
-<!--            android:id="@+id/recyclerSelectAlbum"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:layout_marginHorizontal="16dp"-->
-<!--            android:layout_marginTop="12dp"-->
-<!--            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@id/viewDivider"-->
-<!--            app:spanCount="3"-->
-<!--            tools:listitem="@layout/item_attachment_album_view"-->
-<!--            android:visibility="gone"/>-->
+
     </LinearLayout>
 
 </RelativeLayout>

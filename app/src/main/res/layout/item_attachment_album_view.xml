@@ -4,23 +4,37 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:layout_margin="3dp">
+    android:layout_margin="3dp"
+    android:orientation="vertical">
 
-    <com.example.todo.utils.CustomImageview
-        android:id="@+id/thumbAttachment"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:scaleType="centerCrop"
-        tools:srcCompat="@tools:sample/avatars" />
+        android:layout_height="wrap_content">
+
+        <com.example.todo.utils.CustomImageview
+            android:id="@+id/thumbAttachment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_ripple_white_stroke_rounded_8"
+            android:scaleType="centerCrop"
+            tools:srcCompat="@tools:sample/avatars" />
+        <ImageView
+            android:id="@+id/imgCamera"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_camera"
+            android:layout_centerInParent="true"
+            android:visibility="gone"
+            />
+    </RelativeLayout>
+
     <TextView
         android:id="@+id/tvAlbumTitle"
-        android:layout_margin="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="8dp"
         android:gravity="center"
-        android:text="Camera"
-        android:textSize="18sp"
+        android:text="@string/camera"
         android:textColor="@color/black"
-        />
+        android:textSize="18sp" />
 </LinearLayout>

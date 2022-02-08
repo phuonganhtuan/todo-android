@@ -16,6 +16,7 @@ import com.example.todo.R
 import com.example.todo.base.BaseDiffCallBack
 import com.example.todo.base.BaseViewHolder
 import com.example.todo.data.models.entity.AttachmentAlbumEntity
+import com.example.todo.data.models.entity.AttachmentAlbumTypeEnum
 import com.example.todo.data.models.entity.AttachmentEntity
 import com.example.todo.data.models.entity.AttachmentType
 import com.example.todo.databinding.ItemAttachmentAlbumViewBinding
@@ -30,14 +31,44 @@ import java.util.*
 /**
  * Select Album List
  */
-class ItemAttachmentAlbumViewHolder(private val itemViewBinding: ItemAttachmentAlbumViewBinding) :
+class ItemAttachmentAlbumViewHolder(
+    private val itemViewBinding: ItemAttachmentAlbumViewBinding,
+    private val attachmentAlbumSelectListener: ((AttachmentAlbumEntity) -> Unit)?
+) :
     BaseViewHolder<ItemAttachmentAlbumViewBinding>(itemViewBinding) {
+
+    private var attachmentAlbumEntity: AttachmentAlbumEntity? = null
+
+    init {
+        itemView.setOnClickListener {
+            attachmentAlbumSelectListener.let {
+                if (it != null) {
+                    (attachmentAlbumEntity ?: null)?.let { it1 -> it(it1) }
+                }
+            }
+        }
+    }
+
     override fun displayData(entity: ItemAttachmentAlbumViewBinding) {
         TODO("Not yet implemented")
     }
 
     fun displayData(entity: AttachmentAlbumEntity) = with(itemViewBinding) {
-
+        attachmentAlbumEntity = entity
+        if (entity.type == AttachmentAlbumTypeEnum.CAMERA) {
+            imgCamera.show()
+        } else {
+            imgCamera.gone()
+            entity.data.let {
+                if (it.isNotEmpty()) {
+                    it.get(0).let {
+                        Glide.with(itemView.context)
+                            .load(it.path).skipMemoryCache(false).into(thumbAttachment)
+                    }
+                }
+            }
+        }
+        tvAlbumTitle.setText(entity.name)
     }
 }
 
@@ -45,6 +76,8 @@ class SelectAttachmentAlbumListAdapter :
     androidx.recyclerview.widget.ListAdapter<AttachmentAlbumEntity, ItemAttachmentAlbumViewHolder>(
         SelectAttachmentAlbumDiffCallback()
     ) {
+
+    var attachmentAlbumSelectListener: ((AttachmentAlbumEntity) -> Unit)? = null
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -56,7 +89,7 @@ class SelectAttachmentAlbumListAdapter :
                 parent,
                 false
             )
-        return ItemAttachmentAlbumViewHolder(itemViewBinding)
+        return ItemAttachmentAlbumViewHolder(itemViewBinding, attachmentAlbumSelectListener)
     }
 
     override fun onBindViewHolder(holder: ItemAttachmentAlbumViewHolder, position: Int) {
@@ -180,16 +213,17 @@ class ItemAttachmentAudioViewHolder(
         TODO("Not yet implemented")
     }
 
-    fun displayData(entity: AttachmentEntity, selectAttachments: List<AttachmentEntity>) = with(itemViewBinding) {
-        tvAudioName.setText(entity.name)
-        tvDescription.setText("${entity.name}KB ${entity.duration}")
+    fun displayData(entity: AttachmentEntity, selectAttachments: List<AttachmentEntity>) =
+        with(itemViewBinding) {
+            tvAudioName.setText(entity.name)
+            tvDescription.setText("${entity.name}KB ${entity.duration}")
 
-        // Show isSelected
-        val isSelected = selectAttachments.contains(entity)
-        val bgLnAudio =
-            if (isSelected) R.drawable.bg_primary_rounded_20 else R.drawable.bg_fade_grey
-        lnSelectAudio.background = ContextCompat.getDrawable(itemView.context, bgLnAudio)
-    }
+            // Show isSelected
+            val isSelected = selectAttachments.contains(entity)
+            val bgLnAudio =
+                if (isSelected) R.drawable.bg_primary_rounded_20 else R.drawable.bg_fade_grey
+            lnSelectAudio.background = ContextCompat.getDrawable(itemView.context, bgLnAudio)
+        }
 }
 
 class SelectAttachmentAudioListAdapter :

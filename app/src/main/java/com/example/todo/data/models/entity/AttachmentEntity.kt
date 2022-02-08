@@ -14,15 +14,21 @@ data class AttachmentEntity(
     var taskId: Int,
     var type: String = AttachmentType.IMAGE.name,
     var size: String = "",
-    var takenDate: String? = "",
-    var duration: Int? = 0
+    var duration: Int? = 0,
+    var bucketName: String = "",
 ) : BaseEntity()
 
 enum class AttachmentType {
     AUDIO, VIDEO, IMAGE, ALBUM
 }
 
-data class AttachmentAlbumEntity(
-    override var id: Int
+enum class AttachmentAlbumTypeEnum{
+    CAMERA, ALBUM
+}
 
-): BaseEntity()
+data class AttachmentAlbumEntity(
+    override var id: Int,
+    var name: String = "",
+    var data: List<AttachmentEntity> = emptyList(),
+    var type: AttachmentAlbumTypeEnum
+) : BaseEntity()

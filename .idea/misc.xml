@@ -26,6 +26,7 @@
         <entry key="app/src/main/res/layout/fragment_tasks.xml" value="0.19882246376811594" />
         <entry key="app/src/main/res/layout/fragment_tasks_page.xml" value="0.19882246376811594" />
         <entry key="app/src/main/res/layout/item_attachment.xml" value="0.19882246376811594" />
+        <entry key="app/src/main/res/layout/item_attachment_album_view.xml" value="0.10833333333333334" />
         <entry key="app/src/main/res/layout/item_attachment_audio_view.xml" value="0.6684056599934896" />
         <entry key="app/src/main/res/layout/item_attachment_picture_view.xml" value="0.19882246376811594" />
         <entry key="app/src/main/res/layout/item_attachment_view.xml" value="0.19882246376811594" />

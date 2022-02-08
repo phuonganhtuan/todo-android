@@ -97,4 +97,6 @@
     <string name="select_video">Select Video</string>
     <string name="select_audio">Select Audio</string>
     <string name="audio">Audio</string>
+    <string name="camera">Camera</string>
+    <string name="select_album">Select Album</string>
 </resources>
