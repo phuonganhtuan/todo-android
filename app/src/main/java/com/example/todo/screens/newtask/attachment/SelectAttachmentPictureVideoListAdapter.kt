@@ -102,7 +102,7 @@ class SelectAttachmentAlbumDiffCallback : BaseDiffCallBack<AttachmentAlbumEntity
         oldItem: AttachmentAlbumEntity,
         newItem: AttachmentAlbumEntity
     ): Boolean =
-        oldItem.id == newItem.id
+        oldItem.id == newItem.id && oldItem.name == newItem.name
 }
 
 /**
@@ -133,27 +133,26 @@ class ItemAttachmentPictureViewHolder(
     fun displayData(entity: AttachmentEntity, selectAttachments: List<AttachmentEntity>) =
         with(itemViewBinding) {
             attachmentEntity = entity
-
-            // Show Thumbnail
             imgPlayVideo.visibility =
                 if (entity.type == AttachmentType.IMAGE.name) View.GONE else View.VISIBLE
+            // Show isSelected
+            val isSelected = selectAttachments.map { it.id }.contains(entity.id)
+            val bgThumbAttachmentId =
+                if (isSelected) R.drawable.bg_border_primary else R.drawable.bg_border_grey
+            thumbAttachment.background =
+                ContextCompat.getDrawable(itemView.context, bgThumbAttachmentId)
+
+            val index = if (isSelected) (selectAttachments.indexOf(entity) + 1).toString() else ""
+            val bgTvSelectedId =
+                if (isSelected) R.drawable.bg_primary_rounded_20 else R.drawable.bg_rounded_border_white
+            tvSelected.setText(index)
+            tvSelected.background = ContextCompat.getDrawable(itemView.context, bgTvSelectedId)
+            // Show Thumbnail
+
             if (entity.type == AttachmentType.IMAGE.name) Glide.with(itemView.context)
                 .load(entity.path).skipMemoryCache(false).into(thumbAttachment) else Glide.with(
                 itemView.context
             ).asBitmap().load(Uri.fromFile(File(entity.path))).into(thumbAttachment)
-
-            // Show isSelected
-            val isSelected = selectAttachments.contains(entity)
-            val index = if (isSelected) (selectAttachments.indexOf(entity) + 1).toString() else ""
-            val bgTvSelectedId =
-                if (isSelected) R.drawable.bg_primary_rounded_20 else R.drawable.bg_rounded_border_white
-            val bgThumbAttachmentId =
-                if (isSelected) R.drawable.bg_border_primary else R.drawable.bg_border_grey
-
-            tvSelected.setText(index)
-            tvSelected.background = ContextCompat.getDrawable(itemView.context, bgTvSelectedId)
-            thumbAttachment.background =
-                ContextCompat.getDrawable(itemView.context, bgThumbAttachmentId)
         }
 }
 
@@ -185,7 +184,7 @@ class SelectAttachmentPictureVideoListAdapter :
 
 class SelectAttachmentDiffCallback : BaseDiffCallBack<AttachmentEntity>() {
     override fun areContentsTheSame(oldItem: AttachmentEntity, newItem: AttachmentEntity): Boolean =
-        oldItem.id == newItem.id && oldItem.path == newItem.path
+        oldItem.id == newItem.id && oldItem.name == newItem.name
 }
 
 /**
@@ -219,7 +218,7 @@ class ItemAttachmentAudioViewHolder(
             tvDescription.setText("${entity.name}KB ${entity.duration}")
 
             // Show isSelected
-            val isSelected = selectAttachments.contains(entity)
+            val isSelected = selectAttachments.map { it.id }.contains(entity.id)
             val bgLnAudio =
                 if (isSelected) R.drawable.bg_primary_rounded_20 else R.drawable.bg_fade_grey
             lnSelectAudio.background = ContextCompat.getDrawable(itemView.context, bgLnAudio)
@@ -255,5 +254,5 @@ class SelectAttachmentAudioListAdapter :
 
 class SelectAttachmentAudioDiffCallback : BaseDiffCallBack<AttachmentEntity>() {
     override fun areContentsTheSame(oldItem: AttachmentEntity, newItem: AttachmentEntity): Boolean =
-        oldItem.name == newItem.name
+        oldItem.id == newItem.id && oldItem.name == newItem.name
 }

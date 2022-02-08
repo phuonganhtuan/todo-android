@@ -362,8 +362,8 @@ class SelectAttachmentListViewModel @Inject constructor(
      */
     fun onSelect(entity: AttachmentEntity) {
         var selectListTmp = _selectedList.value.toMutableList()
-        if (selectListTmp.contains(entity)) {
-            selectListTmp.remove(entity)
+        if (selectListTmp.map { it.id }.contains(entity.id)) {
+            selectListTmp = selectListTmp.filter { it.id != entity.id } as MutableList<AttachmentEntity>
         } else {
             selectListTmp.add(entity)
         }
