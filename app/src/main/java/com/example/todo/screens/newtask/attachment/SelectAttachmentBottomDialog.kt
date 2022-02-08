@@ -102,7 +102,9 @@ class SelectAttachmentBottomDialog :
                 }
             }
             AttachmentType.AUDIO -> {
-
+                adapterAudio?.attachmentSelectListener = {
+                    selectAttachmentListViewModel?.onSelect(it)
+                }
             }
         }
 
@@ -185,10 +187,10 @@ class SelectAttachmentBottomDialog :
                             adapterPictureVideo?.selectAttachments = it
                             adapterPictureVideo?.notifyDataSetChanged()
                         }
-//                            AttachmentType.AUDIO -> {
-//                                adapterAudio?.submitList(it)
-//                                adapterAudio?.notifyDataSetChanged()
-//                            }
+                        AttachmentType.AUDIO -> {
+                            adapterAudio?.selectAttachments = it
+                            adapterAudio?.notifyDataSetChanged()
+                        }
                     }
 
                 }
@@ -211,7 +213,7 @@ class SelectAttachmentBottomDialog :
                 selectAttachments(it.value)
             }
         }
-//        dismiss()
+        // Back to new Task
         findNavController().popBackStack()
         findNavController().popBackStack()
     }

@@ -47,7 +47,6 @@ class SelectAttachmentListViewModel @Inject constructor(
 
     init {
         setupData(type)
-
     }
 
     fun setupData(type: AttachmentType) {
