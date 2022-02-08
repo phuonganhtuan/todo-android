@@ -228,7 +228,7 @@ class SelectAttachmentBottomDialog :
          */
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.CREATED) {
-                selectAttachmentListViewModel?.selectedList?.collect {
+                selectAttachmentListViewModel?.selectIds?.collect {
                     Log.e("observeData - selectedList", it.toString())
                     if (it.isNotEmpty()) {
                         viewBinding.tvDone.show()

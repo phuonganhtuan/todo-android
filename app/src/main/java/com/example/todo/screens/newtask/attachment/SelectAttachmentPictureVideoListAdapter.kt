@@ -130,19 +130,19 @@ class ItemAttachmentPictureViewHolder(
         TODO("Not yet implemented")
     }
 
-    fun displayData(entity: AttachmentEntity, selectAttachments: List<AttachmentEntity>) =
+    fun displayData(entity: AttachmentEntity, selectAttachments: List<Int>) =
         with(itemViewBinding) {
             attachmentEntity = entity
             imgPlayVideo.visibility =
                 if (entity.type == AttachmentType.IMAGE.name) View.GONE else View.VISIBLE
             // Show isSelected
-            val isSelected = selectAttachments.map { it.id }.contains(entity.id)
+            val isSelected = selectAttachments.contains(entity.id)
             val bgThumbAttachmentId =
                 if (isSelected) R.drawable.bg_border_primary else R.drawable.bg_border_grey
             thumbAttachment.background =
                 ContextCompat.getDrawable(itemView.context, bgThumbAttachmentId)
 
-            val index = if (isSelected) (selectAttachments.indexOf(entity) + 1).toString() else ""
+            val index = if (isSelected) (selectAttachments.indexOf(entity.id) + 1).toString() else ""
             val bgTvSelectedId =
                 if (isSelected) R.drawable.bg_primary_rounded_20 else R.drawable.bg_rounded_border_white
             tvSelected.setText(index)
@@ -160,7 +160,7 @@ class SelectAttachmentPictureVideoListAdapter :
     androidx.recyclerview.widget.ListAdapter<AttachmentEntity, ItemAttachmentPictureViewHolder>(
         SelectAttachmentDiffCallback()
     ) {
-    var selectAttachments = emptyList<AttachmentEntity>()
+    var selectAttachments = emptyList<Int>()
 
     var attachmentSelectListener: ((AttachmentEntity) -> Unit)? = null
 
@@ -212,13 +212,13 @@ class ItemAttachmentAudioViewHolder(
         TODO("Not yet implemented")
     }
 
-    fun displayData(entity: AttachmentEntity, selectAttachments: List<AttachmentEntity>) =
+    fun displayData(entity: AttachmentEntity, selectAttachments: List<Int>) =
         with(itemViewBinding) {
             tvAudioName.setText(entity.name)
             tvDescription.setText("${entity.name}KB ${entity.duration}")
 
             // Show isSelected
-            val isSelected = selectAttachments.map { it.id }.contains(entity.id)
+            val isSelected = selectAttachments.contains(entity.id)
             val bgLnAudio =
                 if (isSelected) R.drawable.bg_primary_rounded_20 else R.drawable.bg_fade_grey
             lnSelectAudio.background = ContextCompat.getDrawable(itemView.context, bgLnAudio)
@@ -230,7 +230,7 @@ class SelectAttachmentAudioListAdapter :
         SelectAttachmentAudioDiffCallback()
     ) {
 
-    var selectAttachments = emptyList<AttachmentEntity>()
+    var selectAttachments = emptyList<Int>()
 
     var attachmentSelectListener: ((AttachmentEntity) -> Unit)? = null
 

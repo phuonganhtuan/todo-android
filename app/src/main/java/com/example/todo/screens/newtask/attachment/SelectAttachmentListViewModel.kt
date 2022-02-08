@@ -15,6 +15,7 @@ import com.example.todo.data.models.entity.AttachmentType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -48,6 +49,9 @@ class SelectAttachmentListViewModel @Inject constructor(
 
     val list: StateFlow<List<AttachmentEntity>> get() = _list
     private val _list = MutableStateFlow(emptyList<AttachmentEntity>())
+
+    val selectIds: StateFlow<List<Int>> get() = _selectIds
+    private val _selectIds = MutableStateFlow(emptyList<Int>())
 
     val selectedList: StateFlow<List<AttachmentEntity>> get() = _selectedList
     private val _selectedList = MutableStateFlow(emptyList<AttachmentEntity>())
@@ -361,13 +365,13 @@ class SelectAttachmentListViewModel @Inject constructor(
      * select mutiple attachment
      */
     fun onSelect(entity: AttachmentEntity) {
-        var selectListTmp = _selectedList.value.toMutableList()
-        if (selectListTmp.map { it.id }.contains(entity.id)) {
-            selectListTmp = selectListTmp.filter { it.id != entity.id } as MutableList<AttachmentEntity>
+        if (_selectIds.value.contains(entity.id)) {
+            _selectedList.value =  _selectedList.value.filter { it.id != entity.id }
+            _selectIds.value = _selectIds.value.filter { it != entity.id }
         } else {
-            selectListTmp.add(entity)
+            _selectedList.value += listOf<AttachmentEntity>(entity)
+            _selectIds.value += listOf<Int>(entity.id)
         }
-        _selectedList.value = selectListTmp
     }
 
     /**
@@ -376,6 +380,7 @@ class SelectAttachmentListViewModel @Inject constructor(
     fun setSelectedListDefault(attachments: List<AttachmentEntity> = emptyList()) {
         val defaultList = attachments.filter { it.type == type.name }
         _selectedList.value = defaultList
+        _selectIds.value = defaultList.map { it.id }
     }
 
     fun onShowOrHideImageList(isShowList: Boolean, entity: AttachmentAlbumEntity? = null) {
