@@ -13,12 +13,18 @@ interface TaskDao {
     @Query("select * from TaskEntity")
     fun getShortTasks(): Flow<List<TaskShort>>
 
+    @Query("select * from TaskEntity where isDone = 0 and calendar >= :currentTime")
+    fun getTasksForAlarm(currentTime: Long): List<Task>
+
     @Transaction
     @Query("select * from TaskEntity where id = :id limit 1")
     fun getTask(id: Int): Task
 
     @Query("select * from CategoryEntity")
     fun getCategories(): Flow<List<CategoryEntity>>
+
+    @Query("select * from ReminderEntity where taskId = :taskId limit 1")
+    fun getReminder(taskId: Int): ReminderEntity?
 
     @Insert(onConflict = IGNORE)
     suspend fun addTask(entity: TaskEntity): Long
@@ -94,6 +100,9 @@ interface TaskDao {
 
     @Query("delete from TaskEntity where id = :id")
     suspend fun deleteTask(id: Int)
+
+    @Query("delete from ReminderEntity where taskId = :taskId")
+    suspend fun deleteReminder(taskId: Int)
 
     @Query("select * from BookmarkEntity")
     fun getBookmarks(): Flow<List<BookmarkEntity>>

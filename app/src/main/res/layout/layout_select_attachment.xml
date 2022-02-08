@@ -39,8 +39,9 @@
                 <ImageView
                     android:id="@+id/imgSelectPhoto"
                     android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:layout_height="match_parent"
                     android:contentDescription="@null"
+                    android:layout_weight="0.5"
                     android:src="@drawable/ic_chose_image" />
 
                 <TextView
@@ -51,9 +52,9 @@
                     android:text="@string/photo"
                     android:textColor="@color/black"
                     android:textSize="18sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/imgSelectPhoto"
-                    app:layout_constraintStart_toEndOf="@+id/imgSelectPhoto"
-                    app:layout_constraintTop_toTopOf="@+id/imgSelectPhoto" />
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="0.5"
+                     />
             </LinearLayout>
 
             <View
@@ -69,8 +70,9 @@
                 <ImageView
                     android:id="@+id/imgSelectVideo"
                     android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:layout_height="match_parent"
                     android:contentDescription="@null"
+                    android:layout_weight="0.5"
                     android:src="@drawable/ic_chose_video" />
 
                 <TextView
@@ -81,9 +83,9 @@
                     android:text="@string/video"
                     android:textColor="@color/black"
                     android:textSize="18sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/imgSelectVideo"
-                    app:layout_constraintStart_toEndOf="@+id/imgSelectVideo"
-                    app:layout_constraintTop_toTopOf="@+id/imgSelectVideo" />
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="0.5"
+                    />
             </LinearLayout>
 
             <View
@@ -99,8 +101,9 @@
                 <ImageView
                     android:id="@+id/imgSelectAudio"
                     android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:layout_height="match_parent"
                     android:contentDescription="@null"
+                    android:layout_weight="0.5"
                     android:src="@drawable/ic_chose_audio" />
 
                 <TextView
@@ -111,9 +114,9 @@
                     android:text="@string/audio"
                     android:textColor="@color/black"
                     android:textSize="18sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/imgSelectAudio"
-                    app:layout_constraintStart_toEndOf="@+id/imgSelectAudio"
-                    app:layout_constraintTop_toTopOf="@+id/imgSelectAudio" />
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="0.5"
+                    />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

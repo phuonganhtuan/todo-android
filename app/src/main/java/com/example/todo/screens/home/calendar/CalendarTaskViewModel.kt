@@ -1,7 +1,9 @@
 package com.example.todo.screens.home.calendar
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.todo.alarm.ScheduleHelper
 import com.example.todo.data.models.entity.TaskShort
 import com.example.todo.data.models.model.DateModel
 import com.example.todo.data.repository.TaskRepository
@@ -75,12 +77,20 @@ class CalendarTaskViewModel @Inject constructor(private val repository: TaskRepo
         _selectingMonth.value = month
     }
 
-    fun updateStatus(id: Int) = viewModelScope.launch {
+    fun updateStatus(context: Context, id: Int) = viewModelScope.launch {
         withContext(Dispatchers.IO) {
             val taskShortToUpdate = _tasks.value.filter { it.task.id == id }[0]
             val taskToUpdate = taskShortToUpdate.task.copy()
             taskToUpdate.isDone = !taskToUpdate.isDone
             repository.updateTask(taskToUpdate)
+            if (taskToUpdate.isDone) {
+                ScheduleHelper.cancelAlarm(context, taskToUpdate)
+            } else {
+                val reminder = repository.getReminder(taskToUpdate.id)
+                if (reminder != null) {
+                    ScheduleHelper.addAlarm(context, taskToUpdate, reminder)
+                }
+            }
             _tasks.value = repository.getTaskInDay(DateTimeUtils.getComparableDateString(_selectedDay.value))
         }
     }

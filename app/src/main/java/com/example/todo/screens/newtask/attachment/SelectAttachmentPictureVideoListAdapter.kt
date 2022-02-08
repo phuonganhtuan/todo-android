@@ -148,7 +148,7 @@ class ItemAttachmentPictureViewHolder(
             val bgTvSelectedId =
                 if (isSelected) R.drawable.bg_primary_rounded_20 else R.drawable.bg_rounded_border_white
             val bgThumbAttachmentId =
-                if (isSelected) R.drawable.bg_border_primary else R.drawable.bg_rounded_border_white
+                if (isSelected) R.drawable.bg_border_primary else R.drawable.bg_border_grey
 
             tvSelected.setText(index)
             tvSelected.background = ContextCompat.getDrawable(itemView.context, bgTvSelectedId)

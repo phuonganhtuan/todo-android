@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable/bg_border_grey.xml" value="0.1195" />
         <entry key="app/src/main/res/drawable/bg_border_primary.xml" value="0.1195" />
         <entry key="app/src/main/res/drawable/bg_checkbox_grey.xml" value="0.121" />
         <entry key="app/src/main/res/drawable/bg_fade_grey.xml" value="0.121" />

@@ -1,14 +1,16 @@
 package com.example.todo.screens.newtask
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.todo.R
+import com.example.todo.alarm.ScheduleHelper
 import com.example.todo.data.models.entity.*
 import com.example.todo.data.repository.TaskRepository
-import com.example.todo.demo.bms
-import com.example.todo.demo.cat1
-import com.example.todo.demo.taskDetail
-import com.example.todo.demo.tasks
+import com.example.todo.initdata.bms
+import com.example.todo.initdata.cat1
+import com.example.todo.initdata.taskDetail
+import com.example.todo.initdata.tasks
 import com.example.todo.utils.DateTimeUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -314,12 +316,13 @@ class NewTaskViewModel @Inject constructor(private val repository: TaskRepositor
         }
     }
 
-    fun createTask(title: String, note: String) = viewModelScope.launch {
+    fun createTask(context: Context, title: String, note: String) = viewModelScope.launch {
         withContext(Dispatchers.IO) {
             val calendar = Calendar.getInstance().apply { time = _selectedDate.value }
             calendar.apply {
                 set(HOUR_OF_DAY, if (_selectedHour.value == -1) 0 else _selectedHour.value)
                 set(MINUTE, if (_selectedMinute.value == -1) 0 else _selectedMinute.value)
+                set(SECOND, 0)
             }
             val taskEntity = TaskEntity(
                 title = title,
@@ -357,6 +360,8 @@ class NewTaskViewModel @Inject constructor(private val repository: TaskRepositor
                     repeatTime = if (_isCheckedRepeat.value) _selectedRepeatAt.value.name else RepeatAtEnum.NONE.name,
                 )
                 repository.addReminder(reminder)
+                taskEntity.id = taskId.toInt()
+                ScheduleHelper.addAlarm(context, taskEntity, reminder)
             }
             _isAdded.value = true
         }
@@ -555,13 +560,15 @@ class NewTaskViewModel @Inject constructor(private val repository: TaskRepositor
         }
     }
 
-    fun updateTask(title: String, note: String) = viewModelScope.launch {
+    fun updateTask(context: Context, title: String, note: String) = viewModelScope.launch {
         withContext(Dispatchers.IO) {
             val calendar = Calendar.getInstance().apply { time = _selectedDate.value }
             calendar.apply {
                 set(HOUR_OF_DAY, if (_selectedHour.value == -1) 0 else _selectedHour.value)
                 set(MINUTE, if (_selectedMinute.value == -1) 0 else _selectedMinute.value)
+                set(SECOND, 0)
             }
+            ScheduleHelper.cancelAlarm(context, _task.value.task)
             _task.value.task.apply {
                 this.title = title
                 categoryId =
@@ -601,16 +608,22 @@ class NewTaskViewModel @Inject constructor(private val repository: TaskRepositor
                 )
                 repository.addAttachment(entity)
             }
-            _task.value.reminder?.apply {
-                reminderType = _selectedReminderType.value.name
-                reminderTime = _selectedReminderTime.value.name
-                screenLockReminder = _selectedReminderScreenLock.value
-                enableRepeat = _isCheckedRepeat.value
-                time = calendar.timeInMillis
-                repeatTime =
-                    if (_isCheckedRepeat.value) _selectedRepeatAt.value.name else RepeatAtEnum.NONE.name
-                repository.updateReminder(this)
+            if (!_task.value.detail.isReminder) {
+                repository.deleteReminder(taskId)
+            } else {
+                _task.value.reminder?.apply {
+                    reminderType = _selectedReminderType.value.name
+                    reminderTime = _selectedReminderTime.value.name
+                    screenLockReminder = _selectedReminderScreenLock.value
+                    enableRepeat = _isCheckedRepeat.value
+                    time = calendar.timeInMillis
+                    repeatTime =
+                        if (_isCheckedRepeat.value) _selectedRepeatAt.value.name else RepeatAtEnum.NONE.name
+                    repository.updateReminder(this)
+                    ScheduleHelper.addAlarm(context, _task.value.task, _task.value.reminder!!)
+                }
             }
+
             _isAdded.value = false
             _isAdded.value = true
         }

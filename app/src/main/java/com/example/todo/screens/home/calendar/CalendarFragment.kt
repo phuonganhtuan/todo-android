@@ -1,5 +1,6 @@
 package com.example.todo.screens.home.calendar
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -69,7 +70,7 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>() {
             }
 
             override fun onStatusChange(id: Int) {
-                viewModel.updateStatus(id)
+                viewModel.updateStatus(requireContext(), id)
             }
         })
     }
@@ -89,6 +90,7 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>() {
     private fun initData() = with(viewBinding) {
     }
 
+    @SuppressLint("UnsafeRepeatOnLifecycleDetector")
     private fun observeData() = with(viewModel) {
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.CREATED) {

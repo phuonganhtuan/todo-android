@@ -1,14 +1,19 @@
 package com.example.todo.screens.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.ImageView
 import androidx.activity.viewModels
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.todo.R
+import com.example.todo.alarm.ScheduleHelper
 import com.example.todo.base.BaseActivity
 import com.example.todo.databinding.ActivityHomeBinding
+import com.example.todo.screens.home.tasks.suggest.SuggestActivity
+import com.example.todo.utils.SPUtils
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.*
 
 @AndroidEntryPoint
 class HomeActivity : BaseActivity<ActivityHomeBinding>() {
@@ -22,7 +27,11 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
     }
 
     override fun onActivityReady() {
-        viewModel.createDemoData()
+        if (SPUtils.isFirstTime(this)) {
+            viewModel.createInitData()
+            SPUtils.saveFirstTimeLaunched(this)
+            showSuggest()
+        }
         setupEvents()
     }
 
@@ -30,11 +39,15 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
         viewBinding.layoutDrawer.open()
     }
 
+    private fun showSuggest() {
+        startActivity(Intent(this, SuggestActivity::class.java))
+    }
+
     private fun setupEvents() = with(viewBinding) {
         bottomBar.setupWithNavController(findNavController(R.id.home_nav_host_fragment))
-        (navigationSideView.getHeaderView(0)
-            .findViewById(R.id.buttonHide) as ImageView).setOnClickListener {
-            layoutDrawer.close()
-        }
+//        (navigationSideView.getHeaderView(0)
+//            .findViewById(R.id.buttonHide) as ImageView).setOnClickListener {
+//            layoutDrawer.close()
+//        }
     }
 }

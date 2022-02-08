@@ -60,6 +60,7 @@ class SetReminderDialog : BaseDialogFragment<FragmentSetReminderBinding>() {
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 selectedReminderTime.collect {
+                    if (it.getStringid() == -1) return@collect
                     viewBinding.tvReminderAtValue.text = resources.getString(it.getStringid())
 
                     val popup = PopupMenu(requireContext(), viewBinding.tvReminderAtValue)
@@ -72,6 +73,7 @@ class SetReminderDialog : BaseDialogFragment<FragmentSetReminderBinding>() {
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 selectedReminderType.collect {
+                    if (it.getStringid() == -1) return@collect
                     viewBinding.tvReminderTypeValue.text = resources.getString(it.getStringid())
 
                     val popup = PopupMenu(requireContext(), viewBinding.tvReminderTypeValue)

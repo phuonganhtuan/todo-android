@@ -39,4 +39,6 @@ interface TaskRepository {
     suspend fun deleteTask(id: Int)
 
     fun getBookmarks(): Flow<List<BookmarkEntity>>
+    fun getReminder(taskId: Int): ReminderEntity?
+    suspend fun deleteReminder(taskId: Int)
 }

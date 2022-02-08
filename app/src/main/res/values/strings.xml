@@ -100,4 +100,6 @@
     <string name="camera">Camera</string>
     <string name="select_album">Select Album</string>
     <string name="no_data">No data</string>
+    <string name="organize_tasks_easier_with_to_do_list">Organize tasks easier with To-Do List</string>
+    <string name="incoming_task">Incoming task</string>
 </resources>

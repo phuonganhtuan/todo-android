@@ -13,7 +13,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scaleType="centerCrop"
-        tools:srcCompat="@tools:sample/avatars" />
+        tools:srcCompat="@tools:sample/avatars"
+        android:background="@drawable/bg_ripple_white_stroke_rounded_8"/>
 
     <ImageView
         android:id="@+id/imgPlayVideo"
@@ -37,6 +38,9 @@
         android:src="@drawable/ic_checkbox_uncheck_grey"
         android:text=""
         android:textColor="@color/white"
-        android:textSize="17sp"
+        android:textSize="14sp"
+        android:textAlignment="center"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
         app:layout_constraintDimensionRatio="1:1" />
 </RelativeLayout><!--    android:background="@drawable/bg_primary_rounded_20"-->

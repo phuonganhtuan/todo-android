@@ -15,7 +15,7 @@
             android:id="@+id/thumbAttachment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_ripple_white_stroke_rounded_8"
+            android:background="@drawable/bg_border_grey"
             android:scaleType="centerCrop"
             tools:srcCompat="@tools:sample/avatars" />
         <ImageView

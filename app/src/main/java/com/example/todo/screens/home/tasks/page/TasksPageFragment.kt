@@ -112,7 +112,7 @@ class TasksPageFragment : BaseFragment<FragmentTasksPageBinding>() {
             }
 
             override fun onStatusChange(id: Int) {
-                viewModel.updateStatus(id)
+                viewModel.updateStatus(requireContext(), id)
             }
         })
     }

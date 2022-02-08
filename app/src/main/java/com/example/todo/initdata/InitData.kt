@@ -1,4 +1,4 @@
-package com.example.todo.demo
+package com.example.todo.initdata
 
 import android.util.Log
 import com.example.todo.data.models.entity.*
@@ -291,17 +291,15 @@ val tasks = listOf<TaskEntity>(
     ),
 )
 
-suspend fun createDemoData(repository: TaskRepository) {
+suspend fun createInitData(repository: TaskRepository) {
 
     // Remove all existed data
-    repository.deleteAttachments()
-    repository.deleteTaskDetails()
-    repository.deleteBookmarks()
-    repository.deleteCategories()
-    repository.deleteSubtasks()
-    repository.deleteTasks()
-
-    Log.d("demo_data", "removed old data")
+//    repository.deleteAttachments()
+//    repository.deleteTaskDetails()
+//    repository.deleteBookmarks()
+//    repository.deleteCategories()
+//    repository.deleteSubtasks()
+//    repository.deleteTasks()
 
     // Add categories
     val cat1Id = repository.addCategory(cat1)
@@ -309,56 +307,50 @@ suspend fun createDemoData(repository: TaskRepository) {
     val cat3Id = repository.addCategory(cat3)
     val cat4Id = repository.addCategory(cat4)
 
-    Log.d("demo_data", "cat with id $cat1Id created!")
-    Log.d("demo_data", "cat with id $cat2Id created!")
-    Log.d("demo_data", "cat with id $cat3Id created!")
-    Log.d("demo_data", "cat with id $cat4Id created!")
-
     // Add bookmarks
     val bookmarkIds = mutableListOf<Long>()
     bms.forEach {
         val id = repository.addBookmark(it)
-        Log.d("demo_data", "bookmark with id $id created!")
         bookmarkIds.add(id)
     }
 
-    val catIds = listOf(cat1Id, cat2Id, cat3Id, cat4Id)
+//    val catIds = listOf(cat1Id, cat2Id, cat3Id, cat4Id)
 
-    tasks.forEach {
-        it.markId = bookmarkIds.random().toInt()
-        it.categoryId = catIds.random().toInt()
-
-        // Add task
-        val taskId = repository.addTask(it)
-        taskDetail.taskId = taskId.toInt()
-
-        // Add task detail
-        repository.addTaskDetail(taskDetail)
-
-        val reminder = ReminderEntity(
-            reminderType = ReminderTypeEnum.NOTIFICATION.name,
-            reminderTime = ReminderTimeEnum.THIRTY_MINUTES_BEFORE.name,
-            screenLockReminder = false,
-            enableRepeat = true,
-            repeatTime = RepeatAtEnum.WEEKLY.name,
-            taskId = taskId.toInt(),
-            time = it.calendar ?: 0L
-        )
-
-        repository.addReminder(reminder)
-
-        // Add attachments
-        attachments.forEach { att ->
-            att.taskId = taskId.toInt()
-            repository.addAttachment(att)
-        }
-
-        // Add sub-tasks
-        subTasks.forEach { sub ->
-            sub.taskId = taskId.toInt()
-            repository.addSubTasks(sub)
-        }
-
-        Log.d("demo_data", "task with title ${it.title} and id $taskId created!")
-    }
+//    tasks.forEach {
+//        it.markId = bookmarkIds.random().toInt()
+//        it.categoryId = catIds.random().toInt()
+//
+//        // Add task
+//        val taskId = repository.addTask(it)
+//        taskDetail.taskId = taskId.toInt()
+//
+//        // Add task detail
+//        repository.addTaskDetail(taskDetail)
+//
+//        val reminder = ReminderEntity(
+//            reminderType = ReminderTypeEnum.NOTIFICATION.name,
+//            reminderTime = ReminderTimeEnum.THIRTY_MINUTES_BEFORE.name,
+//            screenLockReminder = false,
+//            enableRepeat = true,
+//            repeatTime = RepeatAtEnum.WEEKLY.name,
+//            taskId = taskId.toInt(),
+//            time = it.calendar ?: 0L
+//        )
+//
+//        repository.addReminder(reminder)
+//
+//        // Add attachments
+//        attachments.forEach { att ->
+//            att.taskId = taskId.toInt()
+//            repository.addAttachment(att)
+//        }
+//
+//        // Add sub-tasks
+//        subTasks.forEach { sub ->
+//            sub.taskId = taskId.toInt()
+//            repository.addSubTasks(sub)
+//        }
+//
+//        Log.d("demo_data", "task with title ${it.title} and id $taskId created!")
+//    }
 }

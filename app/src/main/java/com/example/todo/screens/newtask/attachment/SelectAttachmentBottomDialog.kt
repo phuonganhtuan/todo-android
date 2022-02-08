@@ -28,6 +28,7 @@ import com.example.todo.data.models.entity.AttachmentType
 import com.example.todo.databinding.LayoutSelectAttachmentListBinding
 import com.example.todo.screens.newtask.NewTaskViewModel
 import com.example.todo.utils.gone
+import com.example.todo.utils.hide
 import com.example.todo.utils.show
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -232,7 +233,7 @@ class SelectAttachmentBottomDialog :
                     if (it.isNotEmpty()) {
                         viewBinding.tvDone.show()
                     } else {
-                        viewBinding.tvDone.gone()
+                        viewBinding.tvDone.hide()
                     }
                     when (type) {
                         AttachmentType.IMAGE, AttachmentType.VIDEO -> {

@@ -9,7 +9,7 @@
         android:id="@+id/textMonthYear"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/nunito_bold"
+        android:fontFamily="@font/sf_rounded_bold"
         android:padding="16dp"
         android:text="January 2022"
         android:textColor="@android:color/black"

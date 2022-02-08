@@ -116,7 +116,6 @@ class TaskViewHolder(
             }
             buttonMark.setImageDrawable(markIcon)
         }
-        return@with
     }
 
     private fun getUnmarkIcon(bookmark: BookmarkEntity): Drawable? {
