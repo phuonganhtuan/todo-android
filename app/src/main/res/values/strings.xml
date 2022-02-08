@@ -93,4 +93,5 @@
     <string name="_5_minute_before">5 minute before</string>
     <string name="saved">Saved.</string>
     <string name="organize_tasks_easier_with_to_do_list">Organize tasks easier with To-Do List</string>
+    <string name="incoming_task">Incoming task</string>
 </resources>

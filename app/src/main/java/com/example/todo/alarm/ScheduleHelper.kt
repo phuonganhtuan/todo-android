@@ -3,14 +3,16 @@ package com.example.todo.alarm
 import android.annotation.SuppressLint
 import android.app.AlarmManager
 import android.app.PendingIntent
+import android.app.PendingIntent.FLAG_MUTABLE
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
+import android.os.Build
 import android.util.Log
 import com.example.todo.data.models.entity.ReminderEntity
 import com.example.todo.data.models.entity.TaskEntity
 import com.example.todo.screens.newtask.ReminderTimeEnum
 import com.example.todo.screens.newtask.RepeatAtEnum
+import com.example.todo.utils.Constants
 import java.util.*
 import java.util.Calendar.MONTH
 import java.util.Calendar.YEAR
@@ -28,15 +30,22 @@ object ScheduleHelper {
         task: TaskEntity,
         reminder: ReminderEntity
     ) {
+        if ((task.calendar ?: 0L) < System.currentTimeMillis()) return
         if (alarmManager == null) {
-            alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+            alarmManager = context.getSystemService(Context.ALARM_SERVICE) as? AlarmManager
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            if (alarmManager?.canScheduleExactAlarms() != true) return
         }
 
         val alarmIntent = Intent(context, AlarmHelper::class.java).apply {
             action = "action"
-            data = Uri.EMPTY
+            putExtra(Constants.KEY_TASK_ID, task.id)
+            putExtra(Constants.KEY_TASK_TITLE, task.title)
+            putExtra(Constants.KEY_TASK_TIME, task.calendar)
         }
-        val pendingIntent = PendingIntent.getBroadcast(context, task.id, alarmIntent, 0)
+        val pendingIntent =
+            PendingIntent.getBroadcast(context, task.id, alarmIntent, FLAG_MUTABLE or PendingIntent.FLAG_CANCEL_CURRENT)
 
         val reminderTime = when (reminder.reminderTime) {
             ReminderTimeEnum.THIRTY_MINUTES_BEFORE.name -> -1800000L
@@ -78,15 +87,18 @@ object ScheduleHelper {
         Log.d("aaa", "set.")
     }
 
-    fun cancelAlarm(context: Context, taskId: Int) {
+    fun cancelAlarm(context: Context, task: TaskEntity) {
         if (alarmManager == null) {
-            alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+            alarmManager = context.getSystemService(Context.ALARM_SERVICE) as? AlarmManager
         }
         val alarmIntent = Intent(context, AlarmHelper::class.java).apply {
             action = "action"
-            data = Uri.EMPTY
+            putExtra(Constants.KEY_TASK_ID, task.id)
+            putExtra(Constants.KEY_TASK_TITLE, task.title)
+            putExtra(Constants.KEY_TASK_TIME, task.calendar)
         }
-        val pendingIntent = PendingIntent.getBroadcast(context, taskId, alarmIntent, 0)
+        val pendingIntent =
+            PendingIntent.getBroadcast(context, task.id, alarmIntent, FLAG_MUTABLE or PendingIntent.FLAG_CANCEL_CURRENT)
         try {
             alarmManager?.cancel(pendingIntent)
         } catch (exception: Exception) {

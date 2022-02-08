@@ -42,4 +42,6 @@ class TaskLocalDataSourceImpl @Inject constructor(private val dao: TaskDao) : Ta
     override suspend fun deleteTask(id: Int) = dao.deleteTask(id)
 
     override fun getBookmarks() = dao.getBookmarks()
+    override fun getReminder(taskId: Int) = dao.getReminder(taskId)
+    override suspend fun deleteReminder(taskId: Int) = dao.deleteReminder(taskId)
 }

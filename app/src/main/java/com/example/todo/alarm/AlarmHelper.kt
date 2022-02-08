@@ -1,6 +1,5 @@
 package com.example.todo.alarm
 
-import android.annotation.SuppressLint
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -11,57 +10,51 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import com.example.todo.R
-import com.example.todo.screens.home.HomeActivity
+import com.example.todo.screens.taskdetail.TaskDetailActivity
+import com.example.todo.utils.Constants
+import com.example.todo.utils.DateTimeUtils
 
 
 class AlarmHelper : BroadcastReceiver() {
-
-//    override fun onReceive(p0: Context?, p1: Intent?) {
-//        Log.d("aaa", "notified")
-//    }
-
 
     // For testing, will be updated soon
     override fun onReceive(context: Context, intent: Intent) {
         Log.d("aaa", "notified")
         val bundle: Bundle = intent.extras ?: Bundle()
-        val text = bundle.getString("event")
-//        val date = bundle.getString("date") + " " + bundle.getString("time")
-        //Click on Notification
-        //Click on Notification
-        val intent1 = Intent(context, HomeActivity::class.java)
+
+        val id = bundle.getInt(Constants.KEY_TASK_ID)
+        val intent1 = Intent(context, TaskDetailActivity::class.java)
         intent1.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        intent1.putExtra("message", text)
-        //Notification Builder
-        //Notification Builder
+        intent1.putExtra(Constants.KEY_TASK_ID, id)
+
         val pendingIntent =
-            PendingIntent.getActivity(context, 1, intent1, PendingIntent.FLAG_ONE_SHOT)
+            PendingIntent.getActivity(context, id, intent1, PendingIntent.FLAG_MUTABLE)
         val notificationManager =
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val mBuilder = NotificationCompat.Builder(context, "notify_001")
-        //here we set all the properties for the notification
-        //here we set all the properties for the notification
-        val contentView = RemoteViews(context.packageName, R.layout.layout_notification)
-        contentView.setImageViewResource(R.id.image, R.mipmap.ic_launcher)
-        val pendingSwitchIntent = PendingIntent.getBroadcast(context, 0, intent, 0)
-        contentView.setOnClickPendingIntent(R.id.layoutNoti, pendingSwitchIntent)
-        contentView.setTextViewText(R.id.message, text)
-//        contentView.setTextViewText(R.id.date, date)
-        mBuilder.setSmallIcon(R.drawable.ic_date_outline)
-        mBuilder.setContentTitle("Test alarm")
-        mBuilder.setContentText("This is a test alarm")
-        mBuilder.setAutoCancel(true)
+        mBuilder.setSmallIcon(R.drawable.ic_time_outline)
+        mBuilder.setContentText(
+            DateTimeUtils.getShortTimeFromMillisecond(
+                bundle.getLong(
+                    Constants.KEY_TASK_TIME,
+                    System.currentTimeMillis()
+                )
+            )
+        )
+        mBuilder.setContentTitle(
+            bundle.getString(
+                Constants.KEY_TASK_TITLE,
+                context.getString(R.string.incoming_task)
+            )
+        )
+        mBuilder.setAutoCancel(false)
         mBuilder.setOngoing(true)
-        mBuilder.setAutoCancel(true)
         mBuilder.priority = Notification.PRIORITY_HIGH
         mBuilder.setOnlyAlertOnce(true)
-        mBuilder.build().flags = Notification.FLAG_NO_CLEAR or Notification.PRIORITY_HIGH
+        mBuilder.build().flags = Notification.PRIORITY_HIGH
         mBuilder.setContentIntent(pendingIntent)
-        //we have to create notification channel after api level 26
-        //we have to create notification channel after api level 26
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channelId = "channel_id"
             val channel =
@@ -71,6 +64,6 @@ class AlarmHelper : BroadcastReceiver() {
             mBuilder.setChannelId(channelId)
         }
         val notification: Notification = mBuilder.build()
-        notificationManager.notify(1, notification)
+        notificationManager.notify(id, notification)
     }
 }
