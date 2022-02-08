@@ -60,6 +60,15 @@
             android:layout_height="1dp"
             android:background="@color/color_border_grey" />
 
+        <ProgressBar
+            android:id="@+id/loadingBar"
+            style="@style/Widget.MaterialComponents.CircularProgressIndicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="16dp"
+            android:visibility="visible" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerSelectAlbum"
             android:layout_width="match_parent"
@@ -72,6 +81,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/viewDivider"
             app:spanCount="3"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical"
             tools:listitem="@layout/item_attachment_album_view" />
 
         <androidx.recyclerview.widget.RecyclerView
@@ -87,6 +98,8 @@
             app:layout_constraintTop_toBottomOf="@id/viewDivider"
             app:spanCount="3"
             tools:itemCount="30"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical"
             tools:listitem="@layout/item_attachment_picture_view" />
 
         <androidx.recyclerview.widget.RecyclerView
@@ -99,9 +112,20 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/viewDivider"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical"
             tools:listitem="@layout/item_attachment_audio_view" />
 
 
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/tvNodata"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="@string/no_data"
+        android:textColor="@color/color_text_secondary"
+        android:textSize="24sp"
+        android:visibility="gone" />
 </RelativeLayout>

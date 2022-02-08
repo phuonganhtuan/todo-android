@@ -71,7 +71,7 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:contentDescription="@null"
-                    android:src="@drawable/ic_chose_image" />
+                    android:src="@drawable/ic_chose_video" />
 
                 <TextView
                     android:id="@+id/tvSelectVideo"
@@ -101,7 +101,7 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:contentDescription="@null"
-                    android:src="@drawable/ic_chose_image" />
+                    android:src="@drawable/ic_chose_audio" />
 
                 <TextView
                     android:id="@+id/tvSelectAudio"

@@ -7,6 +7,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.todo.R
+import com.example.todo.base.LoadDataState
 import com.example.todo.data.models.entity.AttachmentAlbumEntity
 import com.example.todo.data.models.entity.AttachmentAlbumTypeEnum
 import com.example.todo.data.models.entity.AttachmentEntity
@@ -16,13 +17,19 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.File
 import javax.inject.Inject
+import kotlin.random.Random
+
 
 class SelectAttachmentListViewModel @Inject constructor(
     val type: AttachmentType,
     val context: Context
 ) :
     ViewModel() {
+
+    val isLoading: StateFlow<LoadDataState> get() = _isLoading
+    private val _isLoading = MutableStateFlow<LoadDataState>(LoadDataState.NONE)
 
     val imageAlbums: StateFlow<List<AttachmentAlbumEntity>> get() = _imageAlbums
     private val _imageAlbums = MutableStateFlow(
@@ -50,6 +57,7 @@ class SelectAttachmentListViewModel @Inject constructor(
     }
 
     fun setupData(type: AttachmentType) {
+        showLoading()
         when (type) {
             AttachmentType.IMAGE -> getAllImageAlbum()
             AttachmentType.VIDEO -> getAllVideo()
@@ -234,7 +242,7 @@ class SelectAttachmentListViewModel @Inject constructor(
         val audioList = mutableListOf<AttachmentEntity>()
         val collection = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             MediaStore.Audio.Media.getContentUri(
-                MediaStore.VOLUME_EXTERNAL
+                MediaStore.VOLUME_EXTERNAL_PRIMARY
             )
         } else {
             MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
@@ -257,7 +265,7 @@ class SelectAttachmentListViewModel @Inject constructor(
             projection,
             null,
             null,
-            null
+            sortOrder
         )
         query?.use { cursor ->
             // Cache column indices.
@@ -321,6 +329,7 @@ class SelectAttachmentListViewModel @Inject constructor(
             _imageAlbums.value += withContext(Dispatchers.IO) {
                 loadAllImageAlbum()
             }
+            hiddenLoading()
         }
     }
 
@@ -332,6 +341,7 @@ class SelectAttachmentListViewModel @Inject constructor(
             _list.value += withContext(Dispatchers.IO) {
                 loadVideoFromStorage()
             }
+            hiddenLoading()
         }
     }
 
@@ -343,6 +353,7 @@ class SelectAttachmentListViewModel @Inject constructor(
             _list.value += withContext(Dispatchers.IO) {
                 loadAudioFromStorage()
             }
+            hiddenLoading()
         }
     }
 
@@ -371,7 +382,6 @@ class SelectAttachmentListViewModel @Inject constructor(
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 _isShowImageList.value = isShowList
-
                 if (isShowList) {
                     if (entity != null && entity.data.isNotEmpty()) {
                         Log.e("onShowOrHideImageList", entity.toString())
@@ -382,5 +392,34 @@ class SelectAttachmentListViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    /**
+     * Show loading
+     */
+    fun showLoading(){
+        _isLoading.value = LoadDataState.LOADING
+    }
+
+    /**
+     * hidden Loading
+     */
+    fun hiddenLoading(){
+        _isLoading.value = LoadDataState.SUCCESS
+    }
+
+    /**
+     * add camera photo
+     */
+    fun addCameraPhotoToSelectList(path: String){
+        val file = File(path)
+        if (file.exists()){
+            val id = Random.nextInt()
+            val name: String = path.substring(path.lastIndexOf("/") + 1)
+            val extension: String = path.substring(path.lastIndexOf("."))
+            val attachment = AttachmentEntity(id, name, extension, path, 0, AttachmentType.IMAGE.name, (file.length()/1024).toInt().toString(), 0, "Camera")
+            onSelect(attachment)
+        }
+
     }
 }

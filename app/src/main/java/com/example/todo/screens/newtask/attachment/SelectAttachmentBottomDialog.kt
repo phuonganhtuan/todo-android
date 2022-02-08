@@ -1,9 +1,19 @@
 package com.example.todo.screens.newtask.attachment
 
+import android.Manifest
+import android.app.Activity.RESULT_OK
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -11,18 +21,21 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.todo.R
 import com.example.todo.base.BaseBottomSheetDialogFragment
+import com.example.todo.base.LoadDataState
 import com.example.todo.data.models.entity.AttachmentAlbumEntity
 import com.example.todo.data.models.entity.AttachmentAlbumTypeEnum
 import com.example.todo.data.models.entity.AttachmentType
 import com.example.todo.databinding.LayoutSelectAttachmentListBinding
-import com.example.todo.demo.attachments
 import com.example.todo.screens.newtask.NewTaskViewModel
 import com.example.todo.utils.gone
-import com.example.todo.utils.hide
 import com.example.todo.utils.show
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filter
+import java.io.File
+import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.*
 
 @AndroidEntryPoint
 class SelectAttachmentBottomDialog :
@@ -36,6 +49,10 @@ class SelectAttachmentBottomDialog :
     var adapterImageAlbum: SelectAttachmentAlbumListAdapter? = null
     var adapterPictureVideo: SelectAttachmentPictureVideoListAdapter? = null
     var adapterAudio: SelectAttachmentAudioListAdapter? = null
+
+    val CAMERA_PERMISSION_CODE = 100
+    val REQUEST_IMAGE_CAPTURE = 1
+    lateinit var currentPhotoPath: String
 
     override fun inflateViewBinding(
         container: ViewGroup?,
@@ -54,11 +71,8 @@ class SelectAttachmentBottomDialog :
         when (arguments?.getString("type")) {
             AttachmentType.IMAGE.name -> {
                 type = AttachmentType.IMAGE
-
                 adapterImageAlbum = SelectAttachmentAlbumListAdapter()
                 recyclerSelectAlbum.adapter = adapterImageAlbum
-
-//                tvTitle.setText(getString(R.string.select_picture))
                 adapterPictureVideo = SelectAttachmentPictureVideoListAdapter()
                 recyclerSelectPictureVideo.adapter = adapterPictureVideo
             }
@@ -66,14 +80,12 @@ class SelectAttachmentBottomDialog :
                 type = AttachmentType.VIDEO
                 tvTitle.setText(getString(R.string.select_video))
                 adapterPictureVideo = SelectAttachmentPictureVideoListAdapter()
-                recyclerSelectPictureVideo.show()
                 recyclerSelectPictureVideo.adapter = adapterPictureVideo
             }
             AttachmentType.AUDIO.name -> {
                 type = AttachmentType.AUDIO
                 tvTitle.setText(getString(R.string.select_audio))
                 adapterAudio = SelectAttachmentAudioListAdapter()
-                recyclerSelectAudio.show()
                 recyclerSelectAudio.adapter = adapterAudio
             }
         }
@@ -114,16 +126,54 @@ class SelectAttachmentBottomDialog :
 
     private fun observeData() = with(viewModel) {
         /**
+         * Loading
+         */
+        lifecycleScope.launchWhenStarted {
+            repeatOnLifecycle(Lifecycle.State.CREATED) {
+                selectAttachmentListViewModel?.isLoading?.collect {
+                    viewBinding.loadingBar.apply {
+                        if (it == LoadDataState.LOADING) show() else gone()
+                    }
+                    when (type) {
+                        AttachmentType.IMAGE -> {
+                            viewBinding.recyclerSelectAlbum.apply {
+                                if (it == LoadDataState.LOADING) gone() else show()
+                            }
+                        }
+                        AttachmentType.VIDEO -> {
+                            viewBinding.recyclerSelectPictureVideo.apply {
+                                if (it == LoadDataState.LOADING || (it == LoadDataState.SUCCESS && selectAttachmentListViewModel?.list?.value?.isEmpty() == true)) gone() else show()
+                            }
+                            viewBinding.tvNodata.apply {
+                                if (it == LoadDataState.SUCCESS && selectAttachmentListViewModel?.list?.value?.isEmpty() == true) show() else gone()
+                            }
+                        }
+                        AttachmentType.AUDIO -> {
+                            viewBinding.recyclerSelectAudio.apply {
+                                if (it == LoadDataState.LOADING || (it == LoadDataState.SUCCESS && selectAttachmentListViewModel?.list?.value?.isEmpty() == true)) gone() else show()
+                            }
+                            viewBinding.tvNodata.apply {
+                                if (it == LoadDataState.SUCCESS && selectAttachmentListViewModel?.list?.value?.isEmpty() == true) show() else gone()
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        /**
          * Change album to images view or revert
          */
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.CREATED) {
                 selectAttachmentListViewModel?.isShowImageList?.filter { type == AttachmentType.IMAGE }
                     ?.collect {
-                        viewBinding.recyclerSelectAlbum.visibility =
-                            if (it) View.GONE else View.VISIBLE
-                        viewBinding.recyclerSelectPictureVideo.visibility =
-                            if (it) View.VISIBLE else View.GONE
+                        viewBinding.recyclerSelectAlbum.apply {
+                            if (it) gone() else show()
+                        }
+                        viewBinding.recyclerSelectPictureVideo.apply {
+                            if (it) show() else gone()
+                        }
                         viewBinding.tvTitle.setText(
                             if (it) getString(R.string.select_picture) else getString(
                                 R.string.select_album
@@ -139,7 +189,8 @@ class SelectAttachmentBottomDialog :
          */
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.CREATED) {
-                selectAttachmentListViewModel?.imageAlbums?.filter { type == AttachmentType.IMAGE && selectAttachmentListViewModel?.isShowImageList?.value == false }
+                selectAttachmentListViewModel?.imageAlbums
+                    ?.filter { type == AttachmentType.IMAGE && selectAttachmentListViewModel?.isShowImageList?.value == false }
                     ?.collect {
                         Log.e("observeData", it.toString())
                         if (it.isNotEmpty()) {
@@ -154,19 +205,20 @@ class SelectAttachmentBottomDialog :
          */
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.CREATED) {
-                selectAttachmentListViewModel?.list?.collect {
-                    Log.e("observeData - list", it.toString())
-                    if (it.isNotEmpty()) {
-                        when (type) {
-                            AttachmentType.IMAGE, AttachmentType.VIDEO -> {
-                                adapterPictureVideo?.submitList(
-                                    it
-                                )
+                selectAttachmentListViewModel?.list
+                    ?.collect {
+                        Log.e("observeData - list", it.toString())
+                        if (it.isNotEmpty()) {
+                            when (type) {
+                                AttachmentType.IMAGE, AttachmentType.VIDEO -> {
+                                    adapterPictureVideo?.submitList(
+                                        it
+                                    )
+                                }
+                                AttachmentType.AUDIO -> adapterAudio?.submitList(it)
                             }
-                            AttachmentType.AUDIO -> adapterAudio?.submitList(it)
                         }
                     }
-                }
             }
         }
 
@@ -220,9 +272,103 @@ class SelectAttachmentBottomDialog :
 
     private fun onSelectAlbum(entity: AttachmentAlbumEntity) {
         if (entity.type == AttachmentAlbumTypeEnum.CAMERA) {
-
+            checkPermission()
         } else {
             selectAttachmentListViewModel?.onShowOrHideImageList(true, entity)
         }
+    }
+
+    private fun checkPermission() = with(viewBinding) {
+        if (context?.let {
+                ContextCompat.checkSelfPermission(
+                    it,
+                    Manifest.permission.CAMERA
+                )
+            } != PackageManager.PERMISSION_GRANTED) {
+            // Requesting the permission
+            requestPermissions(
+                arrayOf(Manifest.permission.CAMERA),
+                CAMERA_PERMISSION_CODE
+            )
+        } else {
+            dispatchTakePictureIntent()
+        }
+    }
+
+    /**
+     * Create image temp file
+     */
+    @Throws(IOException::class)
+    private fun createImageFile(): File {
+        // Create an image file name
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        val storageDir: File? = context?.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        return File.createTempFile(
+            "JPEG_${timeStamp}_", /* prefix */
+            ".jpg", /* suffix */
+            storageDir /* directory */
+        ).apply {
+            // Save a file: path for use with ACTION_VIEW intents
+            currentPhotoPath = absolutePath
+        }
+    }
+
+    /**
+     * Show camera to take picture
+     */
+    private fun dispatchTakePictureIntent() {
+        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+            // Ensure that there's a camera activity to handle the intent
+            context?.packageManager?.let {
+                takePictureIntent.resolveActivity(it)?.also {
+                    // Create the File where the photo should go
+                    val photoFile: File? = try {
+                        createImageFile()
+                    } catch (ex: IOException) {
+                        // Error occurred while creating the File
+                        Toast.makeText(context, "Not support Camera", Toast.LENGTH_SHORT).show()
+                        null
+                    }
+                    // Continue only if the File was successfully created
+                    photoFile?.also {
+                        val photoURI: Uri? = context?.let { it1 ->
+                            FileProvider.getUriForFile(
+                                it1,
+                                "com.example.android.fileprovider",
+                                it
+                            )
+                        }
+                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Callback Activity
+     */
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            selectAttachmentListViewModel?.addCameraPhotoToSelectList(currentPhotoPath)
+            onClickDone()
+        }
+        return
+    }
+
+    /**
+     * Call RequestPermission
+     */
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>, grantResults: IntArray
+    ) {
+        if (requestCode == CAMERA_PERMISSION_CODE && (grantResults.isNotEmpty() &&
+                    grantResults[0] == PackageManager.PERMISSION_GRANTED)
+        ) {
+            dispatchTakePictureIntent()
+        }
+        return
     }
 }

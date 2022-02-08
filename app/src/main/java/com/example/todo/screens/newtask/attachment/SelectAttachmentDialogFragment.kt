@@ -28,6 +28,7 @@ class SelectAttachmentDialogFragment : BaseDialogFragment<LayoutSelectAttachment
         private const val READ_PHOTO_PERMISSION_CODE = 100
         private const val READ_VIDEO_PERMISSION_CODE = 101
         private const val READ_AUDIO_PERMISSION_CODE = 102
+        private const val WRITE_PERMISSION_CODE = 103
     }
 
     override fun inflateViewBinding(
@@ -47,20 +48,29 @@ class SelectAttachmentDialogFragment : BaseDialogFragment<LayoutSelectAttachment
     }
 
     private fun selectPhotos() = with(viewBinding) {
-        checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE, READ_PHOTO_PERMISSION_CODE)
+        checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE, READ_PHOTO_PERMISSION_CODE, {
+            checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_PERMISSION_CODE,
+                { openBottomDialog(READ_PHOTO_PERMISSION_CODE) })
+        })
     }
 
     private fun selectVideo() = with(viewBinding) {
-        checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE, READ_VIDEO_PERMISSION_CODE)
+        checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE, READ_VIDEO_PERMISSION_CODE, {
+            checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_PERMISSION_CODE,
+                { openBottomDialog(READ_VIDEO_PERMISSION_CODE) })
+        })
     }
 
     private fun selectAudio() = with(viewBinding) {
-        checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE, READ_AUDIO_PERMISSION_CODE)
+        checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE, READ_AUDIO_PERMISSION_CODE, {
+            checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_PERMISSION_CODE,
+                { openBottomDialog(READ_AUDIO_PERMISSION_CODE) })
+        })
     }
 
     private fun openBottomDialog(requestCode: Int) = with(viewBinding) {
         val bundle: Bundle = Bundle()
-        val type = when (requestCode){
+        val type = when (requestCode) {
             READ_PHOTO_PERMISSION_CODE -> AttachmentType.IMAGE.name
             READ_VIDEO_PERMISSION_CODE -> AttachmentType.VIDEO.name
             READ_AUDIO_PERMISSION_CODE -> AttachmentType.AUDIO.name
@@ -71,27 +81,37 @@ class SelectAttachmentDialogFragment : BaseDialogFragment<LayoutSelectAttachment
     }
 
     // Function to check and request permission.
-    private fun checkPermission(permission: String, requestCode: Int) = with(viewBinding) {
-       if (context?.let {
-               ContextCompat.checkSelfPermission(
-                   it,
-                   permission
-               )
-           } != PackageManager.PERMISSION_GRANTED)
-        {
-            // Requesting the permission
-            requestPermissions(arrayOf(permission), requestCode)
-        } else {
-            openBottomDialog(requestCode)
+    private fun checkPermission(permission: String, requestCode: Int, callback: () -> Unit) =
+        with(viewBinding) {
+            if (context?.let {
+                    ContextCompat.checkSelfPermission(
+                        it,
+                        permission
+                    )
+                } != PackageManager.PERMISSION_GRANTED) {
+                // Requesting the permission
+                requestPermissions(arrayOf(permission), requestCode)
+            } else {
+                callback()
+            }
         }
-    }
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<String>, grantResults: IntArray
     ) {
+        if (listOf<Int>(
+                READ_PHOTO_PERMISSION_CODE,
+                READ_AUDIO_PERMISSION_CODE,
+                READ_VIDEO_PERMISSION_CODE
+            ).contains(requestCode) && grantResults.isNotEmpty() &&
+            grantResults[0] == PackageManager.PERMISSION_GRANTED
+        ) {
+            checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_PERMISSION_CODE,
+                { openBottomDialog(requestCode) })
+        }
         // If request is cancelled, the result arrays are empty.
-        if ((grantResults.isNotEmpty() &&
+        if (requestCode == WRITE_PERMISSION_CODE && (grantResults.isNotEmpty() &&
                     grantResults[0] == PackageManager.PERMISSION_GRANTED)
         ) {
             openBottomDialog(requestCode)

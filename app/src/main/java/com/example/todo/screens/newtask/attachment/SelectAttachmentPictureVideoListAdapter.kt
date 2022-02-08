@@ -255,5 +255,5 @@ class SelectAttachmentAudioListAdapter :
 
 class SelectAttachmentAudioDiffCallback : BaseDiffCallBack<AttachmentEntity>() {
     override fun areContentsTheSame(oldItem: AttachmentEntity, newItem: AttachmentEntity): Boolean =
-        oldItem.id == newItem.id && oldItem.path == newItem.path
+        oldItem.name == newItem.name
 }
