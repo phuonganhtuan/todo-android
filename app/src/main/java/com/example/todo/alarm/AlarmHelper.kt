@@ -51,13 +51,14 @@ class AlarmHelper : BroadcastReceiver() {
         contentView.setTextViewText(R.id.message, text)
 //        contentView.setTextViewText(R.id.date, date)
         mBuilder.setSmallIcon(R.drawable.ic_date_outline)
+        mBuilder.setContentTitle("Test alarm")
+        mBuilder.setContentText("This is a test alarm")
         mBuilder.setAutoCancel(true)
         mBuilder.setOngoing(true)
         mBuilder.setAutoCancel(true)
         mBuilder.priority = Notification.PRIORITY_HIGH
         mBuilder.setOnlyAlertOnce(true)
         mBuilder.build().flags = Notification.FLAG_NO_CLEAR or Notification.PRIORITY_HIGH
-        mBuilder.setContent(contentView)
         mBuilder.setContentIntent(pendingIntent)
         //we have to create notification channel after api level 26
         //we have to create notification channel after api level 26
