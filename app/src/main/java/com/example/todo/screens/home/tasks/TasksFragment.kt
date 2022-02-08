@@ -48,6 +48,7 @@ class TasksFragment : BaseFragment<FragmentTasksBinding>() {
         button4.setImageResource(R.drawable.ic_search)
         button2.hide()
         button3.hide()
+        button1.hide()
     }
 
     private fun initViews() = with(viewBinding) {

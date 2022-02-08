@@ -316,7 +316,7 @@
 
     <Button
         android:id="@+id/buttonCreateTask"
-        style="@style/ButtonPrimary"
+        style="@style/ButtonPrimary_16"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="24dp"

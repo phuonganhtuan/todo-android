@@ -3,17 +3,24 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable/bg_primary_rounded_16.xml" value="0.17" />
         <entry key="app/src/main/res/drawable/bg_white_rounded.xml" value="0.17" />
+        <entry key="app/src/main/res/layout/activity_home.xml" value="0.2740740740740741" />
         <entry key="app/src/main/res/layout/content_home.xml" value="0.32083333333333336" />
         <entry key="app/src/main/res/layout/fragment_mine.xml" value="0.23148148148148148" />
+        <entry key="app/src/main/res/layout/fragment_new_task.xml" value="0.2740740740740741" />
         <entry key="app/src/main/res/layout/fragment_set_reminder.xml" value="0.23148148148148148" />
         <entry key="app/src/main/res/layout/fragment_set_repeat.xml" value="0.23148148148148148" />
         <entry key="app/src/main/res/layout/fragment_suggest_create_task.xml" value="0.335" />
         <entry key="app/src/main/res/layout/fragment_tasks.xml" value="0.32083333333333336" />
         <entry key="app/src/main/res/layout/fragment_tasks_page.xml" value="0.23148148148148148" />
         <entry key="app/src/main/res/layout/item_attachment.xml" value="0.23148148148148148" />
+        <entry key="app/src/main/res/layout/item_task.xml" value="0.2740740740740741" />
+        <entry key="app/src/main/res/layout/item_task_mine.xml" value="0.2740740740740741" />
+        <entry key="app/src/main/res/layout/item_task_search.xml" value="0.2740740740740741" />
         <entry key="app/src/main/res/layout/layout_add_calendar.xml" value="0.23148148148148148" />
         <entry key="app/src/main/res/layout/layout_bookmark.xml" value="0.23148148148148148" />
+        <entry key="app/src/main/res/layout/layout_category_task.xml" value="0.2740740740740741" />
         <entry key="app/src/main/res/layout/layout_create_category.xml" value="0.23148148148148148" />
         <entry key="app/src/main/res/layout/layout_delete_task.xml" value="0.23148148148148148" />
         <entry key="app/src/main/res/layout/layout_select_attachment.xml" value="0.23148148148148148" />

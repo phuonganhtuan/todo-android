@@ -43,9 +43,9 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
 
     private fun setupEvents() = with(viewBinding) {
         bottomBar.setupWithNavController(findNavController(R.id.home_nav_host_fragment))
-        (navigationSideView.getHeaderView(0)
-            .findViewById(R.id.buttonHide) as ImageView).setOnClickListener {
-            layoutDrawer.close()
-        }
+//        (navigationSideView.getHeaderView(0)
+//            .findViewById(R.id.buttonHide) as ImageView).setOnClickListener {
+//            layoutDrawer.close()
+//        }
     }
 }

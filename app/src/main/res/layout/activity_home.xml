@@ -27,10 +27,10 @@
             app:menu="@menu/main_bottom_menu" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/navigationSideView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        app:headerLayout="@layout/layout_side_navigation_header" />
+<!--    <com.google.android.material.navigation.NavigationView-->
+<!--        android:id="@+id/navigationSideView"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:layout_gravity="start"-->
+<!--        app:headerLayout="@layout/layout_side_navigation_header" />-->
 </androidx.drawerlayout.widget.DrawerLayout>

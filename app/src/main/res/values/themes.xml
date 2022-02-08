@@ -134,6 +134,11 @@
         <item name="android:background">@drawable/bg_primary_rounded_8</item>
     </style>
 
+    <style name="ButtonPrimary_16" parent="CustomButton">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:background">@drawable/bg_primary_rounded_16</item>
+    </style>
+
     <style name="BasePopupMenu" parent="Widget.AppCompat.Light.PopupMenu">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_gravity">center</item>

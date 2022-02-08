@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="24dp"
-        android:background="@drawable/bg_white_rounded_16"
+        android:background="@drawable/bg_white_rounded_8"
         android:elevation="8dp"
         android:orientation="vertical"
         android:outlineSpotShadowColor="#ABABAB"
