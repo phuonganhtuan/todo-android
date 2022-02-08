@@ -307,6 +307,7 @@ class TaskDetailFragment : BaseFragment<FragmentTaskDetailBinding>() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 isSaving.collect {
                     if (it) viewModel.updateTask(
+                        requireContext(),
                         viewBinding.textTaskName.text.toString().trim(),
                         viewBinding.editNote.text.toString().trim()
                     )

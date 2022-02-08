@@ -119,6 +119,7 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
         }
         buttonCreateTask.setOnClickListener {
             viewModel.createTask(
+                requireContext(),
                 editTaskName.text.toString().trim(),
                 editNote.text.toString().trim()
             )

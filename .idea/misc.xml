@@ -23,11 +23,12 @@
         <entry key="app/src/main/res/layout/layout_category_task.xml" value="0.2740740740740741" />
         <entry key="app/src/main/res/layout/layout_create_category.xml" value="0.23148148148148148" />
         <entry key="app/src/main/res/layout/layout_delete_task.xml" value="0.23148148148148148" />
+        <entry key="app/src/main/res/layout/layout_notification.xml" value="0.32083333333333336" />
         <entry key="app/src/main/res/layout/layout_select_attachment.xml" value="0.23148148148148148" />
         <entry key="app/src/main/res/layout/layout_select_category.xml" value="0.23148148148148148" />
       </map>
     </option>
   </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="11" project-jdk-type="JavaSDK" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK" />
 </project>

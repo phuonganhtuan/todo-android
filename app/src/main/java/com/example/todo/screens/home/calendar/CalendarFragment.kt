@@ -70,7 +70,7 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>() {
             }
 
             override fun onStatusChange(id: Int) {
-                viewModel.updateStatus(id)
+                viewModel.updateStatus(requireContext(), id)
             }
         })
     }
