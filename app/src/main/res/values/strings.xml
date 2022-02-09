@@ -102,4 +102,6 @@
     <string name="no_data">No data</string>
     <string name="organize_tasks_easier_with_to_do_list">Organize tasks easier with To-Do List</string>
     <string name="incoming_task">Incoming task</string>
+    <string name="could_not_open_this_attachment">Could not open this attachment.</string>
+    <string name="could_not_find_app_handle_attachment">Could not find any app that can open this attachment.</string>
 </resources>

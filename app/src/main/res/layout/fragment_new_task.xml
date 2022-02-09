@@ -308,6 +308,7 @@
                 android:layout_height="wrap_content"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintStart_toStartOf="@id/buttonAttachment"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/buttonAttachment"
                 tools:itemCount="3"
                 tools:listitem="@layout/item_attachment" />

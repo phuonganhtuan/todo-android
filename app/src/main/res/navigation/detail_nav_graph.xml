@@ -42,7 +42,12 @@
         android:id="@+id/SelectAttachmentFragment"
         android:name="com.example.todo.screens.newtask.attachment.SelectAttachmentDialogFragment"
         android:label="@string/select_attachment"
-        tools:layout="@layout/layout_select_attachment" />
+        tools:layout="@layout/layout_select_attachment" >
+
+        <action
+            android:id="@+id/openAttachmentBottomDialog"
+            app:destination="@id/selectAttachmentBottomDialog" />
+    </dialog>
 
     <dialog
         android:id="@+id/AddCalendarBottomSheet"
@@ -86,4 +91,10 @@
         android:name="com.example.todo.screens.newtask.calendar.SetRepeatAtDialog"
         android:label="@string/repeat"
         tools:layout="@layout/fragment_set_repeat"/>
+
+    <dialog
+        android:id="@+id/selectAttachmentBottomDialog"
+        android:name="com.example.todo.screens.newtask.attachment.SelectAttachmentBottomDialog"
+        android:label="SelectAttachmentBottomDialog"
+        tools:layout="@layout/layout_select_attachment_list"/>
 </navigation>

@@ -263,7 +263,7 @@ class SelectAttachmentBottomDialog :
     private fun onClickDone() = with(viewModel) {
         selectAttachmentListViewModel?.selectedList.let {
             if (it != null) {
-                selectAttachments(it.value)
+                selectAttachments(requireContext(), it.value)
             }
         }
         // Back to new Task
@@ -335,7 +335,7 @@ class SelectAttachmentBottomDialog :
                         val photoURI: Uri? = context?.let { it1 ->
                             FileProvider.getUriForFile(
                                 it1,
-                                "com.example.android.fileprovider",
+                                requireContext().packageName + ".provider",
                                 it
                             )
                         }
