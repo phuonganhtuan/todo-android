@@ -83,15 +83,16 @@ class CalendarTaskViewModel @Inject constructor(private val repository: TaskRepo
             val taskToUpdate = taskShortToUpdate.task.copy()
             taskToUpdate.isDone = !taskToUpdate.isDone
             repository.updateTask(taskToUpdate)
-            if (taskToUpdate.isDone) {
-                ScheduleHelper.cancelAlarm(context, taskToUpdate)
-            } else {
-                val reminder = repository.getReminder(taskToUpdate.id)
-                if (reminder != null) {
+            val reminder = repository.getReminder(taskToUpdate.id)
+            if (reminder != null) {
+                if (taskToUpdate.isDone) {
+                    ScheduleHelper.cancelAlarm(context, taskToUpdate, reminder)
+                } else {
                     ScheduleHelper.addAlarm(context, taskToUpdate, reminder)
                 }
             }
-            _tasks.value = repository.getTaskInDay(DateTimeUtils.getComparableDateString(_selectedDay.value))
+            _tasks.value =
+                repository.getTaskInDay(DateTimeUtils.getComparableDateString(_selectedDay.value))
         }
     }
 
@@ -101,7 +102,8 @@ class CalendarTaskViewModel @Inject constructor(private val repository: TaskRepo
             val taskToUpdate = taskShortToUpdate.task.copy()
             taskToUpdate.isMarked = !taskToUpdate.isMarked
             repository.updateTask(taskToUpdate)
-            _tasks.value = repository.getTaskInDay(DateTimeUtils.getComparableDateString(_selectedDay.value))
+            _tasks.value =
+                repository.getTaskInDay(DateTimeUtils.getComparableDateString(_selectedDay.value))
         }
     }
 }

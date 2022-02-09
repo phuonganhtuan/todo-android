@@ -57,11 +57,11 @@ class TasksPageViewModel @Inject constructor(private val repository: TaskReposit
             val taskToUpdate = taskShortToUpdate.task.copy()
             taskToUpdate.isDone = !taskToUpdate.isDone
             repository.updateTask(taskToUpdate)
-            if (taskToUpdate.isDone) {
-                ScheduleHelper.cancelAlarm(context, taskToUpdate)
-            } else {
-                val reminder = repository.getReminder(taskToUpdate.id)
-                if (reminder != null) {
+            val reminder = repository.getReminder(taskToUpdate.id)
+            if (reminder != null) {
+                if (taskToUpdate.isDone) {
+                    ScheduleHelper.cancelAlarm(context, taskToUpdate, reminder)
+                } else {
                     ScheduleHelper.addAlarm(context, taskToUpdate, reminder)
                 }
             }
