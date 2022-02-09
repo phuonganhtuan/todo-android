@@ -26,6 +26,8 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filter
 import java.util.*
+import java.util.Calendar.HOUR_OF_DAY
+import java.util.Calendar.MINUTE
 
 
 class AddCalendarBottomSheetDialogFragment :
@@ -67,6 +69,11 @@ class AddCalendarBottomSheetDialogFragment :
             .build()
         tvRepeatValue.gone()
         tvReminderValue.gone()
+
+        if (viewModel.selectedHour.value == -1 || viewModel.selectedMinute.value == -1) {
+            val now = Calendar.getInstance()
+            onTimeSet(now.get(HOUR_OF_DAY), now.get(MINUTE))
+        }
     }
 
     private fun initData() = with(viewBinding) {
@@ -150,6 +157,12 @@ class AddCalendarBottomSheetDialogFragment :
                     viewBinding.apply {
                         if (it) tvReminderValue.show()
                         swReminder.isChecked = it
+                        if (!it) {
+                            tvReminderValue.gone()
+                            tvRepeatValue.gone()
+                            swRepeat.isChecked = false
+                            viewModel.resetRepeatDefault()
+                        }
                     }
                 }
             }
@@ -172,9 +185,11 @@ class AddCalendarBottomSheetDialogFragment :
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.isCheckedRepeat.collect {
-                    viewBinding.apply {
-                        if (it) tvRepeatValue.show()
-                        swRepeat.isChecked = it
+                    if (isCheckedReminder.value) {
+                        viewBinding.apply {
+                            if (it) tvRepeatValue.show()
+                            swRepeat.isChecked = it
+                        }
                     }
                 }
             }
@@ -211,6 +226,12 @@ class AddCalendarBottomSheetDialogFragment :
 
     private fun onCheckChangeRepeat() = with(viewBinding) {
         if (swRepeat.isChecked) {
+            if (!viewModel.isCheckedReminder.value) {
+                swRepeat.isChecked = false
+                tvRepeatValue.gone()
+                viewModel.resetRepeatDefault()
+                return@with
+            }
             viewModel.onCheckChangeRepeat(false)
             onClickRepeat(swRepeat)
         } else {
