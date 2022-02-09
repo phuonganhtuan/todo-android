@@ -7,6 +7,7 @@ import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.todo.R
@@ -231,7 +232,7 @@ class SelectAttachmentListViewModel @Inject constructor(
             }
         }
         cursor?.close()
-
+        Log.e("loadCameraImageFromStorage - listImage", listImage.toString())
         return listImage
     }
 
@@ -483,71 +484,33 @@ class SelectAttachmentListViewModel @Inject constructor(
     }
 
     /**
-     * add camera photo
+     * get camera photo
      */
-    fun addCameraPhotoToSelectList(bitmap: Bitmap) {
-
+    fun getCameraPhotoToSelectList(path: String, callback: () -> Boolean) {
         viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                saveCameraImage(bitmap)
-                _selectedList.value += loadCameraImageFromStorage()
-            }
-        }
-    }
-
-    fun saveCameraImage(bitmap: Bitmap) {
-        viewModelScope.launch {
-            try {
-                val collection = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                    MediaStore.Images.Media.getContentUri(
-                        MediaStore.VOLUME_EXTERNAL
-                    )
-                } else {
-                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-                }
-                val dirDest = File(
-                    Environment.DIRECTORY_PICTURES,
-                    context?.getString(R.string.app_name)
+            val isSuccess = withContext(Dispatchers.IO){
+                val file = File(path)
+                val url = MediaStore.Images.Media.insertImage(
+                    context?.contentResolver,
+                    path,
+                    file.name,
+                    ""
                 )
-                val date = System.currentTimeMillis()
-                val fileName = "$date.jpg"
-
-
-                val contentValues = ContentValues().apply {
-                    put(MediaStore.Images.Media.DISPLAY_NAME, fileName)
-                    put(MediaStore.MediaColumns.MIME_TYPE, "image/jpg")
-                    put(MediaStore.MediaColumns.DATE_ADDED, date)
-                    put(MediaStore.MediaColumns.DATE_MODIFIED, date)
-                    put(MediaStore.MediaColumns.SIZE, bitmap.byteCount)
-                    put(MediaStore.MediaColumns.WIDTH, bitmap.width)
-                    put(MediaStore.MediaColumns.HEIGHT, bitmap.height)
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-
-                        put(MediaStore.MediaColumns.RELATIVE_PATH, "$dirDest${File.separator}")
-                        put(MediaStore.Images.Media.IS_PENDING, 1)
-                    }
+                if (url.isNotEmpty()){
+                    true
+                }else{
+                    false
                 }
-
-                val imageUri = context?.contentResolver?.insert(collection, contentValues)
-
-                withContext(Dispatchers.IO) {
-
-                    imageUri?.let { uri ->
-                        context?.contentResolver?.openOutputStream(uri, "w").use { out ->
-                            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out)
-                        }
-
-                        contentValues.clear()
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                            contentValues.put(MediaStore.Images.Media.IS_PENDING, 0)
-                        }
-                        context?.contentResolver?.update(uri, contentValues, null, null)
-                    }
+            }
+            if (isSuccess){
+                _selectedList.value += withContext(Dispatchers.IO) {
+                    loadCameraImageFromStorage()
                 }
-            } catch (e: FileNotFoundException) {
-
+                callback()
             }
 
         }
     }
+
+
 }

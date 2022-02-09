@@ -4,10 +4,11 @@ import android.Manifest
 import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
+import android.os.Handler
+import android.os.Looper
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
@@ -54,7 +55,7 @@ class SelectAttachmentBottomDialog :
     private var adapterPictureVideo: SelectAttachmentPictureVideoListAdapter? = null
     private var adapterAudio: SelectAttachmentAudioListAdapter? = null
 
-    companion object{
+    companion object {
         private const val CAMERA_PERMISSION_CODE = 100
         private const val REQUEST_IMAGE_CAPTURE = 1
     }
@@ -188,10 +189,10 @@ class SelectAttachmentBottomDialog :
                             if (it) show() else gone()
                         }
                         viewBinding.tvTitle.text = (
-                            if (it) getString(R.string.select_picture) else getString(
-                                R.string.select_album
-                            )
-                        )
+                                if (it) getString(R.string.select_picture) else getString(
+                                    R.string.select_album
+                                )
+                                )
                         viewBinding.imgClose.setImageResource(if (it) R.drawable.ic_arrow_left else R.drawable.ic_close)
                     }
             }
@@ -279,6 +280,7 @@ class SelectAttachmentBottomDialog :
             if (it != null) {
                 selectAttachments(requireContext(), it.value)
             }
+            Log.e("onClickDone - attachments", viewModel.attachments.toString())
         }
         // Back to new Task
         findNavController().popBackStack()
@@ -366,9 +368,8 @@ class SelectAttachmentBottomDialog :
      */
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            val imageBitmap = data?.extras?.get("data") as Bitmap
-            selectAttachmentListViewModel?.addCameraPhotoToSelectList(imageBitmap)
-            onClickDone()
+            galleryAddPic()
+
         }
         return
     }
@@ -387,4 +388,14 @@ class SelectAttachmentBottomDialog :
         }
         return
     }
+
+    private fun galleryAddPic() {
+        selectAttachmentListViewModel?.getCameraPhotoToSelectList(currentPhotoPath, {
+            // your codes here run on main Thread
+            onClickDone()
+        })
+    }
+
 }
+
+
