@@ -369,7 +369,6 @@ class SelectAttachmentBottomDialog :
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             galleryAddPic()
-
         }
         return
     }
@@ -390,10 +389,12 @@ class SelectAttachmentBottomDialog :
     }
 
     private fun galleryAddPic() {
-        selectAttachmentListViewModel?.getCameraPhotoToSelectList(currentPhotoPath, {
-            // your codes here run on main Thread
-            onClickDone()
-        })
+        if (currentPhotoPath.isNotEmpty()){
+            selectAttachmentListViewModel?.getCameraPhotoToSelectList(currentPhotoPath, {
+                // your codes here run on main Thread
+                onClickDone()
+            })
+        }
     }
 
 }

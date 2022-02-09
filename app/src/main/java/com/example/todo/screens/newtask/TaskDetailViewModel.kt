@@ -636,6 +636,7 @@ class NewTaskViewModel @Inject constructor(private val repository: TaskRepositor
             val dataTmp = data.filter { !attachmentIds.contains(it.id) }.map { att ->
                 att.copy().apply { path = FileUtils.copyFileToInternalStorage(context, att.path) }
             }
+
             _attachments.value += dataTmp
         }
     }

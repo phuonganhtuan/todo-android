@@ -218,7 +218,7 @@ class SelectAttachmentListViewModel @Inject constructor(
                 while (it.moveToNext()) {
                     val id = it.getInt(idColumn)
                     val name = it.getString(nameColumn)
-                    val extension: String = name.substring(name.lastIndexOf("."))
+                    val extension: String = name.substring(name.lastIndexOf(".")+1)
                     val size = it.getString(sizeColumn)
                     val absolutePathOfImage = it.getString(absolutePathOfImageColumn)
                     val bucketName = it.getString(bucketNameColumn)
@@ -488,6 +488,9 @@ class SelectAttachmentListViewModel @Inject constructor(
      */
     fun getCameraPhotoToSelectList(path: String, callback: () -> Boolean) {
         viewModelScope.launch {
+            /**
+             * Save to galery
+             */
             val isSuccess = withContext(Dispatchers.IO){
                 val file = File(path)
                 val url = MediaStore.Images.Media.insertImage(
@@ -502,6 +505,9 @@ class SelectAttachmentListViewModel @Inject constructor(
                     false
                 }
             }
+            /**
+             * get camera photo and callback to UI
+             */
             if (isSuccess){
                 _selectedList.value += withContext(Dispatchers.IO) {
                     loadCameraImageFromStorage()
