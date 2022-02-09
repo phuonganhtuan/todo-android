@@ -461,6 +461,7 @@ class NewTaskViewModel @Inject constructor(private val repository: TaskRepositor
                 ReminderTypeEnum.ALARM.name -> ReminderTypeEnum.ALARM
                 else -> ReminderTypeEnum.NOTIFICATION
             }
+            _selectedReminderScreenLock.value = _task.value.reminder?.screenLockReminder ?: false
         }
     }
 
@@ -569,7 +570,9 @@ class NewTaskViewModel @Inject constructor(private val repository: TaskRepositor
                 set(MINUTE, if (_selectedMinute.value == -1) 0 else _selectedMinute.value)
                 set(SECOND, 0)
             }
-            ScheduleHelper.cancelAlarm(context, _task.value.task)
+            if (_task.value.reminder != null) {
+                ScheduleHelper.cancelAlarm(context, _task.value.task, _task.value.reminder!!)
+            }
             _task.value.task.apply {
                 this.title = title
                 categoryId =
@@ -609,19 +612,33 @@ class NewTaskViewModel @Inject constructor(private val repository: TaskRepositor
                 )
                 repository.addAttachment(entity)
             }
-            if (!_task.value.detail.isReminder) {
+            if (!_isCheckedReminder.value) {
                 repository.deleteReminder(taskId)
             } else {
-                _task.value.reminder?.apply {
-                    reminderType = _selectedReminderType.value.name
-                    reminderTime = _selectedReminderTime.value.name
-                    screenLockReminder = _selectedReminderScreenLock.value
-                    enableRepeat = _isCheckedRepeat.value
-                    time = calendar.timeInMillis
-                    repeatTime =
-                        if (_isCheckedRepeat.value) _selectedRepeatAt.value.name else RepeatAtEnum.NONE.name
-                    repository.updateReminder(this)
-                    ScheduleHelper.addAlarm(context, _task.value.task, _task.value.reminder!!)
+                if (_task.value.reminder != null) {
+                    _task.value.reminder?.apply {
+                        reminderType = _selectedReminderType.value.name
+                        reminderTime = _selectedReminderTime.value.name
+                        screenLockReminder = _selectedReminderScreenLock.value
+                        enableRepeat = _isCheckedRepeat.value
+                        time = calendar.timeInMillis
+                        repeatTime =
+                            if (_isCheckedRepeat.value) _selectedRepeatAt.value.name else RepeatAtEnum.NONE.name
+                        repository.updateReminder(this)
+                        ScheduleHelper.addAlarm(context, _task.value.task, _task.value.reminder!!)
+                    }
+                } else {
+                    val reminder = ReminderEntity(
+                        reminderType = _selectedReminderType.value.name,
+                        reminderTime = _selectedReminderTime.value.name,
+                        screenLockReminder = _selectedReminderScreenLock.value,
+                        enableRepeat = _isCheckedRepeat.value,
+                        time = calendar.timeInMillis,
+                        taskId = taskId,
+                        repeatTime = if (_isCheckedRepeat.value) _selectedRepeatAt.value.name else RepeatAtEnum.NONE.name,
+                    )
+                    repository.addReminder(reminder)
+                    ScheduleHelper.addAlarm(context, _task.value.task, reminder)
                 }
             }
 

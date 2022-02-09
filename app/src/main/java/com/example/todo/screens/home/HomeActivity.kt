@@ -1,19 +1,18 @@
 package com.example.todo.screens.home
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import android.widget.ImageView
+import android.provider.Settings
 import androidx.activity.viewModels
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.todo.R
-import com.example.todo.alarm.ScheduleHelper
 import com.example.todo.base.BaseActivity
 import com.example.todo.databinding.ActivityHomeBinding
 import com.example.todo.screens.home.tasks.suggest.SuggestActivity
 import com.example.todo.utils.SPUtils
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.*
 
 @AndroidEntryPoint
 class HomeActivity : BaseActivity<ActivityHomeBinding>() {
@@ -33,6 +32,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
             showSuggest()
         }
         setupEvents()
+        requestPermissions()
     }
 
     fun openDrawer() {
@@ -49,5 +49,15 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
 //            .findViewById(R.id.buttonHide) as ImageView).setOnClickListener {
 //            layoutDrawer.close()
 //        }
+    }
+
+    private fun requestPermissions() {
+        if (!Settings.canDrawOverlays(this)) {
+            val intent = Intent(
+                Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                Uri.parse("package:" + packageName)
+            )
+            startActivityForResult(intent, 0)
+        }
     }
 }

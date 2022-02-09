@@ -22,6 +22,14 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="Theme.AndroidBP.Alarm" parent="Theme.AndroidBP">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:statusBarColor">@android:color/black</item>
+        <item name="android:navigationBarColor">@android:color/black</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+
     <style name="Theme.App.Starting" parent="Theme.AndroidBP">
         <item name="windowSplashScreenBackground">@android:color/holo_blue_light</item>
         <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_round</item>

@@ -6,11 +6,16 @@ import android.app.PendingIntent
 import android.app.PendingIntent.FLAG_MUTABLE
 import android.content.Context
 import android.content.Intent
+import android.media.audiofx.BassBoost
+import android.net.Uri
 import android.os.Build
+import android.provider.Settings
+import android.provider.Settings.ACTION_MANAGE_OVERLAY_PERMISSION
 import android.util.Log
 import com.example.todo.data.models.entity.ReminderEntity
 import com.example.todo.data.models.entity.TaskEntity
 import com.example.todo.screens.newtask.ReminderTimeEnum
+import com.example.todo.screens.newtask.ReminderTypeEnum
 import com.example.todo.screens.newtask.RepeatAtEnum
 import com.example.todo.utils.Constants
 import java.util.*
@@ -43,6 +48,8 @@ object ScheduleHelper {
             putExtra(Constants.KEY_TASK_ID, task.id)
             putExtra(Constants.KEY_TASK_TITLE, task.title)
             putExtra(Constants.KEY_TASK_TIME, task.calendar)
+            putExtra(Constants.KEY_REMINDER_TYPE, reminder.reminderType)
+            putExtra(Constants.KEY_SCREEN_LOCK_ENABLED, reminder.screenLockReminder)
         }
         val pendingIntent =
             PendingIntent.getBroadcast(context, task.id, alarmIntent, FLAG_MUTABLE or PendingIntent.FLAG_CANCEL_CURRENT)
@@ -87,7 +94,26 @@ object ScheduleHelper {
         Log.d("aaa", "set.")
     }
 
-    fun cancelAlarm(context: Context, task: TaskEntity) {
+    fun createTestAlarm(context: Context) {
+        if (alarmManager == null) {
+            alarmManager = context.getSystemService(Context.ALARM_SERVICE) as? AlarmManager
+        }
+        val alarmIntent = Intent(context, AlarmHelper::class.java).apply {
+            action = "action"
+            putExtra(Constants.KEY_TASK_ID, 3)
+            putExtra(Constants.KEY_TASK_TITLE, "task.title")
+            putExtra(Constants.KEY_TASK_TIME, System.currentTimeMillis())
+            putExtra(Constants.KEY_REMINDER_TYPE, ReminderTypeEnum.ALARM)
+            putExtra(Constants.KEY_SCREEN_LOCK_ENABLED, true)
+        }
+        val pendingIntent =
+            PendingIntent.getBroadcast(context, 3, alarmIntent, FLAG_MUTABLE or PendingIntent.FLAG_CANCEL_CURRENT)
+        alarmManager?.setExactAndAllowWhileIdle(
+            AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 5000L, pendingIntent
+        )
+    }
+
+    fun cancelAlarm(context: Context, task: TaskEntity, reminder: ReminderEntity) {
         if (alarmManager == null) {
             alarmManager = context.getSystemService(Context.ALARM_SERVICE) as? AlarmManager
         }
@@ -96,6 +122,8 @@ object ScheduleHelper {
             putExtra(Constants.KEY_TASK_ID, task.id)
             putExtra(Constants.KEY_TASK_TITLE, task.title)
             putExtra(Constants.KEY_TASK_TIME, task.calendar)
+            putExtra(Constants.KEY_REMINDER_TYPE, reminder.reminderType)
+            putExtra(Constants.KEY_SCREEN_LOCK_ENABLED, reminder.screenLockReminder)
         }
         val pendingIntent =
             PendingIntent.getBroadcast(context, task.id, alarmIntent, FLAG_MUTABLE or PendingIntent.FLAG_CANCEL_CURRENT)
