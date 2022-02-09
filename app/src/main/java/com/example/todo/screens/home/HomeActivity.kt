@@ -1,7 +1,9 @@
 package com.example.todo.screens.home
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import androidx.activity.viewModels
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
@@ -30,6 +32,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
             showSuggest()
         }
         setupEvents()
+        requestPermissions()
     }
 
     fun openDrawer() {
@@ -46,5 +49,15 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
 //            .findViewById(R.id.buttonHide) as ImageView).setOnClickListener {
 //            layoutDrawer.close()
 //        }
+    }
+
+    private fun requestPermissions() {
+        if (!Settings.canDrawOverlays(this)) {
+            val intent = Intent(
+                Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                Uri.parse("package:" + packageName)
+            )
+            startActivityForResult(intent, 0)
+        }
     }
 }
