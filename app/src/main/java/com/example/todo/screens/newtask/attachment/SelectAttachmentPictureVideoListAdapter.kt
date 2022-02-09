@@ -220,7 +220,7 @@ class ItemAttachmentAudioViewHolder(
 
             tvAudioName.text = (entity.name)
 
-            val durationObj = entity.duration?.let { splitToComponentTimes(it.toBigDecimal()) }
+            val durationObj = entity.duration?.let { splitToComponentTimes(it) }
 
             val duration =
                 durationObj?.let {
@@ -231,7 +231,8 @@ class ItemAttachmentAudioViewHolder(
                     ) else String.format("%02d:%02d:%02d", it.get(0), it.get(1), it.get(2))
                 };
 
-            tvDescription.text = ("${entity.size}KB ${duration ?: ""}")
+            val size = String.format("%.2f", ((entity.size).toDouble() / 1024.0 / 1024.0))
+            tvDescription.text = ("${size}MB ${duration ?: ""}")
 
             // Show isSelected
             val isSelected = selectAttachments.contains(entity.id)
@@ -240,8 +241,8 @@ class ItemAttachmentAudioViewHolder(
             lnSelectAudio.background = ContextCompat.getDrawable(itemView.context, bgLnAudio)
         }
 
-    fun splitToComponentTimes(biggy: BigDecimal): IntArray? {
-        val longVal: Long = biggy.toLong()
+    fun splitToComponentTimes(milisecond: Int): IntArray? {
+        val longVal: Long = (milisecond /100).toLong()
         val hours = longVal.toInt() / 3600
         var remainder = longVal.toInt() - hours * 3600
         val mins = remainder / 60
