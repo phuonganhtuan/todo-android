@@ -49,7 +49,7 @@ class BookmarkViewHolder(
         val bookmarkIcon = getBookmarkIcon(itemView.context, entity)
         imageBookmark.setImageDrawable(bookmarkIcon)
         val bgId = if (isSelected) {
-            R.drawable.bg_ripple_white_stroke_rounded_8
+            R.drawable.bg_ripple_white_stroke_grey_border_rounded_8
         } else {
             R.drawable.bg_white_rounded_8
         }

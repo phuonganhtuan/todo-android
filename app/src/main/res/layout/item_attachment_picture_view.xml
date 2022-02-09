@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:scaleType="centerCrop"
         tools:srcCompat="@tools:sample/avatars"
-        android:background="@drawable/bg_ripple_white_stroke_rounded_8"/>
+        android:background="@drawable/bg_ripple_white_stroke_grey_border_rounded_8"/>
 
     <ImageView
         android:id="@+id/imgPlayVideo"

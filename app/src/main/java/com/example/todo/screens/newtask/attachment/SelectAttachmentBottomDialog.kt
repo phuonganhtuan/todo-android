@@ -2,6 +2,7 @@ package com.example.todo.screens.newtask.attachment
 
 import android.Manifest
 import android.app.Activity.RESULT_OK
+import android.content.Entity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -19,11 +20,14 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.todo.R
 import com.example.todo.base.BaseBottomSheetDialogFragment
 import com.example.todo.base.LoadDataState
 import com.example.todo.data.models.entity.AttachmentAlbumEntity
 import com.example.todo.data.models.entity.AttachmentAlbumTypeEnum
+import com.example.todo.data.models.entity.AttachmentEntity
 import com.example.todo.data.models.entity.AttachmentType
 import com.example.todo.databinding.LayoutSelectAttachmentListBinding
 import com.example.todo.screens.newtask.NewTaskViewModel
@@ -34,6 +38,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filter
 import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -74,20 +80,26 @@ class SelectAttachmentBottomDialog :
                 type = AttachmentType.IMAGE
                 adapterImageAlbum = SelectAttachmentAlbumListAdapter()
                 recyclerSelectAlbum.adapter = adapterImageAlbum
+                recyclerSelectAlbum.layoutManager = GridLayoutManager(context, 3)
+
                 adapterPictureVideo = SelectAttachmentPictureVideoListAdapter()
                 recyclerSelectPictureVideo.adapter = adapterPictureVideo
+                recyclerSelectPictureVideo.layoutManager = GridLayoutManager(context, 3)
             }
             AttachmentType.VIDEO.name -> {
                 type = AttachmentType.VIDEO
                 tvTitle.setText(getString(R.string.select_video))
                 adapterPictureVideo = SelectAttachmentPictureVideoListAdapter()
                 recyclerSelectPictureVideo.adapter = adapterPictureVideo
+                recyclerSelectPictureVideo.layoutManager = GridLayoutManager(context, 3)
             }
             AttachmentType.AUDIO.name -> {
                 type = AttachmentType.AUDIO
                 tvTitle.setText(getString(R.string.select_audio))
                 adapterAudio = SelectAttachmentAudioListAdapter()
                 recyclerSelectAudio.adapter = adapterAudio
+                recyclerSelectAudio.layoutManager = LinearLayoutManager(context)
+
             }
         }
     }
@@ -216,7 +228,9 @@ class SelectAttachmentBottomDialog :
                                         it
                                     )
                                 }
-                                AttachmentType.AUDIO -> adapterAudio?.submitList(it)
+                                AttachmentType.AUDIO -> {
+                                    adapterAudio?.submitList(it)
+                                }
                             }
                         }
                     }
@@ -261,9 +275,15 @@ class SelectAttachmentBottomDialog :
     }
 
     private fun onClickDone() = with(viewModel) {
-        selectAttachmentListViewModel?.selectedList.let {
-            if (it != null) {
-                selectAttachments(it.value)
+        selectAttachmentListViewModel?.selectedList.let { it ->
+            if (it != null && it.value.isNotEmpty()) {
+                Log.e("onClickDone - selectedList", it.value.toString())
+                /**
+                 * Copy attachment to folder project
+                 */
+                var result = it.value.map { attachment -> copy(attachment) }
+                Log.e("onClickDone - result", result.toString())
+                selectAttachments(result)
             }
         }
         // Back to new Task
@@ -371,5 +391,40 @@ class SelectAttachmentBottomDialog :
             dispatchTakePictureIntent()
         }
         return
+    }
+
+    /**
+     * Copy file
+     */
+    @Throws(IOException::class)
+    open fun copy(entity: AttachmentEntity): AttachmentEntity {
+        var entityTmp = entity.copy()
+        val src = File(entity.path)
+        val storageDir: File? =
+            context?.getExternalFilesDir("${Environment.DIRECTORY_DCIM}/TodoAttachment")
+        if (storageDir != null) {
+            if (!storageDir.exists()) {
+                storageDir.mkdir()
+            }
+            val dst = File("$storageDir/${entity.name}")
+            if (dst.exists()) {
+                dst.delete()
+                dst.createNewFile()
+            } else {
+                dst.createNewFile()
+            }
+            FileInputStream(src).use { `in` ->
+                FileOutputStream(dst).use { out ->
+                    // Transfer bytes from in to out
+                    val buf = ByteArray(1024)
+                    var len: Int
+                    while (`in`.read(buf).also { len = it } > 0) {
+                        out.write(buf, 0, len)
+                    }
+                    entityTmp.path = dst.path
+                }
+            }
+        }
+        return entityTmp
     }
 }

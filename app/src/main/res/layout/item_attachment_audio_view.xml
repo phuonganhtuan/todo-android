@@ -1,40 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:padding="8dp"
-    android:background="@drawable/bg_fade_grey"
-    android:id="@+id/lnSelectAudio"
-    >
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
-    <ImageView
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:src="@drawable/ic_audio" />
-
-    <LinearLayout
-        android:layout_width="wrap_content"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/lnSelectAudio"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginHorizontal="8dp">
+        android:layout_margin="8dp"
+        android:background="@drawable/bg_white_rounded_8"
+        android:orientation="horizontal"
+        android:padding="8dp">
 
-        <TextView
-            android:id="@+id/tvAudioName"
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@drawable/ic_audio" />
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="2022_04_19_16.mp4"
-            android:textColor="@color/black"
-            android:textSize="18sp" />
+            android:layout_marginHorizontal="8dp"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tvDescription"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="85kb 00:12"
-            android:textColor="@color/color_text_secondary"
-            android:textSize="16sp" />
+            <TextView
+                android:id="@+id/tvAudioName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2022_04_19_16.mp4"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tvDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="85kb 00:12"
+                android:textColor="@color/color_text_secondary"
+                android:textSize="16sp" />
+
+        </LinearLayout>
 
     </LinearLayout>
-
-</LinearLayout>
+</RelativeLayout>

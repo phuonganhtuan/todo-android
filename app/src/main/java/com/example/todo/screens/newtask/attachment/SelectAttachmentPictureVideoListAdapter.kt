@@ -1,15 +1,9 @@
 package com.example.todo.screens.newtask.attachment
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.Color
 import android.net.Uri
-import android.os.Build
-import android.util.Size
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.example.todo.R
@@ -24,9 +18,8 @@ import com.example.todo.databinding.ItemAttachmentAudioViewBinding
 import com.example.todo.databinding.ItemAttachmentPictureViewBinding
 import com.example.todo.utils.gone
 import com.example.todo.utils.show
-
 import java.io.File
-import java.util.*
+import java.math.BigDecimal
 
 /**
  * Select Album List
@@ -142,7 +135,8 @@ class ItemAttachmentPictureViewHolder(
             thumbAttachment.background =
                 ContextCompat.getDrawable(itemView.context, bgThumbAttachmentId)
 
-            val index = if (isSelected) (selectAttachments.indexOf(entity.id) + 1).toString() else ""
+            val index =
+                if (isSelected) (selectAttachments.indexOf(entity.id) + 1).toString() else ""
             val bgTvSelectedId =
                 if (isSelected) R.drawable.bg_primary_rounded_20 else R.drawable.bg_rounded_border_white
             tvSelected.setText(index)
@@ -214,15 +208,39 @@ class ItemAttachmentAudioViewHolder(
 
     fun displayData(entity: AttachmentEntity, selectAttachments: List<Int>) =
         with(itemViewBinding) {
+            attachmentEntity = entity
+
             tvAudioName.setText(entity.name)
-            tvDescription.setText("${entity.name}KB ${entity.duration}")
+
+            val durationObj = entity.duration?.let { splitToComponentTimes(it.toBigDecimal()) }
+
+            val duration =
+                durationObj?.let {
+                    if (it.get(0) == 0) String.format(
+                        "%02d:%02d",
+                        it.get(1),
+                        it.get(2)
+                    ) else String.format("%02d:%02d:%02d", it.get(0), it.get(1), it.get(2))
+                };
+
+            tvDescription.setText("${entity.size}KB ${duration ?: ""}")
 
             // Show isSelected
             val isSelected = selectAttachments.contains(entity.id)
             val bgLnAudio =
-                if (isSelected) R.drawable.bg_primary_rounded_20 else R.drawable.bg_fade_grey
+                if (isSelected) R.drawable.bg_ripple_white_stroke_primary_border_rounded_8 else R.drawable.bg_ripple_white_stroke_grey_border_rounded_8
             lnSelectAudio.background = ContextCompat.getDrawable(itemView.context, bgLnAudio)
         }
+
+    fun splitToComponentTimes(biggy: BigDecimal): IntArray? {
+        val longVal: Long = biggy.toLong()
+        val hours = longVal.toInt() / 3600
+        var remainder = longVal.toInt() - hours * 3600
+        val mins = remainder / 60
+        remainder = remainder - mins * 60
+        val secs = remainder
+        return intArrayOf(hours, mins, secs)
+    }
 }
 
 class SelectAttachmentAudioListAdapter :

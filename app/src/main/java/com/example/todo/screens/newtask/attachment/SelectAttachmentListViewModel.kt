@@ -166,6 +166,63 @@ class SelectAttachmentListViewModel @Inject constructor(
     }
 
     /**
+     * Query images
+     */
+    private fun loadImagesFromStorageByName(name: String): ArrayList<AttachmentEntity> {
+        val imageProjection = arrayOf(
+            MediaStore.Images.Media.DISPLAY_NAME,
+            MediaStore.Images.Media.SIZE,
+            MediaStore.Images.Media._ID,
+            MediaStore.MediaColumns.DATA,
+            MediaStore.Images.Media.BUCKET_DISPLAY_NAME
+        )
+
+        val selection = "${MediaStore.Images.Media.DISPLAY_NAME} == ?"
+        val selectionArgs = arrayOf(
+            name
+        )
+
+
+        val cursor = context.applicationContext.contentResolver.query(
+            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+            imageProjection,
+            selection,
+            selectionArgs,
+            null
+        )
+
+        val listImage = arrayListOf<AttachmentEntity>()
+        cursor.use {
+            it?.let {
+                val idColumn = it.getColumnIndexOrThrow(MediaStore.Images.Media._ID)
+                val nameColumn = it.getColumnIndexOrThrow(MediaStore.Images.Media.DISPLAY_NAME)
+                val sizeColumn = it.getColumnIndexOrThrow(MediaStore.Images.Media.SIZE)
+                val absolutePathOfImageColumn =
+                    it.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA)
+                val bucketNameColumn =
+                    it.getColumnIndexOrThrow(MediaStore.Images.Media.BUCKET_DISPLAY_NAME)
+                while (it.moveToNext()) {
+                    val id = it.getInt(idColumn)
+                    val name = it.getString(nameColumn)
+                    val extension: String = name.substring(name.lastIndexOf("."))
+                    val size = it.getString(sizeColumn)
+                    val absolutePathOfImage = it.getString(absolutePathOfImageColumn)
+                    val bucketName = it.getString(bucketNameColumn)
+                    listImage.add(
+                        AttachmentEntity(
+                            id, name, extension,
+                            absolutePathOfImage, 0, AttachmentType.IMAGE.name, size, 0, bucketName
+                        )
+                    )
+                }
+            }
+        }
+        cursor?.close()
+
+        return listImage
+    }
+
+    /**
      * Query video
      */
     private fun loadVideoFromStorage(): MutableList<AttachmentEntity> {
@@ -293,7 +350,6 @@ class SelectAttachmentListViewModel @Inject constructor(
                     val duration = cursor.getInt(durationColumn)
                     val absolutePathOfAudio = it.getString(absolutePathOfAudioColumn)
                     val bucketName = it.getString(bucketNameColumn)
-                    Log.e("queryVideoStorage- absolutePathOfAudio", absolutePathOfAudio)
                     audioList += AttachmentEntity(
                         id,
                         name,
@@ -419,11 +475,10 @@ class SelectAttachmentListViewModel @Inject constructor(
     fun addCameraPhotoToSelectList(path: String){
         val file = File(path)
         if (file.exists()){
-            val id = Random.nextInt()
-            val name: String = path.substring(path.lastIndexOf("/") + 1)
-            val extension: String = path.substring(path.lastIndexOf("."))
-            val attachment = AttachmentEntity(id, name, extension, path, 0, AttachmentType.IMAGE.name, (file.length()/1024).toInt().toString(), 0, "Camera")
-            onSelect(attachment)
+            viewModelScope.launch {
+                withContext(Dispatchers.IO) {
+                    _selectedList.value += loadImagesFromStorageByName(file.name)
+                }}
         }
 
     }

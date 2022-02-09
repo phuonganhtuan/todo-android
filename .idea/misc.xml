@@ -10,9 +10,12 @@
         <entry key="app/src/main/res/drawable/bg_greybg_rounded_8.xml" value="0.121" />
         <entry key="app/src/main/res/drawable/bg_primary_rounded_20.xml" value="0.1195" />
         <entry key="app/src/main/res/drawable/bg_primary_rounded_8.xml" value="0.1195" />
+        <entry key="app/src/main/res/drawable/bg_ripple_primary_stroke_rounded_8.xml" value="0.1365" />
+        <entry key="app/src/main/res/drawable/bg_ripple_white_stroke_grey_border_rounded_8.xml" value="0.1365" />
         <entry key="app/src/main/res/drawable/bg_ripple_white_stroke_rounded_8.xml" value="0.1195" />
         <entry key="app/src/main/res/drawable/bg_rounded_stroke_grey.xml" value="0.121" />
         <entry key="app/src/main/res/drawable/bg_search_input 2.xml" value="0.1175" />
+        <entry key="app/src/main/res/drawable/bg_white_ripple_rounded_stroke_grey_8.xml" value="0.1195" />
         <entry key="app/src/main/res/drawable/bg_white_rounded_8.xml" value="0.172" />
         <entry key="app/src/main/res/drawable/custom_thumb.xml" value="0.1885" />
         <entry key="app/src/main/res/drawable/custom_track.xml" value="0.1885" />

@@ -125,7 +125,7 @@
 
     <style name="ButtonSecondaryWhite" parent="CustomButton">
         <item name="android:textColor">@color/color_text_secondary_dark</item>
-        <item name="android:background">@drawable/bg_ripple_white_stroke_rounded_8</item>
+        <item name="android:background">@drawable/bg_ripple_white_stroke_grey_border_rounded_8</item>
 
     </style>
 
