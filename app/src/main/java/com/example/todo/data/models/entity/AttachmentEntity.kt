@@ -1,6 +1,5 @@
 package com.example.todo.data.models.entity
 
-import android.graphics.Bitmap
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -19,7 +18,7 @@ data class AttachmentEntity(
 ) : BaseEntity()
 
 enum class AttachmentType {
-    AUDIO, VIDEO, IMAGE, ALBUM
+    AUDIO, VIDEO, IMAGE
 }
 
 enum class AttachmentAlbumTypeEnum{

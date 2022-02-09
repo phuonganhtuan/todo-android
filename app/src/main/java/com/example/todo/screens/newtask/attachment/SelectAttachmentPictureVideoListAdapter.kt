@@ -4,7 +4,6 @@ import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.example.todo.R
@@ -63,7 +62,7 @@ class ItemAttachmentAlbumViewHolder(
                 }
             }
         }
-        tvAlbumTitle.setText(entity.name)
+        tvAlbumTitle.text = (entity.name)
     }
 }
 
@@ -148,7 +147,7 @@ class ItemAttachmentPictureViewHolder(
                 if (isSelected) (selectAttachments.indexOf(entity.id) + 1).toString() else ""
             val bgTvSelectedId =
                 if (isSelected) R.drawable.bg_primary_rounded_20 else R.drawable.bg_rounded_border_white
-            tvSelected.setText(index)
+            tvSelected.text = (index)
             tvSelected.background = ContextCompat.getDrawable(itemView.context, bgTvSelectedId)
             // Show Thumbnail
 
@@ -219,7 +218,7 @@ class ItemAttachmentAudioViewHolder(
         with(itemViewBinding) {
             attachmentEntity = entity
 
-            tvAudioName.setText(entity.name)
+            tvAudioName.text = (entity.name)
 
             val durationObj = entity.duration?.let { splitToComponentTimes(it.toBigDecimal()) }
 
@@ -232,7 +231,7 @@ class ItemAttachmentAudioViewHolder(
                     ) else String.format("%02d:%02d:%02d", it.get(0), it.get(1), it.get(2))
                 };
 
-            tvDescription.setText("${entity.size}KB ${duration ?: ""}")
+            tvDescription.text = ("${entity.size}KB ${duration ?: ""}")
 
             // Show isSelected
             val isSelected = selectAttachments.contains(entity.id)
