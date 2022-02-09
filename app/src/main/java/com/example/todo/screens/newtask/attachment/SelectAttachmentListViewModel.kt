@@ -124,14 +124,17 @@ class SelectAttachmentListViewModel @Inject constructor(
             MediaStore.Images.Media.SIZE,
             MediaStore.Images.Media._ID,
             MediaStore.MediaColumns.DATA,
+            MediaStore.Images.Media.DATE_TAKEN,
             MediaStore.Images.Media.BUCKET_DISPLAY_NAME
         )
+
+        val sortOrder = "${MediaStore.Video.Media.DATE_TAKEN} DESC"
         val cursor = context.applicationContext.contentResolver.query(
             MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
             imageProjection,
             null,
             null,
-            null
+            sortOrder
         )
 
         val listImage = arrayListOf<AttachmentEntity>()
@@ -166,60 +169,11 @@ class SelectAttachmentListViewModel @Inject constructor(
     }
 
     /**
-     * Query images
+     * Query camera
      */
-    private fun loadImagesFromStorageByName(name: String): ArrayList<AttachmentEntity> {
-        val imageProjection = arrayOf(
-            MediaStore.Images.Media.DISPLAY_NAME,
-            MediaStore.Images.Media.SIZE,
-            MediaStore.Images.Media._ID,
-            MediaStore.MediaColumns.DATA,
-            MediaStore.Images.Media.BUCKET_DISPLAY_NAME
-        )
-
-        val selection = "${MediaStore.Images.Media.DISPLAY_NAME} == ?"
-        val selectionArgs = arrayOf(
-            name
-        )
-
-
-        val cursor = context.applicationContext.contentResolver.query(
-            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-            imageProjection,
-            selection,
-            selectionArgs,
-            null
-        )
-
-        val listImage = arrayListOf<AttachmentEntity>()
-        cursor.use {
-            it?.let {
-                val idColumn = it.getColumnIndexOrThrow(MediaStore.Images.Media._ID)
-                val nameColumn = it.getColumnIndexOrThrow(MediaStore.Images.Media.DISPLAY_NAME)
-                val sizeColumn = it.getColumnIndexOrThrow(MediaStore.Images.Media.SIZE)
-                val absolutePathOfImageColumn =
-                    it.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA)
-                val bucketNameColumn =
-                    it.getColumnIndexOrThrow(MediaStore.Images.Media.BUCKET_DISPLAY_NAME)
-                while (it.moveToNext()) {
-                    val id = it.getInt(idColumn)
-                    val name = it.getString(nameColumn)
-                    val extension: String = name.substring(name.lastIndexOf("."))
-                    val size = it.getString(sizeColumn)
-                    val absolutePathOfImage = it.getString(absolutePathOfImageColumn)
-                    val bucketName = it.getString(bucketNameColumn)
-                    listImage.add(
-                        AttachmentEntity(
-                            id, name, extension,
-                            absolutePathOfImage, 0, AttachmentType.IMAGE.name, size, 0, bucketName
-                        )
-                    )
-                }
-            }
-        }
-        cursor?.close()
-
-        return listImage
+    private fun getCameraImage(): List<AttachmentEntity> {
+        val imagelist = loadImagesFromStorage()
+        return if (imagelist.isNotEmpty()) listOf<AttachmentEntity>(imagelist.get(0)) else emptyList<AttachmentEntity>()
     }
 
     /**
@@ -422,7 +376,7 @@ class SelectAttachmentListViewModel @Inject constructor(
      */
     fun onSelect(entity: AttachmentEntity) {
         if (_selectIds.value.contains(entity.id)) {
-            _selectedList.value =  _selectedList.value.filter { it.id != entity.id }
+            _selectedList.value = _selectedList.value.filter { it.id != entity.id }
             _selectIds.value = _selectIds.value.filter { it != entity.id }
         } else {
             _selectedList.value += listOf<AttachmentEntity>(entity)
@@ -458,28 +412,25 @@ class SelectAttachmentListViewModel @Inject constructor(
     /**
      * Show loading
      */
-    fun showLoading(){
+    fun showLoading() {
         _isLoading.value = LoadDataState.LOADING
     }
 
     /**
      * hidden Loading
      */
-    fun hiddenLoading(){
+    fun hiddenLoading() {
         _isLoading.value = LoadDataState.SUCCESS
     }
 
     /**
      * add camera photo
      */
-    fun addCameraPhotoToSelectList(path: String){
-        val file = File(path)
-        if (file.exists()){
-            viewModelScope.launch {
-                withContext(Dispatchers.IO) {
-                    _selectedList.value += loadImagesFromStorageByName(file.name)
-                }}
+    fun addCameraPhotoToSelectList() {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                _selectedList.value += getCameraImage()
+            }
         }
-
     }
 }

@@ -4,6 +4,7 @@ import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.example.todo.R
@@ -16,6 +17,7 @@ import com.example.todo.data.models.entity.AttachmentType
 import com.example.todo.databinding.ItemAttachmentAlbumViewBinding
 import com.example.todo.databinding.ItemAttachmentAudioViewBinding
 import com.example.todo.databinding.ItemAttachmentPictureViewBinding
+import com.example.todo.utils.FileUtils
 import com.example.todo.utils.gone
 import com.example.todo.utils.show
 import java.io.File
@@ -114,6 +116,13 @@ class ItemAttachmentPictureViewHolder(
             attachmentSelectListener.let {
                 if (it != null) {
                     (attachmentEntity ?: null)?.let { it1 -> it(it1) }
+                }
+            }
+        }
+        itemViewBinding.imgPlayVideo.setOnClickListener {
+            attachmentEntity.let {
+                if (it != null) {
+                    FileUtils.openAttachment(itemView.context, it)
                 }
             }
         }

@@ -28,11 +28,8 @@ import com.example.todo.screens.newtask.category.SelectCategoryAdapter
 import com.example.todo.screens.newtask.subtask.OnSubTaskInteract
 import com.example.todo.screens.newtask.subtask.SubTaskAdapter
 import com.example.todo.screens.taskdetail.attachment.AttachmentAdapter
-import com.example.todo.utils.DateTimeUtils
-import com.example.todo.utils.boldWhenFocus
-import com.example.todo.utils.gone
+import com.example.todo.utils.*
 import com.example.todo.utils.helper.getCategoryColor
-import com.example.todo.utils.show
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
@@ -129,6 +126,10 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
         }
         attachmentAdapter.onAttachmentRemoveListener = {
             viewModel.removeAttachment(it)
+        }
+        attachmentAdapter.onAttachmentClickListener = {
+            val attachment = viewModel.attachments.value[it]
+            FileUtils.openAttachment(requireContext(), attachment)
         }
     }
 

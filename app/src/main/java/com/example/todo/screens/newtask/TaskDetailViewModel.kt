@@ -12,6 +12,7 @@ import com.example.todo.initdata.cat1
 import com.example.todo.initdata.taskDetail
 import com.example.todo.initdata.tasks
 import com.example.todo.utils.DateTimeUtils
+import com.example.todo.utils.FileUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -629,8 +630,13 @@ class NewTaskViewModel @Inject constructor(private val repository: TaskRepositor
         }
     }
 
-    fun selectAttachments(data: List<AttachmentEntity>){
-        val dataTmp = data.filter { !_attachments.value.contains(it) }
-        _attachments.value += dataTmp
+    fun selectAttachments(context: Context, data: List<AttachmentEntity>) = viewModelScope.launch {
+        withContext(Dispatchers.IO) {
+            val attachmentIds = attachments.value.map { it.id }
+            val dataTmp = data.filter { !attachmentIds.contains(it.id) }.map { att ->
+                att.copy().apply { path = FileUtils.copyFileToInternalStorage(context, att.path) }
+            }
+            _attachments.value += dataTmp
+        }
     }
 }

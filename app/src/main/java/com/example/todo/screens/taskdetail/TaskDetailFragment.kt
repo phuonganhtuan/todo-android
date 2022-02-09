@@ -31,11 +31,8 @@ import com.example.todo.screens.taskdetail.attachment.AttachmentAdapter
 import com.example.todo.screens.taskdetail.subtasks.ItemMoveCallback
 import com.example.todo.screens.taskdetail.subtasks.OnSubTaskDetailInteract
 import com.example.todo.screens.taskdetail.subtasks.SubTaskDetailAdapter
-import com.example.todo.utils.DateTimeUtils
-import com.example.todo.utils.boldWhenFocus
-import com.example.todo.utils.gone
+import com.example.todo.utils.*
 import com.example.todo.utils.helper.getCategoryColor
-import com.example.todo.utils.show
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
@@ -149,6 +146,10 @@ class TaskDetailFragment : BaseFragment<FragmentTaskDetailBinding>() {
         }
         textTaskName.addTextChangedListener {
             validateTask()
+        }
+        attachmentAdapter.onAttachmentClickListener = {
+            val attachment = viewModel.attachments.value[it]
+            FileUtils.openAttachment(requireContext(), attachment)
         }
     }
 

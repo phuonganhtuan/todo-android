@@ -275,15 +275,9 @@ class SelectAttachmentBottomDialog :
     }
 
     private fun onClickDone() = with(viewModel) {
-        selectAttachmentListViewModel?.selectedList.let { it ->
-            if (it != null && it.value.isNotEmpty()) {
-                Log.e("onClickDone - selectedList", it.value.toString())
-                /**
-                 * Copy attachment to folder project
-                 */
-                var result = it.value.map { attachment -> copy(attachment) }
-                Log.e("onClickDone - result", result.toString())
-                selectAttachments(result)
+        selectAttachmentListViewModel?.selectedList.let {
+            if (it != null) {
+                selectAttachments(requireContext(), it.value)
             }
         }
         // Back to new Task
@@ -355,11 +349,13 @@ class SelectAttachmentBottomDialog :
                         val photoURI: Uri? = context?.let { it1 ->
                             FileProvider.getUriForFile(
                                 it1,
-                                "com.example.android.fileprovider",
+                                requireContext().packageName + ".provider",
                                 it
                             )
                         }
-                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                        if (photoURI != null) {
+                            galleryAddPic(photoURI)
+                        }
                         startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
                     }
                 }
@@ -374,6 +370,7 @@ class SelectAttachmentBottomDialog :
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             selectAttachmentListViewModel?.addCameraPhotoToSelectList(currentPhotoPath)
             onClickDone()
+
         }
         return
     }
@@ -426,5 +423,12 @@ class SelectAttachmentBottomDialog :
             }
         }
         return entityTmp
+    }
+
+    private fun galleryAddPic(photoURI: Uri) {
+        Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE).also { mediaScanIntent ->
+            mediaScanIntent.data = photoURI
+            context?.sendBroadcast(mediaScanIntent)
+        }
     }
 }
