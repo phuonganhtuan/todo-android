@@ -9,6 +9,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.todo.R
 import com.example.todo.base.BaseActivity
+import com.example.todo.common.chart.ChartColor
 import com.example.todo.databinding.ActivityHomeBinding
 import com.example.todo.screens.home.tasks.suggest.SuggestActivity
 import com.example.todo.utils.SPUtils
@@ -31,6 +32,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
             SPUtils.saveFirstTimeLaunched(this)
             showSuggest()
         }
+        ChartColor.initChartColor(this)
         setupEvents()
         requestPermissions()
     }
