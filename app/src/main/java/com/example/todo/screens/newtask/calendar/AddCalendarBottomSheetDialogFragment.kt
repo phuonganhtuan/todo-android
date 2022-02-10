@@ -71,8 +71,10 @@ class AddCalendarBottomSheetDialogFragment :
         tvReminderValue.gone()
 
         if (viewModel.selectedHour.value == -1 || viewModel.selectedMinute.value == -1) {
-            val now = Calendar.getInstance()
-            onTimeSet(now.get(HOUR_OF_DAY), now.get(MINUTE))
+//            val now = Calendar.getInstance()
+//            onTimeSet(now.get(HOUR_OF_DAY), now.get(MINUTE))
+            lnReminder.gone()
+            lnRepeat.gone()
         }
     }
 
@@ -112,7 +114,9 @@ class AddCalendarBottomSheetDialogFragment :
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 selectedDate.collect {
-                    viewBinding.tvSelectedDate.text = DateTimeUtils.getComparableDateString(it)
+                    viewBinding.apply {
+                        tvSelectedDate.text = DateTimeUtils.getComparableDateString(it)
+                    }
                 }
             }
         }
@@ -131,8 +135,12 @@ class AddCalendarBottomSheetDialogFragment :
                         "$hourValue:$minuteValue"
                     }.collect {
                         Log.e("observeData: ", it)
-                        viewBinding.tvAddTime.setText(it)
-                        viewBinding.tvAddTime.setTextColor(Color.BLACK)
+                        viewBinding.apply {
+                            tvAddTime.text = it
+                            tvAddTime.setTextColor(Color.BLACK)
+                            lnReminder.show()
+                            lnRepeat.show()
+                        }
                     }
             }
         }
@@ -140,13 +148,17 @@ class AddCalendarBottomSheetDialogFragment :
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.selectedReminderTime.filter { it != ReminderTimeEnum.NONE }
+                    .filter { viewModel.isCheckedReminder.value == true }
                     .collect {
-                        viewBinding.tvReminderValue.setText(resources.getString(it.getStringid()))
-                        viewBinding.tvReminderValue.setTextColor(Color.BLACK)
-                        val layout: TextView = viewBinding.tvReminderValue
-                        val params: ViewGroup.LayoutParams = layout.layoutParams
-                        params.height = 100
-                        viewBinding.tvReminderValue.layoutParams = params
+                        viewBinding.apply {
+                            tvReminderValue.setText(resources.getString(it.getStringid()))
+                            tvReminderValue.setTextColor(Color.BLACK)
+                            val layout: TextView = tvReminderValue
+                            val params: ViewGroup.LayoutParams = layout.layoutParams
+                            params.height = 100
+                            tvReminderValue.layoutParams = params
+                        }
+
                     }
             }
         }
@@ -171,13 +183,16 @@ class AddCalendarBottomSheetDialogFragment :
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.selectedRepeatAt.filter { it != RepeatAtEnum.NONE }
+                    .filter { viewModel.isCheckedRepeat.value == true }
                     .collect {
-                        viewBinding.tvRepeatValue.setText(resources.getString(it.getStringid()))
-                        viewBinding.tvRepeatValue.setTextColor(Color.BLACK)
-                        val layout: TextView = viewBinding.tvRepeatValue
-                        val params: ViewGroup.LayoutParams = layout.layoutParams
-                        params.height = 100
-                        viewBinding.tvRepeatValue.layoutParams = params
+                        viewBinding.apply {
+                            tvRepeatValue.setText(resources.getString(it.getStringid()))
+                            tvRepeatValue.setTextColor(Color.BLACK)
+                            val layout: TextView = tvRepeatValue
+                            val params: ViewGroup.LayoutParams = layout.layoutParams
+                            params.height = 100
+                            tvRepeatValue.layoutParams = params
+                        }
                     }
             }
         }
@@ -212,6 +227,7 @@ class AddCalendarBottomSheetDialogFragment :
 
     private fun onCheckChangeReminder() = with(viewBinding) {
         if (swReminder.isChecked) {
+            swReminder.isChecked = false
             viewModel.onCheckChangeReminder(false)
             onClickReminder(swReminder)
         } else {

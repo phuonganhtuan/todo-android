@@ -338,6 +338,7 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
 
     private fun onCheckChangeReminder() = with(viewBinding) {
         if (switchReminder.isChecked) {
+            switchReminder.isChecked = false
             viewModel.onCheckChangeReminder(false)
             onClickReminder()
         } else {

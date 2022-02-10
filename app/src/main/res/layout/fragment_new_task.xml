@@ -151,7 +151,7 @@
                 android:layout_marginStart="26dp"
                 android:layout_marginTop="36dp"
                 android:contentDescription="@null"
-                android:src="@drawable/ic_calendar_outline"
+                android:src="@drawable/ic_date"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/imageCategory" />
 
@@ -175,7 +175,7 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginStart="24dp"
-                android:src="@drawable/ic_time_outline"
+                android:src="@drawable/ic_hour"
                 app:layout_constraintBottom_toBottomOf="@id/buttonAddCalendar"
                 app:layout_constraintStart_toEndOf="@id/buttonAddCalendar"
                 app:layout_constraintTop_toTopOf="@id/buttonAddCalendar" />

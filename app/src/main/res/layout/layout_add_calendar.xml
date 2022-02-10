@@ -54,8 +54,9 @@
                         android:id="@+id/imgSelectedDate"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
+                        android:layout_gravity="center"
                         android:contentDescription="@null"
-                        android:src="@drawable/ic_calendar_outline" />
+                        android:src="@drawable/ic_date" />
 
                     <TextView
                         android:id="@+id/tvSelectedDate"
@@ -86,8 +87,9 @@
                         android:id="@+id/imgAddTime"
                         android:layout_width="24dp"
                         android:layout_height="24dp"
+                        android:layout_gravity="center"
                         android:contentDescription="@null"
-                        android:src="@drawable/ic_time_outline" />
+                        android:src="@drawable/ic_hour" />
 
                     <TextView
                         android:id="@+id/tvAddTime"
@@ -109,6 +111,7 @@
 
                 <!--Reminder-->
                 <LinearLayout
+                    android:id="@+id/lnReminder"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="8dp"
@@ -124,6 +127,7 @@
                             android:id="@+id/imgReminder"
                             android:layout_width="24dp"
                             android:layout_height="24dp"
+                            android:layout_gravity="center"
                             android:contentDescription="@null"
                             android:src="@drawable/ic_reminder" />
 
@@ -166,6 +170,7 @@
                 </LinearLayout>
                 <!--Repeat-->
                 <LinearLayout
+                    android:id="@+id/lnRepeat"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="8dp"
@@ -181,6 +186,7 @@
                             android:id="@+id/imgRepeat"
                             android:layout_width="24dp"
                             android:layout_height="24dp"
+                            android:layout_gravity="center"
                             android:contentDescription="@null"
                             android:src="@drawable/ic_repeat" />
 

@@ -31,6 +31,8 @@ class SelectAttachmentDialogFragment : BaseDialogFragment<LayoutSelectAttachment
         private const val WRITE_PERMISSION_CODE = 103
     }
 
+    var currentRequestCode = 0
+
     override fun inflateViewBinding(
         container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -49,22 +51,19 @@ class SelectAttachmentDialogFragment : BaseDialogFragment<LayoutSelectAttachment
 
     private fun selectPhotos() = with(viewBinding) {
         checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE, READ_PHOTO_PERMISSION_CODE, {
-            checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_PERMISSION_CODE,
-                { openBottomDialog(READ_PHOTO_PERMISSION_CODE) })
+            checkWritePermission(READ_PHOTO_PERMISSION_CODE)
         })
     }
 
     private fun selectVideo() = with(viewBinding) {
         checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE, READ_VIDEO_PERMISSION_CODE, {
-            checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_PERMISSION_CODE,
-                { openBottomDialog(READ_VIDEO_PERMISSION_CODE) })
+            checkWritePermission(READ_VIDEO_PERMISSION_CODE)
         })
     }
 
     private fun selectAudio() = with(viewBinding) {
         checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE, READ_AUDIO_PERMISSION_CODE, {
-            checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_PERMISSION_CODE,
-                { openBottomDialog(READ_AUDIO_PERMISSION_CODE) })
+            checkWritePermission(READ_AUDIO_PERMISSION_CODE)
         })
     }
 
@@ -74,10 +73,12 @@ class SelectAttachmentDialogFragment : BaseDialogFragment<LayoutSelectAttachment
             READ_PHOTO_PERMISSION_CODE -> AttachmentType.IMAGE.name
             READ_VIDEO_PERMISSION_CODE -> AttachmentType.VIDEO.name
             READ_AUDIO_PERMISSION_CODE -> AttachmentType.AUDIO.name
-            else -> AttachmentType.IMAGE.name
+            else -> ""
         }
-        bundle.putString("type", type)
-        findNavController().navigate(R.id.openAttachmentBottomDialog, bundle)
+        if (type.isNotEmpty()){
+            bundle.putString("type", type)
+            findNavController().navigate(R.id.openAttachmentBottomDialog, bundle)
+        }
     }
 
     // Function to check and request permission.
@@ -96,6 +97,22 @@ class SelectAttachmentDialogFragment : BaseDialogFragment<LayoutSelectAttachment
             }
         }
 
+    private fun checkWritePermission(requestCode: Int) =
+        with(viewBinding) {
+            currentRequestCode = requestCode
+            if (context?.let {
+                    ContextCompat.checkSelfPermission(
+                        it,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    )
+                } != PackageManager.PERMISSION_GRANTED) {
+                // Requesting the permission
+                requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), WRITE_PERMISSION_CODE)
+            } else {
+               openBottomDialog(requestCode)
+            }
+        }
+
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<String>, grantResults: IntArray
@@ -107,14 +124,17 @@ class SelectAttachmentDialogFragment : BaseDialogFragment<LayoutSelectAttachment
             ).contains(requestCode) && grantResults.isNotEmpty() &&
             grantResults[0] == PackageManager.PERMISSION_GRANTED
         ) {
-            checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, WRITE_PERMISSION_CODE,
-                { openBottomDialog(requestCode) })
+            checkWritePermission(requestCode)
         }
         // If request is cancelled, the result arrays are empty.
         if (requestCode == WRITE_PERMISSION_CODE && (grantResults.isNotEmpty() &&
                     grantResults[0] == PackageManager.PERMISSION_GRANTED)
         ) {
-            openBottomDialog(requestCode)
+            if (currentRequestCode != 0){
+                openBottomDialog(currentRequestCode)
+                currentRequestCode = 0
+            }
+
         }
         return
     }
