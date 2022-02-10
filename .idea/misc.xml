@@ -19,6 +19,7 @@
         <entry key="app/src/main/res/drawable/bg_white_rounded_8.xml" value="0.172" />
         <entry key="app/src/main/res/drawable/custom_thumb.xml" value="0.1885" />
         <entry key="app/src/main/res/drawable/custom_track.xml" value="0.1885" />
+        <entry key="app/src/main/res/drawable/ic_empty.xml" value="0.161" />
         <entry key="app/src/main/res/drawable/ic_note.xml" value="0.161" />
         <entry key="app/src/main/res/drawable/ic_splash_ico.xml" value="0.161" />
         <entry key="app/src/main/res/layout/activity_new_task.xml" value="0.11752786220871327" />
@@ -38,6 +39,7 @@
         <entry key="app/src/main/res/layout/item_attachment_picture_view.xml" value="0.19882246376811594" />
         <entry key="app/src/main/res/layout/item_attachment_view.xml" value="0.19882246376811594" />
         <entry key="app/src/main/res/layout/item_bookmark.xml" value="0.19882246376811594" />
+        <entry key="app/src/main/res/layout/item_task.xml" value="0.2574074074074074" />
         <entry key="app/src/main/res/layout/item_task_search.xml" value="0.19882246376811594" />
         <entry key="app/src/main/res/layout/layout_add_calendar.xml" value="0.16216216216216217" />
         <entry key="app/src/main/res/layout/layout_add_time.xml" value="0.375" />
