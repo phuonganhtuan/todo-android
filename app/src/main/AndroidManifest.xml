@@ -24,19 +24,17 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:requestLegacyExternalStorage="true"
+        android:theme="@style/Theme.AndroidBP"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
-        android:theme="@style/Theme.AndroidBP">
+        android:supportsRtl="true">
         <activity
             android:name="com.example.todo.screens.home.HomeActivity"
-            android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AndroidBP.NoActionBar"
             tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".screens.splash.SplashActivity"
-            android:exported="true"
-            android:theme="@style/Theme.App.Starting">
+            android:exported="true">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -47,24 +45,28 @@
         <activity
             android:name=".screens.taskdetail.TaskDetailActivity"
             android:screenOrientation="portrait"
+            android:theme="@style/Theme.AndroidBP"
             tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".screens.newtask.NewTaskActivity"
             android:screenOrientation="portrait"
+            android:theme="@style/Theme.AndroidBP"
             tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".screens.search.SearchTaskActivity"
             android:screenOrientation="portrait"
+            android:theme="@style/Theme.AndroidBP"
             tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".screens.home.tasks.suggest.SuggestActivity"
             android:screenOrientation="portrait"
+            android:theme="@style/Theme.AndroidBP"
             tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".alarm.AlarmActivity"
             android:launchMode="singleInstance"
-            android:theme="@style/Theme.AndroidBP.Alarm"
             android:showWhenLocked="true"
+            android:theme="@style/Theme.AndroidBP.Alarm"
             tools:targetApi="o_mr1" />
 
         <receiver android:name=".alarm.AlarmHelper" />

@@ -30,10 +30,10 @@
         <item name="android:windowLightStatusBar">false</item>
     </style>
 
-    <style name="Theme.App.Starting" parent="Theme.AndroidBP">
-        <item name="windowSplashScreenBackground">@android:color/holo_blue_light</item>
+    <style name="Theme.App.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@android:color/white</item>
         <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_round</item>
-        <item name="windowSplashScreenAnimationDuration">700</item>
+        <item name="windowSplashScreenAnimationDuration">1500</item>
         <item name="postSplashScreenTheme">@style/Theme.AndroidBP.NoActionBar</item>
     </style>
 
@@ -133,7 +133,8 @@
 
     <style name="ButtonSecondaryWhite" parent="CustomButton">
         <item name="android:textColor">@color/color_text_secondary_dark</item>
-        <item name="android:background">@drawable/bg_ripple_white_stroke_grey_border_rounded_8</item>
+        <item name="android:background">@drawable/bg_ripple_white_stroke_grey_border_rounded_8
+        </item>
 
     </style>
 
