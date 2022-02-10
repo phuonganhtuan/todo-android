@@ -56,7 +56,7 @@ class TaskDetailFragment : BaseFragment<FragmentTaskDetailBinding>() {
     @Inject
     lateinit var attachmentAdapter: AttachmentAdapter
 
-    private var listAnimator: RecyclerView.ItemAnimator? = null
+//    private var listAnimator: RecyclerView.ItemAnimator? = null
 
     var touchHelper: ItemTouchHelper? = null
 
@@ -76,7 +76,7 @@ class TaskDetailFragment : BaseFragment<FragmentTaskDetailBinding>() {
     private fun initViews() = with(viewBinding) {
         recyclerSubTasks.adapter = subTaskAdapter
         recyclerAttachment.adapter = attachmentAdapter
-        listAnimator = recyclerSubTasks.itemAnimator
+//        listAnimator = recyclerSubTasks.itemAnimator
         recyclerSubTasks.itemAnimator = null
         recyclerAttachment.itemAnimator = null
         editNote.boldWhenFocus()
@@ -123,16 +123,17 @@ class TaskDetailFragment : BaseFragment<FragmentTaskDetailBinding>() {
             }
 
             override fun startDrag(viewHolder: RecyclerView.ViewHolder) {
-                recyclerSubTasks.itemAnimator = listAnimator
+//                recyclerSubTasks.itemAnimator = listAnimator
                 touchHelper?.startDrag(viewHolder)
             }
 
             override fun endDrag() {
-                recyclerSubTasks.itemAnimator = null
+//                recyclerSubTasks.itemAnimator = null
                 viewModel.setSubTasks(subTaskAdapter.newOrders)
             }
         })
         buttonNewSubTask.setOnClickListener {
+            layoutDetail.clearFocus()
             viewModel.addSubTask()
         }
         switchRepeat.setOnClickListener {
@@ -189,6 +190,7 @@ class TaskDetailFragment : BaseFragment<FragmentTaskDetailBinding>() {
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 subtasks.collect {
+                    viewBinding.layoutDetail.clearFocus()
                     subTaskAdapter.newOrders = it.toMutableList()
                     subTaskAdapter.submitList(it)
                 }

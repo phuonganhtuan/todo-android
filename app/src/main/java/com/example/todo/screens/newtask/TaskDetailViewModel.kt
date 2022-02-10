@@ -405,6 +405,7 @@ class NewTaskViewModel @Inject constructor(private val repository: TaskRepositor
 
     fun toEditMode() {
         _isEditing.value = true
+        _isSaving.value = false
     }
 
     fun toViewMode() {
@@ -489,7 +490,11 @@ class NewTaskViewModel @Inject constructor(private val repository: TaskRepositor
     }
 
     fun updateSubTaskTitle(index: Int, title: String) = viewModelScope.launch {
-        _subtasks.value[index].name = title
+        try {
+            _subtasks.value[index].name = title
+        } catch (exception: Exception) {
+
+        }
     }
 
     fun updateSubTaskState(index: Int, state: Boolean) = viewModelScope.launch {
@@ -564,6 +569,7 @@ class NewTaskViewModel @Inject constructor(private val repository: TaskRepositor
 
     fun updateTask(context: Context, title: String, note: String) = viewModelScope.launch {
         withContext(Dispatchers.IO) {
+            _isAdded.value = false
             val calendar = Calendar.getInstance().apply { time = _selectedDate.value }
             calendar.apply {
                 set(HOUR_OF_DAY, if (_selectedHour.value == -1) 0 else _selectedHour.value)
@@ -642,7 +648,6 @@ class NewTaskViewModel @Inject constructor(private val repository: TaskRepositor
                 }
             }
 
-            _isAdded.value = false
             _isAdded.value = true
         }
     }

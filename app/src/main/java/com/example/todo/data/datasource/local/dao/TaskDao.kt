@@ -86,7 +86,7 @@ interface TaskDao {
     @Query("select * from TaskEntity where title like '%' || :name || '%'")
     fun searchTaskByName(name: String): List<TaskEntity>
 
-    @Query("select * from TaskEntity where dueDate == :dayString")
+    @Query("select * from TaskEntity where dueDate == :dayString and isDone = 0")
     fun getTaskInDay(dayString: String): List<TaskShort>
 
     @Query("delete from AttachmentEntity where id = :id")

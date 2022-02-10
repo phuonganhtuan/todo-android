@@ -3,7 +3,6 @@ package com.example.todo.screens.taskdetail.subtasks
 import android.annotation.SuppressLint
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.ViewGroup
@@ -13,7 +12,6 @@ import com.example.todo.base.BaseDiffCallBack
 import com.example.todo.base.BaseViewHolder
 import com.example.todo.data.models.entity.SubTaskEntity
 import com.example.todo.databinding.ItemSubtaskEditableBinding
-import com.example.todo.screens.newtask.subtask.SubTaskDiffCallback
 import com.example.todo.utils.boldWhenFocus
 import com.example.todo.utils.gone
 import com.example.todo.utils.show
@@ -45,6 +43,7 @@ class SubTaskDetailAdapter @Inject constructor() :
     }
 
     override fun onBindViewHolder(holder: SubTaskDetailViewHolder, position: Int) {
+        holder.reset()
         holder.displayData(getItem(position), isEditing)
     }
 
@@ -67,6 +66,16 @@ class SubTaskDetailAdapter @Inject constructor() :
 
     override fun onRowClear(myViewHolder: RecyclerView.ViewHolder?) {
         onTaskInteractListener?.endDrag()
+    }
+
+    override fun onViewAttachedToWindow(holder: SubTaskDetailViewHolder) {
+        super.onViewAttachedToWindow(holder)
+        holder.reset()
+    }
+
+    override fun onViewRecycled(holder: SubTaskDetailViewHolder) {
+        super.onViewRecycled(holder)
+        holder.reset()
     }
 }
 
@@ -104,10 +113,17 @@ class SubTaskDetailViewHolder(
         itemView.setOnTouchListener { _, event ->
             if (!isEditing) return@setOnTouchListener false
             when (event.action) {
-                MotionEvent.ACTION_DOWN -> onTaskInteract?.startDrag(this@SubTaskDetailViewHolder)
+                MotionEvent.ACTION_DOWN -> {
+                    itemViewBinding.textSubTaskName.clearFocus()
+                    onTaskInteract?.startDrag(this@SubTaskDetailViewHolder)
+                }
             }
             true
         }
+    }
+
+    fun reset() = with(itemViewBinding) {
+        textSubTaskName.clearFocus()
     }
 
     fun displayData(entity: SubTaskEntity, isEditing: Boolean) = with(itemViewBinding) {
@@ -131,9 +147,12 @@ class SubTaskDetailViewHolder(
 
 class SubTaskDetailDiffCallback : BaseDiffCallBack<SubTaskEntity>() {
 
-    override fun areItemsTheSame(oldItem: SubTaskEntity, newItem: SubTaskEntity) = false
+    override fun areItemsTheSame(oldItem: SubTaskEntity, newItem: SubTaskEntity): Boolean {
+        return false
+    }
 
-    override fun areContentsTheSame(oldItem: SubTaskEntity, newItem: SubTaskEntity) = false
+    override fun areContentsTheSame(oldItem: SubTaskEntity, newItem: SubTaskEntity): Boolean =
+        oldItem.id == newItem.id && oldItem.isDone == newItem.isDone && oldItem.name == newItem.name
 }
 
 interface OnSubTaskDetailInteract {

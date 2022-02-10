@@ -48,6 +48,11 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>() {
         observeData()
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.getTasks(calendarAdapter.selectedDate)
+    }
+
     private fun setupEvents() = with(viewBinding) {
         calendarAdapter.dateSelectListener = {
             viewModel.getTasks(it)

@@ -143,7 +143,10 @@ class TaskDetailActivity : BaseActivity<ActivityTaskDetailBinding>() {
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.CREATED) {
                 isAdded.collect {
-                    if (it) showToastMessage(getString(R.string.saved))
+                    if (it) {
+                        showToastMessage(getString(R.string.saved))
+                        finish()
+                    }
                 }
             }
         }
