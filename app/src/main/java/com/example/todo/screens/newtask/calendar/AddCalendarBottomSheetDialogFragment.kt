@@ -106,7 +106,7 @@ class AddCalendarBottomSheetDialogFragment :
             onTimeSet(timePicker.hour, timePicker.minute)
         }
         layoutRoot.setOnClickListener {
-            dismiss()
+            findNavController().popBackStack()
         }
     }
 

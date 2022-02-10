@@ -136,6 +136,9 @@ class SelectAttachmentBottomDialog :
 
         tvDone.setOnClickListener { onClickDone() }
         imgClose.setOnClickListener { onClickCancel() }
+        layoutRoot.setOnClickListener {
+            findNavController().popBackStack()
+        }
     }
 
     private fun observeData() = with(viewModel) {
