@@ -131,7 +131,7 @@ class TaskDetailActivity : BaseActivity<ActivityTaskDetailBinding>() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 validated.collect {
                     viewBinding.layoutTop.button3.apply {
-                        if (!isEditing.value) {
+                        if (!isEditing.value) { 
                             isEnabled = true
                         } else {
                             if (it) show() else gone()
