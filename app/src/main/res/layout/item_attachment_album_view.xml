@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <com.example.todo.utils.CustomImageview
+        <com.trustedapp.todolist.planner.reminders.utils.CustomImageview
             android:id="@+id/thumbAttachment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

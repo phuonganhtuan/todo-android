@@ -12,7 +12,7 @@ android {
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-        applicationId "com.example.androidbp"
+        applicationId "com.trustedapp.todolist.planner.reminders"
         minSdkVersion 24
         targetSdkVersion 31
         versionCode 1
