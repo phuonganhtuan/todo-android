@@ -110,8 +110,6 @@
     <string name="ads_id">ca-app-pub-3940256099942544~3347511713</string>
     <string name="banner_ads_id">ca-app-pub-3940256099942544/6300978111</string>
     <string name="inter_ads_id">ca-app-pub-3940256099942544/1033173712</string>
-    <string name="native_ads_id">ca-app-pub-3940256099942544/2247696110</string>
-    <string name="resume_ads_id">ca-app-pub-3940256099942544/1033173712</string>
 
     <string name="facebook_app_id">1561758810851820</string>
     <string name="facebook_client_token">Facebook Client ID</string>

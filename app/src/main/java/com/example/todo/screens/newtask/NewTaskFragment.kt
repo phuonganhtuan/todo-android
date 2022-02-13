@@ -19,6 +19,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.ads.control.ads.Admod
+import com.ads.control.funtion.AdCallback
 import com.example.todo.R
 import com.example.todo.base.BaseFragment
 import com.example.todo.data.models.entity.CategoryEntity
@@ -30,6 +32,8 @@ import com.example.todo.screens.newtask.subtask.SubTaskAdapter
 import com.example.todo.screens.taskdetail.attachment.AttachmentAdapter
 import com.example.todo.utils.*
 import com.example.todo.utils.helper.getCategoryColor
+import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.interstitial.InterstitialAd
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
@@ -52,6 +56,11 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
 
     @Inject
     lateinit var attachmentAdapter: AttachmentAdapter
+
+    private lateinit var createInterstitial: InterstitialAd
+
+    private var isLoadingAds = false
+
 
     override fun inflateViewBinding(
         container: ViewGroup?,
@@ -115,11 +124,13 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
             onCheckChangeReminder()
         }
         buttonCreateTask.setOnClickListener {
+            loadInterCreate()
             viewModel.createTask(
                 requireContext(),
                 editTaskName.text.toString().trim(),
                 editNote.text.toString().trim()
             )
+
         }
         editTaskName.addTextChangedListener {
             validateTask()
@@ -372,5 +383,33 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
 
     private fun onClickRepeat() {
         findNavController().navigate(R.id.toAddRepeatOut)
+    }
+
+    fun loadInterCreate() {
+        if (context?.isInternetAvailable() == false) {
+            isLoadingAds = false
+            return
+        }
+        if (isLoadingAds) return
+        isLoadingAds = true
+        Admod.getInstance().getInterstitalAds(
+            activity,
+            getString(R.string.inter_ads_id),
+            object : AdCallback() {
+                override fun onInterstitialLoad(interstitialAd: InterstitialAd) {
+
+                }
+
+                override fun onAdLeftApplication() {
+                    super.onAdLeftApplication()
+                    isLoadingAds = false
+
+                }
+
+                override fun onAdFailedToLoad(i: LoadAdError?) {
+                    super.onAdFailedToLoad(i)
+                    isLoadingAds = false
+                }
+            })
     }
 }
