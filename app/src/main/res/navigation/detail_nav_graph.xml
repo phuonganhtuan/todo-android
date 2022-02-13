@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/TaskDetailFragment"
-        android:name="com.example.todo.screens.taskdetail.TaskDetailFragment"
+        android:name="com.trustedapp.todolist.planner.reminders.screens.taskdetail.TaskDetailFragment"
         android:label="@string/task_detail"
         tools:layout="@layout/fragment_task_detail" >
 
@@ -40,7 +40,7 @@
 
     <dialog
         android:id="@+id/SelectAttachmentFragment"
-        android:name="com.example.todo.screens.newtask.attachment.SelectAttachmentDialogFragment"
+        android:name="com.trustedapp.todolist.planner.reminders.screens.newtask.attachment.SelectAttachmentDialogFragment"
         android:label="@string/select_attachment"
         tools:layout="@layout/layout_select_attachment" >
 
@@ -51,7 +51,7 @@
 
     <dialog
         android:id="@+id/AddCalendarBottomSheet"
-        android:name="com.example.todo.screens.newtask.calendar.AddCalendarBottomSheetDialogFragment"
+        android:name="com.trustedapp.todolist.planner.reminders.screens.newtask.calendar.AddCalendarBottomSheetDialogFragment"
         android:label="@string/add_calendar"
         tools:layout="@layout/layout_add_calendar">
 
@@ -64,37 +64,37 @@
 
     <dialog
         android:id="@+id/AddCategoryFragment"
-        android:name="com.example.todo.screens.newtask.category.CreateCategoryDialogFragment"
+        android:name="com.trustedapp.todolist.planner.reminders.screens.newtask.category.CreateCategoryDialogFragment"
         android:label="@string/create_new_category_title"
         tools:layout="@layout/layout_create_category" />
 
     <dialog
         android:id="@+id/DeleteTaskFragment"
-        android:name="com.example.todo.screens.taskdetail.DeleteTaskDialogFragment"
+        android:name="com.trustedapp.todolist.planner.reminders.screens.taskdetail.DeleteTaskDialogFragment"
         android:label="@string/delete_repeat_task_reminder"
         tools:layout="@layout/layout_delete_task"/>
 
     <dialog
         android:id="@+id/BookmarkFragment"
-        android:name="com.example.todo.screens.taskdetail.bookmark.BookmarkDialogFragment"
+        android:name="com.trustedapp.todolist.planner.reminders.screens.taskdetail.bookmark.BookmarkDialogFragment"
         android:label="@string/bookmark"
         tools:layout="@layout/layout_bookmark"/>
 
     <dialog
         android:id="@+id/AddReminderFragment"
-        android:name="com.example.todo.screens.newtask.calendar.SetReminderDialog"
+        android:name="com.trustedapp.todolist.planner.reminders.screens.newtask.calendar.SetReminderDialog"
         android:label="@string/reminder"
         tools:layout="@layout/fragment_set_reminder"/>
 
     <dialog
         android:id="@+id/AddRepeatFragment"
-        android:name="com.example.todo.screens.newtask.calendar.SetRepeatAtDialog"
+        android:name="com.trustedapp.todolist.planner.reminders.screens.newtask.calendar.SetRepeatAtDialog"
         android:label="@string/repeat"
         tools:layout="@layout/fragment_set_repeat"/>
 
     <dialog
         android:id="@+id/selectAttachmentBottomDialog"
-        android:name="com.example.todo.screens.newtask.attachment.SelectAttachmentBottomDialog"
+        android:name="com.trustedapp.todolist.planner.reminders.screens.newtask.attachment.SelectAttachmentBottomDialog"
         android:label="SelectAttachmentBottomDialog"
         tools:layout="@layout/layout_select_attachment_list"/>
 </navigation>

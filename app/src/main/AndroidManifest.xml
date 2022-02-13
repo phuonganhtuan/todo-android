@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.todo">
+    package="com.trustedapp.todolist.planner.reminders">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -20,7 +20,7 @@
     <uses-permission android:name="com.google.android.gms.permission.AD_ID" />
 
     <application
-        android:name="com.example.todo.DemoApplication"
+        android:name="com.trustedapp.todolist.planner.reminders.DemoApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -29,12 +29,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true">
         <activity
-            android:name="com.example.todo.screens.home.HomeActivity"
+            android:name="com.trustedapp.todolist.planner.reminders.screens.home.HomeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AndroidBP.NoActionBar"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name=".screens.splash.SplashActivity"
+            android:name="com.trustedapp.todolist.planner.reminders.screens.splash.SplashActivity"
             android:exported="true">
 
             <intent-filter>
@@ -44,43 +44,43 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".screens.taskdetail.TaskDetailActivity"
+            android:name="com.trustedapp.todolist.planner.reminders.screens.taskdetail.TaskDetailActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AndroidBP"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name=".screens.newtask.NewTaskActivity"
+            android:name="com.trustedapp.todolist.planner.reminders.screens.newtask.NewTaskActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AndroidBP"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name=".screens.search.SearchTaskActivity"
+            android:name="com.trustedapp.todolist.planner.reminders.screens.search.SearchTaskActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AndroidBP"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name=".screens.home.tasks.suggest.SuggestActivity"
+            android:name="com.trustedapp.todolist.planner.reminders.screens.home.tasks.suggest.SuggestActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AndroidBP"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name=".alarm.AlarmActivity"
+            android:name="com.trustedapp.todolist.planner.reminders.alarm.AlarmActivity"
             android:launchMode="singleInstance"
             android:showWhenLocked="true"
             android:theme="@style/Theme.AndroidBP.Alarm"
             tools:targetApi="o_mr1" />
 
-        <receiver android:name=".alarm.AlarmHelper" />
+        <receiver android:name="com.trustedapp.todolist.planner.reminders.alarm.AlarmHelper" />
 
         <receiver
-            android:name=".alarm.SchedularBroadcast"
+            android:name="com.trustedapp.todolist.planner.reminders.alarm.SchedularBroadcast"
             android:exported="false">
             <intent-filter>
                 <action android:name="android.app.action.SCHEDULE_EXACT_ALARM_PERMISSION_STATE_CHANGED" />
             </intent-filter>
         </receiver>
         <receiver
-            android:name=".alarm.SchedularBootedBroadcast"
+            android:name="com.trustedapp.todolist.planner.reminders.alarm.SchedularBootedBroadcast"
             android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />

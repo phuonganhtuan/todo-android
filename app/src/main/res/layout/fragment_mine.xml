@@ -168,7 +168,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <com.example.todo.common.chart.PieChart
+    <com.trustedapp.todolist.planner.reminders.common.chart.PieChart
         android:id="@+id/chart"
         android:layout_width="0dp"
         android:layout_height="0dp"

@@ -33,7 +33,7 @@
                 android:animateLayoutChanges="true"
                 android:orientation="vertical">
                 <!--calendar-->
-                <com.example.todo.common.calendarview.TaskCalendarView
+                <com.trustedapp.todolist.planner.reminders.common.calendarview.TaskCalendarView
                     android:id="@+id/calendarView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
