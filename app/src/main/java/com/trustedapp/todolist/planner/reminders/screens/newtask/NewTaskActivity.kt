@@ -9,6 +9,7 @@ import com.ads.control.ads.Admod
 import com.trustedapp.todolist.planner.reminders.R
 import com.trustedapp.todolist.planner.reminders.base.BaseActivity
 import com.trustedapp.todolist.planner.reminders.databinding.ActivityNewTaskBinding
+import com.trustedapp.todolist.planner.reminders.utils.SPUtils
 import com.trustedapp.todolist.planner.reminders.utils.hide
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -32,7 +33,9 @@ class NewTaskActivity : BaseActivity<ActivityNewTaskBinding>() {
     }
 
     private fun initView(){
-        Admod.getInstance().loadBanner(this@NewTaskActivity, getString(R.string.banner_ads_id))
+        if (SPUtils.getRemoteConfig(this@NewTaskActivity, SPUtils.KEY_BANNER)){
+            Admod.getInstance().loadBanner(this@NewTaskActivity, getString(R.string.banner_ads_id))
+        }
     }
 
     private fun setupToolbar() = with(viewBinding.layoutTop) {

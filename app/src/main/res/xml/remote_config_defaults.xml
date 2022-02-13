@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- START xml_defaults -->
+<defaultsMap>
+    <entry>
+        <key>inter_splash</key>
+        <value>true</value>
+    </entry>
+    <entry>
+        <key>banner</key>
+        <value>true</value>
+    </entry>
+    <entry>
+        <key>native_language</key>
+        <value>true</value>
+    </entry>
+    <entry>
+        <key>inter_insert</key>
+        <value>true</value>
+    </entry>
+    <entry>
+        <key>inter_theme</key>
+        <value>false</value>
+    </entry>
+</defaultsMap>
+    <!-- END xml_defaults -->

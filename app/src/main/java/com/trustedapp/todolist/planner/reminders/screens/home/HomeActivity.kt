@@ -4,9 +4,14 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import androidx.activity.viewModels
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import com.google.firebase.remoteconfig.ktx.remoteConfig
+import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import com.trustedapp.todolist.planner.reminders.R
 import com.trustedapp.todolist.planner.reminders.base.BaseActivity
 import com.trustedapp.todolist.planner.reminders.common.chart.ChartColor
@@ -20,6 +25,8 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
 
     private val viewModel: HomeViewModel by viewModels()
 
+
+
     override fun inflateViewBinding() = ActivityHomeBinding.inflate(layoutInflater)
 
     override fun onActivityReady(savedInstanceState: Bundle?) {
@@ -27,6 +34,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
     }
 
     override fun onActivityReady() {
+
         if (SPUtils.isFirstTime(this)) {
             viewModel.createInitData()
             SPUtils.saveFirstTimeLaunched(this)
@@ -62,4 +70,6 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
             startActivityForResult(intent, 0)
         }
     }
+
+
 }

@@ -14,6 +14,7 @@ import com.trustedapp.todolist.planner.reminders.base.BaseActivity
 import com.trustedapp.todolist.planner.reminders.databinding.ActivitySearchTaskBinding
 import com.trustedapp.todolist.planner.reminders.screens.taskdetail.TaskDetailActivity
 import com.trustedapp.todolist.planner.reminders.utils.Constants
+import com.trustedapp.todolist.planner.reminders.utils.SPUtils
 import com.trustedapp.todolist.planner.reminders.utils.gone
 import com.trustedapp.todolist.planner.reminders.utils.show
 import dagger.hilt.android.AndroidEntryPoint
@@ -48,7 +49,9 @@ class SearchTaskActivity : BaseActivity<ActivitySearchTaskBinding>() {
         recyclerRecent.adapter = recentAdapter
         editSearch.requestFocus()
         // Load Banner ads
-        Admod.getInstance().loadBanner(this@SearchTaskActivity, getString(R.string.banner_ads_id))
+        if (SPUtils.getRemoteConfig(this@SearchTaskActivity, SPUtils.KEY_BANNER)){
+            Admod.getInstance().loadBanner(this@SearchTaskActivity, getString(R.string.banner_ads_id))
+        }
     }
 
     private fun initData() {

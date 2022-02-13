@@ -15,10 +15,7 @@ import com.trustedapp.todolist.planner.reminders.R
 import com.trustedapp.todolist.planner.reminders.base.BaseActivity
 import com.trustedapp.todolist.planner.reminders.databinding.ActivityTaskDetailBinding
 import com.trustedapp.todolist.planner.reminders.screens.newtask.NewTaskViewModel
-import com.trustedapp.todolist.planner.reminders.utils.Constants
-import com.trustedapp.todolist.planner.reminders.utils.gone
-import com.trustedapp.todolist.planner.reminders.utils.hide
-import com.trustedapp.todolist.planner.reminders.utils.show
+import com.trustedapp.todolist.planner.reminders.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 
@@ -49,7 +46,9 @@ class TaskDetailActivity : BaseActivity<ActivityTaskDetailBinding>() {
     }
 
     private fun initView() = with(viewBinding){
-        Admod.getInstance().loadBanner(this@TaskDetailActivity, getString(R.string.banner_ads_id))
+        if (SPUtils.getRemoteConfig(this@TaskDetailActivity, SPUtils.KEY_BANNER)){
+            Admod.getInstance().loadBanner(this@TaskDetailActivity, getString(R.string.banner_ads_id))
+        }
     }
 
     private fun initData() {

@@ -1,6 +1,7 @@
 package com.trustedapp.todolist.planner.reminders.screens.newtask
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Context.LAYOUT_INFLATER_SERVICE
 import android.graphics.Color
 import android.os.Bundle
@@ -17,6 +18,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.ads.control.ads.Admod
+import com.ads.control.funtion.AdCallback
+import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.trustedapp.todolist.planner.reminders.R
 import com.trustedapp.todolist.planner.reminders.base.BaseFragment
 import com.trustedapp.todolist.planner.reminders.data.models.entity.CategoryEntity
@@ -49,6 +54,8 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
 
     @Inject
     lateinit var attachmentAdapter: AttachmentAdapter
+
+    private var isLoadingAds: Boolean = false
 
     override fun inflateViewBinding(
         container: ViewGroup?,
@@ -117,6 +124,7 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
                 editTaskName.text.toString().trim(),
                 editNote.text.toString().trim()
             )
+            loadInterCreate()
         }
         editTaskName.addTextChangedListener {
             validateTask()
@@ -369,5 +377,55 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
 
     private fun onClickRepeat() {
         findNavController().navigate(R.id.toAddRepeatOut)
+    }
+
+    private fun isAllowInterNewTaskAds(): Boolean{
+        context.let {
+            if (it != null){
+                val numberOfNewTask =  SPUtils.getNumberNewTask(it)
+                val newNumberOfTask = numberOfNewTask + 1
+                SPUtils.setNumberNewTask(it, newNumberOfTask)
+                return newNumberOfTask % 2 == 0
+            }
+        }
+        return false
+    }
+
+    private fun loadInterCreate() {
+        if (!SPUtils.getRemoteConfig(requireContext(), SPUtils.KEY_INTER_INSERT)) return
+        if (!isAllowInterNewTaskAds()) return
+
+        if (context?.isInternetAvailable() == false) {
+            isLoadingAds = false
+            return
+        }
+        isLoadingAds = true
+        Admod.getInstance().getInterstitalAds(
+            activity,
+            getString(R.string.inter_ads_id),
+            object : AdCallback() {
+                override fun onInterstitialLoad(interstitialAd: InterstitialAd) {
+                    isLoadingAds = false
+
+                }
+
+                override fun onAdClosed() {
+                    super.onAdClosed()
+                    isLoadingAds = false
+
+                }
+
+                override fun onAdLeftApplication() {
+                    super.onAdLeftApplication()
+                    isLoadingAds = false
+
+                }
+
+                override fun onAdFailedToLoad(i: LoadAdError?) {
+                    super.onAdFailedToLoad(i)
+                    isLoadingAds = false
+
+                }
+            })
     }
 }

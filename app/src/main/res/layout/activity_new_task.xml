@@ -18,11 +18,11 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:defaultNavHost="true"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/layoutTop"
-        app:navGraph="@navigation/new_task_nav_graph" />
+        app:navGraph="@navigation/new_task_nav_graph"
+        app:layout_constraintBottom_toTopOf="@id/include"/>
     <include
         android:id="@+id/include"
         layout="@layout/layout_banner_control"
