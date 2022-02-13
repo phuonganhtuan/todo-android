@@ -10,6 +10,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.findNavController
+import com.ads.control.ads.Admod
 import com.example.todo.R
 import com.example.todo.base.BaseActivity
 import com.example.todo.databinding.ActivityTaskDetailBinding
@@ -34,6 +35,7 @@ class TaskDetailActivity : BaseActivity<ActivityTaskDetailBinding>() {
 
     override fun onActivityReady() {
         setupToolbar()
+        initView()
         initData()
         setupEvents()
         observeData()
@@ -44,6 +46,10 @@ class TaskDetailActivity : BaseActivity<ActivityTaskDetailBinding>() {
         button3.setImageResource(R.drawable.ic_edit)
         button4.setImageResource(R.drawable.ic_more)
         button2.hide()
+    }
+
+    private fun initView() = with(viewBinding){
+        Admod.getInstance().loadBanner(this@TaskDetailActivity, getString(R.string.banner_ads_id))
     }
 
     private fun initData() {

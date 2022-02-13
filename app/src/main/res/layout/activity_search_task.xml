@@ -94,4 +94,12 @@
         app:layout_constraintTop_toBottomOf="@id/layoutRecent"
         tools:itemCount="5"
         tools:listitem="@layout/item_task_search" />
+
+    <include
+        android:id="@+id/include"
+        layout="@layout/layout_banner_control"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        app:layout_constraintBottom_toBottomOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

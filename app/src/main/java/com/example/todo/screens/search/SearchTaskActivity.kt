@@ -8,6 +8,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.RecyclerView
+import com.ads.control.ads.Admod
+import com.example.todo.R
 import com.example.todo.base.BaseActivity
 import com.example.todo.databinding.ActivitySearchTaskBinding
 import com.example.todo.screens.taskdetail.TaskDetailActivity
@@ -45,6 +47,8 @@ class SearchTaskActivity : BaseActivity<ActivitySearchTaskBinding>() {
         recyclerTasks.adapter = searchAdapter
         recyclerRecent.adapter = recentAdapter
         editSearch.requestFocus()
+        // Load Banner ads
+        Admod.getInstance().loadBanner(this@SearchTaskActivity, getString(R.string.banner_ads_id))
     }
 
     private fun initData() {

@@ -7,11 +7,13 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.Navigation.findNavController
+import com.ads.control.ads.Admod
 import com.example.todo.R
 import com.example.todo.base.BaseActivity
 import com.example.todo.databinding.ActivityNewTaskBinding
 import com.example.todo.databinding.ActivityTaskDetailBinding
 import com.example.todo.utils.hide
+import com.example.todo.utils.isInternetAvailable
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 
@@ -28,8 +30,13 @@ class NewTaskActivity : BaseActivity<ActivityNewTaskBinding>() {
 
     override fun onActivityReady() {
         setupToolbar()
+        initView()
         setupEvents()
         observeData()
+    }
+
+    private fun initView(){
+        Admod.getInstance().loadBanner(this@NewTaskActivity, getString(R.string.banner_ads_id))
     }
 
     private fun setupToolbar() = with(viewBinding.layoutTop) {

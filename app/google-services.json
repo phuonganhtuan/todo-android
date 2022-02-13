@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "673990031766",
-    "project_id": "todofreelancer",
-    "storage_bucket": "todofreelancer.appspot.com"
+    "project_number": "851734418508",
+    "project_id": "to-do-list-congvt",
+    "storage_bucket": "to-do-list-congvt.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:673990031766:android:70bb661da42fe48264c5b7",
+        "mobilesdk_app_id": "1:851734418508:android:36595d929ee7f08f4850e9",
         "android_client_info": {
-          "package_name": "com.example.androidbp"
+          "package_name": "com.trustedapp.todolist.planner.reminders"
         }
       },
       "oauth_client": [
         {
-          "client_id": "673990031766-3r38tuv64onikt5v799jh2av3evleuu7.apps.googleusercontent.com",
+          "client_id": "851734418508-8ub2hcv1hkffd1fjfhm3qri93gck8bl0.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBO-Cfzl21bKlLOs_rCH8LIkBDybf8hchU"
+          "current_key": "AIzaSyBmuyCgR2pE1MYt8rS7bqvmL7DVbJu4ZYc"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "673990031766-3r38tuv64onikt5v799jh2av3evleuu7.apps.googleusercontent.com",
+              "client_id": "851734418508-8ub2hcv1hkffd1fjfhm3qri93gck8bl0.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
