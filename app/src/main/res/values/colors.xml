@@ -3,9 +3,9 @@
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
-    <color name="color_primary">#EF2D64</color>
-    <color name="color_primary_light">#FA94A8</color>
-    <color name="color_primary_variant">#871A2F</color>
+    <color name="color_primary">#22B07D</color>
+    <color name="color_primary_light">#8CC4B0</color>
+    <color name="color_primary_variant">#177855</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="red_primary">#EE0033</color>
