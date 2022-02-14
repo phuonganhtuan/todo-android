@@ -287,7 +287,7 @@ class TaskDetailFragment : BaseFragment<FragmentTaskDetailBinding>() {
                         viewBinding.textReminderTime.gone()
                         viewBinding.textRepeatTime.gone()
                         viewBinding.switchRepeat.isChecked = false
-                        viewModel.resetRepeatDefault()
+//                        viewModel.resetRepeatDefault()
                     }
                 }
             }
@@ -434,8 +434,8 @@ class TaskDetailFragment : BaseFragment<FragmentTaskDetailBinding>() {
             textReminderTime.gone()
             textRepeatTime.gone()
             switchRepeat.isChecked = false
-            viewModel.resetRepeatDefault()
-            viewModel.resetReminderDefault()
+//            viewModel.resetRepeatDefault()
+//            viewModel.resetReminderDefault()
         }
     }
 
@@ -455,7 +455,7 @@ class TaskDetailFragment : BaseFragment<FragmentTaskDetailBinding>() {
             onClickRepeat()
         } else {
             textRepeatTime.gone()
-            viewModel.resetRepeatDefault()
+//            viewModel.resetRepeatDefault()
         }
     }
 

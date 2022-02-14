@@ -145,7 +145,7 @@ class AddCalendarBottomSheetDialogFragment :
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.selectedReminderTime.filter { it != ReminderTimeEnum.NONE }
-                    .filter { viewModel.isCheckedReminder.value == true }
+//                    .filter { viewModel.isCheckedReminder.value == true }
                     .collect {
                         viewBinding.apply {
                             tvReminderValue.setText(resources.getString(it.getStringid()))
@@ -170,7 +170,7 @@ class AddCalendarBottomSheetDialogFragment :
                             tvReminderValue.gone()
                             tvRepeatValue.gone()
                             swRepeat.isChecked = false
-                            viewModel.resetRepeatDefault()
+//                            viewModel.resetRepeatDefault()
                         }
                     }
                 }
@@ -229,7 +229,7 @@ class AddCalendarBottomSheetDialogFragment :
             onClickReminder(swReminder)
         } else {
             tvReminderValue.gone()
-            viewModel.resetReminderDefault()
+//            viewModel.resetReminderDefault()
         }
     }
 
@@ -242,14 +242,14 @@ class AddCalendarBottomSheetDialogFragment :
             if (!viewModel.isCheckedReminder.value) {
                 swRepeat.isChecked = false
                 tvRepeatValue.gone()
-                viewModel.resetRepeatDefault()
+//                viewModel.resetRepeatDefault()
                 return@with
             }
             viewModel.onCheckChangeRepeat(false)
             onClickRepeat(swRepeat)
         } else {
             tvRepeatValue.gone()
-            viewModel.resetRepeatDefault()
+//            viewModel.resetRepeatDefault()
         }
     }
 

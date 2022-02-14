@@ -106,13 +106,6 @@ class SetReminderDialog : BaseDialogFragment<FragmentSetReminderBinding>() {
     private fun onClickDone(view: View) {
         viewModel.onCheckChangeReminder(true)
 
-        // Set default value
-        viewModel.apply {
-            selectReminderAt(ReminderTimeEnum.FIVE_MINUTES_BEFORE)
-            selectReminderType(ReminderTypeEnum.NOTIFICATION)
-            selectReminderScreenlock(false)
-        }
-
         when (selReminderItem?.itemId) {
             R.id.option_same_with_due_date -> viewModel.selectReminderAt(ReminderTimeEnum.SAME_DUE_DATE)
             R.id.option_5_minutes_before -> viewModel.selectReminderAt(ReminderTimeEnum.FIVE_MINUTES_BEFORE)
@@ -162,14 +155,11 @@ class SetReminderDialog : BaseDialogFragment<FragmentSetReminderBinding>() {
             when (menuRes) {
                 R.menu.reminder_menu -> {
                     selReminderItem = item
-
                     tvReminderAtValue.setText(item?.title)
-
                 }
                 R.menu.reminder_type_menu -> {
                     selReminderType = item
                     tvReminderTypeValue.setText(item?.title)
-
                 }
                 R.menu.screen_lock_menu -> {
                     selReminderScreenLock = item
