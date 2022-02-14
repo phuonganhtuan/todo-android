@@ -291,7 +291,7 @@ class TaskDetailFragment : BaseFragment<FragmentTaskDetailBinding>() {
                     if (!it) {
                         viewBinding.textReminderTime.gone()
                         viewBinding.textRepeatTime.gone()
-                        viewBinding.switchRepeat.isChecked = false
+                        viewModel.onCheckChangeRepeat(false)
 //                        viewModel.resetRepeatDefault()
                     }
                 }
@@ -308,9 +308,13 @@ class TaskDetailFragment : BaseFragment<FragmentTaskDetailBinding>() {
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 isCheckedRepeat.collect {
-                    if (isCheckedReminder.value) {
-                        viewBinding.switchRepeat.isChecked = it
-                        if (it) viewBinding.textRepeatTime.show()
+                    viewBinding.switchRepeat.isChecked = it
+
+                    if (isCheckedReminder.value && it) {
+                        viewBinding.textRepeatTime.show()
+                    }else{
+                        viewBinding.switchRepeat.isChecked = false
+                        viewBinding.textRepeatTime.gone()
                     }
                 }
             }
@@ -429,12 +433,14 @@ class TaskDetailFragment : BaseFragment<FragmentTaskDetailBinding>() {
 
     private fun onCheckChangeReminder() = with(viewBinding) {
         if (switchReminder.isChecked) {
+            switchReminder.isChecked = false
             viewModel.onCheckChangeReminder(false)
             onClickReminder()
         } else {
             textReminderTime.gone()
             textRepeatTime.gone()
             switchRepeat.isChecked = false
+            viewModel.onCheckChangeReminder(false)
 //            viewModel.resetRepeatDefault()
 //            viewModel.resetReminderDefault()
         }
@@ -449,13 +455,15 @@ class TaskDetailFragment : BaseFragment<FragmentTaskDetailBinding>() {
             if (!viewModel.isCheckedReminder.value) {
                 switchRepeat.isChecked = false
                 textRepeatTime.gone()
-                viewModel.resetRepeatDefault()
+//                viewModel.resetRepeatDefault()
                 return@with
             }
+            switchRepeat.isChecked = false
             viewModel.onCheckChangeRepeat(false)
             onClickRepeat()
         } else {
             textRepeatTime.gone()
+            viewModel.onCheckChangeRepeat(false)
 //            viewModel.resetRepeatDefault()
         }
     }

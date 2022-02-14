@@ -164,13 +164,16 @@ class AddCalendarBottomSheetDialogFragment :
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.isCheckedReminder.collect {
                     viewBinding.apply {
-                        if (it) tvReminderValue.show()
+                        if (it) {
+                            tvReminderValue.show()
+                        }
                         swReminder.isChecked = it
                         if (!it) {
                             tvReminderValue.gone()
                             tvRepeatValue.gone()
-                            swRepeat.isChecked = false
+                            viewModel.onCheckChangeRepeat(false)
 //                            viewModel.resetRepeatDefault()
+
                         }
                     }
                 }
@@ -197,10 +200,13 @@ class AddCalendarBottomSheetDialogFragment :
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.isCheckedRepeat.collect {
-                    if (isCheckedReminder.value) {
-                        viewBinding.apply {
-                            if (it) tvRepeatValue.show()
-                            swRepeat.isChecked = it
+                    viewBinding.apply {
+                        swRepeat.isChecked = it
+                        if (isCheckedReminder.value && it) {
+                            tvRepeatValue.show()
+                        }else{
+                            swRepeat.isChecked = false
+                            tvRepeatValue.gone()
                         }
                     }
                 }
@@ -229,6 +235,7 @@ class AddCalendarBottomSheetDialogFragment :
             onClickReminder(swReminder)
         } else {
             tvReminderValue.gone()
+            viewModel.onCheckChangeReminder(false)
 //            viewModel.resetReminderDefault()
         }
     }
@@ -245,10 +252,12 @@ class AddCalendarBottomSheetDialogFragment :
 //                viewModel.resetRepeatDefault()
                 return@with
             }
+            swRepeat.isChecked = false
             viewModel.onCheckChangeRepeat(false)
             onClickRepeat(swRepeat)
         } else {
             tvRepeatValue.gone()
+            viewModel.onCheckChangeRepeat(false)
 //            viewModel.resetRepeatDefault()
         }
     }
