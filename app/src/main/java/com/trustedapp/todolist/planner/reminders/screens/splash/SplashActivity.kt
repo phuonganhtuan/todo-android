@@ -18,6 +18,7 @@ import androidx.core.splashscreen.SplashScreenViewProvider
 import com.ads.control.ads.Admod
 import com.ads.control.funtion.AdCallback
 import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfig
@@ -49,15 +50,8 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun toHomeDelayed() {
-        Handler(Looper.getMainLooper()).post {
             startActivity(Intent(this, HomeActivity::class.java))
             finish()
-        }
-
-//        Handler(Looper.getMainLooper()).postDelayed({
-//            startActivity(Intent(this, HomeActivity::class.java))
-//            finish()
-//        }, 1500L)
     }
 
     private fun setSplashExitAnimation(splashScreen: SplashScreen) {
@@ -120,12 +114,24 @@ class SplashActivity : AppCompatActivity() {
             return
         }
         isLoadingAds = true
-        Admod.getInstance().loadSplashInterstitalAds(
-            this,
+
+        Admod.getInstance().getInterstitalAds(
+            this@SplashActivity,
             getString(R.string.inter_ads_id),
-            5000,
-            0,
             object : AdCallback() {
+                override fun onInterstitialLoad(interstitialAd: InterstitialAd) {
+                    Admod.getInstance().setOpenActivityAfterShowInterAds(true)
+                    Admod.getInstance()
+                        .forceShowInterstitial(
+                            this@SplashActivity,
+                            interstitialAd,
+                            object : AdCallback() {
+                                override fun onAdClosed() {
+                                    isLoadingAds = false
+                                    toHomeDelayed()
+                                }
+                            })
+                }
 
                 override fun onAdClosed() {
                     super.onAdClosed()

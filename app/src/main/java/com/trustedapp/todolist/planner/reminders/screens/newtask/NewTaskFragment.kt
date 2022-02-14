@@ -407,7 +407,8 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
             object : AdCallback() {
                 override fun onInterstitialLoad(interstitialAd: InterstitialAd) {
                     isLoadingAds = false
-
+                    // callback
+                    
                 }
 
                 override fun onAdClosed() {
