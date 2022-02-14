@@ -117,7 +117,7 @@ class SplashActivity : AppCompatActivity() {
 
         Admod.getInstance().getInterstitalAds(
             this@SplashActivity,
-            getString(R.string.inter_ads_id),
+            getString(R.string.inter_splash_ads_id),
             object : AdCallback() {
                 override fun onInterstitialLoad(interstitialAd: InterstitialAd) {
                     Admod.getInstance().setOpenActivityAfterShowInterAds(true)

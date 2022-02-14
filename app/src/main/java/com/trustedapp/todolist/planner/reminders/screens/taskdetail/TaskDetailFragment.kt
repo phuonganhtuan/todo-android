@@ -19,6 +19,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.ads.control.ads.Admod
+import com.ads.control.funtion.AdCallback
+import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.trustedapp.todolist.planner.reminders.R
@@ -62,6 +65,8 @@ class TaskDetailFragment : BaseFragment<FragmentTaskDetailBinding>() {
 //    private var listAnimator: RecyclerView.ItemAnimator? = null
 
     var touchHelper: ItemTouchHelper? = null
+
+    private var isLoadingAds: Boolean = false
 
     override fun inflateViewBinding(
         container: ViewGroup?,
@@ -313,11 +318,7 @@ class TaskDetailFragment : BaseFragment<FragmentTaskDetailBinding>() {
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 isSaving.collect {
-                    if (it) viewModel.updateTask(
-                        requireContext(),
-                        viewBinding.textTaskName.text.toString().trim(),
-                        viewBinding.editNote.text.toString().trim()
-                    )
+                    if (it) loadInterUpdate()
                 }
             }
         }
@@ -461,5 +462,94 @@ class TaskDetailFragment : BaseFragment<FragmentTaskDetailBinding>() {
 
     private fun onClickRepeat() {
         findNavController().navigate(R.id.toAddRepeatDetail)
+    }
+
+    private fun isAllowInterNewTaskAds(): Boolean{
+        context.let {
+            if (it != null){
+                val numberOfNewTask =  SPUtils.getNumberNewTask(it)
+                val newNumberOfTask = numberOfNewTask + 1
+                SPUtils.setNumberNewTask(it, newNumberOfTask)
+                return newNumberOfTask % 2 == 0
+            }
+        }
+        return false
+    }
+
+    private fun loadInterUpdate() {
+        if (!Firebase.remoteConfig.getBoolean(SPUtils.KEY_INTER_INSERT)) {
+            isLoadingAds = false
+            updateTaskCallback()
+            return
+        }
+        if (!isAllowInterNewTaskAds()) {
+            isLoadingAds = false
+            updateTaskCallback()
+            return
+        }
+
+        if (context?.isInternetAvailable() == false) {
+            isLoadingAds = false
+            updateTaskCallback()
+            return
+        }
+        isLoadingAds = true
+        Admod.getInstance().getInterstitalAds(
+            activity,
+            getString(R.string.inter_insert_ads_id),
+            object : AdCallback() {
+                override fun onInterstitialLoad(interstitialAd: InterstitialAd) {
+                    Admod.getInstance().setOpenActivityAfterShowInterAds(true)
+                    Admod.getInstance()
+                        .forceShowInterstitial(
+                            activity,
+                            interstitialAd,
+                            object : AdCallback() {
+                                override fun onAdClosed() {
+                                    isLoadingAds = false
+                                    updateTaskCallback()
+                                }
+                                override fun onAdLeftApplication() {
+                                    super.onAdLeftApplication()
+                                    isLoadingAds = false
+                                    updateTaskCallback()
+
+                                }
+
+                                override fun onAdFailedToLoad(i: LoadAdError?) {
+                                    super.onAdFailedToLoad(i)
+                                    isLoadingAds = false
+                                    updateTaskCallback()
+                                }
+                            })
+                }
+
+                override fun onAdClosed() {
+                    super.onAdClosed()
+                    isLoadingAds = false
+                    updateTaskCallback()
+                }
+
+                override fun onAdLeftApplication() {
+                    super.onAdLeftApplication()
+                    isLoadingAds = false
+                    updateTaskCallback()
+
+                }
+
+                override fun onAdFailedToLoad(i: LoadAdError?) {
+                    super.onAdFailedToLoad(i)
+                    isLoadingAds = false
+                    updateTaskCallback()
+                }
+            })
+    }
+
+    private fun updateTaskCallback() = with(viewBinding){
+        viewModel.updateTask(
+            requireContext(),
+            textTaskName.text.toString().trim(),
+            editNote.text.toString().trim()
+        )
     }
 }

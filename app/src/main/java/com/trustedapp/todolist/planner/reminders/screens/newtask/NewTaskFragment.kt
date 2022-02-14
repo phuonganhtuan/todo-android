@@ -120,11 +120,6 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
             onCheckChangeReminder()
         }
         buttonCreateTask.setOnClickListener {
-            viewModel.createTask(
-                requireContext(),
-                editTaskName.text.toString().trim(),
-                editNote.text.toString().trim()
-            )
             loadInterCreate()
         }
         editTaskName.addTextChangedListener {
@@ -392,41 +387,79 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
         return false
     }
 
+    private fun createTaskCallback() = with(viewBinding){
+        viewModel.createTask(
+            requireContext(),
+            editTaskName.text.toString().trim(),
+            editNote.text.toString().trim()
+        )
+    }
+
     private fun loadInterCreate() {
-        if (Firebase.remoteConfig.getBoolean(SPUtils.KEY_INTER_INSERT)) return
-        if (!isAllowInterNewTaskAds()) return
+        if (!Firebase.remoteConfig.getBoolean(SPUtils.KEY_INTER_INSERT)) {
+            isLoadingAds = false
+            createTaskCallback()
+            return
+        }
+        if (!isAllowInterNewTaskAds()) {
+            isLoadingAds = false
+            createTaskCallback()
+            return
+        }
 
         if (context?.isInternetAvailable() == false) {
             isLoadingAds = false
+            createTaskCallback()
             return
         }
         isLoadingAds = true
         Admod.getInstance().getInterstitalAds(
             activity,
-            getString(R.string.inter_ads_id),
+            getString(R.string.inter_insert_ads_id),
             object : AdCallback() {
                 override fun onInterstitialLoad(interstitialAd: InterstitialAd) {
-                    isLoadingAds = false
-                    // callback
-                    
+                    Admod.getInstance().setOpenActivityAfterShowInterAds(true)
+                    Admod.getInstance()
+                        .forceShowInterstitial(
+                            activity,
+                            interstitialAd,
+                            object : AdCallback() {
+                                override fun onAdClosed() {
+                                    isLoadingAds = false
+                                    createTaskCallback()
+                                }
+                                override fun onAdLeftApplication() {
+                                    super.onAdLeftApplication()
+                                    isLoadingAds = false
+                                    createTaskCallback()
+
+                                }
+
+                                override fun onAdFailedToLoad(i: LoadAdError?) {
+                                    super.onAdFailedToLoad(i)
+                                    isLoadingAds = false
+                                    createTaskCallback()
+                                }
+                            })
                 }
 
                 override fun onAdClosed() {
                     super.onAdClosed()
                     isLoadingAds = false
-
+                    createTaskCallback()
                 }
 
                 override fun onAdLeftApplication() {
                     super.onAdLeftApplication()
                     isLoadingAds = false
+                    createTaskCallback()
 
                 }
 
                 override fun onAdFailedToLoad(i: LoadAdError?) {
                     super.onAdFailedToLoad(i)
                     isLoadingAds = false
-
+                    createTaskCallback()
                 }
             })
     }
