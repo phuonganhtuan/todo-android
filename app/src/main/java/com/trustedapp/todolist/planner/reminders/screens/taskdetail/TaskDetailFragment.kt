@@ -18,6 +18,9 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.ads.control.ads.Admod
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.trustedapp.todolist.planner.reminders.R
 import com.trustedapp.todolist.planner.reminders.base.BaseFragment
 import com.trustedapp.todolist.planner.reminders.data.models.entity.CategoryEntity
@@ -81,6 +84,7 @@ class TaskDetailFragment : BaseFragment<FragmentTaskDetailBinding>() {
         recyclerAttachment.itemAnimator = null
         editNote.boldWhenFocus()
         hideDateTime()
+
     }
 
     private fun initData() {

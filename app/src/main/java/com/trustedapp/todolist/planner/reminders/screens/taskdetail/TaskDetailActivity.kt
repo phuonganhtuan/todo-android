@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.widget.PopupMenu
 import androidx.lifecycle.Lifecycle
@@ -11,6 +12,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.findNavController
 import com.ads.control.ads.Admod
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.trustedapp.todolist.planner.reminders.R
 import com.trustedapp.todolist.planner.reminders.base.BaseActivity
 import com.trustedapp.todolist.planner.reminders.databinding.ActivityTaskDetailBinding
@@ -46,8 +49,11 @@ class TaskDetailActivity : BaseActivity<ActivityTaskDetailBinding>() {
     }
 
     private fun initView() = with(viewBinding){
-        if (SPUtils.getRemoteConfig(this@TaskDetailActivity, SPUtils.KEY_BANNER)){
+        if (Firebase.remoteConfig.getBoolean(SPUtils.KEY_BANNER) && isInternetAvailable() == true) {
+            include.visibility = View.VISIBLE
             Admod.getInstance().loadBanner(this@TaskDetailActivity, getString(R.string.banner_ads_id))
+        }else{
+            include.visibility = View.GONE
         }
     }
 

@@ -1,7 +1,6 @@
 package com.trustedapp.todolist.planner.reminders.screens.newtask
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Context.LAYOUT_INFLATER_SERVICE
 import android.graphics.Color
 import android.os.Bundle
@@ -22,6 +21,8 @@ import com.ads.control.ads.Admod
 import com.ads.control.funtion.AdCallback
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.interstitial.InterstitialAd
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.trustedapp.todolist.planner.reminders.R
 import com.trustedapp.todolist.planner.reminders.base.BaseFragment
 import com.trustedapp.todolist.planner.reminders.data.models.entity.CategoryEntity
@@ -392,7 +393,7 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
     }
 
     private fun loadInterCreate() {
-        if (!SPUtils.getRemoteConfig(requireContext(), SPUtils.KEY_INTER_INSERT)) return
+        if (Firebase.remoteConfig.getBoolean(SPUtils.KEY_INTER_INSERT)) return
         if (!isAllowInterNewTaskAds()) return
 
         if (context?.isInternetAvailable() == false) {

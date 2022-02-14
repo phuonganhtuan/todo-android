@@ -15,6 +15,9 @@ import androidx.core.animation.doOnEnd
 import androidx.core.splashscreen.SplashScreen
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.splashscreen.SplashScreenViewProvider
+import com.ads.control.ads.Admod
+import com.ads.control.funtion.AdCallback
+import com.google.android.gms.ads.LoadAdError
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfig
@@ -22,12 +25,14 @@ import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import com.trustedapp.todolist.planner.reminders.R
 import com.trustedapp.todolist.planner.reminders.screens.home.HomeActivity
 import com.trustedapp.todolist.planner.reminders.utils.SPUtils
+import com.trustedapp.todolist.planner.reminders.utils.isInternetAvailable
 import dagger.hilt.android.AndroidEntryPoint
 
 @SuppressLint("CustomSplashScreen")
 @AndroidEntryPoint
 class SplashActivity : AppCompatActivity() {
-    private lateinit var remoteConfig: FirebaseRemoteConfig
+    private var isLoadingAds: Boolean = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (Build.VERSION.SDK_INT >= 31) {
@@ -40,14 +45,19 @@ class SplashActivity : AppCompatActivity() {
             setContentView(R.layout.activity_splash)
         }
         getRemoteConfig()
-        toHomeDelayed()
+
     }
 
     private fun toHomeDelayed() {
-        Handler(Looper.getMainLooper()).postDelayed({
+        Handler(Looper.getMainLooper()).post {
             startActivity(Intent(this, HomeActivity::class.java))
             finish()
-        }, 1500L)
+        }
+
+//        Handler(Looper.getMainLooper()).postDelayed({
+//            startActivity(Intent(this, HomeActivity::class.java))
+//            finish()
+//        }, 1500L)
     }
 
     private fun setSplashExitAnimation(splashScreen: SplashScreen) {
@@ -65,38 +75,28 @@ class SplashActivity : AppCompatActivity() {
         }
     }
 
-    private fun getRemoteConfig(){
-        remoteConfig = Firebase.remoteConfig
+    private fun getRemoteConfig() {
         val configSettings = remoteConfigSettings {
             minimumFetchIntervalInSeconds = 3600
         }
-        remoteConfig.setConfigSettingsAsync(configSettings)
-        remoteConfig.setDefaultsAsync(R.xml.remote_config_defaults)
+        Firebase.remoteConfig.setConfigSettingsAsync(configSettings)
+        Firebase.remoteConfig.setDefaultsAsync(R.xml.remote_config_defaults)
         loadConfig()
+
     }
 
-    private fun loadConfig(){
-        remoteConfig.fetchAndActivate()
+    private fun loadConfig() {
+        Firebase.remoteConfig.fetchAndActivate()
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     val updated = task.result
                     Log.e("loadConfig", "Config params updated: $updated")
-                    Log.e("loadConfig", "Config params updated: $remoteConfig")
+                    Log.e("loadConfig", "Config params updated: $Firebase.remoteConfig")
                 } else {
                     Log.e("loadConfig", "Config params updated - false")
                 }
-                parserRemoteConfig(remoteConfig)
+                loadInterSplash()
             }
-    }
-
-    private fun parserRemoteConfig(config: FirebaseRemoteConfig){
-        config.let {
-            SPUtils.setRemoteConfig(this, SPUtils.KEY_INTER_SPLASH, config.getBoolean(SPUtils.KEY_INTER_SPLASH))
-            SPUtils.setRemoteConfig(this, SPUtils.KEY_BANNER, config.getBoolean(SPUtils.KEY_INTER_SPLASH))
-            SPUtils.setRemoteConfig(this, SPUtils.KEY_INTER_INSERT, config.getBoolean(SPUtils.KEY_INTER_SPLASH))
-            SPUtils.setRemoteConfig(this, SPUtils.KEY_NATIVE_LANGUAGE, config.getBoolean(SPUtils.KEY_INTER_SPLASH))
-            SPUtils.setRemoteConfig(this, SPUtils.KEY_INTER_THEME, config.getBoolean(SPUtils.KEY_INTER_SPLASH))
-        }
     }
 
     private fun configureObjectAnimator(
@@ -110,5 +110,41 @@ class SplashActivity : AppCompatActivity() {
             -400f
         )
         onComplete.invoke(objectAnimator)
+    }
+
+    private fun loadInterSplash() {
+        if (!Firebase.remoteConfig.getBoolean(SPUtils.KEY_INTER_SPLASH)) return
+
+        if (!isInternetAvailable()) {
+            isLoadingAds = false
+            return
+        }
+        isLoadingAds = true
+        Admod.getInstance().loadSplashInterstitalAds(
+            this,
+            getString(R.string.inter_ads_id),
+            5000,
+            0,
+            object : AdCallback() {
+
+                override fun onAdClosed() {
+                    super.onAdClosed()
+                    isLoadingAds = false
+                    toHomeDelayed()
+                }
+
+                override fun onAdLeftApplication() {
+                    super.onAdLeftApplication()
+                    isLoadingAds = false
+                    toHomeDelayed()
+                }
+
+                override fun onAdFailedToLoad(i: LoadAdError?) {
+                    super.onAdFailedToLoad(i)
+                    isLoadingAds = false
+                    toHomeDelayed()
+                }
+            }
+        )
     }
 }
