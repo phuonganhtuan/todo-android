@@ -51,11 +51,11 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun toHomeDelayed() {
-//        if (SPUtils.isFirstTime(this)) {
+        if (SPUtils.isFirstTime(this)) {
             startActivity(Intent(this, ThemeActivity::class.java))
-//        } else {
-//            startActivity(Intent(this, HomeActivity::class.java))
-//        }
+        } else {
+            startActivity(Intent(this, HomeActivity::class.java))
+        }
         finish()
     }
 

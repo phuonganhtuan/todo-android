@@ -23,10 +23,10 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
         android:animateLayoutChanges="true"
         android:fillViewport="true"
         app:layout_constraintBottom_toTopOf="@id/buttonCreateTask"
-        android:layout_marginBottom="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textTitle">
@@ -307,8 +307,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintStart_toStartOf="@id/buttonAttachment"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/buttonAttachment"
                 app:layout_constraintTop_toBottomOf="@id/buttonAttachment"
                 tools:itemCount="3"
                 tools:listitem="@layout/item_attachment" />

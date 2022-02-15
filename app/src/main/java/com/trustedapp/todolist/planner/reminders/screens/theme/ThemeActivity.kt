@@ -102,12 +102,14 @@ class ThemeActivity : BaseActivity<ActivityThemeBinding>() {
 
     private fun toHome() {
         startActivity(Intent(this@ThemeActivity, HomeActivity::class.java))
+        finish()
     }
 
     private fun toStep(step: Int) = with(viewBinding) {
         when (step) {
             1 -> {
                 currentStep = step
+                textStepName.text = getString(R.string.colors)
                 buttonPreviousStep.gone()
                 recyclerSceneries.gone()
                 recyclerTextures.gone()
@@ -120,6 +122,7 @@ class ThemeActivity : BaseActivity<ActivityThemeBinding>() {
             }
             2 -> {
                 currentStep = step
+                textStepName.text = getString(R.string.textures)
                 buttonPreviousStep.show()
                 recyclerColors.gone()
                 recyclerTextures.show()
@@ -133,6 +136,7 @@ class ThemeActivity : BaseActivity<ActivityThemeBinding>() {
             }
             3 -> {
                 currentStep = step
+                textStepName.text = getString(R.string.sceneries)
                 buttonPreviousStep.show()
                 recyclerColors.gone()
                 recyclerTextures.gone()
