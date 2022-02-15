@@ -2,12 +2,13 @@
     <!-- Base application theme. -->
     <style name="Theme.AndroidBP" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/color_primary</item>
-        <item name="colorPrimaryVariant">@color/color_primary_variant</item>
+        <item name="colorPrimary">@color/color_theme_green</item>
+        <item name="colorPrimaryVariant">@color/color_theme_green_variant</item>
         <item name="colorOnPrimary">@color/white</item>
+        <item name="colorPrimaryLight">@color/color_theme_green_light</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/color_primary</item>
-        <item name="colorSecondaryVariant">@color/color_primary_variant</item>
+        <item name="colorSecondary">@color/color_theme_green</item>
+        <item name="colorSecondaryVariant">@color/color_theme_green_variant</item>
         <item name="colorOnSecondary">@color/black</item>
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:statusBarColor" tools:targetApi="l">@color/color_bg_main_grey</item>
@@ -16,6 +17,8 @@
         <item name="android:timePickerStyle">@style/CustomTimePickerTheme</item>
         <item name="popupMenuStyle">@style/BasePopupMenu</item>
     </style>
+
+    <attr name="colorPrimaryLight" format="color"/>
 
     <style name="Theme.AndroidBP.NoActionBar">
         <item name="windowActionBar">false</item>
@@ -51,7 +54,7 @@
 
     <style name="TabLayoutStyle" parent="Widget.Design.TabLayout">
         <item name="tabTextAppearance">@style/TabTextAppearance</item>
-        <item name="tabIndicatorColor">@color/color_primary</item>
+        <item name="tabIndicatorColor">?attr/colorPrimary</item>
     </style>
 
     <style name="TabTextAppearance" parent="TextAppearance.Design.Tab">
@@ -60,11 +63,14 @@
         <item name="android:textSize">16sp</item>
     </style>
 
-    <style name="CustomBottomSheetDialog" parent="Theme.Design.BottomSheetDialog">
+    <style name="CustomBottomSheetDialog" parent="ThemeOverlay.MaterialComponents.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/CustomBottomSheet</item>
     </style>
 
-    <style name="CustomBottomSheet" parent="Theme.Design.BottomSheetDialog">
+    <style name="CustomBottomSheet" parent="ThemeOverlay.MaterialComponents.BottomSheetDialog">
+        <item name="colorPrimary">?attr/colorPrimary</item>
+        <item name="colorPrimaryVariant">?attr/colorPrimaryVariant</item>
+        <item name="colorPrimaryLight">?attr/colorPrimaryLight</item>
         <item name="backgroundColor">@android:color/transparent</item>
         <item name="shapeAppearanceOverlay">@style/CustomShapeAppearanceBottomSheetDialog</item>
     </style>
@@ -96,8 +102,8 @@
 
     <style name="CustomTimePickerTheme" parent="android:Widget.Material.Light.TimePicker">
         <item name="android:timePickerMode">clock</item>
-        <item name="colorAccent">@color/color_primary</item>
-        <item name="colorControlActivated">@color/color_primary</item>
+        <item name="colorAccent">?attr/colorPrimary</item>
+        <item name="colorControlActivated">?attr/colorPrimary</item>
         <!--        <item name="android:numbersTextColor">@color/black</item>-->
         <!--        <item name="android:numbersSelectorColor">@color/color_primary</item>-->
         <!--        <item name="android:numbersBackgroundColor">@color/color_bg_main_grey</item>-->
@@ -107,14 +113,14 @@
         <item name="android:headerBackground">@android:color/white</item>
         <item name="android:numbersTextColor">@color/color_menu_text_default</item>
         <item name="android:numbersInnerTextColor">#f44336</item>
-        <item name="android:numbersSelectorColor">@color/color_primary</item>
+        <item name="android:numbersSelectorColor">?attr/colorPrimary</item>
         <item name="android:numbersBackgroundColor">@color/color_border_grey</item>
-        <item name="android:amPmTextColor">@color/color_primary_light</item>
+        <item name="android:amPmTextColor">?attr/colorPrimaryLight</item>
     </style>
 
     <style name="customSwitch" parent="Theme.AppCompat.Light">
         <item name="colorPrimary">@color/white</item>
-        <item name="colorAccent">@color/color_primary
+        <item name="colorAccent">?attr/colorPrimary
         </item>
     </style>
 
@@ -159,5 +165,42 @@
         <item name="android:textColor">@color/color_menu_text_default</item>
         <item name="android:textSize">18sp</item>
         <item name="android:fontFamily">@font/sf_rounded_regular</item>
+    </style>
+
+    <!--    Theme-->
+    <style name="Theme.AndroidBP.Green" parent="Theme.AndroidBP.NoActionBar">
+        <item name="colorPrimary">@color/color_theme_green</item>
+        <item name="colorPrimaryVariant">@color/color_theme_green_variant</item>
+        <item name="colorPrimaryLight">@color/color_theme_green_light</item>
+    </style>
+
+    <style name="Theme.AndroidBP.Red" parent="Theme.AndroidBP.NoActionBar">
+        <item name="colorPrimary">@color/color_red_theme</item>
+        <item name="colorPrimaryVariant">@color/color_red_theme_variant</item>
+        <item name="colorPrimaryLight">@color/color_red_theme_light</item>
+    </style>
+
+    <style name="Theme.AndroidBP.Orange" parent="Theme.AndroidBP.NoActionBar">
+        <item name="colorPrimary">@color/color_orange_theme</item>
+        <item name="colorPrimaryVariant">@color/color_orange_theme_variant</item>
+        <item name="colorPrimaryLight">@color/color_orange_theme_light</item>
+    </style>
+
+    <style name="Theme.AndroidBP.GreenLight" parent="Theme.AndroidBP.NoActionBar">
+        <item name="colorPrimary">@color/color_green_light_theme</item>
+        <item name="colorPrimaryVariant">@color/color_green_light_theme_variant</item>
+        <item name="colorPrimaryLight">@color/color_green_light_theme_light</item>
+    </style>
+
+    <style name="Theme.AndroidBP.Blue" parent="Theme.AndroidBP.NoActionBar">
+        <item name="colorPrimary">@color/color_blue_theme</item>
+        <item name="colorPrimaryVariant">@color/color_blue_theme_variant</item>
+        <item name="colorPrimaryLight">@color/color_blue_theme_light</item>
+    </style>
+
+    <style name="Theme.AndroidBP.Purple" parent="Theme.AndroidBP.NoActionBar">
+        <item name="colorPrimary">@color/color_purple_theme</item>
+        <item name="colorPrimaryVariant">@color/color_purple_theme_variant</item>
+        <item name="colorPrimaryLight">@color/color_purple_theme_light</item>
     </style>
 </resources>

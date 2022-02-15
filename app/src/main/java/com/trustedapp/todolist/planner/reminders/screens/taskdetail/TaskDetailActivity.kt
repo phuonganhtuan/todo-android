@@ -81,7 +81,7 @@ class TaskDetailActivity : BaseActivity<ActivityTaskDetailBinding>() {
             if (viewModel.task.value.task.isDone) R.string.mark_as_undone else R.string.mark_as_done
         val s = SpannableString(getString(title))
         s.setSpan(
-            ForegroundColorSpan(getColor(R.color.color_primary)), 0, s.length, 0
+            ForegroundColorSpan(getColorFromAttr(R.attr.colorPrimary)), 0, s.length, 0
         )
         item.title = s
         popup.setOnMenuItemClickListener { item ->

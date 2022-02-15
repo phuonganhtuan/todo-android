@@ -117,4 +117,7 @@
 
     <string name="adjust_token">yi2xcqd7a7ls</string>
     <string name="install">INSTALL</string>
+    <string name="colors">Colors</string>
+    <string name="textures">Textures</string>
+    <string name="sceneries">Sceneries</string>
 </resources>

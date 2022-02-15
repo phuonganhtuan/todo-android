@@ -15,7 +15,7 @@
         android:paddingHorizontal="16dp"
         android:paddingBottom="8dp"
         android:text="@string/create_new_task"
-        android:textColor="@color/color_primary"
+        android:textColor="?attr/colorPrimary"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -23,10 +23,10 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
         android:animateLayoutChanges="true"
         android:fillViewport="true"
         app:layout_constraintBottom_toTopOf="@id/buttonCreateTask"
-        android:layout_marginBottom="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textTitle">
@@ -81,7 +81,7 @@
                     android:background="@drawable/bg_greybg_rounded_8"
                     android:padding="8dp"
                     android:text="@string/plus_add"
-                    android:textColor="@color/color_primary"
+                    android:textColor="?attr/colorPrimary"
                     android:textSize="16sp"
                     android:visibility="gone" />
             </LinearLayout>
@@ -307,8 +307,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintStart_toStartOf="@id/buttonAttachment"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/buttonAttachment"
                 app:layout_constraintTop_toBottomOf="@id/buttonAttachment"
                 tools:itemCount="3"
                 tools:listitem="@layout/item_attachment" />

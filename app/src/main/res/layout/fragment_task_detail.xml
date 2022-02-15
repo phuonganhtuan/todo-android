@@ -70,7 +70,7 @@
                     android:background="@drawable/bg_greybg_rounded_8"
                     android:padding="8dp"
                     android:text="@string/plus_add"
-                    android:textColor="@color/color_primary"
+                    android:textColor="?attr/colorPrimary"
                     android:textSize="16sp"
                     android:visibility="gone" />
             </LinearLayout>
