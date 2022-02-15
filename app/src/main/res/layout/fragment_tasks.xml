@@ -34,7 +34,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textHeader"
         app:tabMode="fixed"
-        app:tabSelectedTextColor="@color/color_primary"
+        app:tabSelectedTextColor="?attr/colorPrimary"
         app:tabTextColor="@color/color_text_secondary">
 
         <com.google.android.material.tabs.TabItem
@@ -72,7 +72,7 @@
         android:background="@drawable/bg_primary_rounded_20"
         android:contentDescription="@null"
         android:elevation="12dp"
-        android:outlineSpotShadowColor="@color/color_primary_variant"
+        android:outlineSpotShadowColor="?attr/colorPrimaryVariant"
         android:padding="18dp"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_add_white"

@@ -15,7 +15,7 @@
         android:paddingHorizontal="16dp"
         android:paddingBottom="8dp"
         android:text="@string/create_new_task"
-        android:textColor="@color/color_primary"
+        android:textColor="?attr/colorPrimary"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -81,7 +81,7 @@
                     android:background="@drawable/bg_greybg_rounded_8"
                     android:padding="8dp"
                     android:text="@string/plus_add"
-                    android:textColor="@color/color_primary"
+                    android:textColor="?attr/colorPrimary"
                     android:textSize="16sp"
                     android:visibility="gone" />
             </LinearLayout>

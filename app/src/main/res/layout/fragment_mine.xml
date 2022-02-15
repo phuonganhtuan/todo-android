@@ -49,7 +49,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:fontFamily="@font/sf_rounded_extra_bold"
-            android:textColor="@color/color_primary"
+            android:textColor="?attr/colorPrimary"
             android:textSize="36sp"
             tools:text="4" />
 

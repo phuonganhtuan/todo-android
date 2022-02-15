@@ -23,7 +23,7 @@
             android:background="@drawable/bg_white_top_rounded"
             android:paddingTop="8dp"
             app:elevation="0dp"
-            app:itemRippleColor="@color/color_primary"
+            app:itemRippleColor="?attr/colorPrimary"
             app:menu="@menu/main_bottom_menu" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

@@ -21,8 +21,8 @@
         android:elevation="24dp"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:outlineAmbientShadowColor="@color/color_primary"
-        android:outlineSpotShadowColor="@color/color_primary"
+        android:outlineAmbientShadowColor="?attr/colorPrimary"
+        android:outlineSpotShadowColor="?attr/colorPrimary"
         android:padding="24dp"
         tools:targetApi="p">
 

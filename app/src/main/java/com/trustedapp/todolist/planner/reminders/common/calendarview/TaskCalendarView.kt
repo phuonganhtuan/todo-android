@@ -48,7 +48,6 @@ class TaskCalendarView : ConstraintLayout {
     }
 
     private fun initView() {
-
         inflate(context, R.layout.layout_calendar, this)
         buttonNextMonth = findViewById(R.id.imageNextMonth)
         buttonPreviousMonth = findViewById(R.id.imagePreviousMonth)

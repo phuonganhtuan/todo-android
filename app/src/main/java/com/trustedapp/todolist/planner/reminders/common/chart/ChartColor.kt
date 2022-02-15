@@ -2,14 +2,13 @@ package com.trustedapp.todolist.planner.reminders.common.chart
 
 import android.content.Context
 import android.graphics.Color
-import androidx.core.content.ContextCompat
 import com.trustedapp.todolist.planner.reminders.R
-import java.lang.String
+import com.trustedapp.todolist.planner.reminders.utils.getColorFromAttr
 
 object ChartColor {
 
     fun initChartColor(context: Context) {
-        val colorPrimary = ContextCompat.getColor(context, R.color.color_primary)
+        val colorPrimary = context.getColorFromAttr(R.attr.colorPrimary)
         val colorString = String.format("%06X", 0xFFFFFF and colorPrimary)
         chartColors = listOf(
             Color.parseColor("#${colorString}"),
