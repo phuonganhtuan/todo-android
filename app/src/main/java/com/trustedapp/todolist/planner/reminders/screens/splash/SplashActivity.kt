@@ -112,7 +112,10 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun loadInterSplash() {
-        if (!Firebase.remoteConfig.getBoolean(SPUtils.KEY_INTER_SPLASH)) return
+        if (!Firebase.remoteConfig.getBoolean(SPUtils.KEY_INTER_SPLASH)) {
+            toHomeDelayed()
+            return
+        }
 
         if (!isInternetAvailable()) {
             isLoadingAds = false
