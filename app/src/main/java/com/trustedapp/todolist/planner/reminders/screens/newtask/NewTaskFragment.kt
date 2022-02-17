@@ -57,6 +57,7 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
     lateinit var attachmentAdapter: AttachmentAdapter
 
     private var isLoadingAds: Boolean = false
+    private var interstitialCreateAd: InterstitialAd? = null
 
     override fun inflateViewBinding(
         container: ViewGroup?,
@@ -69,6 +70,7 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
         initData()
         setupEvents()
         observeData()
+        prepareInterCreate()
     }
 
     private fun initData() {
@@ -403,7 +405,20 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
         )
     }
 
-    private fun loadInterCreate() {
+    private fun prepareInterCreate() {
+
+//        isLoadingAds = true
+        Admod.getInstance().getInterstitalAds(
+            activity,
+            getString(R.string.inter_insert_ads_id),
+            object : AdCallback() {
+                override fun onInterstitialLoad(interstitialAd: InterstitialAd) {
+                    interstitialCreateAd = interstitialAd
+                }
+            })
+    }
+
+    private fun loadInterCreate(){
         if (!Firebase.remoteConfig.getBoolean(SPUtils.KEY_INTER_INSERT)) {
             isLoadingAds = false
             createTaskCallback()
@@ -420,55 +435,29 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
             createTaskCallback()
             return
         }
-        isLoadingAds = true
-        Admod.getInstance().getInterstitalAds(
-            activity,
-            getString(R.string.inter_insert_ads_id),
-            object : AdCallback() {
-                override fun onInterstitialLoad(interstitialAd: InterstitialAd) {
-                    Admod.getInstance().setOpenActivityAfterShowInterAds(true)
-                    Admod.getInstance()
-                        .forceShowInterstitial(
-                            activity,
-                            interstitialAd,
-                            object : AdCallback() {
-                                override fun onAdClosed() {
-                                    isLoadingAds = false
-                                    createTaskCallback()
-                                }
-                                override fun onAdLeftApplication() {
-                                    super.onAdLeftApplication()
-                                    isLoadingAds = false
-                                    createTaskCallback()
 
-                                }
+        Admod.getInstance().setOpenActivityAfterShowInterAds(true)
+        Admod.getInstance()
+            .forceShowInterstitial(
+                activity,
+                interstitialCreateAd,
+                object : AdCallback() {
+                    override fun onAdClosed() {
+                        isLoadingAds = false
+                        createTaskCallback()
+                    }
+                    override fun onAdLeftApplication() {
+                        super.onAdLeftApplication()
+                        isLoadingAds = false
+                        createTaskCallback()
 
-                                override fun onAdFailedToLoad(i: LoadAdError?) {
-                                    super.onAdFailedToLoad(i)
-                                    isLoadingAds = false
-                                    createTaskCallback()
-                                }
-                            })
-                }
+                    }
 
-                override fun onAdClosed() {
-                    super.onAdClosed()
-                    isLoadingAds = false
-                    createTaskCallback()
-                }
-
-                override fun onAdLeftApplication() {
-                    super.onAdLeftApplication()
-                    isLoadingAds = false
-                    createTaskCallback()
-
-                }
-
-                override fun onAdFailedToLoad(i: LoadAdError?) {
-                    super.onAdFailedToLoad(i)
-                    isLoadingAds = false
-                    createTaskCallback()
-                }
-            })
+                    override fun onAdFailedToLoad(i: LoadAdError?) {
+                        super.onAdFailedToLoad(i)
+                        isLoadingAds = false
+                        createTaskCallback()
+                    }
+                })
     }
 }
