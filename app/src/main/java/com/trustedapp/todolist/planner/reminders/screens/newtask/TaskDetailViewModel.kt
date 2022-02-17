@@ -443,7 +443,7 @@ class NewTaskViewModel @Inject constructor(private val repository: TaskRepositor
                 RepeatAtEnum.MONTHLY.name -> RepeatAtEnum.MONTHLY
                 RepeatAtEnum.WEEKLY.name -> RepeatAtEnum.WEEKLY
                 RepeatAtEnum.YEARLY.name -> RepeatAtEnum.YEARLY
-                else -> RepeatAtEnum.NONE
+                else -> RepeatAtEnum.HOUR
             }
             _selectedReminderTime.value = when (_task.value.reminder?.reminderTime) {
                 ReminderTimeEnum.CUSTOM_DAY_BEFORE.name -> ReminderTimeEnum.CUSTOM_DAY_BEFORE
@@ -454,7 +454,7 @@ class NewTaskViewModel @Inject constructor(private val repository: TaskRepositor
                 ReminderTimeEnum.ONE_DAY_BEFORE.name -> ReminderTimeEnum.ONE_DAY_BEFORE
                 ReminderTimeEnum.TWO_DAYS_BEFORE.name -> ReminderTimeEnum.TWO_DAYS_BEFORE
                 ReminderTimeEnum.TEN_MINUTES_BEFORE.name -> ReminderTimeEnum.TEN_MINUTES_BEFORE
-                else -> ReminderTimeEnum.NONE
+                else -> ReminderTimeEnum.FIVE_MINUTES_BEFORE
 
             }
             _selectedReminderType.value = when (_task.value.reminder?.reminderType) {

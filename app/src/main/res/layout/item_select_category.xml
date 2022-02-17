@@ -9,5 +9,5 @@
     android:paddingStart="12dp"
     android:paddingEnd="12dp"
     android:text="@string/create_new_category"
-    android:textColor="@color/color_primary"
+    android:textColor="?attr/colorPrimary"
     android:textSize="16sp" />

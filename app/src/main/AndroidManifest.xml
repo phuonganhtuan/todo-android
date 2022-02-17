@@ -46,22 +46,18 @@
         <activity
             android:name="com.trustedapp.todolist.planner.reminders.screens.taskdetail.TaskDetailActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AndroidBP"
             tools:ignore="LockedOrientationActivity" />
         <activity
             android:name="com.trustedapp.todolist.planner.reminders.screens.newtask.NewTaskActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AndroidBP"
             tools:ignore="LockedOrientationActivity" />
         <activity
             android:name="com.trustedapp.todolist.planner.reminders.screens.search.SearchTaskActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AndroidBP"
             tools:ignore="LockedOrientationActivity" />
         <activity
             android:name="com.trustedapp.todolist.planner.reminders.screens.home.tasks.suggest.SuggestActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AndroidBP"
             tools:ignore="LockedOrientationActivity" />
         <activity
             android:name="com.trustedapp.todolist.planner.reminders.alarm.AlarmActivity"
@@ -69,6 +65,7 @@
             android:showWhenLocked="true"
             android:theme="@style/Theme.AndroidBP.Alarm"
             tools:targetApi="o_mr1" />
+        <activity android:name=".screens.theme.ThemeActivity" />
 
         <receiver android:name="com.trustedapp.todolist.planner.reminders.alarm.AlarmHelper" />
 

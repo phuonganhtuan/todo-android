@@ -25,6 +25,7 @@ import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import com.trustedapp.todolist.planner.reminders.R
 import com.trustedapp.todolist.planner.reminders.screens.home.HomeActivity
+import com.trustedapp.todolist.planner.reminders.screens.theme.ThemeActivity
 import com.trustedapp.todolist.planner.reminders.utils.SPUtils
 import com.trustedapp.todolist.planner.reminders.utils.isInternetAvailable
 import dagger.hilt.android.AndroidEntryPoint
@@ -50,8 +51,12 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun toHomeDelayed() {
+        if (SPUtils.isFirstTime(this)) {
+            startActivity(Intent(this, ThemeActivity::class.java))
+        } else {
             startActivity(Intent(this, HomeActivity::class.java))
-            finish()
+        }
+        finish()
     }
 
     private fun setSplashExitAnimation(splashScreen: SplashScreen) {
@@ -107,10 +112,14 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun loadInterSplash() {
-        if (!Firebase.remoteConfig.getBoolean(SPUtils.KEY_INTER_SPLASH)) return
+        if (!Firebase.remoteConfig.getBoolean(SPUtils.KEY_INTER_SPLASH)) {
+            toHomeDelayed()
+            return
+        }
 
         if (!isInternetAvailable()) {
             isLoadingAds = false
+            toHomeDelayed()
             return
         }
         isLoadingAds = true

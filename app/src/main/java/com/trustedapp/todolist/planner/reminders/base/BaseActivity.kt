@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
 import com.google.android.material.snackbar.Snackbar
+import com.trustedapp.todolist.planner.reminders.screens.theme.currentTheme
 
 
 abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
@@ -18,6 +19,9 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if (currentTheme != -1) {
+            setTheme(currentTheme)
+        }
         viewBinding = inflateViewBinding()
         setContentView(viewBinding.root)
         onActivityReady()

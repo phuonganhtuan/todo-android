@@ -352,10 +352,24 @@ class TaskDetailFragment : BaseFragment<FragmentTaskDetailBinding>() {
         buttonAddCalendar.isEnabled = false
         switchReminder.isEnabled = false
         switchRepeat.isEnabled = false
+        if (viewModel.task.value.detail.note.isEmpty()) {
+            editNote.gone()
+        } else {
+            editNote.show()
+        }
+        if (viewModel.task.value.attachments.isNullOrEmpty()) {
+            imageAttachment.gone()
+            buttonAttachment.gone()
+        } else {
+            imageAttachment.show()
+            buttonAttachment.show()
+        }
     }
 
     private fun toEditMode() = with(viewBinding) {
         validateTask()
+        imageAttachment.show()
+        buttonAttachment.show()
         subTaskAdapter.isEditing = true
         attachmentAdapter.isEditing = true
         textTaskName.isEnabled = true
@@ -367,6 +381,7 @@ class TaskDetailFragment : BaseFragment<FragmentTaskDetailBinding>() {
                 R.color.color_border_grey
             ), PorterDuff.Mode.SRC_ATOP
         )
+        editNote.show()
         editNote.isEnabled = true
         textCategory.apply {
             isClickable = true
