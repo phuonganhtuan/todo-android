@@ -106,4 +106,10 @@ interface TaskDao {
 
     @Query("select * from BookmarkEntity")
     fun getBookmarks(): Flow<List<BookmarkEntity>>
+
+    @Query("select * from ReminderTimeEntity")
+    fun getListReminderTime(): Flow<List<ReminderTimeEntity>>
+
+    @Insert(onConflict = IGNORE)
+    suspend fun addReminderTime(reminderTime: ReminderTimeEntity)
 }

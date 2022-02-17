@@ -18,3 +18,11 @@ data class ReminderEntity(
     var time: Long,
     var taskId: Int,
 ): BaseEntity()
+
+@Entity
+data class ReminderTimeEntity(
+    @PrimaryKey(autoGenerate = true)
+    override var id: Int = 0,
+    var name: String = ReminderTimeEnum.CUSTOM_DAY_BEFORE.name, // ReminderTimeEnum.name
+    var offset: Long
+): BaseEntity()

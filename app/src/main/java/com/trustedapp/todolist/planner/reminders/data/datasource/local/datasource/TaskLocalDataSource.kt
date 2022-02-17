@@ -41,4 +41,7 @@ interface TaskLocalDataSource {
     fun getBookmarks(): Flow<List<BookmarkEntity>>
     fun getReminder(taskId: Int): ReminderEntity?
     suspend fun deleteReminder(taskId: Int)
+
+    fun getListReminderTime(): Flow<List<ReminderTimeEntity>>
+    suspend fun addReminderTime(entity: ReminderTimeEntity)
 }

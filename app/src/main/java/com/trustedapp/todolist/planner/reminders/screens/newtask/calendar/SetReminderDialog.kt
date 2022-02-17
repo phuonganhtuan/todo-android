@@ -12,6 +12,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import com.trustedapp.todolist.planner.reminders.R
 import com.trustedapp.todolist.planner.reminders.base.BaseDialogFragment
 import com.trustedapp.todolist.planner.reminders.databinding.FragmentSetReminderBinding
@@ -154,19 +155,21 @@ class SetReminderDialog : BaseDialogFragment<FragmentSetReminderBinding>() {
         popup.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener { item: MenuItem? ->
             when (menuRes) {
                 R.menu.reminder_menu -> {
-                    selReminderItem = item
-                    tvReminderAtValue.setText(item?.title)
+                    if (item?.itemId == R.id.option_set_reminder_time){
+                        findNavController().navigate(R.id.toCustomReminderTimeDialog)
+                    }else {
+                        selReminderItem = item
+                        tvReminderAtValue.text = item?.title
+                    }
                 }
                 R.menu.reminder_type_menu -> {
                     selReminderType = item
-                    tvReminderTypeValue.setText(item?.title)
+                    tvReminderTypeValue.text = item?.title
                 }
                 R.menu.screen_lock_menu -> {
                     selReminderScreenLock = item
-                    tvScreenLockValue.setText(item?.title)
-
+                    tvScreenLockValue.text = item?.title
                 }
-
                 else -> {
                 }
             }

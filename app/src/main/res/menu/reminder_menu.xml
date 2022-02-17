@@ -1,34 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-        <item
-            android:id="@+id/option_same_with_due_date"
-            android:icon="@drawable/ic_uncheck"
-            android:title="@string/same_with_due_date" />
-        <item
-            android:id="@+id/option_5_minutes_before"
-            android:icon="@drawable/ic_uncheck"
-            android:title="@string/five_minutes_before" />
-        <item
-            android:id="@+id/option_10_minutes_before"
-            android:icon="@drawable/ic_uncheck"
-            android:title="@string/ten_minutes_before" />
-        <item
-            android:id="@+id/option_15_minutes_before"
-            android:icon="@drawable/ic_uncheck"
-            android:title="@string/fifteen_minutes_before" />
-        <item
-            android:id="@+id/option_30_minutes_before"
-            android:icon="@drawable/ic_uncheck"
-            android:title="@string/thirty_minutes_before" />
-        <item
-            android:id="@+id/option_1_day_before"
-            android:icon="@drawable/ic_uncheck"
-            android:title="@string/one_day_before" />
-        <item
-            android:id="@+id/option_2_day_before"
-            android:icon="@drawable/ic_uncheck"
-            android:title="@string/two_days_before" />
-        <!--    <item android:id="@+id/option_set_reminder_time"-->
-        <!--        android:title="@string/set_reminder_time"-->
-        <!--        android:icon="@drawable/bg_checkbox_grey"/>-->
+    <item
+        android:id="@+id/option_same_with_due_date"
+        android:icon="@drawable/ic_uncheck"
+        android:title="@string/same_with_due_date" />
+    <item
+        android:id="@+id/option_5_minutes_before"
+        android:icon="@drawable/ic_uncheck"
+        android:title="@string/five_minutes_before" />
+    <item
+        android:id="@+id/option_10_minutes_before"
+        android:icon="@drawable/ic_uncheck"
+        android:title="@string/ten_minutes_before" />
+    <item
+        android:id="@+id/option_15_minutes_before"
+        android:icon="@drawable/ic_uncheck"
+        android:title="@string/fifteen_minutes_before" />
+    <item
+        android:id="@+id/option_30_minutes_before"
+        android:icon="@drawable/ic_uncheck"
+        android:title="@string/thirty_minutes_before" />
+    <item
+        android:id="@+id/option_1_day_before"
+        android:icon="@drawable/ic_uncheck"
+        android:title="@string/one_day_before" />
+    <item
+        android:id="@+id/option_2_day_before"
+        android:icon="@drawable/ic_uncheck"
+        android:title="@string/two_days_before" />
+    <item
+        android:id="@+id/option_set_reminder_time"
+        android:icon="@drawable/bg_checkbox_grey"
+        android:title="@string/set_reminder_time" />
 </menu>

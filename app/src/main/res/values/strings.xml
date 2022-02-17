@@ -120,4 +120,12 @@
     <string name="colors">Colors</string>
     <string name="textures">Textures</string>
     <string name="sceneries">Sceneries</string>
+    <string name="reminder_time_custom">Reminder Time Custom</string>
+
+    <string-array name="repeat_time_unit">
+        <item>Minutes</item>
+        <item>Hours</item>
+        <item>Days</item>
+        <item>Weeks</item>
+    </string-array>
 </resources>
