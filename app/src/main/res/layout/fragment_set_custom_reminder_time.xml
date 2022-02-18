@@ -43,7 +43,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:selectionDividerHeight="0dp"
-                    android:theme="@style/DefaultNumberPickerTheme"/>
+                    android:theme="@style/DefaultNumberPickerTheme"
+                    />
 
                 <NumberPicker
                     android:id="@+id/npRepeatTimeUnit"

@@ -46,6 +46,9 @@
         <entry key="app/src/main/res/layout/layout_create_category.xml" value="0.2390625" />
         <entry key="app/src/main/res/menu/main_bottom_menu.xml" value="0.16614583333333333" />
         <entry key="app/src/main/res/menu/reminder_menu.xml" value="0.16614583333333333" />
+        <entry key="app/src/main/res/menu/reminder_type_menu.xml" value="0.18020833333333333" />
+        <entry key="app/src/main/res/menu/repeat_at_menu.xml" value="0.18020833333333333" />
+        <entry key="app/src/main/res/menu/screen_lock_menu.xml" value="0.18020833333333333" />
         <entry key="app/src/main/res/menu/task_detail_menu.xml" value="0.16614583333333333" />
       </map>
     </option>

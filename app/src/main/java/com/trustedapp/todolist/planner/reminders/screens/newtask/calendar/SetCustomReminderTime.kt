@@ -57,15 +57,15 @@ class SetCustomReminderTime: BaseDialogFragment<FragmentSetCustomReminderTimeBin
     }
 
     private fun setEvents() = with(viewBinding){
-        npRepeatTimeValue.setOnValueChangedListener { numberPicker, oldValue, newValue -> {
+        npRepeatTimeValue.setOnValueChangedListener { numberPicker, oldValue, newValue ->
             slValueIndex = newValue
             onChangeNumberPicker()
-        }}
+        }
 
-        npRepeatTimeUnit.setOnValueChangedListener { numberPicker, oldValue, newValue -> {
+        npRepeatTimeUnit.setOnValueChangedListener { numberPicker, oldValue, newValue ->
             slUnitIndex = newValue
             onChangeNumberPicker()
-        }}
+        }
     }
 
     private fun onChangeNumberPicker() = with(viewBinding){
@@ -73,11 +73,11 @@ class SetCustomReminderTime: BaseDialogFragment<FragmentSetCustomReminderTimeBin
         val hour = viewModel.selectedHour.value
         val minute = viewModel.selectedMinute.value
 
-        val offset = slValueIndex * when(slUnitIndex){
-            MINUTE_UNIT_INDEX -> 1000 * 60
-            HOUR_UNIT_INDEX -> 1000 * 60 * 60
-            DAY_UNIT_INDEX -> 1000 * 60 * 60 * 24
-            else -> 1000 * 60 * 60 * 24 * 7
+        val offset = list[slValueIndex] * when(slUnitIndex){
+            MINUTE_UNIT_INDEX -> 60000
+            HOUR_UNIT_INDEX -> 3600000
+            DAY_UNIT_INDEX -> 86400000
+            else -> 604800000
         }
 
         val calendar = Calendar.getInstance()
