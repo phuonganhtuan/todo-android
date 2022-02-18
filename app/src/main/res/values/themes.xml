@@ -203,4 +203,9 @@
         <item name="colorPrimaryVariant">@color/color_purple_theme_variant</item>
         <item name="colorPrimaryLight">@color/color_purple_theme_light</item>
     </style>
+
+    <style name="DefaultNumberPickerTheme" parent="@android:style/Widget.Material.NumberPicker">
+        <item name="colorControlNormal">@color/black</item>
+        <item name="android:textColorPrimary">@android:color/black</item>
+    </style>
 </resources>

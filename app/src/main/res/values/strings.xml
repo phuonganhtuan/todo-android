@@ -121,6 +121,7 @@
     <string name="textures">Textures</string>
     <string name="sceneries">Sceneries</string>
     <string name="reminder_time_custom">Reminder Time Custom</string>
+    <string name="before">Before</string>
 
     <string-array name="repeat_time_unit">
         <item>Minutes</item>

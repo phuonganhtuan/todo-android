@@ -3,10 +3,15 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1935" />
         <entry key="app/src/main/res/drawable/bg_border_grey.xml" value="0.175" />
+        <entry key="app/src/main/res/drawable/bg_border_primary.xml" value="0.1935" />
+        <entry key="app/src/main/res/drawable/bg_fade_custom_time.xml" value="0.1935" />
         <entry key="app/src/main/res/drawable/bg_fade_grey.xml" value="0.175" />
         <entry key="app/src/main/res/drawable/bg_grey_dark_16.xml" value="0.175" />
         <entry key="app/src/main/res/drawable/bg_greybg_rounded_8.xml" value="0.175" />
+        <entry key="app/src/main/res/drawable/bg_primary_rounded_16.xml" value="0.1935" />
+        <entry key="app/src/main/res/drawable/bg_primary_rounded_24.xml" value="0.1935" />
         <entry key="app/src/main/res/drawable/bg_ripple_white_stroke_grey_border_rounded_8.xml" value="0.175" />
         <entry key="app/src/main/res/drawable/bg_ripple_white_stroke_primary_border_rounded_8.xml" value="0.175" />
         <entry key="app/src/main/res/drawable/bg_ripple_white_stroke_rounded_8.xml" value="0.175" />
@@ -16,6 +21,11 @@
         <entry key="app/src/main/res/drawable/bg_white_rounded_8.xml" value="0.172" />
         <entry key="app/src/main/res/drawable/custom_thumb.xml" value="0.1885" />
         <entry key="app/src/main/res/drawable/custom_track.xml" value="0.1885" />
+        <entry key="app/src/main/res/drawable/ic_check_oval.xml" value="0.1935" />
+        <entry key="app/src/main/res/drawable/ic_checkbox_check_grey.xml" value="0.1935" />
+        <entry key="app/src/main/res/drawable/ic_checkbox_check_primary.xml" value="0.1935" />
+        <entry key="app/src/main/res/drawable/ic_checked.xml" value="0.1935" />
+        <entry key="app/src/main/res/drawable/ic_checked_primary.xml" value="0.1935" />
         <entry key="app/src/main/res/drawable/ic_done_grey.xml" value="0.1965" />
         <entry key="app/src/main/res/drawable/ic_dot_grey.xml" value="0.1965" />
         <entry key="app/src/main/res/drawable/ic_edit.xml" value="0.2185" />

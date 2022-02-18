@@ -137,16 +137,16 @@ class SetReminderDialog : BaseDialogFragment<FragmentSetReminderBinding>() {
         when (menuRes) {
             R.menu.reminder_menu -> {
                 val menuItem = selReminderItem?.let { popup.menu.findItem(it.itemId) }
-                menuItem?.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_checked)
+                menuItem?.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_checked_primary)
             }
             R.menu.reminder_type_menu -> {
                 val menuItem = selReminderType?.let { popup.menu.findItem(it.itemId) }
-                menuItem?.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_checked)
+                menuItem?.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_checked_primary)
 
             }
             R.menu.screen_lock_menu -> {
                 val menuItem = selReminderScreenLock?.let { popup.menu.findItem(it.itemId) }
-                menuItem?.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_checked)
+                menuItem?.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_checked_primary)
             }
             else -> {
             }
