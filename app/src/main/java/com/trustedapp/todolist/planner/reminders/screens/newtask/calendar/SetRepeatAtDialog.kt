@@ -82,7 +82,7 @@ class SetRepeatAtDialog : BaseDialogFragment<FragmentSetRepeatBinding>() {
         when (menuRes) {
             R.menu.repeat_at_menu -> {
                 val menuItem = selRepeatAtItem?.let { popup.menu.findItem(it.itemId) }
-                menuItem?.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_checked)
+                menuItem?.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_checked_primary)
             }
             else -> {}
         }

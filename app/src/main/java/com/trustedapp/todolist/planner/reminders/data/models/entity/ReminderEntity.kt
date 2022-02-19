@@ -2,6 +2,7 @@ package com.trustedapp.todolist.planner.reminders.data.models.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.trustedapp.todolist.planner.reminders.screens.newtask.CustomReminderTimeUnitEnum
 import com.trustedapp.todolist.planner.reminders.screens.newtask.ReminderTimeEnum
 import com.trustedapp.todolist.planner.reminders.screens.newtask.ReminderTypeEnum
 import com.trustedapp.todolist.planner.reminders.screens.newtask.RepeatAtEnum
@@ -12,6 +13,8 @@ data class ReminderEntity(
     override var id: Int = 0,
     var reminderType: String = ReminderTypeEnum.NOTIFICATION.name,
     var reminderTime: String = ReminderTimeEnum.NONE.name,
+    var customReminderTime: Int = 0,
+    var customReminderTimeUnit: String = CustomReminderTimeUnitEnum.MINUTE_UNIT.name,
     var screenLockReminder: Boolean = false,
     var enableRepeat: Boolean = false,
     var repeatTime: String = RepeatAtEnum.NONE.name,

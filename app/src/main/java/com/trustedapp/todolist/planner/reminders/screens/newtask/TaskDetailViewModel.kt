@@ -26,6 +26,32 @@ import java.util.Calendar.*
 import javax.inject.Inject
 import kotlin.random.Random
 
+enum class CustomReminderTimeUnitEnum {
+    MINUTE_UNIT {
+        override fun getStringid(): Int = R.string.minutes
+        override fun getOffset() = 60000
+        override fun getIndex(): Int = 0
+    },
+    HOUR_UNIT {
+        override fun getStringid(): Int = R.string.hours
+        override fun getOffset() = 3600000
+        override fun getIndex(): Int = 1
+    },
+    DAY_UNIT {
+        override fun getStringid(): Int = R.string.days
+        override fun getOffset(): Int = 86400000
+        override fun getIndex(): Int = 2
+    },
+    WEEK_UNIT {
+        override fun getStringid(): Int = R.string.weeks
+        override fun getOffset(): Int = 604800000
+        override fun getIndex(): Int = 3
+    };
+
+    abstract fun getStringid(): Int
+    abstract fun getOffset(): Int
+    abstract fun getIndex(): Int
+}
 
 enum class ReminderTypeEnum {
     NOTIFICATION {
@@ -92,7 +118,7 @@ enum class ReminderTimeEnum {
         override fun getStringid(): Int =
             R.string.set_reminder_time
 
-        override fun getItemMenuId(): Int = -1
+        override fun getItemMenuId(): Int = R.id.option_set_reminder_time
     };
 
     abstract fun getStringid(): Int
@@ -149,6 +175,15 @@ class NewTaskViewModel @Inject constructor(private val repository: TaskRepositor
 
     val selectedReminderTime: StateFlow<ReminderTimeEnum> get() = _selectedReminderTime
     private val _selectedReminderTime = MutableStateFlow(ReminderTimeEnum.FIVE_MINUTES_BEFORE)
+
+    val isSelectCustomReminderTime: StateFlow<Boolean> get() = _isSelectCustomReminderTime
+    private val _isSelectCustomReminderTime = MutableStateFlow(false)
+
+    val customReminderTime: StateFlow<Int> get() = _customReminderTime
+    private val _customReminderTime = MutableStateFlow(0)
+
+    val customReminderTimeUnit: StateFlow<CustomReminderTimeUnitEnum> get() = _customReminderTimeUnit
+    private val _customReminderTimeUnit = MutableStateFlow(CustomReminderTimeUnitEnum.MINUTE_UNIT)
 
     val selectedReminderType: StateFlow<ReminderTypeEnum> get() = _selectedReminderType
     private val _selectedReminderType = MutableStateFlow(ReminderTypeEnum.NOTIFICATION)
@@ -263,6 +298,21 @@ class NewTaskViewModel @Inject constructor(private val repository: TaskRepositor
     }
 
     /**
+     * select custom reminder time
+     */
+    fun setIsSelectCustomReminderTime(isSelect: Boolean = false) {
+        _isSelectCustomReminderTime.value = isSelect
+    }
+
+    /**
+     * set custom reminder time
+     */
+    fun setCustomReminderTime(time: Int, unit: CustomReminderTimeUnitEnum) {
+        _customReminderTime.value = time
+        _customReminderTimeUnit.value = unit
+    }
+
+    /**
      * select reminder type
      */
     fun selectReminderType(reminderType: ReminderTypeEnum = ReminderTypeEnum.NOTIFICATION) {
@@ -354,6 +404,8 @@ class NewTaskViewModel @Inject constructor(private val repository: TaskRepositor
                 val reminder = ReminderEntity(
                     reminderType = _selectedReminderType.value.name,
                     reminderTime = _selectedReminderTime.value.name,
+                    customReminderTime = _customReminderTime.value,
+                    customReminderTimeUnit = _customReminderTimeUnit.value.name,
                     screenLockReminder = _selectedReminderScreenLock.value,
                     enableRepeat = _isCheckedRepeat.value,
                     time = calendar.timeInMillis,
@@ -454,9 +506,19 @@ class NewTaskViewModel @Inject constructor(private val repository: TaskRepositor
                 ReminderTimeEnum.ONE_DAY_BEFORE.name -> ReminderTimeEnum.ONE_DAY_BEFORE
                 ReminderTimeEnum.TWO_DAYS_BEFORE.name -> ReminderTimeEnum.TWO_DAYS_BEFORE
                 ReminderTimeEnum.TEN_MINUTES_BEFORE.name -> ReminderTimeEnum.TEN_MINUTES_BEFORE
+                ReminderTimeEnum.CUSTOM_DAY_BEFORE.name -> ReminderTimeEnum.CUSTOM_DAY_BEFORE
                 else -> ReminderTimeEnum.FIVE_MINUTES_BEFORE
-
             }
+
+            _customReminderTime.value = _task.value.reminder?.customReminderTime ?: 0
+            _customReminderTimeUnit.value = when (_task.value.reminder?.customReminderTimeUnit) {
+                CustomReminderTimeUnitEnum.MINUTE_UNIT.name -> CustomReminderTimeUnitEnum.MINUTE_UNIT
+                CustomReminderTimeUnitEnum.HOUR_UNIT.name -> CustomReminderTimeUnitEnum.HOUR_UNIT
+                CustomReminderTimeUnitEnum.DAY_UNIT.name -> CustomReminderTimeUnitEnum.DAY_UNIT
+                CustomReminderTimeUnitEnum.WEEK_UNIT.name -> CustomReminderTimeUnitEnum.WEEK_UNIT
+                else -> CustomReminderTimeUnitEnum.MINUTE_UNIT
+            }
+
             _selectedReminderType.value = when (_task.value.reminder?.reminderType) {
                 ReminderTypeEnum.NOTIFICATION.name -> ReminderTypeEnum.NOTIFICATION
                 ReminderTypeEnum.ALARM.name -> ReminderTypeEnum.ALARM
@@ -625,6 +687,8 @@ class NewTaskViewModel @Inject constructor(private val repository: TaskRepositor
                     _task.value.reminder?.apply {
                         reminderType = _selectedReminderType.value.name
                         reminderTime = _selectedReminderTime.value.name
+                        customReminderTime = _customReminderTime.value
+                        customReminderTimeUnit = _customReminderTimeUnit.value.name
                         screenLockReminder = _selectedReminderScreenLock.value
                         enableRepeat = _isCheckedRepeat.value
                         time = calendar.timeInMillis
@@ -637,6 +701,8 @@ class NewTaskViewModel @Inject constructor(private val repository: TaskRepositor
                     val reminder = ReminderEntity(
                         reminderType = _selectedReminderType.value.name,
                         reminderTime = _selectedReminderTime.value.name,
+                        customReminderTime = _customReminderTime.value,
+                        customReminderTimeUnit = _customReminderTimeUnit.value.name,
                         screenLockReminder = _selectedReminderScreenLock.value,
                         enableRepeat = _isCheckedRepeat.value,
                         time = calendar.timeInMillis,

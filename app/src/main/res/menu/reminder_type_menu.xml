@@ -2,10 +2,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/option_notification"
-        android:icon="@drawable/ic_uncheck"
+        android:icon="@drawable/ic_uncheck_reminder"
         android:title="@string/notification" />
     <item
         android:id="@+id/option_alarm"
-        android:icon="@drawable/ic_uncheck"
+        android:icon="@drawable/ic_uncheck_reminder"
         android:title="@string/alarm" />
 </menu>
