@@ -48,7 +48,7 @@ class SetCustomReminderTime : BaseDialogFragment<FragmentSetCustomReminderTimeBi
 
     private fun initData() = with(viewBinding) {
         if (viewModel.customReminderTime.value > 0) {
-            slValueIndex = list.find { it == viewModel.customReminderTime.value }!!
+            slValueIndex = list.indexOf(viewModel.customReminderTime.value)
             npRepeatTimeValue.value = slValueIndex
         }
 
