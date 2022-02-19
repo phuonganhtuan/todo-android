@@ -1,5 +1,6 @@
 package com.trustedapp.todolist.planner.reminders.screens.newtask.calendar
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
@@ -19,8 +20,11 @@ import com.trustedapp.todolist.planner.reminders.databinding.FragmentSetReminder
 import com.trustedapp.todolist.planner.reminders.screens.newtask.NewTaskViewModel
 import com.trustedapp.todolist.planner.reminders.screens.newtask.ReminderTimeEnum
 import com.trustedapp.todolist.planner.reminders.screens.newtask.ReminderTypeEnum
+import com.trustedapp.todolist.planner.reminders.utils.show
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filter
 
 @AndroidEntryPoint
 class SetReminderDialog : BaseDialogFragment<FragmentSetReminderBinding>() {
@@ -29,6 +33,8 @@ class SetReminderDialog : BaseDialogFragment<FragmentSetReminderBinding>() {
     private var selReminderItem: MenuItem? = null
     private var selReminderType: MenuItem? = null
     private var selReminderScreenLock: MenuItem? = null
+
+    private var customReminderItem: MenuItem? = null
 
     override fun inflateViewBinding(
         container: ViewGroup?,
@@ -98,6 +104,39 @@ class SetReminderDialog : BaseDialogFragment<FragmentSetReminderBinding>() {
                 }
             }
         }
+
+        lifecycleScope.launchWhenStarted {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                customReminderTime.filter { it > 0 }
+                    .combine(customReminderTimeUnit) { time, unit ->
+                      if  (time > 0) "${time.toString()} ${resources.getString(unit.getStringid()).lowercase()} ${resources.getString(R.string.before).lowercase()}" else ""
+                    }.filter { it.isNotEmpty() }.collect {
+                        val popup = PopupMenu(requireContext(), viewBinding.tvReminderAtValue)
+                        popup.menuInflater.inflate(R.menu.reminder_menu, popup.menu)
+                        customReminderItem = popup.menu.findItem(R.id.option_set_reminder_time)
+                        customReminderItem?.title = it
+                        if (selReminderItem?.itemId == customReminderItem?.itemId){
+                            viewBinding.apply {
+                                tvReminderAtValue.text = customReminderItem?.title
+                            }
+                        }
+                    }
+            }
+        }
+
+        lifecycleScope.launchWhenStarted {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                isSelectCustomReminderTime.filter { it }.collect {
+                    if (customReminderItem != null){
+                        selReminderItem = customReminderItem
+                        viewBinding.apply {
+                            tvReminderAtValue.text = customReminderItem?.title
+                        }
+                        setIsSelectCustomReminderTime(false)
+                    }
+                }
+            }
+        }
     }
 
     private fun onClickCancel(view: View) {
@@ -115,6 +154,7 @@ class SetReminderDialog : BaseDialogFragment<FragmentSetReminderBinding>() {
             R.id.option_30_minutes_before -> viewModel.selectReminderAt(ReminderTimeEnum.THIRTY_MINUTES_BEFORE)
             R.id.option_1_day_before -> viewModel.selectReminderAt(ReminderTimeEnum.ONE_DAY_BEFORE)
             R.id.option_2_day_before -> viewModel.selectReminderAt(ReminderTimeEnum.TWO_DAYS_BEFORE)
+            R.id.option_set_reminder_time -> viewModel.selectReminderAt(ReminderTimeEnum.CUSTOM_DAY_BEFORE)
         }
 
         when (selReminderType?.itemId) {
@@ -136,6 +176,12 @@ class SetReminderDialog : BaseDialogFragment<FragmentSetReminderBinding>() {
 
         when (menuRes) {
             R.menu.reminder_menu -> {
+                if (customReminderItem == null){
+                    customReminderItem = popup.menu.findItem(R.id.option_set_reminder_time)
+                }else{
+                    popup.menu.findItem(R.id.option_set_reminder_time).title = customReminderItem?.title
+                }
+
                 val menuItem = selReminderItem?.let { popup.menu.findItem(it.itemId) }
                 menuItem?.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_checked_primary)
             }

@@ -10,6 +10,7 @@ import android.os.Build
 import android.util.Log
 import com.trustedapp.todolist.planner.reminders.data.models.entity.ReminderEntity
 import com.trustedapp.todolist.planner.reminders.data.models.entity.TaskEntity
+import com.trustedapp.todolist.planner.reminders.screens.newtask.CustomReminderTimeUnitEnum
 import com.trustedapp.todolist.planner.reminders.screens.newtask.ReminderTimeEnum
 import com.trustedapp.todolist.planner.reminders.screens.newtask.ReminderTypeEnum
 import com.trustedapp.todolist.planner.reminders.screens.newtask.RepeatAtEnum
@@ -58,6 +59,13 @@ object ScheduleHelper {
             ReminderTimeEnum.TEN_MINUTES_BEFORE.name -> -600000L
             ReminderTimeEnum.ONE_DAY_BEFORE.name -> -86400000L
             ReminderTimeEnum.TWO_DAYS_BEFORE.name -> -172800000L
+            ReminderTimeEnum.CUSTOM_DAY_BEFORE.name -> -1L * reminder.customReminderTime * when(reminder.customReminderTimeUnit){
+                CustomReminderTimeUnitEnum.MINUTE_UNIT.name -> CustomReminderTimeUnitEnum.MINUTE_UNIT.getOffset()
+                CustomReminderTimeUnitEnum.HOUR_UNIT.name -> CustomReminderTimeUnitEnum.HOUR_UNIT.getOffset()
+                CustomReminderTimeUnitEnum.DAY_UNIT.name -> CustomReminderTimeUnitEnum.DAY_UNIT.getOffset()
+                CustomReminderTimeUnitEnum.WEEK_UNIT.name -> CustomReminderTimeUnitEnum.WEEK_UNIT.getOffset()
+                else -> CustomReminderTimeUnitEnum.MINUTE_UNIT.getOffset()
+            }
             else -> 0L
         }
 

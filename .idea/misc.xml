@@ -12,6 +12,7 @@
         <entry key="app/src/main/res/drawable/bg_greybg_rounded_8.xml" value="0.175" />
         <entry key="app/src/main/res/drawable/bg_primary_rounded_16.xml" value="0.1935" />
         <entry key="app/src/main/res/drawable/bg_primary_rounded_24.xml" value="0.1935" />
+        <entry key="app/src/main/res/drawable/bg_primary_rounded_8.xml" value="0.1365" />
         <entry key="app/src/main/res/drawable/bg_ripple_white_stroke_grey_border_rounded_8.xml" value="0.175" />
         <entry key="app/src/main/res/drawable/bg_ripple_white_stroke_primary_border_rounded_8.xml" value="0.175" />
         <entry key="app/src/main/res/drawable/bg_ripple_white_stroke_rounded_8.xml" value="0.175" />
@@ -43,7 +44,12 @@
         <entry key="app/src/main/res/layout/item_task_search 2.xml" value="0.23072916666666668" />
         <entry key="app/src/main/res/layout/layout_add_calendar.xml" value="0.30833333333333335" />
         <entry key="app/src/main/res/layout/layout_add_time.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/layout_calendar.xml" value="0.11752786220871327" />
+        <entry key="app/src/main/res/layout/layout_calendar_with_task.xml" value="0.2105978260869565" />
+        <entry key="app/src/main/res/layout/layout_category_task.xml" value="0.2105978260869565" />
         <entry key="app/src/main/res/layout/layout_create_category.xml" value="0.2390625" />
+        <entry key="app/src/main/res/layout/layout_select_attachment.xml" value="0.11752786220871327" />
+        <entry key="app/src/main/res/layout/layout_select_category.xml" value="0.11752786220871327" />
         <entry key="app/src/main/res/menu/main_bottom_menu.xml" value="0.16614583333333333" />
         <entry key="app/src/main/res/menu/reminder_menu.xml" value="0.16614583333333333" />
         <entry key="app/src/main/res/menu/reminder_type_menu.xml" value="0.18020833333333333" />

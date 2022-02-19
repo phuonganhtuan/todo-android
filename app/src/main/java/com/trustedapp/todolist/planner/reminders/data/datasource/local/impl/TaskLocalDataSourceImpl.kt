@@ -45,7 +45,4 @@ class TaskLocalDataSourceImpl @Inject constructor(private val dao: TaskDao) : Ta
     override fun getBookmarks() = dao.getBookmarks()
     override fun getReminder(taskId: Int) = dao.getReminder(taskId)
     override suspend fun deleteReminder(taskId: Int) = dao.deleteReminder(taskId)
-
-    override fun getListReminderTime(): Flow<List<ReminderTimeEntity>> = dao.getListReminderTime()
-    override suspend fun addReminderTime(entity: ReminderTimeEntity) = dao.addReminderTime(entity)
 }

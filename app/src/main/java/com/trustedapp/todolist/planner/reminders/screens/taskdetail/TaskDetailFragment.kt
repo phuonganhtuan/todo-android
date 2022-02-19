@@ -281,7 +281,14 @@ class TaskDetailFragment : BaseFragment<FragmentTaskDetailBinding>() {
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 selectedReminderTime.filter { it != ReminderTimeEnum.NONE }.collect {
-                    viewBinding.textReminderTime.text = resources.getString(it.getStringid())
+                    val text =
+                        if (it == ReminderTimeEnum.CUSTOM_DAY_BEFORE) "${customReminderTime.value.toString()} ${
+                            resources.getString(customReminderTimeUnit.value.getStringid())
+                                .lowercase()
+                        } ${
+                            resources.getString(R.string.before).lowercase()
+                        }" else resources.getString(it.getStringid())
+                    viewBinding.textReminderTime.text = text
                 }
             }
         }
@@ -292,8 +299,8 @@ class TaskDetailFragment : BaseFragment<FragmentTaskDetailBinding>() {
                     if (it) viewBinding.textReminderTime.show()
                     if (!it) {
                         viewBinding.textReminderTime.gone()
-                        viewBinding.textRepeatTime.gone()
-                        viewModel.onCheckChangeRepeat(false)
+//                        viewBinding.textRepeatTime.gone()
+//                        viewModel.onCheckChangeRepeat(false)
 //                        viewModel.resetRepeatDefault()
                     }
                 }
@@ -312,7 +319,7 @@ class TaskDetailFragment : BaseFragment<FragmentTaskDetailBinding>() {
                 isCheckedRepeat.collect {
                     viewBinding.switchRepeat.isChecked = it
 
-                    if (isCheckedReminder.value && it) {
+                    if (it) {
                         viewBinding.textRepeatTime.show()
                     }else{
                         viewBinding.switchRepeat.isChecked = false
@@ -455,8 +462,6 @@ class TaskDetailFragment : BaseFragment<FragmentTaskDetailBinding>() {
             onClickReminder()
         } else {
             textReminderTime.gone()
-            textRepeatTime.gone()
-            switchRepeat.isChecked = false
             viewModel.onCheckChangeReminder(false)
 //            viewModel.resetRepeatDefault()
 //            viewModel.resetReminderDefault()
@@ -469,12 +474,12 @@ class TaskDetailFragment : BaseFragment<FragmentTaskDetailBinding>() {
 
     private fun onCheckChangeRepeat() = with(viewBinding) {
         if (switchRepeat.isChecked) {
-            if (!viewModel.isCheckedReminder.value) {
-                switchRepeat.isChecked = false
-                textRepeatTime.gone()
-//                viewModel.resetRepeatDefault()
-                return@with
-            }
+//            if (!viewModel.isCheckedReminder.value) {
+//                switchRepeat.isChecked = false
+//                textRepeatTime.gone()
+////                viewModel.resetRepeatDefault()
+//                return@with
+//            }
             switchRepeat.isChecked = false
             viewModel.onCheckChangeRepeat(false)
             onClickRepeat()

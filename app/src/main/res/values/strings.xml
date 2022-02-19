@@ -123,10 +123,15 @@
     <string name="reminder_time_custom">Reminder Time Custom</string>
     <string name="before">Before</string>
 
+    <string name="minutes">Minutes</string>
+    <string name="hours">Hours</string>
+    <string name="days">Days</string>
+    <string name="weeks">Weeks</string>
+
     <string-array name="repeat_time_unit">
-        <item>Minutes</item>
-        <item>Hours</item>
-        <item>Days</item>
-        <item>Weeks</item>
+        <item>@string/minutes</item>
+        <item>@string/hours</item>
+        <item>@string/days</item>
+        <item>@string/weeks</item>
     </string-array>
 </resources>

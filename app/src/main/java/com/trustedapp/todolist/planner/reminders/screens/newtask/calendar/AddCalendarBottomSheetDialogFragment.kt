@@ -20,6 +20,7 @@ import com.trustedapp.todolist.planner.reminders.screens.newtask.RepeatAtEnum
 import com.trustedapp.todolist.planner.reminders.utils.DateTimeUtils
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.trustedapp.todolist.planner.reminders.utils.gone
+import com.trustedapp.todolist.planner.reminders.utils.isUserInteractionEnabled
 import com.trustedapp.todolist.planner.reminders.utils.show
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
@@ -70,8 +71,8 @@ class AddCalendarBottomSheetDialogFragment :
         if (viewModel.selectedHour.value == -1 || viewModel.selectedMinute.value == -1) {
 //            val now = Calendar.getInstance()
 //            onTimeSet(now.get(HOUR_OF_DAY), now.get(MINUTE))
-            lnReminder.gone()
-            lnRepeat.gone()
+            lnReminder.isUserInteractionEnabled(false)
+            lnReminder.alpha = 0.5f
         }
     }
 
@@ -135,8 +136,8 @@ class AddCalendarBottomSheetDialogFragment :
                         viewBinding.apply {
                             tvAddTime.text = it
                             tvAddTime.setTextColor(Color.BLACK)
-                            lnReminder.show()
-                            lnRepeat.show()
+                            lnReminder.isUserInteractionEnabled(true)
+                            lnReminder.alpha = 1f
                         }
                     }
             }
@@ -147,8 +148,15 @@ class AddCalendarBottomSheetDialogFragment :
                 viewModel.selectedReminderTime.filter { it != ReminderTimeEnum.NONE }
 //                    .filter { viewModel.isCheckedReminder.value == true }
                     .collect {
+                        val text =
+                            if (it == ReminderTimeEnum.CUSTOM_DAY_BEFORE) "${customReminderTime.value.toString()} ${
+                                resources.getString(customReminderTimeUnit.value.getStringid())
+                                    .lowercase()
+                            } ${
+                                resources.getString(R.string.before).lowercase()
+                            }" else resources.getString(it.getStringid())
                         viewBinding.apply {
-                            tvReminderValue.setText(resources.getString(it.getStringid()))
+                            tvReminderValue.text = text
                             tvReminderValue.setTextColor(Color.BLACK)
                             val layout: TextView = tvReminderValue
                             val params: ViewGroup.LayoutParams = layout.layoutParams
@@ -170,8 +178,8 @@ class AddCalendarBottomSheetDialogFragment :
                         swReminder.isChecked = it
                         if (!it) {
                             tvReminderValue.gone()
-                            tvRepeatValue.gone()
-                            viewModel.onCheckChangeRepeat(false)
+//                            tvRepeatValue.gone()
+//                            viewModel.onCheckChangeRepeat(false)
 //                            viewModel.resetRepeatDefault()
 
                         }
@@ -202,9 +210,9 @@ class AddCalendarBottomSheetDialogFragment :
                 viewModel.isCheckedRepeat.collect {
                     viewBinding.apply {
                         swRepeat.isChecked = it
-                        if (isCheckedReminder.value && it) {
+                        if (it) {
                             tvRepeatValue.show()
-                        }else{
+                        } else {
                             swRepeat.isChecked = false
                             tvRepeatValue.gone()
                         }
@@ -246,12 +254,12 @@ class AddCalendarBottomSheetDialogFragment :
 
     private fun onCheckChangeRepeat() = with(viewBinding) {
         if (swRepeat.isChecked) {
-            if (!viewModel.isCheckedReminder.value) {
-                swRepeat.isChecked = false
-                tvRepeatValue.gone()
-//                viewModel.resetRepeatDefault()
-                return@with
-            }
+//            if (!viewModel.isCheckedReminder.value) {
+//                swRepeat.isChecked = false
+//                tvRepeatValue.gone()
+////                viewModel.resetRepeatDefault()
+//                return@with
+//            }
             swRepeat.isChecked = false
             viewModel.onCheckChangeRepeat(false)
             onClickRepeat(swRepeat)

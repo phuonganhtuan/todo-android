@@ -16,7 +16,6 @@ import com.trustedapp.todolist.planner.reminders.data.models.entity.*
         BookmarkEntity::class,
         SubTaskEntity::class,
         ReminderEntity::class,
-        ReminderTimeEntity::class
     ],
     version = 1,
     exportSchema = false

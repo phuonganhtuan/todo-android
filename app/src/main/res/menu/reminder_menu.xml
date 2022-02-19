@@ -30,6 +30,6 @@
         android:title="@string/two_days_before" />
     <item
         android:id="@+id/option_set_reminder_time"
-        android:icon="@drawable/bg_checkbox_grey"
+        android:icon="@drawable/ic_uncheck_reminder"
         android:title="@string/set_reminder_time" />
 </menu>
