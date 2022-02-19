@@ -32,11 +32,14 @@
         <entry key="app/src/main/res/layout/fragment_tasks.xml" value="0.28888888888888886" />
         <entry key="app/src/main/res/layout/fragment_tasks_page.xml" value="0.28888888888888886" />
         <entry key="app/src/main/res/layout/item_calendar_day.xml" value="0.28888888888888886" />
+        <entry key="app/src/main/res/layout/item_calendar_task.xml" value="0.2598958333333333" />
+        <entry key="app/src/main/res/layout/item_calendar_task_page.xml" value="0.3765625" />
         <entry key="app/src/main/res/layout/item_task_search 2.xml" value="0.23072916666666668" />
         <entry key="app/src/main/res/layout/item_theme_color.xml" value="0.3609375" />
         <entry key="app/src/main/res/layout/item_theme_scenery.xml" value="0.3609375" />
         <entry key="app/src/main/res/layout/layout_add_calendar.xml" value="0.30833333333333335" />
         <entry key="app/src/main/res/layout/layout_add_time.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/layout_calendar_with_task.xml" value="0.33796296296296297" />
         <entry key="app/src/main/res/layout/layout_create_category.xml" value="0.2390625" />
         <entry key="app/src/main/res/layout/layout_toolbar.xml" value="0.28888888888888886" />
       </map>

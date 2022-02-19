@@ -15,6 +15,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.*
+import java.util.Calendar.MONTH
+import java.util.Calendar.getInstance
 import javax.inject.Inject
 
 @HiltViewModel
@@ -27,34 +29,37 @@ class CalendarTaskViewModel @Inject constructor(private val repository: TaskRepo
     val selectedDay: StateFlow<Date> get() = _selectedDay
     private val _selectedDay = MutableStateFlow(Calendar.getInstance().time)
 
-    val days: StateFlow<List<DateModel>> get() = _days
-    private val _days = MutableStateFlow(emptyList<DateModel>())
-
     val tasks: StateFlow<List<TaskShort>> get() = _tasks
     private val _tasks = MutableStateFlow(emptyList<TaskShort>())
+
+    val months: StateFlow<List<Calendar>> get() = _months
+    private val _months = MutableStateFlow(emptyList<Calendar>())
 
     init {
         getTasks(_selectedDay.value)
     }
 
-    fun setupData() = viewModelScope.launch {
+    fun setMonth(month: Calendar) {
+        _selectingMonth.value = month
+    }
+
+    fun setupMonths() = viewModelScope.launch {
         withContext(Dispatchers.IO) {
-            _days.value = DateTimeUtils.getDaysOfMonth(_selectingMonth.value).map {
-                val isInMonth =
-                    Calendar.getInstance().apply { time = it }
-                        .get(Calendar.MONTH) == _selectingMonth.value.get(
-                        Calendar.MONTH
-                    )
-                val tasks = repository.getTaskInDay(DateTimeUtils.getComparableDateString(it))
-                val tasksCatName = tasks.map { t -> t.category?.name.toString().lowercase() }
-                DateModel(
-                    id = it.time.toInt(),
-                    date = it,
-                    isInMonth = isInMonth,
-                    hasTask = tasks.isNotEmpty(),
-                    hasBirthday = tasksCatName.contains("birthday")
-                )
+            val monthLimit = 120
+            val past = mutableListOf<Calendar>()
+            val future = mutableListOf<Calendar>()
+            val months = mutableListOf<Calendar>()
+            for (i in 1 until monthLimit) {
+                past.add(getInstance().apply { add(MONTH, i * -1) })
             }
+            past.reverse()
+            for (i in 1 until monthLimit) {
+                future.add(getInstance().apply { add(MONTH, i) })
+            }
+            months.addAll(past)
+            months.add(getInstance())
+            months.addAll(future)
+            _months.value = months
         }
     }
 

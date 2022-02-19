@@ -83,6 +83,7 @@ class CalendarTaskViewHolder(
 }
 
 class CalendarTaskDiffCallback : BaseDiffCallBack<DateModel>() {
+
     override fun areContentsTheSame(oldItem: DateModel, newItem: DateModel): Boolean =
         oldItem.id == newItem.id && oldItem.hasBirthday == newItem.hasBirthday &&
                 oldItem.hasTask == newItem.hasTask && oldItem.isInMonth == newItem.isInMonth

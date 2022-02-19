@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.viewpager2.widget.ViewPager2
 import com.trustedapp.todolist.planner.reminders.R
 import com.trustedapp.todolist.planner.reminders.base.BaseFragment
 import com.trustedapp.todolist.planner.reminders.databinding.FragmentCalendarBinding
@@ -21,6 +22,7 @@ import com.trustedapp.todolist.planner.reminders.utils.gone
 import com.trustedapp.todolist.planner.reminders.utils.show
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
+import java.util.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -29,10 +31,10 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>() {
     private val viewModel: CalendarTaskViewModel by viewModels()
 
     @Inject
-    lateinit var calendarAdapter: CalendarTaskAdapter
+    lateinit var taskAdapter: TaskAdapter
 
     @Inject
-    lateinit var taskAdapter: TaskAdapter
+    lateinit var calendarPageAdapter: CalendarPageAdapter
 
     override fun inflateViewBinding(
         container: ViewGroup?,
@@ -49,12 +51,15 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.getTasks(calendarAdapter.selectedDate)
+        viewModel.getTasks(calendarPageAdapter.selectedDate)
     }
 
     private fun setupEvents() = with(viewBinding) {
-        calendarAdapter.dateSelectListener = {
+        calendarPageAdapter.dateSelectListener = {
             viewModel.getTasks(it)
+            calendarPageAdapter.selectedDate = it
+            calendarPageAdapter.notifyDataSetChanged()
+
         }
         layoutTop.button1.setOnClickListener {
             viewModel.previousMonth()
@@ -77,10 +82,17 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>() {
                 viewModel.updateStatus(requireContext(), id)
             }
         })
+        layoutCalendar.pagerCalendar.registerOnPageChangeCallback(object :
+            ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                viewModel.setMonth(viewModel.months.value[position])
+            }
+        })
     }
 
     private fun initViews() = with(viewBinding) {
-        layoutCalendar.recyclerCalendar.adapter = calendarAdapter
+        layoutCalendar.pagerCalendar.adapter = calendarPageAdapter
         recyclerTasks.adapter = taskAdapter
         layoutTop.apply {
             button2.gone()
@@ -92,6 +104,7 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>() {
     }
 
     private fun initData() = with(viewBinding) {
+        viewModel.setupMonths()
     }
 
     @SuppressLint("UnsafeRepeatOnLifecycleDetector")
@@ -99,16 +112,19 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>() {
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.CREATED) {
                 selectingMonth.collect {
-                    setupData()
+                    val index = viewModel.months.value.map { cal ->
+                        DateTimeUtils.getComparableDateString(cal.time)
+                    }.indexOf(DateTimeUtils.getComparableDateString(it.time))
+                    if (viewBinding.layoutCalendar.pagerCalendar.currentItem
+                        != index
+                    ) {
+                        viewBinding.layoutCalendar.pagerCalendar.currentItem = index
+                    }
                     viewBinding.layoutTop.textTitle.text =
-                        DateTimeUtils.getMonthYearString(requireContext(), it)
-                }
-            }
-        }
-        lifecycleScope.launchWhenStarted {
-            repeatOnLifecycle(Lifecycle.State.CREATED) {
-                days.collect {
-                    if (it.isNotEmpty()) calendarAdapter.submitList(it)
+                        DateTimeUtils.getMonthYearString(
+                            requireContext(),
+                            it
+                        )
                 }
             }
         }
@@ -127,8 +143,19 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>() {
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.CREATED) {
                 selectedDay.collect {
-                    calendarAdapter.selectedDate = it
-                    calendarAdapter.notifyDataSetChanged()
+//                    calendarAdapter.selectedDate = it
+//                    calendarAdapter.notifyDataSetChanged()
+                }
+            }
+        }
+        lifecycleScope.launchWhenStarted {
+            repeatOnLifecycle(Lifecycle.State.CREATED) {
+                months.collect {
+                    calendarPageAdapter.listMonth = it
+                    calendarPageAdapter.notifyDataSetChanged()
+                    val index = it.map { cal -> DateTimeUtils.getComparableDateString(cal.time) }
+                        .indexOf(DateTimeUtils.getComparableDateString(Calendar.getInstance().time))
+                    viewBinding.layoutCalendar.pagerCalendar.setCurrentItem(index, false)
                 }
             }
         }
