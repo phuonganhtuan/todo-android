@@ -1,6 +1,7 @@
 package com.trustedapp.todolist.planner.reminders.screens.newtask.calendar
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
@@ -18,7 +19,7 @@ class SetCustomReminderTime : BaseDialogFragment<FragmentSetCustomReminderTimeBi
     private var list: List<Int> = (1..100).toList()
 
     private var slUnitIndex: Int = 0
-    private var slValueIndex: Int = 0
+    private var slValue: Int = 0
 
 
     override fun inflateViewBinding(
@@ -47,9 +48,9 @@ class SetCustomReminderTime : BaseDialogFragment<FragmentSetCustomReminderTimeBi
     }
 
     private fun initData() = with(viewBinding) {
-        if (viewModel.customReminderTime.value > 0) {
-            slValueIndex = list.indexOf(viewModel.customReminderTime.value)
-            npRepeatTimeValue.value = slValueIndex
+        if (viewModel.customReminderTime.value > 0 && list.contains(viewModel.customReminderTime.value)) {
+            slValue = viewModel.customReminderTime.value
+            npRepeatTimeValue.value = slValue
         }
 
         slUnitIndex = viewModel.customReminderTimeUnit.value.getIndex()
@@ -59,7 +60,8 @@ class SetCustomReminderTime : BaseDialogFragment<FragmentSetCustomReminderTimeBi
 
     private fun setEvents() = with(viewBinding) {
         npRepeatTimeValue.setOnValueChangedListener { numberPicker, oldValue, newValue ->
-            slValueIndex = newValue
+            Log.e("setOnValueChangedListener - npRepeatTimeValue - newValue", newValue.toString())
+            slValue = newValue
             onChangeNumberPicker()
         }
 
@@ -77,7 +79,7 @@ class SetCustomReminderTime : BaseDialogFragment<FragmentSetCustomReminderTimeBi
         val hour = viewModel.selectedHour.value
         val minute = viewModel.selectedMinute.value
 
-        val offset = list[slValueIndex] * when (slUnitIndex) {
+        val offset = slValue * when (slUnitIndex) {
             CustomReminderTimeUnitEnum.MINUTE_UNIT.getIndex() -> CustomReminderTimeUnitEnum.MINUTE_UNIT.getOffset()
             CustomReminderTimeUnitEnum.HOUR_UNIT.getIndex() -> CustomReminderTimeUnitEnum.HOUR_UNIT.getOffset()
             CustomReminderTimeUnitEnum.DAY_UNIT.getIndex() -> CustomReminderTimeUnitEnum.DAY_UNIT.getOffset()
@@ -94,7 +96,7 @@ class SetCustomReminderTime : BaseDialogFragment<FragmentSetCustomReminderTimeBi
     }
 
     private fun onClickDone() = with(viewModel) {
-        val time = list[slValueIndex]
+        val time = slValue
         val unit = when (slUnitIndex) {
             CustomReminderTimeUnitEnum.MINUTE_UNIT.getIndex() -> CustomReminderTimeUnitEnum.MINUTE_UNIT
             CustomReminderTimeUnitEnum.HOUR_UNIT.getIndex() -> CustomReminderTimeUnitEnum.HOUR_UNIT

@@ -84,7 +84,11 @@
         android:id="@+id/AddReminderFragment"
         android:name="com.trustedapp.todolist.planner.reminders.screens.newtask.calendar.SetReminderDialog"
         android:label="@string/reminder"
-        tools:layout="@layout/fragment_set_reminder"/>
+        tools:layout="@layout/fragment_set_reminder">
+        <action
+            android:id="@+id/toCustomReminderTimeDialog"
+            app:destination="@id/CustomReminderTime" />
+    </dialog>
 
     <dialog
         android:id="@+id/AddRepeatFragment"
@@ -97,4 +101,9 @@
         android:name="com.trustedapp.todolist.planner.reminders.screens.newtask.attachment.SelectAttachmentBottomDialog"
         android:label="SelectAttachmentBottomDialog"
         tools:layout="@layout/layout_select_attachment_list"/>
+    <dialog
+        android:id="@+id/CustomReminderTime"
+        android:name="com.trustedapp.todolist.planner.reminders.screens.newtask.calendar.SetCustomReminderTime"
+        android:label="SetCustomReminderTime"
+        tools:layout="@layout/fragment_set_custom_reminder_time"/>
 </navigation>

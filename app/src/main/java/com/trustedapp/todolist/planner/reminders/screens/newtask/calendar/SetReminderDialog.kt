@@ -166,6 +166,7 @@ class SetReminderDialog : BaseDialogFragment<FragmentSetReminderBinding>() {
             R.id.option_off -> viewModel.selectReminderScreenlock(false)
             R.id.option_on -> viewModel.selectReminderScreenlock(true)
         }
+
         viewModel.onCheckChangeReminder(true)
         dismiss()
     }
