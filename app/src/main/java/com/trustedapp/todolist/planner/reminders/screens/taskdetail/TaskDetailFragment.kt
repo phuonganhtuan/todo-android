@@ -290,6 +290,26 @@ class TaskDetailFragment : BaseFragment<FragmentTaskDetailBinding>() {
                     }
             }
         }
+
+        lifecycleScope.launchWhenStarted {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.selectedReminderTime.filter { it != ReminderTimeEnum.NONE }
+//                    .filter { viewModel.isCheckedReminder.value == true }
+                    .collect {
+                        val text =
+                            if (it == ReminderTimeEnum.CUSTOM_DAY_BEFORE) "${customReminderTime.value} ${
+                                resources.getString(customReminderTimeUnit.value.getStringid())
+                                    .lowercase()
+                            } ${
+                                resources.getString(R.string.before).lowercase()
+                            }" else resources.getString(it.getStringid())
+                        viewBinding.apply {
+                            textReminderTime.text = text
+                        }
+
+                    }
+            }
+        }
         
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.STARTED) {

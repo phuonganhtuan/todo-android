@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.PopupMenu
 import android.widget.PopupWindow
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.activityViewModels
@@ -245,6 +246,26 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
                         if (slReminder == ReminderTimeEnum.CUSTOM_DAY_BEFORE) customValue else resources.getString(slReminder.getStringid())
                     }.collect {
                         viewBinding.textReminderTime.text = it
+                    }
+            }
+        }
+
+        lifecycleScope.launchWhenStarted {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.selectedReminderTime.filter { it != ReminderTimeEnum.NONE }
+//                    .filter { viewModel.isCheckedReminder.value == true }
+                    .collect {
+                        val text =
+                            if (it == ReminderTimeEnum.CUSTOM_DAY_BEFORE) "${customReminderTime.value} ${
+                                resources.getString(customReminderTimeUnit.value.getStringid())
+                                    .lowercase()
+                            } ${
+                                resources.getString(R.string.before).lowercase()
+                            }" else resources.getString(it.getStringid())
+                        viewBinding.apply {
+                            textReminderTime.text = text
+                        }
+
                     }
             }
         }
