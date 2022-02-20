@@ -3,6 +3,8 @@ package com.trustedapp.todolist.planner.reminders.screens.home.calendar
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
@@ -22,6 +24,7 @@ import com.trustedapp.todolist.planner.reminders.utils.gone
 import com.trustedapp.todolist.planner.reminders.utils.show
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
+import java.lang.Exception
 import java.util.*
 import javax.inject.Inject
 
@@ -51,7 +54,9 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>() {
 
     override fun onResume() {
         super.onResume()
+        calendarPageAdapter.selectedDate = viewModel.selectedDay.value
         viewModel.getTasks(calendarPageAdapter.selectedDate)
+        calendarPageAdapter.notifyDataSetChanged()
     }
 
     private fun setupEvents() = with(viewBinding) {
@@ -59,13 +64,33 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>() {
             viewModel.getTasks(it)
             calendarPageAdapter.selectedDate = it
             calendarPageAdapter.notifyDataSetChanged()
-
+            Handler(Looper.getMainLooper()).post {
+                when (DateTimeUtils.compareInMonth(
+                    Calendar.getInstance().apply { time = it },
+                    viewModel.selectingMonth.value
+                )) {
+                    1 -> layoutTop.button4.performClick()
+                    -1 -> layoutTop.button1.performClick()
+                }
+            }
         }
         layoutTop.button1.setOnClickListener {
-            viewModel.previousMonth()
+            try {
+                Handler(Looper.getMainLooper()).post {
+                    layoutCalendar.pagerCalendar.setCurrentItem(layoutCalendar.pagerCalendar.currentItem - 1, true)
+                }
+            } catch (exception: Exception) {
+
+            }
         }
         layoutTop.button4.setOnClickListener {
-            viewModel.nextMonth()
+            try {
+                Handler(Looper.getMainLooper()).post {
+                    layoutCalendar.pagerCalendar.setCurrentItem(layoutCalendar.pagerCalendar.currentItem + 1, true)
+                }
+            } catch (exception: Exception) {
+
+            }
         }
         taskAdapter.setOnTaskListener(object : OnTaskInteract {
             override fun onItemClick(id: Int) {
@@ -113,12 +138,12 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>() {
             repeatOnLifecycle(Lifecycle.State.CREATED) {
                 selectingMonth.collect {
                     val index = viewModel.months.value.map { cal ->
-                        DateTimeUtils.getComparableDateString(cal.time)
-                    }.indexOf(DateTimeUtils.getComparableDateString(it.time))
-                    if (viewBinding.layoutCalendar.pagerCalendar.currentItem
-                        != index
-                    ) {
-                        viewBinding.layoutCalendar.pagerCalendar.currentItem = index
+                        DateTimeUtils.getComparableMonthString(cal.time)
+                    }.indexOf(DateTimeUtils.getComparableMonthString(it.time))
+                    if (viewBinding.layoutCalendar.pagerCalendar.currentItem != index) {
+                        Handler(Looper.getMainLooper()).post {
+                            viewBinding.layoutCalendar.pagerCalendar.setCurrentItem(index, false)
+                        }
                     }
                     viewBinding.layoutTop.textTitle.text =
                         DateTimeUtils.getMonthYearString(
@@ -153,8 +178,8 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>() {
                 months.collect {
                     calendarPageAdapter.listMonth = it
                     calendarPageAdapter.notifyDataSetChanged()
-                    val index = it.map { cal -> DateTimeUtils.getComparableDateString(cal.time) }
-                        .indexOf(DateTimeUtils.getComparableDateString(Calendar.getInstance().time))
+                    val index = it.map { cal -> DateTimeUtils.getComparableMonthString(cal.time) }
+                        .indexOf(DateTimeUtils.getComparableMonthString(Calendar.getInstance().time))
                     viewBinding.layoutCalendar.pagerCalendar.setCurrentItem(index, false)
                 }
             }

@@ -1,5 +1,8 @@
 package com.trustedapp.todolist.planner.reminders.screens.home.calendar
 
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModel
@@ -17,6 +20,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.*
@@ -82,6 +86,9 @@ class CalendarPageViewHolder(
                 if (it.isNotEmpty()) {
                     adapter.submitList(it)
                 }
+                if (currentIndex != -1) {
+                    adapter.notifyItemChanged(currentIndex)
+                }
             }
         }
     }
@@ -92,7 +99,9 @@ class CalendarPageViewHolder(
         if (currentIndex != -1) {
             adapter.notifyItemChanged(currentIndex)
         }
-        viewModel.setupData(item)
+        Handler(Looper.getMainLooper()).post {
+            viewModel.setupData(item)
+        }
     }
 }
 
@@ -105,6 +114,7 @@ class CalendarPageViewModel @Inject constructor(private val repository: TaskRepo
 
     fun setupData(month: Calendar) = viewModelScope.launch {
         withContext(Dispatchers.IO) {
+            _days.value = emptyList()
             _days.value = DateTimeUtils.getDaysOfMonth(month).map {
                 val isInMonth =
                     Calendar.getInstance().apply { time = it }

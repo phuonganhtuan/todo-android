@@ -37,6 +37,8 @@ class AddCalendarBottomSheetDialogFragment :
 
     val mCurrentTime = Calendar.getInstance()
 
+    private var isFirstTime = true
+
     override fun inflateViewBinding(
         container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -114,6 +116,10 @@ class AddCalendarBottomSheetDialogFragment :
                 selectedDate.collect {
                     viewBinding.apply {
                         tvSelectedDate.text = DateTimeUtils.getComparableDateString(it)
+                        if (isFirstTime && DateTimeUtils.getComparableDateString(it) != DateTimeUtils.getComparableDateString(Calendar.getInstance().time)) {
+                            calendarView.setDate(Calendar.getInstance().apply { time = it })
+                            isFirstTime = false
+                        }
                     }
                 }
             }

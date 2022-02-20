@@ -123,18 +123,12 @@
             android:textSize="18sp" />
     </LinearLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerCalendar"
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/pagerCalendar"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
-        android:layout_marginTop="12dp"
-        android:overScrollMode="never"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        android:layout_height="300dp"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/layoutDays"
-        app:spanCount="7"
-        tools:itemCount="31"
-        tools:listitem="@layout/item_calendar_day" />
+        app:layout_constraintTop_toBottomOf="@id/layoutDays"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

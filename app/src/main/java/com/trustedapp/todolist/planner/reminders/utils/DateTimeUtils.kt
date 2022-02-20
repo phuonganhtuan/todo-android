@@ -61,7 +61,7 @@ object DateTimeUtils {
         var firstDayOfWeek = getInstance().apply { time = firstDate }.get(DAY_OF_WEEK)
         if (startFromMonday) firstDayOfWeek -= 1
         val daysOfLastMonthNum = firstDayOfWeek - 1
-        val daysOfNextMonthNum = (7 - ((daysInMonth + daysOfLastMonthNum) % 7)) % 7
+        val daysOfNextMonthNum = 42 - daysInMonth - daysOfLastMonthNum
 
         val copiedMonth2 = getInstance().apply { time = month.time }
         copiedMonth2.set(MONTH, copiedMonth2.get(MONTH))
@@ -89,6 +89,11 @@ object DateTimeUtils {
         return dateFormat.format(date)
     }
 
+    fun getComparableMonthString(date: Date): String {
+        val dateFormat = SimpleDateFormat("MM/yyyy")
+        return dateFormat.format(date)
+    }
+
     private fun getMonthInString(context: Context, month: Calendar): String {
 
         val stringId = when (month.get(MONTH) + 1) {
@@ -112,5 +117,21 @@ object DateTimeUtils {
     private fun getLastDayOfMonth(month: Calendar): Int {
         month[Calendar.DATE] = month.getActualMaximum(Calendar.DATE)
         return month.get(DAY_OF_MONTH)
+    }
+
+    fun compareInMonth(date: Calendar, month: Calendar): Int {
+        val year1 = date.get(YEAR)
+        val year2 = month.get(YEAR)
+        val month1 = date.get(MONTH)
+        val month2 = month.get(MONTH)
+        return when {
+            year1 == year2 -> when {
+                month1 == month2 -> 0
+                month1 > month2 -> 1
+                else -> -1
+            }
+            year1 > year2 -> 1
+            else -> -1
+        }
     }
 }
