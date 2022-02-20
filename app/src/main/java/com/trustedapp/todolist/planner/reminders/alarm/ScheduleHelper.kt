@@ -49,7 +49,12 @@ object ScheduleHelper {
             putExtra(Constants.KEY_SCREEN_LOCK_ENABLED, reminder.screenLockReminder)
         }
         val pendingIntent =
-            PendingIntent.getBroadcast(context, task.id, alarmIntent, FLAG_MUTABLE or PendingIntent.FLAG_CANCEL_CURRENT)
+            PendingIntent.getBroadcast(
+                context,
+                task.id,
+                alarmIntent,
+                FLAG_MUTABLE or PendingIntent.FLAG_CANCEL_CURRENT
+            )
 
         val reminderTime = when (reminder.reminderTime) {
             ReminderTimeEnum.THIRTY_MINUTES_BEFORE.name -> -1800000L
@@ -59,7 +64,7 @@ object ScheduleHelper {
             ReminderTimeEnum.TEN_MINUTES_BEFORE.name -> -600000L
             ReminderTimeEnum.ONE_DAY_BEFORE.name -> -86400000L
             ReminderTimeEnum.TWO_DAYS_BEFORE.name -> -172800000L
-            ReminderTimeEnum.CUSTOM_DAY_BEFORE.name -> -1L * reminder.customReminderTime * when(reminder.customReminderTimeUnit){
+            ReminderTimeEnum.CUSTOM_DAY_BEFORE.name -> -1L * reminder.customReminderTime * when (reminder.customReminderTimeUnit) {
                 CustomReminderTimeUnitEnum.MINUTE_UNIT.name -> CustomReminderTimeUnitEnum.MINUTE_UNIT.getOffset()
                 CustomReminderTimeUnitEnum.HOUR_UNIT.name -> CustomReminderTimeUnitEnum.HOUR_UNIT.getOffset()
                 CustomReminderTimeUnitEnum.DAY_UNIT.name -> CustomReminderTimeUnitEnum.DAY_UNIT.getOffset()
@@ -68,7 +73,7 @@ object ScheduleHelper {
             }
             else -> 0L
         }
-
+        if ((task.calendar ?: 0L) + reminderTime <= System.currentTimeMillis()) return
         if (reminder.enableRepeat) {
             val repeatTime = when (reminder.repeatTime) {
                 RepeatAtEnum.HOUR.name -> HOUR_IN_MILLIS
@@ -84,6 +89,7 @@ object ScheduleHelper {
                 }.timeInMillis - (task.calendar ?: 0L)
                 else -> 0
             }
+
             alarmManager?.setRepeating(
                 AlarmManager.RTC_WAKEUP,
                 (task.calendar ?: 0L) + reminderTime,
@@ -111,7 +117,12 @@ object ScheduleHelper {
             putExtra(Constants.KEY_SCREEN_LOCK_ENABLED, true)
         }
         val pendingIntent =
-            PendingIntent.getBroadcast(context, 3, alarmIntent, FLAG_MUTABLE or PendingIntent.FLAG_CANCEL_CURRENT)
+            PendingIntent.getBroadcast(
+                context,
+                3,
+                alarmIntent,
+                FLAG_MUTABLE or PendingIntent.FLAG_CANCEL_CURRENT
+            )
         alarmManager?.setExactAndAllowWhileIdle(
             AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 5000L, pendingIntent
         )
@@ -130,7 +141,12 @@ object ScheduleHelper {
             putExtra(Constants.KEY_SCREEN_LOCK_ENABLED, reminder.screenLockReminder)
         }
         val pendingIntent =
-            PendingIntent.getBroadcast(context, task.id, alarmIntent, FLAG_MUTABLE or PendingIntent.FLAG_CANCEL_CURRENT)
+            PendingIntent.getBroadcast(
+                context,
+                task.id,
+                alarmIntent,
+                FLAG_MUTABLE or PendingIntent.FLAG_CANCEL_CURRENT
+            )
         try {
             alarmManager?.cancel(pendingIntent)
         } catch (exception: Exception) {
