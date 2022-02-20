@@ -18,6 +18,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewbinding.ViewBinding
 import com.ads.control.ads.Admod
 import com.ads.control.funtion.AdCallback
 import com.google.android.gms.ads.LoadAdError
@@ -25,6 +26,7 @@ import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.trustedapp.todolist.planner.reminders.R
+import com.trustedapp.todolist.planner.reminders.base.BaseActivity
 import com.trustedapp.todolist.planner.reminders.base.BaseFragment
 import com.trustedapp.todolist.planner.reminders.data.models.entity.CategoryEntity
 import com.trustedapp.todolist.planner.reminders.databinding.FragmentTaskDetailBinding
@@ -163,6 +165,10 @@ class TaskDetailFragment : BaseFragment<FragmentTaskDetailBinding>() {
             val attachment = viewModel.attachments.value[it]
             FileUtils.openAttachment(requireContext(), attachment)
         }
+        scrollView.setOnScrollChangeListener { _, _, _, _, _ ->
+            (activity as? BaseActivity<*>)?.hideKeyboard()
+            layoutDetail.clearFocus()
+        }
     }
 
     @SuppressLint("UnsafeRepeatOnLifecycleDetector")
@@ -185,6 +191,7 @@ class TaskDetailFragment : BaseFragment<FragmentTaskDetailBinding>() {
                             val catColor = getCategoryColor(requireContext(), it.category)
                             textCategory.setTextColor(catColor)
                             textCategory.text = it.category?.name
+                            selectCat(categories.value.indexOf(it.category))
                         }
                         if (it.task.isDone) imageDone.show() else imageDone.gone()
                     }
@@ -229,6 +236,8 @@ class TaskDetailFragment : BaseFragment<FragmentTaskDetailBinding>() {
                             )
                             textCategory.text = categories.value[it].name
                         }
+                        categoryAdapter.selectedIndex = it
+                        categoryAdapter.notifyDataSetChanged()
                     }
                 }
             }
@@ -236,7 +245,7 @@ class TaskDetailFragment : BaseFragment<FragmentTaskDetailBinding>() {
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 categories.collect {
-                    val catIdSum = it.map { cat -> cat.id }.sum()
+                    val catIdSum = it.sumOf { cat -> cat.id }
                     val listCats = it.toMutableList().apply {
                         add(
                             CategoryEntity(
@@ -247,6 +256,9 @@ class TaskDetailFragment : BaseFragment<FragmentTaskDetailBinding>() {
                     }
                     categoryAdapter.submitList(listCats)
                     setupCatsPopup(listCats)
+                    task.value.category?.let { cat ->
+                        selectCat(categories.value.indexOf(cat))
+                    }
                 }
             }
         }
@@ -439,8 +451,8 @@ class TaskDetailFragment : BaseFragment<FragmentTaskDetailBinding>() {
         categoriesPopup =
             PopupWindow(
                 popupView,
-                460,
-                if (cats.size <= 5) ViewGroup.LayoutParams.WRAP_CONTENT else 400,
+                480,
+                if (cats.size <= 5) ViewGroup.LayoutParams.WRAP_CONTENT else 600,
                 true
             )
     }

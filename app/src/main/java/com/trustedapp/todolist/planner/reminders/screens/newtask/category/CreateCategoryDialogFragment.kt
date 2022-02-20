@@ -1,6 +1,8 @@
 package com.trustedapp.todolist.planner.reminders.screens.newtask.category
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
@@ -52,6 +54,9 @@ class CreateCategoryDialogFragment : BaseDialogFragment<LayoutCreateCategoryBind
                     textInvalidate.show()
                 } else {
                     viewModel.createCategory(catInputName)
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        viewModel.selectCat(viewModel.categories.value.lastIndex)
+                    }, 100)
                     showToastMessage("Created $catInputName")
                     dismiss()
                 }

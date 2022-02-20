@@ -27,6 +27,7 @@
         tools:text="Happy birthday to me" />
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:animateLayoutChanges="true"

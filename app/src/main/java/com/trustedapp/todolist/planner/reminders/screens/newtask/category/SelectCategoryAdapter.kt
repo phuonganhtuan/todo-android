@@ -2,7 +2,9 @@ package com.trustedapp.todolist.planner.reminders.screens.newtask.category
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ListAdapter
+import com.trustedapp.todolist.planner.reminders.R
 import com.trustedapp.todolist.planner.reminders.base.BaseDiffCallBack
 import com.trustedapp.todolist.planner.reminders.base.BaseViewHolder
 import com.trustedapp.todolist.planner.reminders.data.models.entity.CategoryEntity
@@ -15,6 +17,8 @@ class SelectCategoryAdapter @Inject constructor() :
 
     private var onCatInteractListener: OnCatInteractListener? = null
 
+    var selectedIndex = -1
+
     fun setOnCatListener(onCatInteractListener: OnCatInteractListener) {
         this.onCatInteractListener = onCatInteractListener
     }
@@ -26,7 +30,7 @@ class SelectCategoryAdapter @Inject constructor() :
     }
 
     override fun onBindViewHolder(holder: SelectCategoryViewHolder, position: Int) {
-        holder.displayData(getItem(position))
+        holder.displayData(getItem(position), selectedIndex == position)
     }
 }
 
@@ -42,10 +46,19 @@ class SelectCategoryViewHolder(
         }
     }
 
-    override fun displayData(entity: CategoryEntity) = with(itemViewBinding) {
+    override fun displayData(entity: CategoryEntity) {
+
+    }
+
+    fun displayData(entity: CategoryEntity, isSelected: Boolean) = with(itemViewBinding) {
         val catColor = getCategoryColor(itemView.context, entity)
         textCategory.text = entity.name
         textCategory.setTextColor(catColor)
+        val bg = ContextCompat.getDrawable(
+            itemView.context,
+            if (isSelected) R.drawable.bg_greybg_rounded_8 else R.drawable.bg_white_rounded_8
+        )
+        textCategory.background = bg
     }
 }
 

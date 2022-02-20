@@ -26,6 +26,7 @@ import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.trustedapp.todolist.planner.reminders.R
+import com.trustedapp.todolist.planner.reminders.base.BaseActivity
 import com.trustedapp.todolist.planner.reminders.base.BaseFragment
 import com.trustedapp.todolist.planner.reminders.data.models.entity.CategoryEntity
 import com.trustedapp.todolist.planner.reminders.databinding.FragmentNewTaskBinding
@@ -136,6 +137,10 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
             val attachment = viewModel.attachments.value[it]
             FileUtils.openAttachment(requireContext(), attachment)
         }
+        scrollView.setOnScrollChangeListener { _, _, _, _, _ ->
+            (activity as? BaseActivity<*>)?.hideKeyboard()
+            scrollView.clearFocus()
+        }
     }
 
     private fun validateTask() {
@@ -183,6 +188,8 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
                             textCategory.text = categories.value[it].name
                         }
                     }
+                    categoryAdapter.selectedIndex = it
+                    categoryAdapter.notifyDataSetChanged()
                 }
             }
         }
@@ -336,8 +343,8 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
         categoriesPopup =
             PopupWindow(
                 popupView,
-                460,
-                if (cats.size <= 5) WRAP_CONTENT else 400,
+                480,
+                if (cats.size <= 5) WRAP_CONTENT else 600,
                 true
             )
     }

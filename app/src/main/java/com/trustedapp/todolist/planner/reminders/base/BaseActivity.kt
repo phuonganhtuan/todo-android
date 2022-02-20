@@ -52,7 +52,7 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
         )
     }
 
-    protected fun hideKeyboard() {
+    fun hideKeyboard() {
         val inputMethodManager =
             getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
