@@ -137,10 +137,7 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
             val attachment = viewModel.attachments.value[it]
             FileUtils.openAttachment(requireContext(), attachment)
         }
-        scrollView.setOnScrollChangeListener { _, _, _, _, _ ->
-            (activity as? BaseActivity<*>)?.hideKeyboard()
-            scrollView.clearFocus()
-        }
+        hideKeyboardTouchOutside(layoutNewTask)
     }
 
     private fun validateTask() {

@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.PopupWindow
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
@@ -18,7 +19,6 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewbinding.ViewBinding
 import com.ads.control.ads.Admod
 import com.ads.control.funtion.AdCallback
 import com.google.android.gms.ads.LoadAdError
@@ -165,10 +165,7 @@ class TaskDetailFragment : BaseFragment<FragmentTaskDetailBinding>() {
             val attachment = viewModel.attachments.value[it]
             FileUtils.openAttachment(requireContext(), attachment)
         }
-        scrollView.setOnScrollChangeListener { _, _, _, _, _ ->
-            (activity as? BaseActivity<*>)?.hideKeyboard()
-            layoutDetail.clearFocus()
-        }
+        hideKeyboardTouchOutside(layoutDetail)
     }
 
     @SuppressLint("UnsafeRepeatOnLifecycleDetector")
