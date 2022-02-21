@@ -12,6 +12,7 @@
         android:checkableBehavior="single">
         <item
             android:id="@+id/navWidget"
+            android:checked="true"
             android:icon="@drawable/ic_settings_widget"
             android:title="@string/widget" />
         <item
@@ -60,6 +61,4 @@
             android:icon="@drawable/ic_settings_version"
             android:title="@string/version_settings"/>
     </group>
-
-
 </menu>

@@ -138,7 +138,7 @@
     <string name="share_app">Share app</string>
     <string name="feedback">Feedback</string>
     <string name="policy">Policy</string>
-    <string name="version_settings">Version &versionName;</string>
+    <string name="version_settings">Version <b>&versionName;</b></string>
 
 
     <string-array name="repeat_time_unit">
