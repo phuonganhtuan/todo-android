@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import android.view.MenuItem
 import android.view.WindowManager
 import android.widget.ImageView
 import androidx.activity.viewModels
@@ -11,12 +12,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
-import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.trustedapp.todolist.planner.reminders.R
 import com.trustedapp.todolist.planner.reminders.common.chart.ChartColor
 import com.trustedapp.todolist.planner.reminders.databinding.ActivityHomeBinding
 import com.trustedapp.todolist.planner.reminders.screens.home.tasks.suggest.SuggestActivity
+import com.trustedapp.todolist.planner.reminders.screens.notireminder.NotiReminderActivity
 import com.trustedapp.todolist.planner.reminders.screens.theme.currentTheme
 import com.trustedapp.todolist.planner.reminders.screens.theme.sceneryIds
 import com.trustedapp.todolist.planner.reminders.screens.theme.textureIds
@@ -90,6 +91,11 @@ class HomeActivity : AppCompatActivity() {
             .findViewById(R.id.buttonHide) as ImageView).setOnClickListener {
             layoutDrawer.close()
         }
+        navigationSideView.setNavigationItemSelectedListener {
+            onNavigationItemSelectedListener(it)
+            layoutDrawer.close()
+            true
+        }
     }
 
     private fun setupTheme() {
@@ -117,6 +123,13 @@ class HomeActivity : AppCompatActivity() {
                 Uri.parse("package:" + packageName)
             )
             startActivityForResult(intent, 0)
+        }
+    }
+
+    private fun onNavigationItemSelectedListener(item: MenuItem){
+        item.isChecked = true
+        when(item.itemId){
+            R.id.navNotiReminder -> startActivity(Intent(this, NotiReminderActivity::class.java))
         }
     }
 }
