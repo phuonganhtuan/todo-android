@@ -5,6 +5,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
 import android.view.WindowManager
+import android.widget.ImageView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -85,10 +86,10 @@ class HomeActivity : AppCompatActivity() {
 
     private fun setupEvents() = with(viewBinding) {
         bottomBar.setupWithNavController(findNavController(R.id.home_nav_host_fragment))
-//        (navigationSideView.getHeaderView(0)
-//            .findViewById(R.id.buttonHide) as ImageView).setOnClickListener {
-//            layoutDrawer.close()
-//        }
+        (navigationSideView.getHeaderView(0)
+            .findViewById(R.id.buttonHide) as ImageView).setOnClickListener {
+            layoutDrawer.close()
+        }
     }
 
     private fun setupTheme() {

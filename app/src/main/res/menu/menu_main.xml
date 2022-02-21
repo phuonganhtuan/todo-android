@@ -2,9 +2,64 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.trustedapp.todolist.planner.reminders.screens.home.HomeActivity">
-    <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
+    <!--    <item-->
+    <!--        android:id="@+id/action_settings"-->
+    <!--        android:orderInCategory="100"-->
+    <!--        android:title="@string/action_settings"-->
+    <!--        app:showAsAction="never" />-->
+    <group
+        android:id="@+id/menu_one"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/navWidget"
+            android:icon="@drawable/ic_settings_widget"
+            android:title="@string/widget" />
+        <item
+            android:id="@+id/navNotiReminder"
+            android:icon="@drawable/ic_settings_noti_reminder"
+            android:title="@string/noti_and_reminder" />
+        <item
+            android:id="@+id/navFirstdayOfWeek"
+            android:icon="@drawable/ic_settings_first_day_of_week"
+            android:title="@string/first_day_of_week" />
+        <item
+            android:id="@+id/navTimeFormat"
+            android:icon="@drawable/ic_settings_time_format"
+            android:title="@string/time_format" />
+        <item
+            android:id="@+id/navDateFormat"
+            android:icon="@drawable/ic_settings_date_format"
+            android:title="@string/date_format" />
+    </group>
+
+    <group
+        android:id="@+id/menu_two"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/navLanguage"
+            android:icon="@drawable/ic_settings_language"
+            android:title="@string/language" />
+        <item
+            android:id="@+id/navRateApp"
+            android:icon="@drawable/ic_settings_rate_app"
+            android:title="@string/rate_app" />
+        <item
+            android:id="@+id/navShareApp"
+            android:icon="@drawable/ic_settings_share_app"
+            android:title="@string/share_app" />
+        <item
+            android:id="@+id/navFeedback"
+            android:icon="@drawable/ic_settings_feedback"
+            android:title="@string/feedback" />
+        <item
+            android:id="@+id/navPolicy"
+            android:icon="@drawable/ic_settings_policy"
+            android:title="@string/policy" />
+        <item
+            android:id="@+id/navVersion"
+            android:icon="@drawable/ic_settings_version"
+            android:title="@string/version_settings"/>
+    </group>
+
+
 </menu>

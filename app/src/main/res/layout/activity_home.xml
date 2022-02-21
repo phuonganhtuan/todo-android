@@ -20,9 +20,9 @@
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottomBar"
             android:layout_width="match_parent"
-            android:layout_marginBottom="18dp"
             android:layout_height="70dp"
             android:layout_gravity="bottom"
+            android:layout_marginBottom="18dp"
             android:background="@drawable/bg_white_top_rounded"
             android:paddingTop="8dp"
             app:elevation="0dp"
@@ -30,10 +30,11 @@
             app:menu="@menu/main_bottom_menu" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-    <!--    <com.google.android.material.navigation.NavigationView-->
-    <!--        android:id="@+id/navigationSideView"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="match_parent"-->
-    <!--        android:layout_gravity="start"-->
-    <!--        app:headerLayout="@layout/layout_side_navigation_header" />-->
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navigationSideView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:headerLayout="@layout/layout_side_navigation_header"
+        app:menu="@menu/menu_main" />
 </androidx.drawerlayout.widget.DrawerLayout>

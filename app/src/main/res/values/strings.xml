@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?><!DOCTYPE resources [<!ENTITY versionName "1.0">]>
 <resources>
     <string name="app_name">To-Do List</string>
     <string name="action_settings">Settings</string>
@@ -127,6 +128,18 @@
     <string name="hours">Hours</string>
     <string name="days">Days</string>
     <string name="weeks">Weeks</string>
+    <string name="widget">Widget</string>
+    <string name="noti_and_reminder"><![CDATA[Noti & reminder]]></string>
+    <string name="first_day_of_week">First day of week</string>
+    <string name="time_format">Time format</string>
+    <string name="date_format">Date format</string>
+    <string name="language">Language</string>
+    <string name="rate_app">Rate app</string>
+    <string name="share_app">Share app</string>
+    <string name="feedback">Feedback</string>
+    <string name="policy">Policy</string>
+    <string name="version_settings">Version &versionName;</string>
+
 
     <string-array name="repeat_time_unit">
         <item>@string/minutes</item>
