@@ -17,7 +17,7 @@ import com.trustedapp.todolist.planner.reminders.R
 import com.trustedapp.todolist.planner.reminders.common.chart.ChartColor
 import com.trustedapp.todolist.planner.reminders.databinding.ActivityHomeBinding
 import com.trustedapp.todolist.planner.reminders.screens.home.tasks.suggest.SuggestActivity
-import com.trustedapp.todolist.planner.reminders.screens.notireminder.NotiReminderActivity
+import com.trustedapp.todolist.planner.reminders.screens.settings.notireminder.NotiReminderActivity
 import com.trustedapp.todolist.planner.reminders.screens.theme.currentTheme
 import com.trustedapp.todolist.planner.reminders.screens.theme.sceneryIds
 import com.trustedapp.todolist.planner.reminders.screens.theme.textureIds

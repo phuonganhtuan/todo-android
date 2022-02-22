@@ -3,11 +3,45 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/noti_reminder_graph"
-    app:startDestination="@id/notiReminderFragment">
+    app:startDestination="@id/NotiReminderFragment">
 
     <fragment
-        android:id="@+id/notiReminderFragment"
+        android:id="@+id/NotiReminderFragment"
         android:name="com.trustedapp.todolist.planner.reminders.NotiReminderFragment"
         android:label="NotiReminderFragment"
-        tools:layout="@layout/fragment_noti_reminder"/>
+        tools:layout="@layout/fragment_noti_reminder">
+        <action
+            android:id="@+id/toNotificationHelp"
+            app:destination="@id/NotificationHelpFragment" />
+        <action
+            android:id="@+id/toDefaultReminderType"
+            app:destination="@id/defaultReminderTypeDialog" />
+        <action
+            android:id="@+id/toDefautlNotificationRingtone"
+            app:destination="@id/DefautlNotificationRingtone" />
+    </fragment>
+    <fragment
+        android:id="@+id/NotificationHelpFragment"
+        android:name="com.trustedapp.todolist.planner.reminders.screens.settings.notireminder.notificationhelp.NotificationHelpFragment"
+        android:label="fragment_notification_help"
+        tools:layout="@layout/fragment_notification_help">
+        <action
+            android:id="@+id/toPermisDialog"
+            app:destination="@id/PermisDialogFragment" />
+    </fragment>
+    <dialog
+        android:id="@+id/PermisDialogFragment"
+        android:name="com.trustedapp.todolist.planner.reminders.screens.settings.notireminder.notificationhelp.PermisDialogFragment"
+        android:label="PermisDialogFragment"
+        tools:layout="@layout/fragment_permis_dialog" />
+    <dialog
+        android:id="@+id/defaultReminderTypeDialog"
+        android:name="com.trustedapp.todolist.planner.reminders.screens.settings.notireminder.defaulttaskremindertype.DefaultReminderTypeDialog"
+        android:label="DefaultReminderTypeDialog"
+        tools:layout="@layout/fragment_default_reminder_type_dialog" />
+    <fragment
+        android:id="@+id/DefautlNotificationRingtone"
+        android:name="com.trustedapp.todolist.planner.reminders.screens.settings.notireminder.defaultnotificationringtone.DefautlNotificationRingtone"
+        android:label="fragment_defautl_notification_ringtone"
+        tools:layout="@layout/fragment_defautl_notification_ringtone" />
 </navigation>

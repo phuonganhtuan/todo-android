@@ -2,23 +2,19 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/layoutNotiReminder"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:animateLayoutChanges="true"
-    android:background="@color/color_bg_main_grey"
+    android:background="@color/white"
     android:orientation="vertical">
+
     <include
         android:id="@+id/layoutTop"
-        layout="@layout/layout_toolbar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        layout="@layout/layout_toolbar" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/color_bg_main_grey"
-        android:paddingHorizontal="16dp">
+        android:background="@color/color_bg_main_grey">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -26,23 +22,27 @@
             android:orientation="vertical">
 
             <LinearLayout
+                android:id="@+id/lnNotiHelp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center">
+                android:gravity="center"
+                android:padding="16dp">
 
                 <ImageView
+                    android:id="@+id/imgLeftNotiHelp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:src="@drawable/ic_chose_video" />
+                    android:src="@drawable/ic_help" />
 
                 <TextView
+                    android:id="@+id/tvNotiHelp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="8dp"
                     android:gravity="center"
-                    android:text="Notification Help"
-                    android:textSize="18sp" />
+                    android:text="@string/notification_help"
+                    android:textSize="16sp" />
 
                 <View
                     android:layout_width="0dp"
@@ -50,14 +50,413 @@
                     android:layout_weight="1" />
 
                 <ImageView
+                    android:id="@+id/imgRightNotiHelp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:src="@drawable/ic_arrow_left" />
+                    android:src="@drawable/ic_arrow_right" />
 
             </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/color_border_grey" />
+
+            <LinearLayout
+                android:id="@+id/lnGroupTaskReminder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:id="@+id/tvGroupTaskTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="8dp"
+                    android:text="@string/task_reminder"
+                    android:textColor="?attr/colorPrimary"
+                    android:textSize="16sp" />
+
+                <!--Default Task-->
+
+                <LinearLayout
+                    android:id="@+id/lnDefaultTaskReminderType"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="8dp"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/lnDefaultReminderTypeTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center">
+
+                        <TextView
+                            android:id="@+id/tvDefaultTaskReminderTypeTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/default_task_reminder_type"
+                            android:textColor="@color/black"
+                            android:textSize="16sp" />
+
+                        <View
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+
+                        <ImageView
+                            android:id="@+id/imgDefaultTaskReminderTypeTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_arrow_right" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tvDefaultReminderTypeValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/notification"
+                        android:textColor="@color/color_text_secondary_dark"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
+
+                <!--                Default Rington-->
+                <LinearLayout
+                    android:id="@+id/lnDefaultNotiRington"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="8dp"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/lnDefaultNotiRingtonTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center">
+
+                        <TextView
+                            android:id="@+id/tvDefaultNotiRingtonTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/default_notification_rington"
+                            android:textColor="@color/black"
+                            android:textSize="16sp" />
+
+                        <View
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+
+                        <ImageView
+                            android:id="@+id/imgDefaultNotiRingtonTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_arrow_right" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tvDefaultNotiRingtonValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/to_do_default"
+                        android:textColor="@color/color_text_secondary_dark"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
+                <!--                Default Alarm Rington-->
+                <LinearLayout
+                    android:id="@+id/lnDefaultAlarmRington"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="8dp"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/lnDefaultAlarmRingtonTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center">
+
+                        <TextView
+                            android:id="@+id/tvDefaultAlarmRingtonTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/default_alarm_rington"
+                            android:textColor="@color/black"
+                            android:textSize="16sp" />
+
+                        <View
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+
+                        <ImageView
+                            android:id="@+id/imgDefaultAlarmRingtonTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_arrow_right" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tvDefaultAlarmRingtonValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Scandium"
+                        android:textColor="@color/color_text_secondary_dark"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
+                <!--                Screenlock Task-->
+                <LinearLayout
+                    android:id="@+id/lnScreenlockTaskReminder"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="8dp"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/lnScreenlockTaskReminderTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center">
+
+                        <TextView
+                            android:id="@+id/tvScreenlockTaskReminderTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/screenlock_task_reminder"
+                            android:textColor="@color/black"
+                            android:textSize="16sp" />
+
+                        <View
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+
+                        <androidx.appcompat.widget.SwitchCompat
+                            android:id="@+id/swScreenlockTaskReminder"
+                            android:layout_width="wrap_content"
+                            android:layout_height="28dp"
+                            android:thumb="@drawable/custom_thumb"
+                            app:track="@drawable/custom_track" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tvScreenlockTaskReminderValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Scandium"
+                        android:textColor="@color/color_text_secondary_dark"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
+                <!--                Add Tasks From Notification Bar-->
+                <LinearLayout
+                    android:id="@+id/lnAddTaskFromNotificationBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="8dp"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/lnAddTaskFromNotificationBarTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center">
+
+                        <TextView
+                            android:id="@+id/tvAddTaskFromNotificationBarTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/add_tasks_from_notification_bar"
+                            android:textColor="@color/black"
+                            android:textSize="16sp" />
+
+                        <View
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+
+                        <androidx.appcompat.widget.SwitchCompat
+                            android:id="@+id/swAddTaskFromNotificationBar"
+                            android:layout_width="wrap_content"
+                            android:layout_height="28dp"
+                            android:thumb="@drawable/custom_thumb"
+                            app:track="@drawable/custom_track" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tvAddTaskFromNotificationBarValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Scandium"
+                        android:textColor="@color/color_text_secondary_dark"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
+                <!--                Snooze the task reminder-->
+                <LinearLayout
+                    android:id="@+id/lnSnoozeTaskReminder"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="8dp"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/lnSnoozeTaskReminderTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center">
+
+                        <TextView
+                            android:id="@+id/tvSnoozeTaskReminderTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/snooze_the_task_reminder"
+                            android:textColor="@color/black"
+                            android:textSize="16sp" />
+
+                        <View
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+
+                        <ImageView
+                            android:id="@+id/imgSnoozeTaskReminderTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_arrow_right" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tvSnoozeTaskReminderValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Scandium"
+                        android:textColor="@color/color_text_secondary_dark"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/color_border_grey" />
+
+            <LinearLayout
+                android:id="@+id/lnGroupDailyReminder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:id="@+id/tvGroupDailyReminderTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="8dp"
+                    android:text="@string/daily_reminder"
+                    android:textColor="?attr/colorPrimary"
+                    android:textSize="16sp" />
+
+                <LinearLayout
+                    android:id="@+id/lnTodoReminder"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="8dp"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/lnTodoReminderTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center">
+
+                        <TextView
+                            android:id="@+id/tvTodoReminderTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/screenlock_task_reminder"
+                            android:textColor="@color/black"
+                            android:textSize="16sp" />
+
+                        <View
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+
+                        <androidx.appcompat.widget.SwitchCompat
+                            android:id="@+id/swTodoReminder"
+                            android:layout_width="wrap_content"
+                            android:layout_height="28dp"
+                            android:thumb="@drawable/custom_thumb"
+                            app:track="@drawable/custom_track" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tvTodoReminderrValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Scandium"
+                        android:textColor="@color/color_text_secondary_dark"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/lnDailyReminderRingtone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="8dp"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/lnDailyReminderRingtoneTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center">
+
+                        <TextView
+                            android:id="@+id/tvDailyReminderRingtoneTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/daily_reminder_ringtone"
+                            android:textColor="@color/black"
+                            android:textSize="16sp" />
+
+                        <View
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+
+                        <ImageView
+                            android:id="@+id/imgDailyReminderRingtoneTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_arrow_right" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tvDailyReminderRingtoneValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Scandium"
+                        android:textColor="@color/color_text_secondary_dark"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+            </LinearLayout>
+
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
-
-
 </LinearLayout>

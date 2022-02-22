@@ -28,7 +28,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidBP">
         <activity
-            android:name=".screens.notireminder.NotiReminderActivity"
+            android:name=".screens.settings.notireminder.NotiReminderActivity"
             android:exported="false" />
         <activity
             android:name=".screens.home.HomeActivity"

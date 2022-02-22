@@ -1,4 +1,4 @@
-package com.trustedapp.todolist.planner.reminders.screens.notireminder
+package com.trustedapp.todolist.planner.reminders.screens.settings.notireminder
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel

@@ -140,13 +140,38 @@
     <string name="policy">Policy</string>
     <string name="version_settings">Version <b>&versionName;</b></string>
 
-
     <string-array name="repeat_time_unit">
         <item>@string/minutes</item>
         <item>@string/hours</item>
         <item>@string/days</item>
         <item>@string/weeks</item>
     </string-array>
-    <!-- TODO: Remove or change this placeholder text -->
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="notification_help">Notification Help</string>
+    <string name="task_reminder">TASK REMINDER</string>
+    <string name="default_task_reminder_type">Default task reminder type</string>
+    <string name="default_notification_rington">Default notification ringtone</string>
+    <string name="to_do_default">To-do default</string>
+    <string name="default_alarm_rington">Default alarm ringtone</string>
+    <string name="screenlock_task_reminder">Screenlock task reminder</string>
+    <string name="add_tasks_from_notification_bar">Add tasks from notification bar</string>
+    <string name="snooze_the_task_reminder">Snooze the task reminder</string>
+    <string name="daily_reminder">DAILY REMINDER</string>
+    <string name="daily_reminder_ringtone">Daily reminder ringtone</string>
+    <string name="notification_cannot_pop_up">Notification cannot pop-up</string>
+    <string name="notification_guild">To Do may be cleared from the background by the systerm. In order to notify you on time, please enable the Ignore battery saving mode.</string>
+    <string name="allow_notification">Allow Notification</string>
+    <string name="ignore_battery_saving_mode">Ignore battery saving mode</string>
+    <string name="floating_window">Floating window</string>
+    <string name="noti_and_reminder_title"><![CDATA[Noti & reminder]]></string>
+    <string name="permis">Permis</string>
+    <string name="permit_drawing_over_other_apps">Permit drawing over other apps</string>
+    <string name="permis_guild">This permission allows an to display on top of others apps you’re us-ing and interfere with your use of the interface in other applications, or change what you think you are seeing in other applications.</string>
+    <string name="notification_des">With 1-3s short ringtone</string>
+    <string name="with_repeat_long_ringtone">With repeat long ringtone</string>
+    <string name="ringtone_customization">RINGTONE CUSTOMIZATION</string>
+    <string name="record_ringtone">Record ringtone</string>
+    <string name="music_on_device">Music on device</string>
+    <string name="system_ringtone">SYSTEM RINGTONE</string>
 </resources>

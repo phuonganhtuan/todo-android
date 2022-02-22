@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_bg_main_grey"
+    android:orientation="vertical"
+    tools:context=".screens.settings.notireminder.notificationhelp.NotificationHelpFragment">
+
+    <LinearLayout
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white">
+
+        <include
+            android:id="@+id/layoutTop"
+            layout="@layout/layout_toolbar" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="8dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/notification_cannot_pop_up"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/notification_guild"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lnAllowNoti"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="8dp"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tvAllowNotificationTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/allow_notification"
+                android:textColor="@color/black"
+                android:textSize="16sp"/>
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/swAllowNotication"
+                android:layout_width="wrap_content"
+                android:layout_height="28dp"
+                android:thumb="@drawable/custom_thumb"
+                app:track="@drawable/custom_track" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lnIgnoreBatterySaveMode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="8dp"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tvIgnoreBatterySaveModeTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ignore_battery_saving_mode"
+                android:textColor="@color/black"
+                android:textSize="16sp"/>
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/swIgnoreBatterySaveMode"
+                android:layout_width="wrap_content"
+                android:layout_height="28dp"
+                android:thumb="@drawable/custom_thumb"
+                app:track="@drawable/custom_track" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lnFloatingWindow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="8dp"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tvFloatingWindowTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/floating_window"
+                android:textColor="@color/black"
+                android:textSize="16sp"/>
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/swFloatingWindow"
+                android:layout_width="wrap_content"
+                android:layout_height="28dp"
+                android:thumb="@drawable/custom_thumb"
+                app:track="@drawable/custom_track" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
