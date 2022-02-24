@@ -4,9 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="48dp"
+    android:paddingBottom="24dp"
     android:background="@color/color_bg_main_grey"
-    android:paddingTop="24dp"
     tools:context=".screens.home.tasks.TasksFragment">
 
     <TextView
