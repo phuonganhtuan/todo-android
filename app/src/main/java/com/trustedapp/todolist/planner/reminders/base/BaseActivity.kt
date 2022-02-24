@@ -1,6 +1,8 @@
 package com.trustedapp.todolist.planner.reminders.base
 
 import android.app.Activity
+import android.appwidget.AppWidgetManager
+import android.content.ComponentName
 import android.content.res.Configuration
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.os.Bundle
@@ -10,7 +12,10 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
 import com.google.android.material.snackbar.Snackbar
+import com.trustedapp.todolist.planner.reminders.R
 import com.trustedapp.todolist.planner.reminders.screens.theme.currentTheme
+import com.trustedapp.todolist.planner.reminders.widget.lite.LiteWidget
+import com.trustedapp.todolist.planner.reminders.widget.standard.StandardWidget
 
 
 abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
@@ -56,5 +61,19 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
         val inputMethodManager =
             getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
+    }
+
+    fun updateWidget() {
+        val components = listOf(
+            StandardWidget::class.java,
+            LiteWidget::class.java,
+        )
+        components.forEach {
+            val ids = AppWidgetManager.getInstance(application).getAppWidgetIds(
+                ComponentName(application, it)
+            )
+            val appWidgetManager = AppWidgetManager.getInstance(this)
+            appWidgetManager.notifyAppWidgetViewDataChanged(ids, R.id.listTasks)
+        }
     }
 }

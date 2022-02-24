@@ -13,8 +13,17 @@ interface TaskDao {
     @Query("select * from TaskEntity")
     fun getShortTasks(): Flow<List<TaskShort>>
 
+    @Transaction
+    @Query("select * from TaskEntity where dueDate = :day")
+    fun getTasksInDayAll(day: String): List<TaskShort>
+
+    @Transaction
     @Query("select * from TaskEntity where isDone = 0 and calendar >= :currentTime")
     fun getTasksForAlarm(currentTime: Long): List<Task>
+
+    @Transaction
+    @Query("select * from TaskEntity where calendar > :dayTime and isDone = 0")
+    fun getFutureTask(dayTime: Long): List<TaskShort>
 
     @Transaction
     @Query("select * from TaskEntity where id = :id limit 1")
@@ -86,6 +95,7 @@ interface TaskDao {
     @Query("select * from TaskEntity where title like '%' || :name || '%'")
     fun searchTaskByName(name: String): List<TaskEntity>
 
+    @Transaction
     @Query("select * from TaskEntity where dueDate == :dayString and isDone = 0")
     fun getTaskInDay(dayString: String): List<TaskShort>
 

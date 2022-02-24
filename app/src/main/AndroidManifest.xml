@@ -67,6 +67,7 @@
             android:theme="@style/Theme.AndroidBP.Alarm"
             tools:targetApi="o_mr1" />
         <activity android:name=".screens.theme.ThemeActivity" />
+        <activity android:name=".screens.widget.WidgetActivity" />
 
         <receiver android:name=".alarm.AlarmHelper" />
         <receiver
@@ -102,6 +103,68 @@
         <meta-data
             android:name="com.facebook.sdk.ClientToken"
             android:value="@string/facebook_client_token" />
-    </application>
 
+        <!--        Widget-->
+        <receiver
+            android:name=".widget.standard.StandardWidget"
+            android:exported="true"
+            android:label="Standard">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_standard_info" />
+        </receiver>
+        <service
+            android:name=".widget.standard.StandardRemoteService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
+
+        <receiver
+            android:name=".widget.lite.LiteWidget"
+            android:exported="true"
+            android:label="Lite">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_lite_info" />
+        </receiver>
+        <service
+            android:name=".widget.lite.LiteRemoteService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
+
+        <receiver
+            android:name=".widget.countdown.CountdownWidget"
+            android:exported="true"
+            android:label="Countdown">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_countdown_info" />
+        </receiver>
+
+        <receiver
+            android:name=".widget.month.MonthWidget"
+            android:exported="true"
+            android:label="Month">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_month_info" />
+        </receiver>
+
+        <service
+            android:name=".widget.month.MonthRemoteService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
+    </application>
 </manifest>

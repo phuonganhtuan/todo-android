@@ -41,6 +41,11 @@ class TaskDetailActivity : BaseActivity<ActivityTaskDetailBinding>() {
         observeData()
     }
 
+    override fun onPause() {
+        super.onPause()
+        updateWidget()
+    }
+
     private fun setupToolbar() = with(viewBinding.layoutTop) {
         button1.setImageResource(R.drawable.ic_arrow_left)
         button3.setImageResource(R.drawable.ic_edit)
@@ -48,11 +53,12 @@ class TaskDetailActivity : BaseActivity<ActivityTaskDetailBinding>() {
         button2.hide()
     }
 
-    private fun initView() = with(viewBinding){
+    private fun initView() = with(viewBinding) {
         if (Firebase.remoteConfig.getBoolean(SPUtils.KEY_BANNER) && isInternetAvailable() == true) {
             include.visibility = View.VISIBLE
-            Admod.getInstance().loadBanner(this@TaskDetailActivity, getString(R.string.banner_ads_id))
-        }else{
+            Admod.getInstance()
+                .loadBanner(this@TaskDetailActivity, getString(R.string.banner_ads_id))
+        } else {
             include.visibility = View.GONE
         }
     }
@@ -142,7 +148,7 @@ class TaskDetailActivity : BaseActivity<ActivityTaskDetailBinding>() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 validated.collect {
                     viewBinding.layoutTop.button3.apply {
-                        if (!isEditing.value) { 
+                        if (!isEditing.value) {
                             isEnabled = true
                         } else {
                             if (it) show() else gone()

@@ -1,5 +1,7 @@
 package com.trustedapp.todolist.planner.reminders.screens.home
 
+import android.appwidget.AppWidgetManager
+import android.content.ComponentName
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -21,9 +23,12 @@ import com.trustedapp.todolist.planner.reminders.screens.settings.notireminder.N
 import com.trustedapp.todolist.planner.reminders.screens.theme.currentTheme
 import com.trustedapp.todolist.planner.reminders.screens.theme.sceneryIds
 import com.trustedapp.todolist.planner.reminders.screens.theme.textureIds
+import com.trustedapp.todolist.planner.reminders.screens.widget.WidgetActivity
 import com.trustedapp.todolist.planner.reminders.utils.SPUtils
 import com.trustedapp.todolist.planner.reminders.utils.gone
 import com.trustedapp.todolist.planner.reminders.utils.show
+import com.trustedapp.todolist.planner.reminders.widget.lite.LiteWidget
+import com.trustedapp.todolist.planner.reminders.widget.standard.StandardWidget
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -40,13 +45,20 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+        )
         setupTheme()
         viewBinding = inflateViewBinding()
         setContentView(viewBinding.root)
         onActivityReady()
     }
 
+    override fun onPause() {
+        super.onPause()
+        updateWidget()
+    }
 
     private fun onActivityReady() {
         initViews()
@@ -126,10 +138,25 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-    private fun onNavigationItemSelectedListener(item: MenuItem){
+    private fun onNavigationItemSelectedListener(item: MenuItem) {
         item.isChecked = true
-        when(item.itemId){
+        when (item.itemId) {
             R.id.navNotiReminder -> startActivity(Intent(this, NotiReminderActivity::class.java))
+            R.id.navWidget -> startActivity(Intent(this, WidgetActivity::class.java))
+        }
+    }
+
+    private fun updateWidget() {
+        val components = listOf(
+            StandardWidget::class.java,
+            LiteWidget::class.java,
+        )
+        components.forEach {
+            val ids = AppWidgetManager.getInstance(application).getAppWidgetIds(
+                ComponentName(application, it)
+            )
+            val appWidgetManager = AppWidgetManager.getInstance(this)
+            appWidgetManager.notifyAppWidgetViewDataChanged(ids, R.id.listTasks)
         }
     }
 }

@@ -51,4 +51,8 @@
     <color name="color_green_light_theme_variant">#4C8D67</color>
     <color name="color_blue_theme_variant">#357E95</color>
     <color name="color_purple_theme_variant">#814A95</color>
+    <color name="color_border_darker">#dbe1df</color>
+    <color name="color_green_bg_light">#eaf8f2</color>
+
+    <color name="color_text_widget_secondary">#98a8a2</color>
 </resources>
