@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.media.MediaPlayer
 import android.media.Ringtone
-import android.media.RingtoneManager
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -13,7 +12,6 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.trustedapp.todolist.planner.reminders.R
@@ -26,13 +24,12 @@ import com.trustedapp.todolist.planner.reminders.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filter
-
+import androidx.lifecycle.repeatOnLifecycle
 
 @AndroidEntryPoint
 class DefautlNotificationRingtone : BaseFragment<FragmentDefautlNotificationRingtoneBinding>() {
     private val viewModel: NotiReminderViewModel by activityViewModels()
     private var adapter: DafaultNotificationRingtonAdapter? = null
-    private lateinit var ringtone: Ringtone
     private var mediaPlayer: MediaPlayer? = null
 
     companion object {
@@ -87,10 +84,10 @@ class DefautlNotificationRingtone : BaseFragment<FragmentDefautlNotificationRing
 
     private fun observeData() = with(viewModel) {
         lifecycleScope.launchWhenStarted {
-            repeatOnLifecycle(Lifecycle.State.CREATED) {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
                 listSystemRingtone?.collect {
                     Log.e("observeData() - listSystemRingtone", it.toString())
-                    if (it.isNotEmpty()){
+                    if (it.isNotEmpty()) {
                         adapter?.submitList(it)
                     }
                 }
@@ -98,10 +95,10 @@ class DefautlNotificationRingtone : BaseFragment<FragmentDefautlNotificationRing
         }
 
         lifecycleScope.launchWhenStarted {
-            repeatOnLifecycle(Lifecycle.State.CREATED) {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
                 selectNotificationRingtone?.filter { it != null }?.collect {
-                        adapter?.selectEntity = it
-                        adapter?.notifyDataSetChanged()
+                    adapter?.selectEntity = it
+                    adapter?.notifyDataSetChanged()
                 }
             }
         }
@@ -132,21 +129,26 @@ class DefautlNotificationRingtone : BaseFragment<FragmentDefautlNotificationRing
         }
     }
 
-    private fun playRingtone(entity: RingtoneEntity){
-        if (mediaPlayer != null && mediaPlayer?.isPlaying == true){
-            mediaPlayer?.stop()
+    private fun playRingtone(entity: RingtoneEntity) {
+        try {
+            if (mediaPlayer != null && mediaPlayer?.isPlaying == true) {
+                mediaPlayer?.stop()
+            }
+            if (entity.id == TODO_DEFAULT_RINGTONE_ID) {
+                mediaPlayer =
+                    MediaPlayer.create(context?.getApplicationContext(), R.raw.to_do_default)
+
+            } else {
+                mediaPlayer =
+                    MediaPlayer.create(context?.getApplicationContext(), entity.ringtoneUri)
+            }
+
+            mediaPlayer?.isLooping = false
+            mediaPlayer?.start()
+
+        } catch (e: Exception) {
+
         }
 
-        if (entity.id == TODO_DEFAULT_RINGTONE_ID){
-            mediaPlayer =
-            MediaPlayer.create(context?.getApplicationContext(), R.raw.to_do_default)
-
-        }else{
-            mediaPlayer =
-                MediaPlayer.create(context?.getApplicationContext(), entity.ringtoneUri)
-        }
-
-        mediaPlayer?.isLooping = false
-        mediaPlayer?.start()
     }
 }
