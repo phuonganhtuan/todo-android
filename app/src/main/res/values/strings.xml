@@ -185,4 +185,6 @@
     <string name="size43">Size:4*3</string>
     <string name="count_down">Count down</string>
     <string name="size41">Size:4*1</string>
+    <string name="system_default">System default</string>
+    <string name="todo_default">To-do default</string>
 </resources>

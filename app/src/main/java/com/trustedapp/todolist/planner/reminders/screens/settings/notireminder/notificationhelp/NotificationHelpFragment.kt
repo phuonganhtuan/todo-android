@@ -10,7 +10,9 @@ import com.trustedapp.todolist.planner.reminders.base.BaseFragment
 import com.trustedapp.todolist.planner.reminders.databinding.FragmentNotificationHelpBinding
 import com.trustedapp.todolist.planner.reminders.screens.settings.notireminder.NotiReminderViewModel
 import com.trustedapp.todolist.planner.reminders.utils.hide
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class NotificationHelpFragment : BaseFragment<FragmentNotificationHelpBinding>() {
 
     private val viewModel: NotiReminderViewModel by activityViewModels()

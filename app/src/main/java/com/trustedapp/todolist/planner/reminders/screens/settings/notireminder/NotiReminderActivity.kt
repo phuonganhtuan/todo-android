@@ -11,7 +11,9 @@ import com.trustedapp.todolist.planner.reminders.base.BaseActivity
 import com.trustedapp.todolist.planner.reminders.databinding.ActivityNotiReminderBinding
 import com.trustedapp.todolist.planner.reminders.utils.SPUtils
 import com.trustedapp.todolist.planner.reminders.utils.isInternetAvailable
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class NotiReminderActivity: BaseActivity<ActivityNotiReminderBinding>() {
     private val viewModel: NotiReminderViewModel by viewModels()
 

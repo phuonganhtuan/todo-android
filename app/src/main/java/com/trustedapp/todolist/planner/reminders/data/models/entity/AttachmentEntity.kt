@@ -1,5 +1,6 @@
 package com.trustedapp.todolist.planner.reminders.data.models.entity
 
+import android.net.Uri
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -31,3 +32,19 @@ data class AttachmentAlbumEntity(
     var data: List<AttachmentEntity> = emptyList(),
     var type: AttachmentAlbumTypeEnum
 ) : BaseEntity()
+
+enum class RingtoneEntityTypeEnum{
+    RECORD,
+    MUSIC_ON_DEVICE,
+    SYSTEM_RINGTONE,
+}
+
+data class RingtoneEntity(
+    override var id: Int,
+    var name: String = "",
+    var ringtoneUri: Uri = Uri.EMPTY,
+    var type: RingtoneEntityTypeEnum = RingtoneEntityTypeEnum.SYSTEM_RINGTONE
+):BaseEntity()
+
+const val SYSTEM_RINGTONE_ID = 1000
+const val TODO_DEFAULT_RINGTONE_ID = 999
