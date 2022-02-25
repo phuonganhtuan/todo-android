@@ -43,5 +43,14 @@
         android:id="@+id/DefautlNotificationRingtone"
         android:name="com.trustedapp.todolist.planner.reminders.screens.settings.notireminder.defaultnotificationringtone.DefautlNotificationRingtone"
         android:label="fragment_defautl_notification_ringtone"
-        tools:layout="@layout/fragment_defautl_notification_ringtone" />
+        tools:layout="@layout/fragment_defautl_notification_ringtone" >
+        <action
+            android:id="@+id/toRecordRingtone"
+            app:destination="@id/RecordRingtone" />
+    </fragment>
+    <fragment
+        android:id="@+id/RecordRingtone"
+        android:name="com.trustedapp.todolist.planner.reminders.screens.settings.notireminder.defaultnotificationringtone.RecordRingtone"
+        android:label="RecordRingtone"
+        tools:layout="@layout/fragment_record_ringtone"/>
 </navigation>

@@ -31,11 +31,10 @@ class ItemDafaultNotificationRingtonViewHolder(
             tvName.text = entity.name
 
             val isSelect = selectEntity?.id == entity.id
-            val background = if (isSelect) ContextCompat.getDrawable(
-                itemView.context,
+            val background = if (isSelect)
                 R.drawable.ic_checked_radio
-            ) else ContextCompat.getDrawable(itemView.context, R.drawable.ic_uncheck_radio)
-            imgRadio.background = background
+             else R.drawable.ic_uncheck_radio
+            imgRadio.setImageResource(background)
         }
 
     override fun displayData(entity: ItemSelectRadioBinding) {

@@ -3,8 +3,10 @@ package com.trustedapp.todolist.planner.reminders.screens.settings.notireminder.
 import android.Manifest
 import android.content.pm.PackageManager
 import android.media.MediaPlayer
-import android.media.Ringtone
+import android.media.MediaPlayer.OnCompletionListener
+import android.media.MediaPlayer.OnPreparedListener
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
@@ -12,10 +14,12 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.trustedapp.todolist.planner.reminders.R
 import com.trustedapp.todolist.planner.reminders.base.BaseFragment
+import com.trustedapp.todolist.planner.reminders.base.LoadDataState
 import com.trustedapp.todolist.planner.reminders.data.models.entity.RingtoneEntity
 import com.trustedapp.todolist.planner.reminders.data.models.entity.TODO_DEFAULT_RINGTONE_ID
 import com.trustedapp.todolist.planner.reminders.databinding.FragmentDefautlNotificationRingtoneBinding
@@ -24,13 +28,12 @@ import com.trustedapp.todolist.planner.reminders.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filter
-import androidx.lifecycle.repeatOnLifecycle
 
 @AndroidEntryPoint
 class DefautlNotificationRingtone : BaseFragment<FragmentDefautlNotificationRingtoneBinding>() {
     private val viewModel: NotiReminderViewModel by activityViewModels()
     private var adapter: DafaultNotificationRingtonAdapter? = null
-    private var mediaPlayer: MediaPlayer? = null
+    private var mediaPlayer: MediaPlayer = MediaPlayer()
 
     companion object {
         private const val READ_PERMISSION_CODE = 100
@@ -80,6 +83,9 @@ class DefautlNotificationRingtone : BaseFragment<FragmentDefautlNotificationRing
             viewModel.selectRingtoneEntity(it)
             playRingtone(it)
         }
+        lnRecordRington.setOnClickListener {
+            findNavController().navigate(R.id.toRecordRingtone)
+        }
     }
 
     private fun observeData() = with(viewModel) {
@@ -102,6 +108,29 @@ class DefautlNotificationRingtone : BaseFragment<FragmentDefautlNotificationRing
                 }
             }
         }
+
+        lifecycleScope.launchWhenStarted {
+            repeatOnLifecycle(Lifecycle.State.CREATED) {
+                isLoading?.collect {
+                    viewBinding.loadingBar.apply {
+                        if (it == LoadDataState.LOADING) show() else gone()
+                    }
+                    viewBinding.recycleSystemRingtone.apply {
+                        if (it == LoadDataState.LOADING || (it == LoadDataState.SUCCESS && listSystemRingtone?.value?.isEmpty() == true)) gone() else show()
+                    }
+                }
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        stopRingtone()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        stopRingtone()
     }
 
     private fun checkPermission(permission: String, requestCode: Int, callback: () -> Unit) {
@@ -129,6 +158,12 @@ class DefautlNotificationRingtone : BaseFragment<FragmentDefautlNotificationRing
         }
     }
 
+    private fun stopRingtone(){
+        if (mediaPlayer != null && mediaPlayer?.isPlaying == true) {
+            mediaPlayer?.stop()
+        }
+    }
+
     private fun playRingtone(entity: RingtoneEntity) {
         try {
             if (mediaPlayer != null && mediaPlayer?.isPlaying == true) {
@@ -143,9 +178,12 @@ class DefautlNotificationRingtone : BaseFragment<FragmentDefautlNotificationRing
                     MediaPlayer.create(context?.getApplicationContext(), entity.ringtoneUri)
             }
 
-            mediaPlayer?.isLooping = false
-            mediaPlayer?.start()
-
+            mediaPlayer?.setOnPreparedListener {
+                Handler().postDelayed(Runnable {
+                    it.stop();
+                } , it.duration.toLong())
+                it.start()
+            }
         } catch (e: Exception) {
 
         }

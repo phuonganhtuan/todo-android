@@ -9,6 +9,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.trustedapp.todolist.planner.reminders.R
+import com.trustedapp.todolist.planner.reminders.base.LoadDataState
 import com.trustedapp.todolist.planner.reminders.data.models.entity.RingtoneEntity
 import com.trustedapp.todolist.planner.reminders.data.models.entity.RingtoneEntityTypeEnum
 import com.trustedapp.todolist.planner.reminders.data.models.entity.SYSTEM_RINGTONE_ID
@@ -29,6 +30,9 @@ class NotiReminderViewModel @Inject constructor(): ViewModel(){
 
     val selectNotificationRingtone : StateFlow<RingtoneEntity?>get() = _selectNotificationRingtone
     private val _selectNotificationRingtone = MutableStateFlow<RingtoneEntity?>(null)
+
+    val isLoading: StateFlow<LoadDataState> get() = _isLoading
+    private val _isLoading = MutableStateFlow<LoadDataState>(LoadDataState.NONE)
 
     init {
     }
@@ -89,10 +93,12 @@ class NotiReminderViewModel @Inject constructor(): ViewModel(){
      * get all rington
      */
     fun getAllRington(activity: Activity, context: Context) {
+        showLoading()
         viewModelScope.launch {
             _listSystemtRingtone.value += withContext(Dispatchers.IO) {
                 loadLocalRingtonesUris(activity, context)
             }
+            hiddenLoading()
         }
     }
 
@@ -101,5 +107,19 @@ class NotiReminderViewModel @Inject constructor(): ViewModel(){
      */
     fun selectRingtoneEntity(entity: RingtoneEntity){
         _selectNotificationRingtone.value = entity
+    }
+
+    /**
+     * Show loading
+     */
+    fun showLoading() {
+        _isLoading.value = LoadDataState.LOADING
+    }
+
+    /**
+     * hidden Loading
+     */
+    fun hiddenLoading() {
+        _isLoading.value = LoadDataState.SUCCESS
     }
 }
