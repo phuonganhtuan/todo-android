@@ -12,7 +12,7 @@ import com.trustedapp.todolist.planner.reminders.data.models.model.DateModel
 import com.trustedapp.todolist.planner.reminders.utils.DateTimeUtils
 import java.util.*
 
-class MonthTodayFactory(private val context: Context, intent: Intent?) :
+class MonthTodayFactory(private val context: Context, private val intent: Intent?) :
     RemoteViewsService.RemoteViewsFactory {
 
     private val taskDao by lazy { AppDatabase.invoke(context).taskDao() }
@@ -22,7 +22,8 @@ class MonthTodayFactory(private val context: Context, intent: Intent?) :
     }
 
     override fun onDataSetChanged() {
-        days = getDays(Calendar.getInstance())
+        val month = intent?.extras?.getLong(MonthWidget.INTENT_MONTH, Calendar.getInstance().timeInMillis) ?: Calendar.getInstance().timeInMillis
+        days = getDays(MonthWidget.currentMonth)
     }
 
     override fun onDestroy() {

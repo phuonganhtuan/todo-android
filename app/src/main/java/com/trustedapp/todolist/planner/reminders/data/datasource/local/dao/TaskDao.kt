@@ -60,6 +60,9 @@ interface TaskDao {
     suspend fun updateTask(entity: TaskEntity)
 
     @Update(onConflict = IGNORE)
+    fun updateTaskNoSuspend(entity: TaskEntity)
+
+    @Update(onConflict = IGNORE)
     suspend fun updateCategory(entity: CategoryEntity): Int
 
     @Update(onConflict = IGNORE)

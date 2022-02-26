@@ -9,6 +9,7 @@ import com.trustedapp.todolist.planner.reminders.R
 import com.trustedapp.todolist.planner.reminders.data.datasource.local.database.AppDatabase
 import com.trustedapp.todolist.planner.reminders.utils.Constants
 import com.trustedapp.todolist.planner.reminders.utils.DateTimeUtils
+import com.trustedapp.todolist.planner.reminders.widget.standard.StandardWidget
 import com.trustedapp.todolist.planner.reminders.widget.standard.WidgetItemWrap
 import java.util.*
 import kotlin.random.Random
@@ -48,6 +49,18 @@ class LiteTodayFactory(private val context: Context, intent: Intent?) :
 
     override fun getViewAt(position: Int): RemoteViews {
         val rv = RemoteViews(context.packageName, R.layout.item_widget_lite_task)
+        if (todayTasks[position].isHeader) {
+            rv.setViewVisibility(R.id.textHeader, View.VISIBLE)
+            rv.setTextViewText(R.id.textHeader, todayTasks[position].header)
+        } else {
+            rv.setViewVisibility(R.id.textHeader, View.GONE)
+        }
+        if (todayTasks[position].task == null) {
+            rv.setViewVisibility(R.id.layoutWidgetContent, View.GONE)
+            return rv
+        } else {
+            rv.setViewVisibility(R.id.layoutWidgetContent, View.VISIBLE)
+        }
         rv.setTextViewText(R.id.textTitleWidget, todayTasks[position].task?.task?.title)
         val timeString = if (!todayTasks[position].isOther) {
             DateTimeUtils.getHourMinuteFromMillisecond(
@@ -59,13 +72,8 @@ class LiteTodayFactory(private val context: Context, intent: Intent?) :
             )
         }
         rv.setTextViewText(R.id.textDes, timeString)
-        if (todayTasks[position].isHeader) {
-            rv.setViewVisibility(R.id.textHeader, View.VISIBLE)
-            rv.setTextViewText(R.id.textHeader, todayTasks[position].header)
-        } else {
-            rv.setViewVisibility(R.id.textHeader, View.GONE)
-        }
         val intentTask = Intent().apply {
+            action = StandardWidget.ACTION_CLICK_ITEM
             putExtra(Constants.KEY_TASK_ID, todayTasks[position].task?.task?.id)
         }
         rv.setOnClickFillInIntent(R.id.layoutRoot, intentTask)

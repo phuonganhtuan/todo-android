@@ -1,22 +1,48 @@
 package com.trustedapp.todolist.planner.reminders.widget.month
 
 import android.app.PendingIntent
+import android.app.PendingIntent.FLAG_CANCEL_CURRENT
 import android.app.PendingIntent.FLAG_IMMUTABLE
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.widget.RemoteViews
 import com.trustedapp.todolist.planner.reminders.R
+import com.trustedapp.todolist.planner.reminders.screens.home.HomeActivity
 import com.trustedapp.todolist.planner.reminders.screens.newtask.NewTaskActivity
+import com.trustedapp.todolist.planner.reminders.screens.taskdetail.TaskDetailActivity
+import com.trustedapp.todolist.planner.reminders.utils.Constants
 import com.trustedapp.todolist.planner.reminders.utils.DateTimeUtils
 import java.util.*
+import java.util.Calendar.DAY_OF_MONTH
+import java.util.Calendar.MONTH
 
 
 class MonthWidget : AppWidgetProvider() {
 
+    companion object {
+        private const val PREVIOUS_MONTH_ACTION = "pma"
+        private const val NEXT_MONTH_ACTION = "nma"
+        const val INTENT_MONTH = "current_month"
+        var currentMonth = Calendar.getInstance()
+    }
+
     override fun onReceive(context: Context?, intent: Intent?) {
         super.onReceive(context, intent)
+        when (intent?.action) {
+            PREVIOUS_MONTH_ACTION -> toPreviousMonth()
+            NEXT_MONTH_ACTION -> toNextMonth()
+            else -> return
+        }
+        val appWidgetManager = AppWidgetManager.getInstance(context)
+
+        context?.let {
+            val widget = ComponentName(context, MonthWidget::class.java)
+            onUpdate(it, appWidgetManager, appWidgetManager.getAppWidgetIds(widget))
+            appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetManager.getAppWidgetIds(widget), R.id.gridCalendar)
+        }
     }
 
     override fun onUpdate(
@@ -25,21 +51,35 @@ class MonthWidget : AppWidgetProvider() {
         appWidgetIds: IntArray
     ) {
         for (appWidgetId in appWidgetIds) {
-            val intent = Intent(context, MonthRemoteService::class.java)
+            val intent = Intent(context, MonthRemoteService::class.java).apply {
+                putExtra(INTENT_MONTH, currentMonth.timeInMillis)
+            }
             val views = RemoteViews(context.packageName, R.layout.layout_widget_month)
             views.setImageViewResource(R.id.imagePreviousMonth, R.drawable.ic_previous)
             views.setImageViewResource(R.id.imageNextMonth, R.drawable.ic_next)
             views.setTextViewText(
                 R.id.textMonthYear,
-                DateTimeUtils.getMonthYearString(context, Calendar.getInstance())
+                DateTimeUtils.getMonthYearString(context, currentMonth)
             )
             views.setRemoteAdapter(R.id.gridCalendar, intent)
-            val intentSetting = Intent(context, NewTaskActivity::class.java)
-            val pendingIntentSetting =
-                PendingIntent.getActivity(context, 0, intentSetting, FLAG_IMMUTABLE)
-            views.setOnClickPendingIntent(R.id.imageAddTask, pendingIntentSetting)
+            views.setOnClickPendingIntent(
+                R.id.imagePreviousMonth,
+                getPendingSelfIntent(context, PREVIOUS_MONTH_ACTION)
+            )
+            views.setOnClickPendingIntent(
+                R.id.imageNextMonth,
+                getPendingSelfIntent(context, NEXT_MONTH_ACTION)
+            )
+
+            val intentHome = Intent(context, HomeActivity::class.java).apply {
+                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            }
+            val pendingIntent =
+                PendingIntent.getActivity(context, 0, intentHome, FLAG_IMMUTABLE)
+
+            views.setOnClickPendingIntent(R.id.layoutWidget, pendingIntent)
+
             appWidgetManager.updateAppWidget(appWidgetId, views)
-            updateAppWidget(context, appWidgetManager, appWidgetId)
         }
     }
 
@@ -48,25 +88,20 @@ class MonthWidget : AppWidgetProvider() {
 
     override fun onDisabled(context: Context) {
     }
-}
 
-internal fun updateAppWidget(
-    context: Context,
-    appWidgetManager: AppWidgetManager,
-    appWidgetId: Int
-) {
-    val intent = Intent(context, MonthRemoteService::class.java)
-    val views = RemoteViews(context.packageName, R.layout.layout_widget_month)
-    views.setImageViewResource(R.id.imagePreviousMonth, R.drawable.ic_previous)
-    views.setImageViewResource(R.id.imageNextMonth, R.drawable.ic_next)
-    views.setTextViewText(
-        R.id.textMonthYear,
-        DateTimeUtils.getMonthYearString(context, Calendar.getInstance())
-    )
-    views.setRemoteAdapter(R.id.gridCalendar, intent)
-    val intentSetting = Intent(context, NewTaskActivity::class.java)
-    val pendingIntentSetting =
-        PendingIntent.getActivity(context, 0, intentSetting, FLAG_IMMUTABLE)
-    views.setOnClickPendingIntent(R.id.imageAddTask, pendingIntentSetting)
-    appWidgetManager.updateAppWidget(appWidgetId, views)
+    private fun toNextMonth() {
+        currentMonth.set(DAY_OF_MONTH, 1)
+        currentMonth.set(MONTH, currentMonth.get(MONTH) + 1)
+    }
+
+    private fun toPreviousMonth() {
+        currentMonth.set(DAY_OF_MONTH, 1)
+        currentMonth.set(MONTH, currentMonth.get(MONTH) - 1)
+    }
+
+    private fun getPendingSelfIntent(context: Context?, action: String?): PendingIntent? {
+        val intent = Intent(context, javaClass)
+        intent.action = action
+        return PendingIntent.getBroadcast(context, 0, intent, FLAG_IMMUTABLE or FLAG_CANCEL_CURRENT)
+    }
 }
