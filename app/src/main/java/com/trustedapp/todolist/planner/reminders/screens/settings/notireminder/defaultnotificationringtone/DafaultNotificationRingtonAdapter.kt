@@ -30,7 +30,7 @@ class ItemDafaultNotificationRingtonViewHolder(
             ringtoneEntity = entity
             tvName.text = entity.name
 
-            val isSelect = selectEntity?.id == entity.id
+            val isSelect = selectEntity?.id == entity.id && entity.type == selectEntity.type
             val background = if (isSelect)
                 R.drawable.ic_checked_radio
              else R.drawable.ic_uncheck_radio

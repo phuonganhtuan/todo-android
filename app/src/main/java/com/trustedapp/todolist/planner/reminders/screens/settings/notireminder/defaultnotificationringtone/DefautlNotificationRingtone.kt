@@ -1,6 +1,7 @@
 package com.trustedapp.todolist.planner.reminders.screens.settings.notireminder.defaultnotificationringtone
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.media.MediaPlayer
 import android.media.MediaPlayer.OnCompletionListener
@@ -88,6 +89,7 @@ class DefautlNotificationRingtone : BaseFragment<FragmentDefautlNotificationRing
         }
     }
 
+    @SuppressLint("UnsafeRepeatOnLifecycleDetector")
     private fun observeData() = with(viewModel) {
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.STARTED) {

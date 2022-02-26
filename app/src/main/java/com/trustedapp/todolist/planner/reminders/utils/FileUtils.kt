@@ -4,6 +4,8 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION
+import android.media.MediaMetadataRetriever
+import android.net.Uri
 import android.provider.OpenableColumns
 import android.util.Log
 import android.widget.Toast
@@ -83,4 +85,30 @@ object FileUtils {
         }
         return output.path
     }
+
+    fun getAudioFileLength(context: Context, uri: Uri?, stringFormat: Boolean): String? {
+        val mmr = MediaMetadataRetriever()
+        mmr.setDataSource(context, uri)
+        val duration = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)
+        val millSecond = duration!!.toInt()
+        if (millSecond < 0) return 0.toString() // if some error then we say duration is zero
+        if (!stringFormat) return millSecond.toString()
+        val hours: Int
+        val minutes: Int
+        var seconds = millSecond / 1000
+        hours = seconds / 3600
+        minutes = seconds / 60 % 60
+        seconds = seconds % 60
+        val stringBuilder = StringBuilder()
+        if (hours > 0 && hours < 10) stringBuilder.append("0").append(hours)
+            .append(":") else if (hours > 0) stringBuilder.append(hours).append(":")
+        if (minutes < 10) stringBuilder.append("0").append(minutes)
+            .append(":") else stringBuilder.append(minutes).append(":")
+        if (seconds < 10) stringBuilder.append("0").append(seconds) else stringBuilder.append(
+            seconds
+        )
+        return stringBuilder.toString()
+    }
 }
+
+
