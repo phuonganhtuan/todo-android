@@ -3,6 +3,7 @@ package com.trustedapp.todolist.planner.reminders.screens.settings.notireminder.
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
+import android.content.res.ColorStateList
 import android.media.MediaPlayer
 import android.media.MediaPlayer.OnCompletionListener
 import android.media.MediaPlayer.OnPreparedListener
@@ -12,6 +13,7 @@ import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getColor
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -67,6 +69,7 @@ class DefautlNotificationRingtone : BaseFragment<FragmentDefautlNotificationRing
         adapter = DafaultNotificationRingtonAdapter()
         recycleSystemRingtone.adapter = adapter
         recycleSystemRingtone.layoutManager = LinearLayoutManager(context)
+        loadingBar.indeterminateTintList = ColorStateList.valueOf(requireContext().getColorFromAttr(R.attr.colorPrimary))
     }
 
     private fun initData() = with(viewBinding) {
@@ -85,6 +88,7 @@ class DefautlNotificationRingtone : BaseFragment<FragmentDefautlNotificationRing
             playRingtone(it)
         }
         lnRecordRington.setOnClickListener {
+            stopRingtone()
             findNavController().navigate(R.id.toRecordRingtone)
         }
     }
@@ -92,8 +96,8 @@ class DefautlNotificationRingtone : BaseFragment<FragmentDefautlNotificationRing
     @SuppressLint("UnsafeRepeatOnLifecycleDetector")
     private fun observeData() = with(viewModel) {
         lifecycleScope.launchWhenStarted {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                listSystemRingtone?.collect {
+            repeatOnLifecycle(Lifecycle.State.CREATED) {
+                listSystemRingtone.collect {
                     Log.e("observeData() - listSystemRingtone", it.toString())
                     if (it.isNotEmpty()) {
                         adapter?.submitList(it)

@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION
 import android.media.MediaMetadataRetriever
 import android.net.Uri
+import android.provider.MediaStore
 import android.provider.OpenableColumns
 import android.util.Log
 import android.widget.Toast
@@ -86,9 +87,9 @@ object FileUtils {
         return output.path
     }
 
-    fun getAudioFileLength(context: Context, uri: Uri?, stringFormat: Boolean): String? {
+    fun getAudioFileLength(context: Context, uri: Uri, stringFormat: Boolean): String {
         val mmr = MediaMetadataRetriever()
-        mmr.setDataSource(context, uri)
+        mmr.setDataSource(getRealPathFromURI(context, uri))
         val duration = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)
         val millSecond = duration!!.toInt()
         if (millSecond < 0) return 0.toString() // if some error then we say duration is zero
@@ -98,9 +99,9 @@ object FileUtils {
         var seconds = millSecond / 1000
         hours = seconds / 3600
         minutes = seconds / 60 % 60
-        seconds = seconds % 60
+        seconds %= 60
         val stringBuilder = StringBuilder()
-        if (hours > 0 && hours < 10) stringBuilder.append("0").append(hours)
+        if (hours in 1..9) stringBuilder.append("0").append(hours)
             .append(":") else if (hours > 0) stringBuilder.append(hours).append(":")
         if (minutes < 10) stringBuilder.append("0").append(minutes)
             .append(":") else stringBuilder.append(minutes).append(":")
@@ -108,6 +109,20 @@ object FileUtils {
             seconds
         )
         return stringBuilder.toString()
+    }
+
+    fun getRealPathFromURI(context: Context, contentURI: Uri): String? {
+        val result: String?
+        val cursor = context.contentResolver.query(contentURI, null, null, null, null)
+        if (cursor == null) {
+            result = contentURI.path
+        } else {
+            cursor.moveToFirst()
+            val idx: Int = cursor.getColumnIndex("_id")
+            result = cursor.getString(1)
+            cursor.close()
+        }
+        return result
     }
 }
 

@@ -3,15 +3,24 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="../../../../../../layout/custom_preview.xml" value="0.47962962962962963" />
         <entry key="app/src/main/res/drawable/bg_border_grey.xml" value="0.1365" />
         <entry key="app/src/main/res/drawable/bg_border_primary.xml" value="0.1365" />
         <entry key="app/src/main/res/drawable/bg_checkbox_grey.xml" value="0.1365" />
+        <entry key="app/src/main/res/drawable/bg_dark_grey_rounded_16.xml" value="0.214" />
         <entry key="app/src/main/res/drawable/bg_fade_custom_time.xml" value="0.121" />
         <entry key="app/src/main/res/drawable/bg_fade_grey.xml" value="0.1365" />
+        <entry key="app/src/main/res/drawable/bg_green_bg_top_rounded.xml" value="0.214" />
+        <entry key="app/src/main/res/drawable/bg_green_rounded_16.xml" value="0.2225" />
+        <entry key="app/src/main/res/drawable/bg_green_rounded_8.xml" value="0.2225" />
+        <entry key="app/src/main/res/drawable/bg_green_rounded_top.xml" value="0.214" />
         <entry key="app/src/main/res/drawable/bg_grey_dark_16.xml" value="0.1365" />
         <entry key="app/src/main/res/drawable/bg_greybg_rounded_8.xml" value="0.1365" />
         <entry key="app/src/main/res/drawable/bg_primary_rounded_16.xml" value="0.121" />
+        <entry key="app/src/main/res/drawable/bg_primary_rounded_20.xml" value="0.214" />
+        <entry key="app/src/main/res/drawable/bg_primary_rounded_top.xml" value="0.214" />
+        <entry key="app/src/main/res/drawable/bg_primary_stroke_16.xml" value="0.214" />
+        <entry key="app/src/main/res/drawable/bg_primary_stroke_8.xml" value="0.214" />
+        <entry key="app/src/main/res/drawable/bg_record_gradient.xml" value="0.2225" />
         <entry key="app/src/main/res/drawable/bg_ripple_white_stroke_grey_border_rounded_8.xml" value="0.1365" />
         <entry key="app/src/main/res/drawable/bg_ripple_white_stroke_rounded_8.xml" value="0.1365" />
         <entry key="app/src/main/res/drawable/bg_rounded_stroke_grey.xml" value="0.1365" />
@@ -30,19 +39,17 @@
         <entry key="app/src/main/res/drawable/ic_checkbox_check_grey.xml" value="0.121" />
         <entry key="app/src/main/res/drawable/ic_checkbox_uncheck_grey.xml" value="0.121" />
         <entry key="app/src/main/res/drawable/ic_checked.xml" value="0.121" />
-        <entry key="app/src/main/res/drawable/ic_checked_policy.xml" value="0.249" />
         <entry key="app/src/main/res/drawable/ic_checked_primary.xml" value="0.121" />
         <entry key="app/src/main/res/drawable/ic_checked_radio.xml" value="0.121" />
         <entry key="app/src/main/res/drawable/ic_checked_rate_app.xml" value="0.121" />
         <entry key="app/src/main/res/drawable/ic_checked_version.xml" value="0.121" />
+        <entry key="app/src/main/res/drawable/ic_group_97_3x.xml" value="0.214" />
         <entry key="app/src/main/res/drawable/ic_mark.xml" value="0.121" />
         <entry key="app/src/main/res/drawable/ic_mark_as_done.xml" value="0.121" />
         <entry key="app/src/main/res/drawable/ic_radio.xml" value="0.121" />
-        <entry key="app/src/main/res/drawable/ic_record.xml" value="0.249" />
-        <entry key="app/src/main/res/drawable/ic_record_ringtone.xml" value="0.249" />
-        <entry key="app/src/main/res/drawable/ic_recording.xml" value="0.249" />
+        <entry key="app/src/main/res/drawable/ic_record_ringtone.xml" value="0.2225" />
+        <entry key="app/src/main/res/drawable/ic_recording.xml" value="0.2225" />
         <entry key="app/src/main/res/drawable/ic_reminder.xml" value="0.121" />
-        <entry key="app/src/main/res/drawable/ic_repeat.xml" value="0.249" />
         <entry key="app/src/main/res/drawable/ic_settings_date_format.xml" value="0.121" />
         <entry key="app/src/main/res/drawable/ic_settings_feedback.xml" value="0.121" />
         <entry key="app/src/main/res/drawable/ic_settings_first_day_of_week.xml" value="0.121" />
@@ -59,10 +66,12 @@
         <entry key="app/src/main/res/drawable/ic_unchecked_widget.xml" value="0.121" />
         <entry key="app/src/main/res/drawable/ic_unmark.xml" value="0.121" />
         <entry key="app/src/main/res/drawable/style_menu_item.xml" value="0.121" />
+        <entry key="app/src/main/res/layout/activity_alarm.xml" value="0.32133333333333336" />
         <entry key="app/src/main/res/layout/activity_home.xml" value="0.10371376811594203" />
         <entry key="app/src/main/res/layout/activity_new_task.xml" value="0.10371376811594203" />
         <entry key="app/src/main/res/layout/activity_noti_reminder.xml" value="0.10989583333333333" />
         <entry key="app/src/main/res/layout/activity_task_detail.xml" value="0.10989583333333333" />
+        <entry key="app/src/main/res/layout/activity_widget.xml" value="0.33" />
         <entry key="app/src/main/res/layout/content_home.xml" value="0.10989583333333333" />
         <entry key="app/src/main/res/layout/fragment_calendar.xml" value="0.10371376811594203" />
         <entry key="app/src/main/res/layout/fragment_default_reminder_type_dialog.xml" value="0.10989583333333333" />
@@ -73,24 +82,44 @@
         <entry key="app/src/main/res/layout/fragment_noti_reminder.xml" value="0.10989583333333333" />
         <entry key="app/src/main/res/layout/fragment_notification_help.xml" value="0.18020833333333333" />
         <entry key="app/src/main/res/layout/fragment_permis_dialog.xml" value="0.10989583333333333" />
-        <entry key="app/src/main/res/layout/fragment_record_ringtone.xml" value="0.20208333333333334" />
+        <entry key="app/src/main/res/layout/fragment_record_ringtone.xml" value="0.22" />
         <entry key="app/src/main/res/layout/fragment_set_custom_reminder_time.xml" value="0.10371376811594203" />
         <entry key="app/src/main/res/layout/fragment_set_reminder.xml" value="0.10371376811594203" />
         <entry key="app/src/main/res/layout/fragment_set_repeat.xml" value="0.10371376811594203" />
         <entry key="app/src/main/res/layout/fragment_task_detail.xml" value="0.10989583333333333" />
         <entry key="app/src/main/res/layout/fragment_tasks.xml" value="0.10989583333333333" />
         <entry key="app/src/main/res/layout/fragment_tasks_page.xml" value="0.10989583333333333" />
+        <entry key="app/src/main/res/layout/item_calendar_widget.xml" value="0.3256756756756757" />
         <entry key="app/src/main/res/layout/item_select_radio.xml" value="0.1" />
         <entry key="app/src/main/res/layout/item_select_ratio.xml" value="0.659375" />
-        <entry key="app/src/main/res/layout/item_select_record_ringtone.xml" value="0.24322916666666666" />
+        <entry key="app/src/main/res/layout/item_select_record_ringtone.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/item_widget_lite_task.xml" value="0.1954954954954955" />
+        <entry key="app/src/main/res/layout/item_widget_lite_task_1.xml" value="0.3256756756756757" />
+        <entry key="app/src/main/res/layout/item_widget_lite_task_2.xml" value="0.3256756756756757" />
+        <entry key="app/src/main/res/layout/item_widget_standard_task.xml" value="0.3256756756756757" />
+        <entry key="app/src/main/res/layout/item_widget_standard_task_2.xml" value="0.3256756756756757" />
         <entry key="app/src/main/res/layout/layout_add_calendar.xml" value="0.10371376811594203" />
-        <entry key="app/src/main/res/layout/layout_select_attachment.xml" value="0.1515625" />
-        <entry key="app/src/main/res/layout/layout_select_attachment_list.xml" value="0.1515625" />
+        <entry key="app/src/main/res/layout/layout_calendar.xml" value="0.32133333333333336" />
         <entry key="app/src/main/res/layout/layout_side_navigation_header.xml" value="0.10989583333333333" />
         <entry key="app/src/main/res/layout/layout_toolbar.xml" value="0.10371376811594203" />
+        <entry key="app/src/main/res/layout/layout_widget_countdown.xml" value="0.18603603603603602" />
+        <entry key="app/src/main/res/layout/layout_widget_countdown_1.xml" value="0.32133333333333336" />
+        <entry key="app/src/main/res/layout/layout_widget_lite.xml" value="0.3256756756756757" />
+        <entry key="app/src/main/res/layout/layout_widget_lite_1.xml" value="0.3256756756756757" />
+        <entry key="app/src/main/res/layout/layout_widget_lite_2.xml" value="0.3256756756756757" />
+        <entry key="app/src/main/res/layout/layout_widget_month.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/layout_widget_preview.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/layout_widget_standard.xml" value="0.3256756756756757" />
+        <entry key="app/src/main/res/layout/layout_widget_standard_1.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/layout_widget_standard_2.xml" value="0.3256756756756757" />
         <entry key="app/src/main/res/menu/activity_main_drawer.xml" value="0.10989583333333333" />
         <entry key="app/src/main/res/menu/main_bottom_menu.xml" value="0.10989583333333333" />
-        <entry key="app/src/main/res/menu/menu_main.xml" value="0.10989583333333333" />
+        <entry key="app/src/main/res/menu/menu_main.xml" value="0.5" />
+        <entry key="app/src/main/res/menu/reminder_menu.xml" value="0.16354166666666667" />
+        <entry key="app/src/main/res/menu/reminder_type_menu.xml" value="0.16354166666666667" />
+        <entry key="app/src/main/res/menu/repeat_at_menu.xml" value="0.16354166666666667" />
+        <entry key="app/src/main/res/menu/screen_lock_menu.xml" value="0.16354166666666667" />
+        <entry key="app/src/main/res/xml/widget_standard_info.xml" value="0.3256756756756757" />
       </map>
     </option>
   </component>

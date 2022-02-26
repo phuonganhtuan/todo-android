@@ -10,8 +10,9 @@ import com.trustedapp.todolist.planner.reminders.data.models.entity.RingtoneEnti
 import com.trustedapp.todolist.planner.reminders.databinding.ItemSelectRadioBinding
 import com.trustedapp.todolist.planner.reminders.databinding.ItemSelectRecordRingtoneBinding
 import com.trustedapp.todolist.planner.reminders.utils.FileUtils
+import javax.inject.Inject
 
-class RecordRingtoneAdapter :
+class RecordRingtoneAdapter @Inject constructor() :
     androidx.recyclerview.widget.ListAdapter<RingtoneEntity, ItemRecordRingtoneViewHolder>(
         RecordRingtoneAdapterDiffCallback()
     ) {
@@ -49,10 +50,16 @@ class ItemRecordRingtoneViewHolder(private val itemViewBinding: ItemSelectRecord
 
     init {
         itemView.setOnClickListener {
-            itemSelectListener.let {
-                if (it != null) {
-                    (ringtoneEntity ?: null)?.let { it1 -> it(it1) }
-                }
+            itemSelectListener?.let {
+                ringtoneEntity?.let { entity -> it(entity) }
+            }
+            imgPlayListener?.let {
+                ringtoneEntity?.let { entity -> it(entity) }
+            }
+        }
+        itemViewBinding.imageDelete.setOnClickListener {
+            imgDeleteListener?.let {
+                ringtoneEntity?.let { entity -> it(entity) }
             }
         }
     }
@@ -66,7 +73,7 @@ class ItemRecordRingtoneViewHolder(private val itemViewBinding: ItemSelectRecord
             ringtoneEntity = entity
 
             tvName.text = entity.name
-            tvDuration.text = FileUtils.getAudioFileLength(itemView.context, entity.ringtoneUri, true)
+//            tvDuration.text = FileUtils.getAudioFileLength(itemView.context, entity.ringtoneUri, true)
 
             val isSelect = selectEntity?.id == entity.id && entity.type == selectEntity.type
             val background = if (isSelect)

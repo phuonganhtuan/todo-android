@@ -1,26 +1,30 @@
 package com.trustedapp.todolist.planner.reminders.screens.settings.notireminder
 
 import android.app.Activity
-import android.content.ContentUris
 import android.content.Context
-import android.database.Cursor
 import android.media.RingtoneManager
 import android.net.Uri
 import android.os.Build
-import android.os.Environment
+import android.os.FileUtils
 import android.provider.MediaStore
 import android.util.Log
+import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.trustedapp.todolist.planner.reminders.R
 import com.trustedapp.todolist.planner.reminders.base.LoadDataState
-import com.trustedapp.todolist.planner.reminders.data.models.entity.*
+import com.trustedapp.todolist.planner.reminders.data.models.entity.RingtoneEntity
+import com.trustedapp.todolist.planner.reminders.data.models.entity.RingtoneEntityTypeEnum
+import com.trustedapp.todolist.planner.reminders.data.models.entity.SYSTEM_RINGTONE_ID
+import com.trustedapp.todolist.planner.reminders.data.models.entity.TODO_DEFAULT_RINGTONE_ID
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.File
+import java.net.URI
 import javax.inject.Inject
 
 
@@ -91,21 +95,21 @@ class NotiReminderViewModel @Inject constructor() : ViewModel() {
         try {
             val ringtoneMgr = RingtoneManager(activity)
             ringtoneMgr.setType(RingtoneManager.TYPE_RINGTONE)
-            val alarmsCursor: Cursor = ringtoneMgr.cursor
-            val alarmsCount: Int = alarmsCursor.getCount()
+            val alarmsCursor = ringtoneMgr.cursor
+            val alarmsCount = alarmsCursor.count
             if (alarmsCount == 0 && !alarmsCursor.moveToFirst()) {
                 alarmsCursor.close()
                 return ArrayList()
             }
-            while (!alarmsCursor.isAfterLast() && alarmsCursor.moveToNext()) {
-                val currentPosition: Int = alarmsCursor.getPosition()
-                val rington = ringtoneMgr.getRingtone(currentPosition)
+            while (!alarmsCursor.isAfterLast && alarmsCursor.moveToNext()) {
+                val currentPosition = alarmsCursor.position
+                val ringtone = ringtoneMgr.getRingtone(currentPosition)
                 val uri = ringtoneMgr.getRingtoneUri(currentPosition)
 
                 alarms.add(
                     RingtoneEntity(
                         currentPosition,
-                        rington.getTitle(context),
+                        ringtone.getTitle(context),
                         uri,
                         RingtoneEntityTypeEnum.SYSTEM_RINGTONE
                     )
@@ -165,8 +169,10 @@ class NotiReminderViewModel @Inject constructor() : ViewModel() {
      */
     fun addRecord(entity: RingtoneEntity) {
         viewModelScope.launch {
-            _listRecord.value += withContext(Dispatchers.IO) {
-                listOf(entity)
+            withContext(Dispatchers.IO) {
+                val list = _listRecord.value.toMutableList()
+                list.add(0, entity)
+                _listRecord.value = list
             }
         }
     }
@@ -174,17 +180,27 @@ class NotiReminderViewModel @Inject constructor() : ViewModel() {
     /**
      * remove record
      */
-    fun removeRecord(entity: RingtoneEntity) {
-        viewModelScope.launch {
-            _listRecord.value += withContext(Dispatchers.IO) {
-                _listRecord.value.filter { it.id != entity.id && it.type == entity.type }
+    fun removeRecord(context: Context, entity: RingtoneEntity) = viewModelScope.launch {
+        withContext(Dispatchers.IO) {
+
+            try {
+                val file = File(com.trustedapp.todolist.planner.reminders.utils.FileUtils.getRealPathFromURI(context, entity.ringtoneUri))
+                if (file.exists()) {
+                    file.delete()
+                }
+            } catch (exception: Exception) {
+                return@withContext
             }
+            val list = _listRecord.value.toMutableList()
+            list.remove(entity)
+            _listRecord.value = list
         }
     }
 
     /**
      * query audio
      */
+    @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
     private fun loadAudioFromStorage(context: Context): MutableList<RingtoneEntity> {
         val audioList = mutableListOf<RingtoneEntity>()
         try {
@@ -205,59 +221,30 @@ class NotiReminderViewModel @Inject constructor() : ViewModel() {
                 MediaStore.Audio.Media.ALBUM
             )
 
-// Display videos in alphabetical order based on their display name.
             val sortOrder = "${MediaStore.Audio.Media.DISPLAY_NAME} ASC"
             val absolutePath =
-                Environment.getExternalStorageDirectory().absolutePath + "/TodoRecord/%"
+                context.getExternalFilesDir(null)?.absolutePath + "/TodoRecord"
             val selection = MediaStore.Audio.Media.IS_MUSIC + " != 0 AND " +
                     MediaStore.Audio.Media.DATA + " LIKE '$absolutePath'"
 
-            val query = context.applicationContext.contentResolver.query(
-                collection,
-                projection,
-                null,
-                null,
-                sortOrder
-            )
-            query?.use { cursor ->
-                // Cache column indices.
-                cursor?.let {
-                    val idColumn = it.getColumnIndexOrThrow(MediaStore.Audio.Media._ID)
-                    val nameColumn =
-                        it.getColumnIndexOrThrow(MediaStore.Audio.Media.DISPLAY_NAME)
-                    val sizeColumn = it.getColumnIndexOrThrow(MediaStore.Audio.Media.SIZE)
-                    val durationColumn =
-                        it.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION)
-                    val absolutePathOfAudioColumn =
-                        it.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA)
-                    val bucketNameColumn =
-                        it.getColumnIndexOrThrow(MediaStore.Audio.Media.ALBUM)
-                    var i = 1
-                    while (it.moveToNext()) {
-                        // Get values of columns for a given video.
-                        val id = it.getLong(idColumn)
-                        val name = it.getString(nameColumn)
-                        val extension: String = name.substring(name.lastIndexOf("."))
-                        val size = it.getString(sizeColumn)
-                        val duration = cursor.getInt(durationColumn)
-                        val absolutePathOfAudio = it.getString(absolutePathOfAudioColumn)
-                        val bucketName = it.getString(bucketNameColumn)
-                        val contentUri: Uri = ContentUris.withAppendedId(
-                            MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
-                            id
-                        )
-                        audioList += RingtoneEntity(
-                            i,
-                            name,
-                            contentUri,
-                            RingtoneEntityTypeEnum.RECORD
-                        )
-                        i++
-                    }
-
+            val dir = File(absolutePath)
+            if (dir.exists()) {
+                var increasingId = 0
+                val customRingtones = dir.listFiles().filter { it.extension == "mp3" }.map {
+                    increasingId += 1
+                    RingtoneEntity(
+                        increasingId,
+                        it.name,
+                        FileProvider.getUriForFile(
+                            context,
+                            context.packageName + ".provider",
+                            it
+                        ),
+                        RingtoneEntityTypeEnum.RECORD
+                    )
                 }
+                return customRingtones.toMutableList()
             }
-            query?.close()
         } catch (e: java.lang.Exception) {
             Log.e("loadAudioFromStorage - e", e.message.toString())
         }
@@ -267,8 +254,8 @@ class NotiReminderViewModel @Inject constructor() : ViewModel() {
 
     fun getAllRecord(context: Context) {
         viewModelScope.launch {
-            _listRecord.value += withContext(Dispatchers.IO) {
-                loadAudioFromStorage(context)
+            withContext(Dispatchers.IO) {
+                _listRecord.value = loadAudioFromStorage(context).asReversed()
             }
         }
     }

@@ -7,8 +7,8 @@ import android.media.MediaPlayer
 import android.media.MediaRecorder
 import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
 import android.os.Handler
+import android.os.Looper
 import android.os.SystemClock
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +18,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import com.trustedapp.todolist.planner.reminders.R
 import com.trustedapp.todolist.planner.reminders.base.BaseFragment
 import com.trustedapp.todolist.planner.reminders.data.models.entity.RingtoneEntity
@@ -27,24 +28,36 @@ import com.trustedapp.todolist.planner.reminders.databinding.FragmentRecordRingt
 import com.trustedapp.todolist.planner.reminders.screens.settings.notireminder.NotiReminderViewModel
 import com.trustedapp.todolist.planner.reminders.utils.gone
 import com.trustedapp.todolist.planner.reminders.utils.hide
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filter
 import java.io.File
 import java.io.IOException
+import javax.inject.Inject
 
-
+@AndroidEntryPoint
 class RecordRingtone : BaseFragment<FragmentRecordRingtoneBinding>() {
     private val viewModel: NotiReminderViewModel by activityViewModels()
     private var output: String? = null
     private var state: Boolean = false
-    private var mediaRecorder: MediaRecorder = MediaRecorder()
+    private val mediaRecorder: MediaRecorder by lazy {
+        MediaRecorder().apply {
+            setAudioSource(MediaRecorder.AudioSource.MIC)
+            setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
+            setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
+            setOutputFile(output)
+            setAudioEncodingBitRate(384000)
+            setAudioSamplingRate(44100)
+        }
+    }
     private var startHTime = 0L
-    private val customHandler = Handler()
+    private val customHandler = Handler(Looper.getMainLooper())
     var timeInMilliseconds = 0L
     var timeSwapBuff = 0L
     var updatedTime = 0L
 
-    private var adapter: RecordRingtoneAdapter? = null
+    @Inject
+    lateinit var adapter: RecordRingtoneAdapter
     private var mediaPlayer: MediaPlayer = MediaPlayer()
 
     override fun inflateViewBinding(
@@ -78,7 +91,6 @@ class RecordRingtone : BaseFragment<FragmentRecordRingtoneBinding>() {
     }
 
     private fun initView() = with(viewBinding) {
-        adapter = RecordRingtoneAdapter()
         recycleSystemRingtone.adapter = adapter
     }
 
@@ -90,14 +102,17 @@ class RecordRingtone : BaseFragment<FragmentRecordRingtoneBinding>() {
         imgRecord.setOnClickListener {
             viewModel.setRecording(!viewModel.isRecording.value)
         }
-        adapter?.itemSelectListener = {
+        adapter.itemSelectListener = {
             viewModel.selectRingtoneEntity(it)
         }
-        adapter?.imgPlayListener = {
-             playRingtone(it)
+        adapter.imgPlayListener = {
+            playRingtone(it)
         }
-        adapter?.imgDeleteListener = {
-            viewModel.removeRecord(it)
+        adapter.imgDeleteListener = {
+            viewModel.removeRecord(requireContext(), it)
+        }
+        layoutTop.button1.setOnClickListener {
+            findNavController().popBackStack()
         }
     }
 
@@ -106,7 +121,7 @@ class RecordRingtone : BaseFragment<FragmentRecordRingtoneBinding>() {
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 isRecording.collect {
-                    viewBinding.imgRecord.setImageResource(if (it) R.drawable.ic_recording else R.drawable.ic_record_ringtone)
+                    viewBinding.imgRecord.setImageResource(if (it) R.drawable.ic_recording_no_bg else R.drawable.ic_mic)
                     if (it) {
                         checkPermission()
                     } else {
@@ -120,14 +135,14 @@ class RecordRingtone : BaseFragment<FragmentRecordRingtoneBinding>() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 listRecord.collect {
                     if (it.isNotEmpty()) {
-                        adapter?.submitList(it)
+                        adapter.submitList(it)
                     }
                     val absolutePath =
-                        Environment.getExternalStorageDirectory().absolutePath + "/TodoRecord"
+                        requireContext().getExternalFilesDir(null)?.absolutePath + "/TodoRecord"
                     if (File(absolutePath).mkdirs()) {
                     }
                     output =
-                        absolutePath + "/Ringtone ${it.count() + 1}.mp3"
+                        absolutePath + "/Ringtone_${it.count() + 1}.mp3"
 
                 }
             }
@@ -135,9 +150,9 @@ class RecordRingtone : BaseFragment<FragmentRecordRingtoneBinding>() {
 
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                selectNotificationRingtone?.filter { it != null }?.collect {
-                    adapter?.selectEntity = it
-                    adapter?.notifyDataSetChanged()
+                selectNotificationRingtone.filter { it != null }.collect {
+                    adapter.selectEntity = it
+                    adapter.notifyDataSetChanged()
                 }
             }
         }
@@ -186,15 +201,22 @@ class RecordRingtone : BaseFragment<FragmentRecordRingtoneBinding>() {
 
     private fun startRecording() {
         try {
-            mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC)
-            mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
-            mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
-            mediaRecorder?.setOutputFile(output)
-            mediaRecorder?.prepare()
-            mediaRecorder?.start()
+            stopRingtone()
+            val file = File(output ?: "")
+            file.createNewFile()
+            mediaRecorder.apply {
+                setOutputFile(output)
+                prepare()
+                start()
+            }
             state = true
-            startHTime = SystemClock.uptimeMillis();
-            customHandler.postDelayed(updateTimerThread, 0);
+            startHTime = SystemClock.uptimeMillis()
+            customHandler.removeCallbacksAndMessages(null)
+            customHandler.postDelayed(updateTimerThread, 0)
+            viewBinding.apply {
+                content.startRippleAnimation()
+                textRecord.text = getString(R.string.recording)
+            }
         } catch (e: IllegalStateException) {
             e.printStackTrace()
         } catch (e: IOException) {
@@ -204,42 +226,45 @@ class RecordRingtone : BaseFragment<FragmentRecordRingtoneBinding>() {
 
     private fun stopRecording() {
         if (state) {
-            mediaRecorder?.stop()
-            mediaRecorder?.release()
+            mediaRecorder.stop()
+            mediaRecorder.release()
             state = false
-            timeSwapBuff += timeInMilliseconds;
-            customHandler.removeCallbacks(updateTimerThread);
+            timeSwapBuff += timeInMilliseconds
+            customHandler.removeCallbacks(updateTimerThread)
             if (output?.isNotEmpty() == true) {
                 val entity = RingtoneEntity(
                     viewModel.listRecord.value.count() + 1,
                     output!!.substring(output!!.lastIndexOf("/") + 1),
-                    Uri.fromFile(
-                        File(output)
-                    ),
+                    Uri.fromFile(File(output)),
                     RingtoneEntityTypeEnum.RECORD
                 )
                 viewModel.addRecord(entity)
+                Handler(Looper.getMainLooper()).postDelayed({
+                    viewBinding.recycleSystemRingtone.smoothScrollToPosition(0)
+                }, 200)
+            }
+            viewBinding.apply {
+                content.stopRippleAnimation()
+                tvDuration.text = "00:00"
+                textRecord.text = getString(R.string.start_record)
             }
         }
     }
 
     private fun playRingtone(entity: RingtoneEntity) {
         try {
-            if (mediaPlayer != null && mediaPlayer?.isPlaying == true) {
-                mediaPlayer?.stop()
-            }
-            if (entity.id == TODO_DEFAULT_RINGTONE_ID) {
-                mediaPlayer =
-                    MediaPlayer.create(context?.getApplicationContext(), R.raw.to_do_default)
+            stopRecording()
+            stopRingtone()
+            mediaPlayer = if (entity.id == TODO_DEFAULT_RINGTONE_ID) {
+                MediaPlayer.create(context?.applicationContext, R.raw.to_do_default)
 
             } else {
-                mediaPlayer =
-                    MediaPlayer.create(context?.getApplicationContext(), entity.ringtoneUri)
+                MediaPlayer.create(context?.applicationContext, entity.ringtoneUri)
             }
 
-            mediaPlayer?.setOnPreparedListener {
+            mediaPlayer.setOnPreparedListener {
                 Handler().postDelayed(Runnable {
-                    it.stop();
+                    it.stop()
                 }, it.duration.toLong())
                 it.start()
             }
@@ -249,8 +274,8 @@ class RecordRingtone : BaseFragment<FragmentRecordRingtoneBinding>() {
     }
 
     private fun stopRingtone() {
-        if (mediaPlayer != null && mediaPlayer?.isPlaying == true) {
-            mediaPlayer?.stop()
+        if (mediaPlayer.isPlaying) {
+            mediaPlayer.stop()
         }
     }
 
@@ -260,10 +285,10 @@ class RecordRingtone : BaseFragment<FragmentRecordRingtoneBinding>() {
             updatedTime = timeSwapBuff + timeInMilliseconds
             var secs = (updatedTime / 1000).toInt()
             val mins = secs / 60
-            secs = secs % 60
+            secs %= 60
             if (viewBinding.tvDuration != null) viewBinding.tvDuration.text =
                 "" + String.format("%02d", mins) + ":" + String.format("%02d", secs)
-            customHandler.postDelayed(this, 0)
+            customHandler.postDelayed(this, 1000)
         }
     }
 }
