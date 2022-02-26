@@ -1,17 +1,18 @@
 package com.trustedapp.todolist.planner.reminders.widget.standard
 
-import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.view.View
 import android.widget.RemoteViews
 import android.widget.RemoteViewsService
+import androidx.core.content.ContextCompat
 import com.trustedapp.todolist.planner.reminders.R
 import com.trustedapp.todolist.planner.reminders.data.datasource.local.database.AppDatabase
 import com.trustedapp.todolist.planner.reminders.data.models.entity.TaskShort
-import com.trustedapp.todolist.planner.reminders.screens.taskdetail.TaskDetailActivity
 import com.trustedapp.todolist.planner.reminders.utils.Constants
 import com.trustedapp.todolist.planner.reminders.utils.DateTimeUtils
+import com.trustedapp.todolist.planner.reminders.widget.standard.StandardWidget.Companion.ACTION_CLICK_ITEM
+import com.trustedapp.todolist.planner.reminders.widget.standard.StandardWidget.Companion.ACTION_DONE_ITEM
 import java.util.*
 import kotlin.random.Random
 
@@ -50,6 +51,18 @@ class StandardTodayFactory(private val context: Context, intent: Intent?) :
 
     override fun getViewAt(position: Int): RemoteViews {
         val rv = RemoteViews(context.packageName, R.layout.item_widget_standard_task)
+        if (todayTasks[position].isHeader) {
+            rv.setViewVisibility(R.id.textHeader, View.VISIBLE)
+            rv.setTextViewText(R.id.textHeader, todayTasks[position].header)
+        } else {
+            rv.setViewVisibility(R.id.textHeader, View.GONE)
+        }
+        if (todayTasks[position].task == null) {
+            rv.setViewVisibility(R.id.layoutWidgetContent, View.GONE)
+            return rv
+        } else {
+            rv.setViewVisibility(R.id.layoutWidgetContent, View.VISIBLE)
+        }
         rv.setTextViewText(R.id.textTitleWidget, todayTasks[position].task?.task?.title)
         val timeString = if (!todayTasks[position].isOther) {
             DateTimeUtils.getHourMinuteFromMillisecond(
@@ -68,15 +81,24 @@ class StandardTodayFactory(private val context: Context, intent: Intent?) :
                 R.drawable.ic_checkbox_uncheck_grey
             }
         rv.setImageViewResource(R.id.imageStatus, imageId)
-        if (todayTasks[position].isHeader) {
-            rv.setViewVisibility(R.id.textHeader, View.VISIBLE)
-            rv.setTextViewText(R.id.textHeader, todayTasks[position].header)
-        } else {
-            rv.setViewVisibility(R.id.textHeader, View.GONE)
-        }
         val intentTask = Intent().apply {
+            action = ACTION_CLICK_ITEM
             putExtra(Constants.KEY_TASK_ID, todayTasks[position].task?.task?.id)
         }
+
+        val intentTaskStatus = Intent().apply {
+            action = ACTION_DONE_ITEM
+            putExtra(Constants.KEY_TASK_ID, todayTasks[position].task?.task?.id)
+        }
+
+        val textColor = if (todayTasks[position].isOther) {
+            R.color.color_text_secondary_dark
+        } else {
+            R.color.color_menu_text_default
+        }
+        rv.setTextColor(R.id.textTitleWidget, ContextCompat.getColor(context, textColor))
+
+        rv.setOnClickFillInIntent(R.id.imageStatus, intentTaskStatus)
         rv.setOnClickFillInIntent(R.id.layoutRoot, intentTask)
         return rv
     }

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="top"
-    android:background="@drawable/bg_white_rounded_16"
+    android:background="@drawable/bg_white_rounded"
     android:gravity="top">
 
     <TextView
@@ -22,21 +22,25 @@
 
     <ImageView
         android:id="@+id/imagePreviousMonth"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:layout_alignTop="@id/textMonthYear"
         android:layout_marginVertical="15dp"
         android:layout_toStartOf="@id/textMonthYear"
-        android:contentDescription="@null" />
+        android:background="@drawable/bg_white_rounded_8"
+        android:contentDescription="@null"
+        android:padding="4dp" />
 
     <ImageView
         android:id="@+id/imageNextMonth"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:layout_alignTop="@id/textMonthYear"
         android:layout_marginVertical="15dp"
         android:layout_toEndOf="@id/textMonthYear"
-        android:contentDescription="@null" />
+        android:background="@drawable/bg_white_rounded_8"
+        android:contentDescription="@null"
+        android:padding="4dp" />
 
     <ImageView
         android:id="@+id/imageSetting"
@@ -133,11 +137,10 @@
     <GridView
         android:id="@+id/gridCalendar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_below="@id/layoutDays"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="16dp"
         android:columnWidth="36dp"
         android:numColumns="7"
         tools:listitem="@layout/item_calendar_widget" />

@@ -94,7 +94,7 @@ class RecordRingtone : BaseFragment<FragmentRecordRingtoneBinding>() {
             viewModel.selectRingtoneEntity(it)
         }
         adapter?.imgPlayListener = {
-            playRingtone(it)
+             playRingtone(it)
         }
         adapter?.imgDeleteListener = {
             viewModel.removeRecord(it)
