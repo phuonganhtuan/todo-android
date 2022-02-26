@@ -15,6 +15,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.trustedapp.todolist.planner.reminders.R
 import com.trustedapp.todolist.planner.reminders.screens.theme.currentTheme
 import com.trustedapp.todolist.planner.reminders.widget.lite.LiteWidget
+import com.trustedapp.todolist.planner.reminders.widget.month.MonthWidget
 import com.trustedapp.todolist.planner.reminders.widget.standard.StandardWidget
 
 
@@ -64,16 +65,27 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
     }
 
     fun updateWidget() {
+        val appWidgetManager = AppWidgetManager.getInstance(applicationContext)
+
         val components = listOf(
             StandardWidget::class.java,
             LiteWidget::class.java,
         )
         components.forEach {
-            val ids = AppWidgetManager.getInstance(application).getAppWidgetIds(
+            val ids = appWidgetManager.getAppWidgetIds(
                 ComponentName(application, it)
             )
-            val appWidgetManager = AppWidgetManager.getInstance(this)
             appWidgetManager.notifyAppWidgetViewDataChanged(ids, R.id.listTasks)
+        }
+        appWidgetManager.apply {
+            notifyAppWidgetViewDataChanged(
+                getAppWidgetIds(
+                    ComponentName(
+                        application,
+                        MonthWidget::class.java
+                    )
+                ), R.id.gridCalendar
+            )
         }
     }
 }

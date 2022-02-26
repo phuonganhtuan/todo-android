@@ -141,7 +141,6 @@
         android:layout_below="@id/layoutDays"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="16dp"
         android:columnWidth="36dp"
         android:numColumns="7"
         tools:listitem="@layout/item_calendar_widget" />

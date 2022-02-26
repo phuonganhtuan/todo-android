@@ -4,6 +4,7 @@ import android.app.PendingIntent
 import android.app.PendingIntent.FLAG_IMMUTABLE
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.widget.RemoteViews
@@ -31,6 +32,13 @@ class LiteWidget : AppWidgetProvider() {
                 })
             }
             return
+        }
+        val appWidgetManager = AppWidgetManager.getInstance(context)
+
+        context?.let {
+            val widget = ComponentName(context, LiteWidget::class.java)
+            onUpdate(it, appWidgetManager, appWidgetManager.getAppWidgetIds(widget))
+            appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetManager.getAppWidgetIds(widget), R.id.listTasks)
         }
     }
 

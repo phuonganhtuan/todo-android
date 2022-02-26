@@ -11,13 +11,9 @@ import android.content.Intent
 import android.widget.RemoteViews
 import com.trustedapp.todolist.planner.reminders.R
 import com.trustedapp.todolist.planner.reminders.screens.home.HomeActivity
-import com.trustedapp.todolist.planner.reminders.screens.newtask.NewTaskActivity
-import com.trustedapp.todolist.planner.reminders.screens.taskdetail.TaskDetailActivity
-import com.trustedapp.todolist.planner.reminders.utils.Constants
 import com.trustedapp.todolist.planner.reminders.utils.DateTimeUtils
 import java.util.*
-import java.util.Calendar.DAY_OF_MONTH
-import java.util.Calendar.MONTH
+import java.util.Calendar.*
 
 
 class MonthWidget : AppWidgetProvider() {
@@ -34,14 +30,17 @@ class MonthWidget : AppWidgetProvider() {
         when (intent?.action) {
             PREVIOUS_MONTH_ACTION -> toPreviousMonth()
             NEXT_MONTH_ACTION -> toNextMonth()
-            else -> return
+            Intent.ACTION_DATE_CHANGED -> currentMonth = getInstance()
         }
         val appWidgetManager = AppWidgetManager.getInstance(context)
 
         context?.let {
             val widget = ComponentName(context, MonthWidget::class.java)
             onUpdate(it, appWidgetManager, appWidgetManager.getAppWidgetIds(widget))
-            appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetManager.getAppWidgetIds(widget), R.id.gridCalendar)
+            appWidgetManager.notifyAppWidgetViewDataChanged(
+                appWidgetManager.getAppWidgetIds(widget),
+                R.id.gridCalendar
+            )
         }
     }
 

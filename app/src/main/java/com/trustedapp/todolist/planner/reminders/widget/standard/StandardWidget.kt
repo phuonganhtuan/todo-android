@@ -13,6 +13,7 @@ import com.trustedapp.todolist.planner.reminders.screens.home.HomeActivity
 import com.trustedapp.todolist.planner.reminders.screens.newtask.NewTaskActivity
 import com.trustedapp.todolist.planner.reminders.screens.taskdetail.TaskDetailActivity
 import com.trustedapp.todolist.planner.reminders.utils.Constants
+import com.trustedapp.todolist.planner.reminders.widget.month.MonthWidget
 
 
 class StandardWidget : AppWidgetProvider() {
@@ -55,6 +56,14 @@ class StandardWidget : AppWidgetProvider() {
                 })
             }
             return
+        }
+
+        val appWidgetManager = AppWidgetManager.getInstance(context)
+
+        context?.let {
+            val widget = ComponentName(context, StandardWidget::class.java)
+            onUpdate(it, appWidgetManager, appWidgetManager.getAppWidgetIds(widget))
+            appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetManager.getAppWidgetIds(widget), R.id.listTasks)
         }
     }
 

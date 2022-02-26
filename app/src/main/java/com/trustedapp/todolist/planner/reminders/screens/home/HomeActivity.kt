@@ -7,7 +7,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
 import android.view.MenuItem
-import android.view.WindowManager
 import android.widget.ImageView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -28,6 +27,7 @@ import com.trustedapp.todolist.planner.reminders.utils.SPUtils
 import com.trustedapp.todolist.planner.reminders.utils.gone
 import com.trustedapp.todolist.planner.reminders.utils.show
 import com.trustedapp.todolist.planner.reminders.widget.lite.LiteWidget
+import com.trustedapp.todolist.planner.reminders.widget.month.MonthWidget
 import com.trustedapp.todolist.planner.reminders.widget.standard.StandardWidget
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -147,16 +147,27 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun updateWidget() {
+        val appWidgetManager = AppWidgetManager.getInstance(applicationContext)
+
         val components = listOf(
             StandardWidget::class.java,
             LiteWidget::class.java,
         )
         components.forEach {
-            val ids = AppWidgetManager.getInstance(application).getAppWidgetIds(
+            val ids = appWidgetManager.getAppWidgetIds(
                 ComponentName(application, it)
             )
-            val appWidgetManager = AppWidgetManager.getInstance(this)
             appWidgetManager.notifyAppWidgetViewDataChanged(ids, R.id.listTasks)
+        }
+        appWidgetManager.apply {
+            notifyAppWidgetViewDataChanged(
+                getAppWidgetIds(
+                    ComponentName(
+                        application,
+                        MonthWidget::class.java
+                    )
+                ), R.id.gridCalendar
+            )
         }
     }
 }
