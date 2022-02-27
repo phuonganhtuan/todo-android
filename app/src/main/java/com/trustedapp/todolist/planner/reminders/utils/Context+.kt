@@ -1,8 +1,12 @@
 package com.trustedapp.todolist.planner.reminders.utils
 
+import android.content.BroadcastReceiver
 import android.content.Context
+import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.util.Log
+import kotlinx.coroutines.flow.MutableStateFlow
 
 fun Context.isInternetAvailable(): Boolean {
 
@@ -17,4 +21,16 @@ fun Context.isInternetAvailable(): Boolean {
         actNw.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
         else -> false
     }
+}
+
+class NetworkChangeReceiver : BroadcastReceiver() {
+
+    override fun onReceive(context: Context, intent: Intent) {
+        NetworkState.isHasInternet.value = context.isInternetAvailable()
+    }
+}
+
+object NetworkState {
+
+    val isHasInternet = MutableStateFlow(true)
 }

@@ -43,6 +43,7 @@
         <entry key="app/src/main/res/drawable/ic_checked_radio.xml" value="0.121" />
         <entry key="app/src/main/res/drawable/ic_checked_rate_app.xml" value="0.121" />
         <entry key="app/src/main/res/drawable/ic_checked_version.xml" value="0.121" />
+        <entry key="app/src/main/res/drawable/ic_done_primary.xml" value="0.2225" />
         <entry key="app/src/main/res/drawable/ic_group_97_3x.xml" value="0.214" />
         <entry key="app/src/main/res/drawable/ic_mark.xml" value="0.121" />
         <entry key="app/src/main/res/drawable/ic_mark_as_done.xml" value="0.121" />
@@ -68,9 +69,11 @@
         <entry key="app/src/main/res/drawable/style_menu_item.xml" value="0.121" />
         <entry key="app/src/main/res/layout/activity_alarm.xml" value="0.32133333333333336" />
         <entry key="app/src/main/res/layout/activity_home.xml" value="0.10371376811594203" />
+        <entry key="app/src/main/res/layout/activity_language.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_new_task.xml" value="0.10371376811594203" />
         <entry key="app/src/main/res/layout/activity_noti_reminder.xml" value="0.10989583333333333" />
         <entry key="app/src/main/res/layout/activity_task_detail.xml" value="0.10989583333333333" />
+        <entry key="app/src/main/res/layout/activity_theme.xml" value="0.32133333333333336" />
         <entry key="app/src/main/res/layout/activity_widget.xml" value="0.33" />
         <entry key="app/src/main/res/layout/content_home.xml" value="0.10989583333333333" />
         <entry key="app/src/main/res/layout/fragment_calendar.xml" value="0.10371376811594203" />
@@ -90,6 +93,7 @@
         <entry key="app/src/main/res/layout/fragment_tasks.xml" value="0.10989583333333333" />
         <entry key="app/src/main/res/layout/fragment_tasks_page.xml" value="0.10989583333333333" />
         <entry key="app/src/main/res/layout/item_calendar_widget.xml" value="0.3256756756756757" />
+        <entry key="app/src/main/res/layout/item_language.xml" value="0.2063063063063063" />
         <entry key="app/src/main/res/layout/item_select_radio.xml" value="0.1" />
         <entry key="app/src/main/res/layout/item_select_ratio.xml" value="0.659375" />
         <entry key="app/src/main/res/layout/item_select_record_ringtone.xml" value="0.25" />

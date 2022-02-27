@@ -112,6 +112,7 @@
     <string name="banner_ads_id">ca-app-pub-3940256099942544/6300978111</string>
     <string name="inter_splash_ads_id">ca-app-pub-3940256099942544/1033173712</string>
     <string name="inter_insert_ads_id">ca-app-pub-3940256099942544/1033173712</string>
+    <string name="native_language_setup_ads_id">ca-app-pub-3940256099942544/2247696110</string>
 
     <string name="facebook_app_id">1561758810851820</string>
     <string name="facebook_client_token">Facebook Client ID</string>
@@ -189,4 +190,5 @@
     <string name="todo_default">To-do default</string>
     <string name="recording">Recording</string>
     <string name="start_record">Start record</string>
+    <string name="ad">AD</string>
 </resources>
