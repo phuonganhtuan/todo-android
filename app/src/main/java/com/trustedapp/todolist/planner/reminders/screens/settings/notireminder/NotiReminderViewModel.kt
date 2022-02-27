@@ -4,11 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.media.RingtoneManager
 import android.net.Uri
-import android.os.Build
-import android.os.FileUtils
-import android.provider.MediaStore
 import android.util.Log
-import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.trustedapp.todolist.planner.reminders.R
@@ -17,6 +13,7 @@ import com.trustedapp.todolist.planner.reminders.data.models.entity.RingtoneEnti
 import com.trustedapp.todolist.planner.reminders.data.models.entity.RingtoneEntityTypeEnum
 import com.trustedapp.todolist.planner.reminders.data.models.entity.SYSTEM_RINGTONE_ID
 import com.trustedapp.todolist.planner.reminders.data.models.entity.TODO_DEFAULT_RINGTONE_ID
+import com.trustedapp.todolist.planner.reminders.utils.Constants
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,7 +21,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
-import java.net.URI
 import javax.inject.Inject
 
 
@@ -184,65 +180,47 @@ class NotiReminderViewModel @Inject constructor() : ViewModel() {
         withContext(Dispatchers.IO) {
 
             try {
-                val file = File(com.trustedapp.todolist.planner.reminders.utils.FileUtils.getRealPathFromURI(context, entity.ringtoneUri))
+                val file = File(
+                    entity.ringtoneUri.toString().replace("file:/", "").replace("content:/", "")
+                )
                 if (file.exists()) {
                     file.delete()
+
+                    val list = _listRecord.value.toMutableList()
+                    list.remove(entity)
+                    _listRecord.value = list
                 }
             } catch (exception: Exception) {
                 return@withContext
             }
-            val list = _listRecord.value.toMutableList()
-            list.remove(entity)
-            _listRecord.value = list
         }
     }
 
     /**
      * query audio
      */
-    @Suppress("RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
     private fun loadAudioFromStorage(context: Context): MutableList<RingtoneEntity> {
         val audioList = mutableListOf<RingtoneEntity>()
         try {
-            val collection = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                MediaStore.Audio.Media.getContentUri(
-                    MediaStore.VOLUME_EXTERNAL_PRIMARY
-                )
-            } else {
-                MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
-            }
-
-            val projection = arrayOf(
-                MediaStore.Audio.Media._ID,
-                MediaStore.Audio.Media.DISPLAY_NAME,
-                MediaStore.Audio.Media.SIZE,
-                MediaStore.Video.Media.DURATION,
-                MediaStore.MediaColumns.DATA,
-                MediaStore.Audio.Media.ALBUM
-            )
-
-            val sortOrder = "${MediaStore.Audio.Media.DISPLAY_NAME} ASC"
             val absolutePath =
-                context.getExternalFilesDir(null)?.absolutePath + "/TodoRecord"
-            val selection = MediaStore.Audio.Media.IS_MUSIC + " != 0 AND " +
-                    MediaStore.Audio.Media.DATA + " LIKE '$absolutePath'"
-
+                context.getExternalFilesDir(null)?.absolutePath + Constants.RECORD_RINGTONE_FOLDER
             val dir = File(absolutePath)
             if (dir.exists()) {
                 var increasingId = 0
-                val customRingtones = dir.listFiles().filter { it.extension == "mp3" }.map {
-                    increasingId += 1
-                    RingtoneEntity(
-                        increasingId,
-                        it.name,
-                        FileProvider.getUriForFile(
-                            context,
-                            context.packageName + ".provider",
-                            it
-                        ),
-                        RingtoneEntityTypeEnum.RECORD
-                    )
-                }
+                val customRingtones = dir.listFiles()
+                    .filter {
+                        it.extension == Constants.RECORD_RINGTONE_EXTENSION && it.name.contains(
+                            Constants.RECORD_RINGTONE_PREFIX
+                        )
+                    }.map {
+                        increasingId += 1
+                        RingtoneEntity(
+                            increasingId,
+                            it.name,
+                            Uri.fromFile(it),
+                            RingtoneEntityTypeEnum.RECORD
+                        )
+                    }
                 return customRingtones.toMutableList()
             }
         } catch (e: java.lang.Exception) {

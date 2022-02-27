@@ -73,7 +73,7 @@ class ItemRecordRingtoneViewHolder(private val itemViewBinding: ItemSelectRecord
             ringtoneEntity = entity
 
             tvName.text = entity.name
-//            tvDuration.text = FileUtils.getAudioFileLength(itemView.context, entity.ringtoneUri, true)
+            tvDuration.text = FileUtils.getAudioFileLength(itemView.context, entity.ringtoneUri, true)
 
             val isSelect = selectEntity?.id == entity.id && entity.type == selectEntity.type
             val background = if (isSelect)
@@ -84,12 +84,10 @@ class ItemRecordRingtoneViewHolder(private val itemViewBinding: ItemSelectRecord
 }
 
 class RecordRingtoneAdapterDiffCallback : BaseDiffCallBack<RingtoneEntity>() {
-    override fun areItemsTheSame(oldItem: RingtoneEntity, newItem: RingtoneEntity): Boolean {
-        return oldItem.id == newItem.id
-    }
+    override fun areItemsTheSame(oldItem: RingtoneEntity, newItem: RingtoneEntity) = oldItem === newItem
 
     override fun areContentsTheSame(oldItem: RingtoneEntity, newItem: RingtoneEntity): Boolean {
-        return oldItem.id == newItem.id
+        return oldItem.id == newItem.id && oldItem.name == newItem.name
     }
 }
 
