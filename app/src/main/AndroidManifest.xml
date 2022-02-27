@@ -70,7 +70,12 @@
             tools:targetApi="o_mr1" />
         <activity android:name=".screens.theme.ThemeActivity" />
         <activity android:name=".screens.widget.WidgetActivity" />
-
+        <activity android:name=".screens.language.start.LanguageSetupActivity" />
+        <activity android:name=".screens.settings.firstdayofweek.FirstDayOfWeekActivity" />
+        <activity android:name=".screens.settings.timeformat.TimeFormatActivity" />
+        <activity android:name=".screens.settings.dateformat.DateFormatActivity" />
+        <activity android:name=".screens.language.setting.LanguageSettingActivity" />
+        <activity android:name=".screens.settings.policy.PolicyActivity" />
         <receiver android:name=".alarm.AlarmHelper" />
         <receiver
             android:name=".alarm.SchedularBroadcast"
@@ -176,5 +181,15 @@
         <service
             android:name=".widget.month.MonthRemoteService"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
+
+        <receiver
+            android:exported="true"
+            android:name=".utils.NetworkChangeReceiver"
+            android:label="NetworkChangeReceiver" >
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
+            </intent-filter>
+        </receiver>
     </application>
 </manifest>

@@ -27,6 +27,7 @@ import com.trustedapp.todolist.planner.reminders.data.models.entity.TODO_DEFAULT
 import com.trustedapp.todolist.planner.reminders.databinding.FragmentRecordRingtoneBinding
 import com.trustedapp.todolist.planner.reminders.screens.settings.notireminder.DefaultReminderTypeEnum
 import com.trustedapp.todolist.planner.reminders.screens.settings.notireminder.NotiReminderViewModel
+import com.trustedapp.todolist.planner.reminders.utils.Constants
 import com.trustedapp.todolist.planner.reminders.utils.gone
 import com.trustedapp.todolist.planner.reminders.utils.hide
 import dagger.hilt.android.AndroidEntryPoint
@@ -41,16 +42,7 @@ class RecordRingtone : BaseFragment<FragmentRecordRingtoneBinding>() {
     private val viewModel: NotiReminderViewModel by activityViewModels()
     private var output: String? = null
     private var state: Boolean = false
-    private val mediaRecorder: MediaRecorder by lazy {
-        MediaRecorder().apply {
-            setAudioSource(MediaRecorder.AudioSource.MIC)
-            setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
-            setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
-            setOutputFile(output)
-            setAudioEncodingBitRate(384000)
-            setAudioSamplingRate(44100)
-        }
-    }
+    private val mediaRecorder = MediaRecorder()
     private var startHTime = 0L
     private val customHandler = Handler(Looper.getMainLooper())
     var timeInMilliseconds = 0L
@@ -145,11 +137,17 @@ class RecordRingtone : BaseFragment<FragmentRecordRingtoneBinding>() {
                         adapter.submitList(it)
                     }
                     val absolutePath =
-                        requireContext().getExternalFilesDir(null)?.absolutePath + "/TodoRecord"
+                        requireContext().getExternalFilesDir(null)?.absolutePath + Constants.RECORD_RINGTONE_FOLDER
                     if (File(absolutePath).mkdirs()) {
                     }
+                    val lastIndexName = it.mapNotNull { ringtone ->
+                        ringtone.name
+                            .replace(Constants.RECORD_RINGTONE_PREFIX, "")
+                            .replace("." + Constants.RECORD_RINGTONE_EXTENSION, "")
+                            .toIntOrNull()
+                    }.maxOrNull() ?: 0
                     output =
-                        absolutePath + "/Ringtone_${it.count() + 1}.mp3"
+                        absolutePath + "/${Constants.RECORD_RINGTONE_PREFIX}${lastIndexName + 1}.${Constants.RECORD_RINGTONE_EXTENSION}"
 
                 }
             }
@@ -224,11 +222,17 @@ class RecordRingtone : BaseFragment<FragmentRecordRingtoneBinding>() {
             file.createNewFile()
             mediaRecorder.apply {
                 setOutputFile(output)
+                setAudioSource(MediaRecorder.AudioSource.MIC)
+                setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
+                setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
+                setAudioEncodingBitRate(384000)
+                setAudioSamplingRate(44100)
                 prepare()
                 start()
             }
             state = true
             startHTime = SystemClock.uptimeMillis()
+            timeSwapBuff = 0L
             customHandler.removeCallbacksAndMessages(null)
             customHandler.postDelayed(updateTimerThread, 0)
             viewBinding.apply {

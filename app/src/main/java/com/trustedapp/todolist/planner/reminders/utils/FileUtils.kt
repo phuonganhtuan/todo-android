@@ -1,11 +1,14 @@
 package com.trustedapp.todolist.planner.reminders.utils
 
+import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION
+import android.database.Cursor
 import android.media.MediaMetadataRetriever
 import android.net.Uri
+import android.provider.DocumentsContract
 import android.provider.MediaStore
 import android.provider.OpenableColumns
 import android.util.Log
@@ -88,28 +91,35 @@ object FileUtils {
     }
 
     fun getAudioFileLength(context: Context, uri: Uri, stringFormat: Boolean): String {
-        val mmr = MediaMetadataRetriever()
-        mmr.setDataSource(getRealPathFromURI(context, uri))
-        val duration = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)
-        val millSecond = duration!!.toInt()
-        if (millSecond < 0) return 0.toString() // if some error then we say duration is zero
-        if (!stringFormat) return millSecond.toString()
-        val hours: Int
-        val minutes: Int
-        var seconds = millSecond / 1000
-        hours = seconds / 3600
-        minutes = seconds / 60 % 60
-        seconds %= 60
         val stringBuilder = StringBuilder()
-        if (hours in 1..9) stringBuilder.append("0").append(hours)
-            .append(":") else if (hours > 0) stringBuilder.append(hours).append(":")
-        if (minutes < 10) stringBuilder.append("0").append(minutes)
-            .append(":") else stringBuilder.append(minutes).append(":")
-        if (seconds < 10) stringBuilder.append("0").append(seconds) else stringBuilder.append(
-            seconds
-        )
+
+        try {
+            val mmr = MediaMetadataRetriever()
+            mmr.setDataSource(context, uri)
+
+            val duration = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)
+            val millSecond = duration?.toInt() ?: 0
+            if (millSecond < 0) return 0.toString() // if some error then we say duration is zero
+            if (!stringFormat) return millSecond.toString()
+            val hours: Int
+            val minutes: Int
+            var seconds = millSecond / 1000
+            hours = seconds / 3600
+            minutes = seconds / 60 % 60
+            seconds %= 60
+            if (hours in 1..9) stringBuilder.append("0").append(hours)
+                .append(":") else if (hours > 0) stringBuilder.append(hours).append(":")
+            if (minutes < 10) stringBuilder.append("0").append(minutes)
+                .append(":") else stringBuilder.append(minutes).append(":")
+            if (seconds < 10) stringBuilder.append("0").append(seconds) else stringBuilder.append(
+                seconds
+            )
+        } catch (exception: java.lang.Exception) {
+            return "N/A"
+        }
         return stringBuilder.toString()
     }
+
 
     fun getRealPathFromURI(context: Context, contentURI: Uri): String? {
         val result: String?

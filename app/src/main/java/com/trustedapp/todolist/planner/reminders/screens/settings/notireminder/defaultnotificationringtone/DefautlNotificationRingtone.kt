@@ -2,11 +2,14 @@ package com.trustedapp.todolist.planner.reminders.screens.settings.notireminder.
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
+import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
@@ -41,6 +44,7 @@ class DefautlNotificationRingtone : BaseFragment<FragmentDefautlNotificationRing
     companion object {
         private const val READ_PERMISSION_CODE = 100
         private const val WRITE_PERMISSION_CODE = 101
+        private const val REQUEST_MUSIC_FROM_DEVICE = 345
     }
 
     override fun inflateViewBinding(
@@ -97,6 +101,10 @@ class DefautlNotificationRingtone : BaseFragment<FragmentDefautlNotificationRing
         lnRecordRington.setOnClickListener {
             stopRingtone()
             findNavController().navigate(R.id.toRecordRingtone, bundleOf("type" to type.name))
+        }
+        lnDeviceMusic.setOnClickListener {
+            stopRingtone()
+            pickAudioFileFromDevice()
         }
     }
 
@@ -210,5 +218,19 @@ class DefautlNotificationRingtone : BaseFragment<FragmentDefautlNotificationRing
 
         }
 
+    }
+
+    private fun pickAudioFileFromDevice() {
+        val intent = Intent( Intent.ACTION_GET_CONTENT )
+        intent.type = "audio/*"
+        val chooserIntent = Intent.createChooser( intent, getString(R.string.music_on_device))
+        startActivityForResult( chooserIntent, REQUEST_MUSIC_FROM_DEVICE )
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if(requestCode == REQUEST_MUSIC_FROM_DEVICE && resultCode == Activity.RESULT_OK){
+            val audio = data?.data
+        }
+        super.onActivityResult(requestCode, resultCode, data)
     }
 }

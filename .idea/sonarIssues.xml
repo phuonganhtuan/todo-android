@@ -8,6 +8,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/trustedapp/todolist/planner/reminders/screens/home/HomeActivity.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/app/src/main/java/com/trustedapp/todolist/planner/reminders/screens/newtask/attachment/SelectAttachmentListViewModel.kt">
           <value>
             <set />

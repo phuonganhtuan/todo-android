@@ -5,8 +5,6 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.view.animation.AnticipateInterpolator
@@ -17,15 +15,14 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.splashscreen.SplashScreenViewProvider
 import com.ads.control.ads.Admod
 import com.ads.control.funtion.AdCallback
+import com.trustedapp.todolist.planner.reminders.screens.language.start.LanguageSetupActivity
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import com.trustedapp.todolist.planner.reminders.R
 import com.trustedapp.todolist.planner.reminders.screens.home.HomeActivity
-import com.trustedapp.todolist.planner.reminders.screens.theme.ThemeActivity
 import com.trustedapp.todolist.planner.reminders.utils.SPUtils
 import com.trustedapp.todolist.planner.reminders.utils.isInternetAvailable
 import dagger.hilt.android.AndroidEntryPoint
@@ -52,7 +49,7 @@ class SplashActivity : AppCompatActivity() {
 
     private fun toHomeDelayed() {
         if (SPUtils.isFirstTime(this)) {
-            startActivity(Intent(this, ThemeActivity::class.java))
+            startActivity(Intent(this, LanguageSetupActivity::class.java))
         } else {
             startActivity(Intent(this, HomeActivity::class.java))
         }

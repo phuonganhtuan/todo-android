@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/header"
+        layout="@layout/layout_toolbar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/header"
+        android:background="@color/color_bg_main_grey"
+        android:orientation="vertical">
+
+        <RadioGroup
+            android:id="@+id/radioGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp">
+
+            <androidx.appcompat.widget.AppCompatRadioButton
+                android:id="@+id/radioButtonType1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:button="@drawable/ic_radio"
+                android:paddingHorizontal="16dp"
+                android:textSize="16sp" />
+
+            <androidx.appcompat.widget.AppCompatRadioButton
+                android:id="@+id/radioButtonType2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:button="@drawable/ic_radio"
+                android:paddingHorizontal="16dp"
+                android:textSize="16sp" />
+
+            <androidx.appcompat.widget.AppCompatRadioButton
+                android:id="@+id/radioButtonType3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:button="@drawable/ic_radio"
+                android:paddingHorizontal="16dp"
+                android:textSize="16sp" />
+        </RadioGroup>
+    </LinearLayout>
+</RelativeLayout>

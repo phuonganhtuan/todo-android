@@ -19,6 +19,8 @@ object SPUtils {
     private const val THEME_TEXTURE_KEY = "theme_texture"
     private const val THEME_SCENERY_KEY = "theme_scenery"
 
+    private const val CURRENT_LANG_KEY = "CurrentKey"
+
     fun getSavedTheme(context: Context): Triple<Int, Int, Int> {
         val sp = context.getSharedPreferences(TODO_SP_KEY, Context.MODE_PRIVATE)
         val color = sp.getInt(THEME_COLOR_KEY, 0)
@@ -76,4 +78,14 @@ object SPUtils {
         context.getSharedPreferences(TODO_SP_KEY, Context.MODE_PRIVATE).edit()
             .putBoolean(name, value).apply()
     }
+
+    fun saveCurrentLang(context: Context, langCode: String) =
+        context.getSharedPreferences(TODO_SP_KEY, Context.MODE_PRIVATE)
+            .edit()
+            .putString(CURRENT_LANG_KEY, langCode)
+            .apply()
+
+    fun getCurrentLang(context: Context) =
+        context.getSharedPreferences(TODO_SP_KEY, Context.MODE_PRIVATE)
+            .getString(CURRENT_LANG_KEY, "")
 }

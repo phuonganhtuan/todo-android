@@ -84,8 +84,10 @@ object DateTimeUtils {
         return "${getMonthInString(context, month)} $year"
     }
 
-    fun getComparableDateString(date: Date): String {
-        val dateFormat = SimpleDateFormat("dd/MM/yyyy")
+    fun getComparableDateString(
+        date: Date, format: String = DATE_FORMAT_TYPE_2
+    ): String {
+        val dateFormat = SimpleDateFormat(format)
         return dateFormat.format(date)
     }
 
@@ -134,4 +136,8 @@ object DateTimeUtils {
             else -> -1
         }
     }
+
+    const val DATE_FORMAT_TYPE_1 = "yyyy/MM/dd"
+    const val DATE_FORMAT_TYPE_2 = "dd/MM/yyyy"
+    const val DATE_FORMAT_TYPE_3 = "MM/dd/yyyy"
 }

@@ -112,6 +112,7 @@
     <string name="banner_ads_id">ca-app-pub-3940256099942544/6300978111</string>
     <string name="inter_splash_ads_id">ca-app-pub-3940256099942544/1033173712</string>
     <string name="inter_insert_ads_id">ca-app-pub-3940256099942544/1033173712</string>
+    <string name="native_language_setup_ads_id">ca-app-pub-3940256099942544/2247696110</string>
 
     <string name="facebook_app_id">1561758810851820</string>
     <string name="facebook_client_token">Facebook Client ID</string>
@@ -189,6 +190,18 @@
     <string name="todo_default">To-do default</string>
     <string name="recording">Recording</string>
     <string name="start_record">Start record</string>
+    <string name="ad">AD</string>
+    <string name="_24_hour">24 Hour</string>
+    <string name="_12_hour">12 Hour</string>
+    <string name="auto">Auto</string>
+    <string name="monday">Monday</string>
+    <string name="saturday">Saturday</string>
+    <string name="sunday">Sunday</string>
+    <string name="we_are_working_hard_to_provide_a_better_user_experience">We are working hard to provide a better user experience.</string>
+    <string name="rate">Rate</string>
+    <string name="please_rate_us_5_stars_if_you_enjoy_our_app">Please rate us 5 stars if you enjoy our app</string>
+    <string name="feedback_subject">To-do List feedback from user</string>
+    <string name="url_policy">https://google.com</string>
     <string name="snooze_after">Snooze after</string>
     <string name="five_minutes">5 minutes</string>
     <string name="fifteen_minutes">15 minutes</string>
