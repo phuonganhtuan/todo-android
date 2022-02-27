@@ -197,4 +197,9 @@
     <string name="monday">Monday</string>
     <string name="saturday">Saturday</string>
     <string name="sunday">Sunday</string>
+    <string name="we_are_working_hard_to_provide_a_better_user_experience">We are working hard to provide a better user experience.</string>
+    <string name="rate">Rate</string>
+    <string name="please_rate_us_5_stars_if_you_enjoy_our_app">Please rate us 5 stars if you enjoy our app</string>
+    <string name="feedback_subject">To-do List feedback from user</string>
+    <string name="url_policy">https://google.com</string>
 </resources>

@@ -18,9 +18,12 @@ import com.trustedapp.todolist.planner.reminders.R
 import com.trustedapp.todolist.planner.reminders.common.chart.ChartColor
 import com.trustedapp.todolist.planner.reminders.databinding.ActivityHomeBinding
 import com.trustedapp.todolist.planner.reminders.screens.home.tasks.suggest.SuggestActivity
+import com.trustedapp.todolist.planner.reminders.screens.language.setting.LanguageSettingActivity
 import com.trustedapp.todolist.planner.reminders.screens.settings.dateformat.DateFormatActivity
 import com.trustedapp.todolist.planner.reminders.screens.settings.firstdayofweek.FirstDayOfWeekActivity
 import com.trustedapp.todolist.planner.reminders.screens.settings.notireminder.NotiReminderActivity
+import com.trustedapp.todolist.planner.reminders.screens.settings.policy.PolicyActivity
+import com.trustedapp.todolist.planner.reminders.screens.settings.rating.RatingDialogFragment
 import com.trustedapp.todolist.planner.reminders.screens.settings.timeformat.TimeFormatActivity
 import com.trustedapp.todolist.planner.reminders.screens.theme.currentTheme
 import com.trustedapp.todolist.planner.reminders.screens.theme.sceneryIds
@@ -149,6 +152,23 @@ class HomeActivity : AppCompatActivity() {
             R.id.navFirstdayOfWeek -> FirstDayOfWeekActivity::class.java
             R.id.navTimeFormat -> TimeFormatActivity::class.java
             R.id.navDateFormat -> DateFormatActivity::class.java
+            R.id.navLanguage -> LanguageSettingActivity::class.java
+            R.id.navPolicy -> PolicyActivity::class.java
+            R.id.navRateApp -> {
+                RatingDialogFragment().show(
+                    supportFragmentManager,
+                    RatingDialogFragment::class.java.simpleName
+                )
+                return
+            }
+            R.id.navShareApp -> {
+                shareApp()
+                return
+            }
+            R.id.navFeedback -> {
+                sendFeedback()
+                return
+            }
             else -> return
         }
         startActivity(Intent(this, activity))
@@ -177,5 +197,24 @@ class HomeActivity : AppCompatActivity() {
                 ), R.id.gridCalendar
             )
         }
+    }
+
+    private fun shareApp() {
+        val shareIntent = Intent()
+        shareIntent.action = Intent.ACTION_SEND
+        shareIntent.type = "text/plain"
+        shareIntent.putExtra(
+            Intent.EXTRA_TEXT,
+            "http://play.google.com/store/apps/details?id=$packageName"
+        )
+        startActivity(Intent.createChooser(shareIntent, getString(R.string.share)))
+    }
+
+    private fun sendFeedback() {
+        val intent = Intent(Intent.ACTION_SENDTO)
+        intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.feedback_subject))
+        intent.data = Uri.parse("mailto:demomail@gmail.com")
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
     }
 }
