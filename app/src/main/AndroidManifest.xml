@@ -71,6 +71,9 @@
         <activity android:name=".screens.theme.ThemeActivity" />
         <activity android:name=".screens.widget.WidgetActivity" />
         <activity android:name=".screens.language.start.LanguageSetupActivity" />
+        <activity android:name=".screens.settings.firstdayofweek.FirstDayOfWeekActivity" />
+        <activity android:name=".screens.settings.timeformat.TimeFormatActivity" />
+        <activity android:name=".screens.settings.dateformat.DateFormatActivity" />
 
         <receiver android:name=".alarm.AlarmHelper" />
         <receiver

@@ -18,7 +18,10 @@ import com.trustedapp.todolist.planner.reminders.R
 import com.trustedapp.todolist.planner.reminders.common.chart.ChartColor
 import com.trustedapp.todolist.planner.reminders.databinding.ActivityHomeBinding
 import com.trustedapp.todolist.planner.reminders.screens.home.tasks.suggest.SuggestActivity
+import com.trustedapp.todolist.planner.reminders.screens.settings.dateformat.DateFormatActivity
+import com.trustedapp.todolist.planner.reminders.screens.settings.firstdayofweek.FirstDayOfWeekActivity
 import com.trustedapp.todolist.planner.reminders.screens.settings.notireminder.NotiReminderActivity
+import com.trustedapp.todolist.planner.reminders.screens.settings.timeformat.TimeFormatActivity
 import com.trustedapp.todolist.planner.reminders.screens.theme.currentTheme
 import com.trustedapp.todolist.planner.reminders.screens.theme.sceneryIds
 import com.trustedapp.todolist.planner.reminders.screens.theme.textureIds
@@ -105,7 +108,7 @@ class HomeActivity : AppCompatActivity() {
         }
         navigationSideView.setNavigationItemSelectedListener {
             onNavigationItemSelectedListener(it)
-            layoutDrawer.close()
+//            layoutDrawer.close()
             true
         }
     }
@@ -140,10 +143,15 @@ class HomeActivity : AppCompatActivity() {
 
     private fun onNavigationItemSelectedListener(item: MenuItem) {
         item.isChecked = true
-        when (item.itemId) {
-            R.id.navNotiReminder -> startActivity(Intent(this, NotiReminderActivity::class.java))
-            R.id.navWidget -> startActivity(Intent(this, WidgetActivity::class.java))
+        val activity = when (item.itemId) {
+            R.id.navNotiReminder -> NotiReminderActivity::class.java
+            R.id.navWidget -> WidgetActivity::class.java
+            R.id.navFirstdayOfWeek -> FirstDayOfWeekActivity::class.java
+            R.id.navTimeFormat -> TimeFormatActivity::class.java
+            R.id.navDateFormat -> DateFormatActivity::class.java
+            else -> return
         }
+        startActivity(Intent(this, activity))
     }
 
     private fun updateWidget() {
