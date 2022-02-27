@@ -2,7 +2,6 @@ package com.trustedapp.todolist.planner.reminders.screens.settings.notireminder.
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import com.trustedapp.todolist.planner.reminders.R
 import com.trustedapp.todolist.planner.reminders.base.BaseDiffCallBack
 import com.trustedapp.todolist.planner.reminders.base.BaseViewHolder
@@ -33,7 +32,7 @@ class ItemDafaultNotificationRingtonViewHolder(
             val isSelect = selectEntity?.id == entity.id && entity.type == selectEntity.type
             val background = if (isSelect)
                 R.drawable.ic_checked_radio
-             else R.drawable.ic_uncheck_radio
+            else R.drawable.ic_uncheck_radio
             imgRadio.setImageResource(background)
         }
 
@@ -73,11 +72,10 @@ class DafaultNotificationRingtonAdapter :
 }
 
 class DafaultNotificationRingtonDiffCallback : BaseDiffCallBack<RingtoneEntity>() {
-    override fun areItemsTheSame(oldItem: RingtoneEntity, newItem: RingtoneEntity): Boolean {
-        return oldItem.id == newItem.id
-    }
+    override fun areItemsTheSame(oldItem: RingtoneEntity, newItem: RingtoneEntity) =
+        oldItem === newItem
 
     override fun areContentsTheSame(oldItem: RingtoneEntity, newItem: RingtoneEntity): Boolean {
-        return oldItem.id == newItem.id
+        return oldItem.id == newItem.id && oldItem.name == newItem.name && oldItem.ringtoneUri.toString() == newItem.ringtoneUri.toString()
     }
 }
