@@ -19,6 +19,12 @@
         <action
             android:id="@+id/toDefautlNotificationRingtone"
             app:destination="@id/DefautlNotificationRingtone" />
+        <action
+            android:id="@+id/toSnoozeTaskReminder"
+            app:destination="@id/SnoozeTaskReminder" />
+        <action
+            android:id="@+id/toDailyReminderRingtone"
+            app:destination="@id/DailyReminderRingtone" />
     </fragment>
     <fragment
         android:id="@+id/NotificationHelpFragment"
@@ -53,4 +59,22 @@
         android:name="com.trustedapp.todolist.planner.reminders.screens.settings.notireminder.defaultnotificationringtone.RecordRingtone"
         android:label="RecordRingtone"
         tools:layout="@layout/fragment_record_ringtone"/>
+    <fragment
+        android:id="@+id/SnoozeTaskReminder"
+        android:name="com.trustedapp.todolist.planner.reminders.screens.settings.notireminder.snoozethetaskreminder.SnoozeTaskReminder"
+        android:label="SnoozeTaskReminder"
+        tools:layout="@layout/fragment_snooze_task_reminder">
+        <action
+            android:id="@+id/toSnoozeAfterDialog"
+            app:destination="@id/SnoozeAfterDialog" />
+    </fragment>
+    <dialog
+        android:id="@+id/SnoozeAfterDialog"
+        android:name="com.trustedapp.todolist.planner.reminders.screens.settings.notireminder.snoozethetaskreminder.SnoozeAfterDialog"
+        android:label="SnoozeAfterDialog"
+        tools:layout="@layout/fragment_snooze_after_dialog"/>
+    <dialog
+        android:id="@+id/DailyReminderRingtone"
+        android:name="com.trustedapp.todolist.planner.reminders.screens.settings.notireminder.dailyreminderringtone.DailyReminderRingtone"
+        android:label="DailyReminderRingtone" />
 </navigation>

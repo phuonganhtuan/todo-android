@@ -37,5 +37,9 @@ class NotiReminderActivity: BaseActivity<ActivityNotiReminderBinding>() {
         }
     }
 
+    private fun initData() = with(viewModel){
+
+    }
+
 
 }

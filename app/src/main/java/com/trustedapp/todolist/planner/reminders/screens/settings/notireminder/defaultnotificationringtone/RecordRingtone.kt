@@ -25,6 +25,7 @@ import com.trustedapp.todolist.planner.reminders.data.models.entity.RingtoneEnti
 import com.trustedapp.todolist.planner.reminders.data.models.entity.RingtoneEntityTypeEnum
 import com.trustedapp.todolist.planner.reminders.data.models.entity.TODO_DEFAULT_RINGTONE_ID
 import com.trustedapp.todolist.planner.reminders.databinding.FragmentRecordRingtoneBinding
+import com.trustedapp.todolist.planner.reminders.screens.settings.notireminder.DefaultReminderTypeEnum
 import com.trustedapp.todolist.planner.reminders.screens.settings.notireminder.NotiReminderViewModel
 import com.trustedapp.todolist.planner.reminders.utils.gone
 import com.trustedapp.todolist.planner.reminders.utils.hide
@@ -60,6 +61,8 @@ class RecordRingtone : BaseFragment<FragmentRecordRingtoneBinding>() {
     lateinit var adapter: RecordRingtoneAdapter
     private var mediaPlayer: MediaPlayer = MediaPlayer()
 
+    private lateinit var type: DefaultReminderTypeEnum
+
     override fun inflateViewBinding(
         container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -83,7 +86,7 @@ class RecordRingtone : BaseFragment<FragmentRecordRingtoneBinding>() {
     }
 
     private fun setupToolbar() = with(viewBinding.layoutTop) {
-        textTitle.text = getString(R.string.default_notification_rington)
+        textTitle.text = getString(R.string.record_ringtone)
         button1.setImageResource(R.drawable.ic_arrow_left)
         button4.hide()
         button2.gone()
@@ -95,6 +98,10 @@ class RecordRingtone : BaseFragment<FragmentRecordRingtoneBinding>() {
     }
 
     private fun initData() {
+        type = when (arguments?.getString("type")) {
+            DefaultReminderTypeEnum.ALARM.name -> DefaultReminderTypeEnum.ALARM
+            else -> DefaultReminderTypeEnum.NOTIFICATION
+        }
         context?.let { viewModel.getAllRecord(it) }
     }
 
@@ -103,7 +110,7 @@ class RecordRingtone : BaseFragment<FragmentRecordRingtoneBinding>() {
             viewModel.setRecording(!viewModel.isRecording.value)
         }
         adapter.itemSelectListener = {
-            viewModel.selectRingtoneEntity(it)
+            viewModel.selectDefaultRingtoneEntity(it, type)
         }
         adapter.imgPlayListener = {
             playRingtone(it)
@@ -150,10 +157,21 @@ class RecordRingtone : BaseFragment<FragmentRecordRingtoneBinding>() {
 
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                selectNotificationRingtone.filter { it != null }.collect {
-                    adapter.selectEntity = it
-                    adapter.notifyDataSetChanged()
-                }
+                selectNotificationRingtone?.filter { it != null && type == DefaultReminderTypeEnum.NOTIFICATION }
+                    ?.collect {
+                        adapter?.selectEntity = it
+                        adapter?.notifyDataSetChanged()
+                    }
+            }
+        }
+
+        lifecycleScope.launchWhenStarted {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                selectAlarmRingtone?.filter { it != null && type == DefaultReminderTypeEnum.ALARM }
+                    ?.collect {
+                        adapter?.selectEntity = it
+                        adapter?.notifyDataSetChanged()
+                    }
             }
         }
     }

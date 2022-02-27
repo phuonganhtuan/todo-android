@@ -5,8 +5,8 @@ import android.content.Context
 import android.media.RingtoneManager
 import android.net.Uri
 import android.os.Build
-import android.os.FileUtils
 import android.provider.MediaStore
+import android.provider.Settings
 import android.util.Log
 import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModel
@@ -17,6 +17,7 @@ import com.trustedapp.todolist.planner.reminders.data.models.entity.RingtoneEnti
 import com.trustedapp.todolist.planner.reminders.data.models.entity.RingtoneEntityTypeEnum
 import com.trustedapp.todolist.planner.reminders.data.models.entity.SYSTEM_RINGTONE_ID
 import com.trustedapp.todolist.planner.reminders.data.models.entity.TODO_DEFAULT_RINGTONE_ID
+import com.trustedapp.todolist.planner.reminders.data.models.model.SnoozeAfterModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,17 +25,42 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
-import java.net.URI
 import javax.inject.Inject
 
+enum class DefaultReminderTypeEnum {
+    NOTIFICATION,
+    ALARM
+}
 
 @HiltViewModel
 class NotiReminderViewModel @Inject constructor() : ViewModel() {
+    // Notification Help
+    val isAllowNotification: StateFlow<Boolean> get() = _isAllowNotification
+    private val _isAllowNotification = MutableStateFlow(true)
+
+    val isIgnoreBattery: StateFlow<Boolean> get() = _isIgnoreBattery
+    private val _isIgnoreBattery = MutableStateFlow(false)
+
+    val isFloatingWindow: StateFlow<Boolean> get() = _isFloatingWindow
+    private val _isFloatingWindow = MutableStateFlow(false)
+
+    val defaultReminderType: StateFlow<DefaultReminderTypeEnum> get() = _defaultReminderType
+    private val _defaultReminderType = MutableStateFlow(DefaultReminderTypeEnum.NOTIFICATION)
+
+    val isScreenLockTaskReminder: StateFlow<Boolean> get() = _isScreenLockTaskReminder
+    private val _isScreenLockTaskReminder = MutableStateFlow(false)
+
+    val isAddTaskFromNotificationBar: StateFlow<Boolean> get() = _isAddTaskFromNotificationBar
+    private val _isAddTaskFromNotificationBar = MutableStateFlow(false)
+
     val listSystemRingtone: StateFlow<List<RingtoneEntity>> get() = _listSystemtRingtone
     private val _listSystemtRingtone = MutableStateFlow(emptyList<RingtoneEntity>())
 
     val selectNotificationRingtone: StateFlow<RingtoneEntity?> get() = _selectNotificationRingtone
     private val _selectNotificationRingtone = MutableStateFlow<RingtoneEntity?>(null)
+
+    val selectAlarmRingtone: StateFlow<RingtoneEntity?> get() = _selectAlarmRingtone
+    private val _selectAlarmRingtone = MutableStateFlow<RingtoneEntity?>(null)
 
     val isLoading: StateFlow<LoadDataState> get() = _isLoading
     private val _isLoading = MutableStateFlow<LoadDataState>(LoadDataState.NONE)
@@ -45,7 +71,104 @@ class NotiReminderViewModel @Inject constructor() : ViewModel() {
     val listRecord: StateFlow<List<RingtoneEntity>> get() = _listRecord
     private val _listRecord = MutableStateFlow(emptyList<RingtoneEntity>())
 
+    val isSnoozeTaskReminder: StateFlow<Boolean> get() = _isSnoozeTaskReminder
+    private val _isSnoozeTaskReminder = MutableStateFlow(false)
+
+    val listSnoozeAfter: List<SnoozeAfterModel> = listOf(
+        SnoozeAfterModel(1, R.string.five_minutes, 30000),
+        SnoozeAfterModel(2, R.string.fifteen_minutes, 90000),
+        SnoozeAfterModel(3, R.string.thirty_minutes, 180000),
+        SnoozeAfterModel(4, R.string.one_hour, 360000),
+    )
+    val snoozeAfter: StateFlow<SnoozeAfterModel?> get() = _snoozeAfter
+    private val _snoozeAfter = MutableStateFlow<SnoozeAfterModel?>(null)
+
+    val isTodoReminder: StateFlow<Boolean> get() = _isTodoReminder
+    private val _isTodoReminder = MutableStateFlow(false)
+
+    val selectDailyRingtone: StateFlow<RingtoneEntity?> get() = _selectDailyRingtone
+    private val _selectDailyRingtone = MutableStateFlow<RingtoneEntity?>(null)
+
     init {
+
+    }
+
+    fun setupData(context: Context, activity: Activity) {
+        // Init notification help
+        initNotificationHelp(context, activity)
+
+        // Init Task Reminder
+        initSelectDefaultNotificationRington(context, activity)
+        initSelectDefaultAlarmRington(context, activity)
+        initSnoozeAfter(context, activity)
+
+        // Init Daily reminder
+        initSelectDailyRington(context, activity)
+    }
+
+    private fun initNotificationHelp(context: Context, activity: Activity){
+        _isFloatingWindow.value = Settings.canDrawOverlays(context)
+    }
+
+    private fun initSelectDefaultNotificationRington(context: Context, activity: Activity) {
+        // select ringron noti default
+        _selectNotificationRingtone.value = RingtoneEntity(
+            TODO_DEFAULT_RINGTONE_ID,
+            context.getString(R.string.todo_default),
+            Uri.parse("file:///android_asset/raw/to_do_default.mp3"),
+            RingtoneEntityTypeEnum.SYSTEM_RINGTONE
+        )
+    }
+
+    private fun initSnoozeAfter(context: Context, activity: Activity) {
+        _snoozeAfter.value = listSnoozeAfter[0]
+    }
+
+    private fun initSelectDefaultAlarmRington(context: Context, activity: Activity) {
+        // select rington alarm default
+        try {
+            val defaultRingtoneUri = RingtoneManager.getActualDefaultRingtoneUri(
+                activity.getApplicationContext(),
+                RingtoneManager.TYPE_RINGTONE
+            )
+            val defaultRingtone = RingtoneManager.getRingtone(activity, defaultRingtoneUri)
+
+            _selectAlarmRingtone.value = RingtoneEntity(
+                SYSTEM_RINGTONE_ID,
+                context.getString(R.string.system_default),
+                defaultRingtoneUri,
+                RingtoneEntityTypeEnum.SYSTEM_RINGTONE
+            )
+        } catch (e: Exception) {
+            Log.e("loadLocalRingtonesUris", "defaultRingtoneUri ", e)
+        }
+    }
+
+    private fun initSelectDailyRington(context: Context, activity: Activity) {
+        // select rington alarm default
+        try {
+            val defaultRingtoneUri = RingtoneManager.getActualDefaultRingtoneUri(
+                activity.getApplicationContext(),
+                RingtoneManager.TYPE_RINGTONE
+            )
+            val defaultRingtone = RingtoneManager.getRingtone(activity, defaultRingtoneUri)
+
+            _selectDailyRingtone.value = RingtoneEntity(
+                SYSTEM_RINGTONE_ID,
+                context.getString(R.string.system_default),
+                defaultRingtoneUri,
+                RingtoneEntityTypeEnum.SYSTEM_RINGTONE
+            )
+        } catch (e: Exception) {
+            Log.e("loadLocalRingtonesUris", "defaultRingtoneUri ", e)
+        }
+    }
+
+    /**
+     * set default type
+     */
+    fun setDefaultType(value: DefaultReminderTypeEnum) {
+        _defaultReminderType.value = value
     }
 
     /**
@@ -78,12 +201,11 @@ class NotiReminderViewModel @Inject constructor() : ViewModel() {
 
         // Get Todo default ringtone
         try {
-            val uri = Uri.parse("file:///android_asset/raw/to_do_default.mp3")
             alarms.add(
                 RingtoneEntity(
                     TODO_DEFAULT_RINGTONE_ID,
                     context.getString(R.string.todo_default),
-                    uri,
+                    Uri.parse("file:///android_asset/raw/to_do_default.mp3"),
                     RingtoneEntityTypeEnum.SYSTEM_RINGTONE
                 )
             )
@@ -139,8 +261,12 @@ class NotiReminderViewModel @Inject constructor() : ViewModel() {
     /**
      * Set select entity
      */
-    fun selectRingtoneEntity(entity: RingtoneEntity) {
-        _selectNotificationRingtone.value = entity
+    fun selectDefaultRingtoneEntity(entity: RingtoneEntity, type: DefaultReminderTypeEnum) {
+        if (type == DefaultReminderTypeEnum.ALARM){
+            _selectAlarmRingtone.value = entity
+        }else{
+            _selectNotificationRingtone.value = entity
+        }
     }
 
     /**
@@ -184,7 +310,12 @@ class NotiReminderViewModel @Inject constructor() : ViewModel() {
         withContext(Dispatchers.IO) {
 
             try {
-                val file = File(com.trustedapp.todolist.planner.reminders.utils.FileUtils.getRealPathFromURI(context, entity.ringtoneUri))
+                val file = File(
+                    com.trustedapp.todolist.planner.reminders.utils.FileUtils.getRealPathFromURI(
+                        context,
+                        entity.ringtoneUri
+                    )
+                )
                 if (file.exists()) {
                     file.delete()
                 }
@@ -258,5 +389,68 @@ class NotiReminderViewModel @Inject constructor() : ViewModel() {
                 _listRecord.value = loadAudioFromStorage(context).asReversed()
             }
         }
+    }
+
+    /**
+     * set is screenlock
+     */
+    fun setIsScreenlock(value: Boolean) {
+        _isScreenLockTaskReminder.value = value
+    }
+
+    /**
+     * set is screenlock
+     */
+    fun setIsAddTaskFromNotiBar(value: Boolean) {
+        _isAddTaskFromNotificationBar.value = value
+    }
+
+    /**
+     * set snooze task switch
+     */
+    fun setIsSnoozeTaskReminder(value: Boolean) {
+        _isSnoozeTaskReminder.value = value
+    }
+
+    /**
+     * set Snooze after
+     */
+    fun setSnoozeAfter(value: SnoozeAfterModel) {
+        _snoozeAfter.value = value
+    }
+
+    /**
+     * set isTodo Reminder
+     */
+    fun setIsTodoReminder(value: Boolean) {
+        _isTodoReminder.value = value
+    }
+
+    /**
+     * set isTodo Reminder
+     */
+    fun setIsAllowNotification(value: Boolean) {
+        _isAllowNotification.value = value
+    }
+
+    /**
+     * set isTodo Reminder
+     */
+    fun setIsIgnoreBattery(value: Boolean) {
+        _isIgnoreBattery.value = value
+    }
+
+    /**
+     * set isTodo Reminder
+     */
+    fun setIsFloatWindow(value: Boolean) {
+        _isFloatingWindow.value = value
+    }
+
+    /**
+     * Set dailyringtone entity
+     */
+    fun selectDailyRingtoneEntity(entity: RingtoneEntity) {
+        _selectDailyRingtone.value = entity
     }
 }

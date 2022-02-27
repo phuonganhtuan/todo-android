@@ -189,4 +189,9 @@
     <string name="todo_default">To-do default</string>
     <string name="recording">Recording</string>
     <string name="start_record">Start record</string>
+    <string name="snooze_after">Snooze after</string>
+    <string name="five_minutes">5 minutes</string>
+    <string name="fifteen_minutes">15 minutes</string>
+    <string name="thirty_minutes">30 minutes</string>
+    <string name="one_hour">1 hour</string>
 </resources>
