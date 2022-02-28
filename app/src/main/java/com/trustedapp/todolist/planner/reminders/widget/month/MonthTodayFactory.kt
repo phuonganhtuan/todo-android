@@ -79,7 +79,7 @@ class MonthTodayFactory(private val context: Context, private val intent: Intent
                 .get(Calendar.MONTH) == month.get(
                 Calendar.MONTH
             )
-        val tasks = taskDao.getTaskInDay(DateTimeUtils.getComparableDateString(it))
+        val tasks = taskDao.getTaskInDay(DateTimeUtils.getComparableDateString(it, isDefault = true))
         val tasksCatName = tasks.map { t -> t.category?.name.toString().lowercase() }
         DateModel(
             id = it.time.toInt(),

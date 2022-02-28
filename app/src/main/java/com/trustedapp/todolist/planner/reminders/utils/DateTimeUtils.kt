@@ -2,11 +2,16 @@ package com.trustedapp.todolist.planner.reminders.utils
 
 import android.content.Context
 import com.trustedapp.todolist.planner.reminders.R
+import com.trustedapp.todolist.planner.reminders.setting.DateFormat
+import com.trustedapp.todolist.planner.reminders.setting.FirstDayOfWeek
+import com.trustedapp.todolist.planner.reminders.setting.TimeFormat
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.Calendar.*
 
 object DateTimeUtils {
+
+    lateinit var applicationContext: Context
 
     fun getTomorrow(): Long {
         val calendar = Calendar.getInstance()
@@ -17,29 +22,31 @@ object DateTimeUtils {
     }
 
     fun getShortTimeFromDate(date: Date): String {
-        val simpleDate = SimpleDateFormat("dd/MM HH:mm")
+        val simpleDate = SimpleDateFormat("${getDayMonthFormat()} ${getTimeFormat()}")
         return simpleDate.format(date)
     }
 
     fun getShortTimeFromMillisecond(milis: Long): String {
         val date = Date().apply { time = milis }
-        val simpleDate = SimpleDateFormat("dd/MM HH:mm")
+        val simpleDate = SimpleDateFormat("${getDayMonthFormat()} ${getTimeFormat()}")
         return simpleDate.format(date)
     }
 
     fun getHourMinuteFromMillisecond(milis: Long): String {
         val date = Date().apply { time = milis }
-        val simpleDate = SimpleDateFormat("HH:mm")
+        val simpleDate = SimpleDateFormat(getTimeFormat())
         return simpleDate.format(date)
     }
 
     fun getDayMonthFromMillisecond(milis: Long): String {
         val date = Date().apply { time = milis }
-        val simpleDate = SimpleDateFormat("dd/MM")
+        val simpleDate = SimpleDateFormat(getDayMonthFormat())
         return simpleDate.format(date)
     }
 
-    fun getDaysOfMonth(month: Calendar, startFromMonday: Boolean = false): List<Date> {
+    fun getDaysOfMonth(month: Calendar): List<Date> {
+
+        val firstDayOfWeekSetting = SPUtils.getFirstDayOfWeek(applicationContext)
 
         val result = mutableListOf<Date>()
         val copiedMonth = getInstance().apply { time = month.time }
@@ -58,9 +65,12 @@ object DateTimeUtils {
         }
 
         val firstDate = result.first()
-        var firstDayOfWeek = getInstance().apply { time = firstDate }.get(DAY_OF_WEEK)
-        if (startFromMonday) firstDayOfWeek -= 1
-        val daysOfLastMonthNum = firstDayOfWeek - 1
+        val firstDayOfWeek = getInstance().apply { time = firstDate }.get(DAY_OF_WEEK)
+        var daysOfLastMonthNum = firstDayOfWeek - 1
+        when (firstDayOfWeekSetting) {
+            FirstDayOfWeek.SATURDAY.name -> daysOfLastMonthNum += 1
+            FirstDayOfWeek.MONDAY.name -> daysOfLastMonthNum -= 1
+        }
         val daysOfNextMonthNum = 42 - daysInMonth - daysOfLastMonthNum
 
         val copiedMonth2 = getInstance().apply { time = month.time }
@@ -79,18 +89,24 @@ object DateTimeUtils {
         return result
     }
 
-    fun getMonthYearString(context: Context, month: Calendar): String {
+    fun getMonthYearString(month: Calendar): String {
         val year = month.get(YEAR)
-        return "${getMonthInString(context, month)} $year"
+        return "${getMonthInString(applicationContext, month)} $year"
     }
 
     fun getComparableDateString(
-        date: Date, format: String = DATE_FORMAT_TYPE_2
+        date: Date,
+        format: String? = null,
+        isDefault: Boolean = false
     ): String {
-        val dateFormat = SimpleDateFormat(format)
+        val dateFormat = SimpleDateFormat(
+            if (isDefault) DATE_FORMAT_TYPE_2 else
+                if (format == null) getDateFormat() else format
+        )
         return dateFormat.format(date)
     }
 
+    // Not visible to user
     fun getComparableMonthString(date: Date): String {
         val dateFormat = SimpleDateFormat("MM/yyyy")
         return dateFormat.format(date)
@@ -135,6 +151,37 @@ object DateTimeUtils {
             year1 > year2 -> 1
             else -> -1
         }
+    }
+
+    fun getCalendarDayTitle() = when (SPUtils.getFirstDayOfWeek(applicationContext)) {
+        FirstDayOfWeek.AUTO.name -> listOf("S", "M", "T", "W", "T", "F", "S")
+        FirstDayOfWeek.MONDAY.name -> listOf("M", "T", "W", "T", "F", "S", "S")
+        FirstDayOfWeek.SATURDAY.name -> listOf("S", "S", "M", "T", "W", "T", "F")
+        FirstDayOfWeek.SUNDAY.name -> listOf("S", "M", "T", "W", "T", "F", "S")
+        else -> listOf("S", "M", "T", "W", "T", "F", "S")
+    }
+
+    private fun getTimeFormat() = when (SPUtils.getTimeFormat(applicationContext)) {
+        TimeFormat.DEFAULT.name -> {
+            if (android.text.format.DateFormat.is24HourFormat(applicationContext)) "HH:mm" else "hh:mm a"
+        }
+        TimeFormat.H12.name -> "hh:mm a"
+        TimeFormat.H24.name -> "HH:mm"
+        else -> "HH:mm"
+    }
+
+    private fun getDayMonthFormat() = when (SPUtils.getDateFormat(applicationContext)) {
+        DateFormat.YYYYDDMM.name -> "dd/MM"
+        DateFormat.DDMMYYYY.name -> "dd/MM"
+        DateFormat.MMDDYYYY.name -> "MM/dd"
+        else -> "dd/MM"
+    }
+
+    private fun getDateFormat() = when (SPUtils.getDateFormat(applicationContext)) {
+        DateFormat.YYYYDDMM.name -> DATE_FORMAT_TYPE_1
+        DateFormat.DDMMYYYY.name -> DATE_FORMAT_TYPE_2
+        DateFormat.MMDDYYYY.name -> DATE_FORMAT_TYPE_3
+        else -> DATE_FORMAT_TYPE_2
     }
 
     const val DATE_FORMAT_TYPE_1 = "yyyy/MM/dd"

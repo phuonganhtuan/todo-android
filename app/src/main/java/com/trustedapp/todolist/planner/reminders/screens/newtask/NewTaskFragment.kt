@@ -41,6 +41,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filter
+import java.util.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -221,15 +222,11 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 selectedHour.filter { it > -1 }
                     .combine(selectedMinute.filter { it > -1 }) { hour, minute ->
-                        val hourValue = when (hour > 9) {
-                            true -> "$hour"
-                            else -> "0$hour"
+                        val date = Calendar.getInstance().apply {
+                            set(Calendar.HOUR_OF_DAY, hour)
+                            set(Calendar.MINUTE, minute)
                         }
-                        val minuteValue = when (minute > 9) {
-                            true -> "$minute"
-                            else -> "0$minute"
-                        }
-                        "$hourValue:$minuteValue"
+                        DateTimeUtils.getHourMinuteFromMillisecond(date.timeInMillis)
                     }.collect {
                         _hasTime.value = true
                         viewBinding.buttonAddCalendar.text =

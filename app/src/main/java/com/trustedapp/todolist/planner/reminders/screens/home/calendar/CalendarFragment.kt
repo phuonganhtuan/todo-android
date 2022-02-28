@@ -18,13 +18,10 @@ import com.trustedapp.todolist.planner.reminders.databinding.FragmentCalendarBin
 import com.trustedapp.todolist.planner.reminders.screens.home.tasks.page.OnTaskInteract
 import com.trustedapp.todolist.planner.reminders.screens.home.tasks.page.TaskAdapter
 import com.trustedapp.todolist.planner.reminders.screens.taskdetail.TaskDetailActivity
-import com.trustedapp.todolist.planner.reminders.utils.Constants
-import com.trustedapp.todolist.planner.reminders.utils.DateTimeUtils
-import com.trustedapp.todolist.planner.reminders.utils.gone
-import com.trustedapp.todolist.planner.reminders.utils.show
+import com.trustedapp.todolist.planner.reminders.setting.FirstDayOfWeek
+import com.trustedapp.todolist.planner.reminders.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
-import java.lang.Exception
 import java.util.*
 import javax.inject.Inject
 
@@ -77,7 +74,10 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>() {
         layoutTop.button1.setOnClickListener {
             try {
                 Handler(Looper.getMainLooper()).post {
-                    layoutCalendar.pagerCalendar.setCurrentItem(layoutCalendar.pagerCalendar.currentItem - 1, true)
+                    layoutCalendar.pagerCalendar.setCurrentItem(
+                        layoutCalendar.pagerCalendar.currentItem - 1,
+                        true
+                    )
                 }
             } catch (exception: Exception) {
 
@@ -86,7 +86,10 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>() {
         layoutTop.button4.setOnClickListener {
             try {
                 Handler(Looper.getMainLooper()).post {
-                    layoutCalendar.pagerCalendar.setCurrentItem(layoutCalendar.pagerCalendar.currentItem + 1, true)
+                    layoutCalendar.pagerCalendar.setCurrentItem(
+                        layoutCalendar.pagerCalendar.currentItem + 1,
+                        true
+                    )
                 }
             } catch (exception: Exception) {
 
@@ -130,6 +133,16 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>() {
 
     private fun initData() = with(viewBinding) {
         viewModel.setupMonths()
+        val dayTitle = DateTimeUtils.getCalendarDayTitle()
+        layoutCalendar.apply {
+            textDay1.text = dayTitle[0]
+            textDay2.text = dayTitle[1]
+            textDay3.text = dayTitle[2]
+            textDay4.text = dayTitle[3]
+            textDay5.text = dayTitle[4]
+            textDay6.text = dayTitle[5]
+            textDay7.text = dayTitle[6]
+        }
     }
 
     @SuppressLint("UnsafeRepeatOnLifecycleDetector")
@@ -146,10 +159,7 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>() {
                         }
                     }
                     viewBinding.layoutTop.textTitle.text =
-                        DateTimeUtils.getMonthYearString(
-                            requireContext(),
-                            it
-                        )
+                        DateTimeUtils.getMonthYearString(it)
                 }
             }
         }

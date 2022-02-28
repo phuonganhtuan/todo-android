@@ -14,10 +14,6 @@ interface TaskDao {
     fun getShortTasks(): Flow<List<TaskShort>>
 
     @Transaction
-    @Query("select * from TaskEntity where dueDate = :day")
-    fun getTasksInDayAll(day: String): List<TaskShort>
-
-    @Transaction
     @Query("select * from TaskEntity where isDone = 0 and calendar >= :currentTime")
     fun getTasksForAlarm(currentTime: Long): List<Task>
 

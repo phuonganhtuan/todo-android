@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.trustedapp.todolist.planner.reminders.alarm.ScheduleHelper
 import com.trustedapp.todolist.planner.reminders.data.models.entity.TaskShort
-import com.trustedapp.todolist.planner.reminders.data.models.model.DateModel
 import com.trustedapp.todolist.planner.reminders.data.repository.TaskRepository
 import com.trustedapp.todolist.planner.reminders.utils.DateTimeUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -66,7 +65,12 @@ class CalendarTaskViewModel @Inject constructor(private val repository: TaskRepo
     fun getTasks(day: Date) = viewModelScope.launch {
         withContext(Dispatchers.IO) {
             _selectedDay.value = day
-            _tasks.value = repository.getTaskInDay(DateTimeUtils.getComparableDateString(day))
+            _tasks.value = repository.getTaskInDay(
+                DateTimeUtils.getComparableDateString(
+                    day,
+                    isDefault = true
+                )
+            )
         }
     }
 
@@ -97,7 +101,12 @@ class CalendarTaskViewModel @Inject constructor(private val repository: TaskRepo
                 }
             }
             _tasks.value =
-                repository.getTaskInDay(DateTimeUtils.getComparableDateString(_selectedDay.value))
+                repository.getTaskInDay(
+                    DateTimeUtils.getComparableDateString(
+                        _selectedDay.value,
+                        isDefault = true
+                    )
+                )
         }
     }
 
@@ -108,7 +117,12 @@ class CalendarTaskViewModel @Inject constructor(private val repository: TaskRepo
             taskToUpdate.isMarked = !taskToUpdate.isMarked
             repository.updateTask(taskToUpdate)
             _tasks.value =
-                repository.getTaskInDay(DateTimeUtils.getComparableDateString(_selectedDay.value))
+                repository.getTaskInDay(
+                    DateTimeUtils.getComparableDateString(
+                        _selectedDay.value,
+                        isDefault = true
+                    )
+                )
         }
     }
 }

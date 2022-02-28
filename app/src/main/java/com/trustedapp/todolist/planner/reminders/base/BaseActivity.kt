@@ -16,6 +16,7 @@ import com.trustedapp.todolist.planner.reminders.R
 import com.trustedapp.todolist.planner.reminders.screens.theme.currentTheme
 import com.trustedapp.todolist.planner.reminders.widget.lite.LiteWidget
 import com.trustedapp.todolist.planner.reminders.widget.month.MonthWidget
+import com.trustedapp.todolist.planner.reminders.widget.month.updateMonthWidget
 import com.trustedapp.todolist.planner.reminders.widget.standard.StandardWidget
 
 
@@ -77,6 +78,14 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
             )
             appWidgetManager.notifyAppWidgetViewDataChanged(ids, R.id.listTasks)
         }
+        updateMonthWidget(
+            this, appWidgetManager, appWidgetManager.getAppWidgetIds(
+                ComponentName(
+                    application,
+                    MonthWidget::class.java
+                )
+            )
+        )
         appWidgetManager.apply {
             notifyAppWidgetViewDataChanged(
                 getAppWidgetIds(

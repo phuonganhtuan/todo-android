@@ -26,6 +26,8 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filter
 import java.util.*
+import java.util.Calendar.HOUR_OF_DAY
+import java.util.Calendar.MINUTE
 
 
 class AddCalendarBottomSheetDialogFragment :
@@ -128,15 +130,11 @@ class AddCalendarBottomSheetDialogFragment :
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 selectedHour.filter { it > -1 }
                     .combine(selectedMinute.filter { it > -1 }) { hour, minute ->
-                        val hourValue = when (hour > 9) {
-                            true -> "$hour"
-                            else -> "0$hour"
+                        val date = Calendar.getInstance().apply {
+                            set(HOUR_OF_DAY, hour)
+                            set(MINUTE, minute)
                         }
-                        val minuteValue = when (minute > 9) {
-                            true -> "$minute"
-                            else -> "0$minute"
-                        }
-                        "$hourValue:$minuteValue"
+                        DateTimeUtils.getHourMinuteFromMillisecond(date.timeInMillis)
                     }.collect {
                         Log.e("observeData: ", it)
                         viewBinding.apply {

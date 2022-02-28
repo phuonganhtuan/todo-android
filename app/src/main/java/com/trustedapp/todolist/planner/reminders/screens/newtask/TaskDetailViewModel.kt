@@ -382,7 +382,7 @@ class NewTaskViewModel @Inject constructor(private val repository: TaskRepositor
                 isDone = false,
                 isMarked = false,
                 markId = null,
-                dueDate = DateTimeUtils.getComparableDateString(calendar.time),
+                dueDate = DateTimeUtils.getComparableDateString(calendar.time, isDefault = true),
             )
             val taskId = repository.addTask(taskEntity)
             _subtasks.value.filter { st -> st.name.isNotEmpty() }.forEach {
@@ -646,7 +646,7 @@ class NewTaskViewModel @Inject constructor(private val repository: TaskRepositor
                 categoryId =
                     if (_selectedCatIndex.value == -1) _task.value.task.categoryId else _categories.value[_selectedCatIndex.value].id
                 this.calendar = calendar.timeInMillis
-                dueDate = DateTimeUtils.getComparableDateString(calendar.time)
+                dueDate = DateTimeUtils.getComparableDateString(calendar.time, isDefault = true)
             }
             repository.updateTask(_task.value.task)
             _task.value.subTasks.forEach {

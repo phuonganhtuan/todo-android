@@ -34,6 +34,7 @@ import com.trustedapp.todolist.planner.reminders.utils.gone
 import com.trustedapp.todolist.planner.reminders.utils.show
 import com.trustedapp.todolist.planner.reminders.widget.lite.LiteWidget
 import com.trustedapp.todolist.planner.reminders.widget.month.MonthWidget
+import com.trustedapp.todolist.planner.reminders.widget.month.updateMonthWidget
 import com.trustedapp.todolist.planner.reminders.widget.standard.StandardWidget
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -187,6 +188,14 @@ class HomeActivity : AppCompatActivity() {
             )
             appWidgetManager.notifyAppWidgetViewDataChanged(ids, R.id.listTasks)
         }
+        updateMonthWidget(
+            this, appWidgetManager, appWidgetManager.getAppWidgetIds(
+                ComponentName(
+                    application,
+                    MonthWidget::class.java
+                )
+            )
+        )
         appWidgetManager.apply {
             notifyAppWidgetViewDataChanged(
                 getAppWidgetIds(
