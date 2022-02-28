@@ -53,7 +53,7 @@ class DefaultReminderTypeDialog : BaseDialogFragment<FragmentDefaultReminderType
         }
 
         btnDone.setOnClickListener {
-            viewModel.setDefaultType(selItem)
+            context?.let { it1 -> viewModel.setDefaultType(it1, selItem) }
             dismiss()
         }
 

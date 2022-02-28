@@ -68,10 +68,16 @@ class NotiReminderFragment : BaseFragment<FragmentNotiReminderBinding>() {
                 bundleOf("type" to DefaultReminderTypeEnum.ALARM.name)
             )
         }
-        swScreenlockTaskReminder.setOnCheckedChangeListener { _, isChecked -> viewModel.setIsScreenlock(isChecked) }
-        swAddTaskFromNotificationBar.setOnCheckedChangeListener { _, isChecked -> viewModel.setIsAddTaskFromNotiBar(isChecked) }
+        swScreenlockTaskReminder.setOnClickListener { context?.let { it1 ->
+            viewModel.setIsScreenlock(
+                it1, swScreenlockTaskReminder.isChecked)
+        } }
+        swAddTaskFromNotificationBar.setOnClickListener { context?.let { it1 ->
+            viewModel.setIsAddTaskFromNotiBar(
+                it1, swAddTaskFromNotificationBar.isChecked)
+        } }
         lnSnoozeTaskReminder.setOnClickListener { findNavController().navigate(R.id.toSnoozeTaskReminder) }
-        swTodoReminder.setOnCheckedChangeListener { _, isChecked -> viewModel.setIsTodoReminder(isChecked) }
+        swTodoReminder.setOnClickListener { context?.let { it1 -> viewModel.setIsTodoReminder(it1, swAddTaskFromNotificationBar.isChecked) } }
         lnDailyReminderRingtone.setOnClickListener { findNavController().navigate(R.id.toDailyReminderRingtone) }
     }
 
@@ -115,6 +121,7 @@ class NotiReminderFragment : BaseFragment<FragmentNotiReminderBinding>() {
                isScreenLockTaskReminder.collect {
                     viewBinding.apply {
                         tvScreenlockTaskReminderValue.text = if (it) getString(R.string.on) else getString(R.string.off)
+                        swScreenlockTaskReminder.isChecked = it
                     }
                 }
             }
@@ -125,6 +132,7 @@ class NotiReminderFragment : BaseFragment<FragmentNotiReminderBinding>() {
                 isAddTaskFromNotificationBar.collect {
                     viewBinding.apply {
                         tvAddTaskFromNotificationBarValue.text = if (it) getString(R.string.on) else getString(R.string.off)
+                        swAddTaskFromNotificationBar.isChecked = it
                     }
                 }
             }
@@ -147,6 +155,7 @@ class NotiReminderFragment : BaseFragment<FragmentNotiReminderBinding>() {
                 isTodoReminder.collect {
                     viewBinding.apply {
                         tvTodoReminderrValue.text = if (it) getString(R.string.on) else getString(R.string.off)
+                        swTodoReminder.isChecked = it
                     }
                 }
             }

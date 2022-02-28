@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Context
 import android.media.RingtoneManager
 import android.net.Uri
-import android.provider.Settings
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -17,6 +16,7 @@ import com.trustedapp.todolist.planner.reminders.data.models.entity.TODO_DEFAULT
 import com.trustedapp.todolist.planner.reminders.data.models.model.SnoozeAfterModel
 import com.trustedapp.todolist.planner.reminders.utils.Constants
 import com.trustedapp.todolist.planner.reminders.utils.FileUtils
+import com.trustedapp.todolist.planner.reminders.utils.SPUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -30,6 +30,13 @@ enum class DefaultReminderTypeEnum {
     NOTIFICATION,
     ALARM
 }
+
+val listSnoozeAfter: List<SnoozeAfterModel> = listOf(
+    SnoozeAfterModel(1, R.string.five_minutes, 30000),
+    SnoozeAfterModel(2, R.string.fifteen_minutes, 90000),
+    SnoozeAfterModel(3, R.string.thirty_minutes, 180000),
+    SnoozeAfterModel(4, R.string.one_hour, 360000),
+)
 
 @HiltViewModel
 class NotiReminderViewModel @Inject constructor() : ViewModel() {
@@ -73,12 +80,7 @@ class NotiReminderViewModel @Inject constructor() : ViewModel() {
     val isSnoozeTaskReminder: StateFlow<Boolean> get() = _isSnoozeTaskReminder
     private val _isSnoozeTaskReminder = MutableStateFlow(false)
 
-    val listSnoozeAfter: List<SnoozeAfterModel> = listOf(
-        SnoozeAfterModel(1, R.string.five_minutes, 30000),
-        SnoozeAfterModel(2, R.string.fifteen_minutes, 90000),
-        SnoozeAfterModel(3, R.string.thirty_minutes, 180000),
-        SnoozeAfterModel(4, R.string.one_hour, 360000),
-    )
+
     val snoozeAfter: StateFlow<SnoozeAfterModel?> get() = _snoozeAfter
     private val _snoozeAfter = MutableStateFlow<SnoozeAfterModel?>(null)
 
@@ -94,80 +96,30 @@ class NotiReminderViewModel @Inject constructor() : ViewModel() {
 
     fun setupData(context: Context, activity: Activity) {
         // Init notification help
-        initNotificationHelp(context, activity)
+        _isAllowNotification.value = SPUtils.getIsAllowNotification(context)
+        _isIgnoreBattery.value = SPUtils.getIsIgnoreBattery(context)
+        _isFloatingWindow.value = SPUtils.getIsFloatWindow(context)
 
         // Init Task Reminder
-        initSelectDefaultNotificationRington(context, activity)
-        initSelectDefaultAlarmRington(context, activity)
-        initSnoozeAfter(context, activity)
+        _defaultReminderType.value = SPUtils.getDefaultRemminderType(context)
+        _selectNotificationRingtone.value = SPUtils.getDefaultNotificationRingtone(context)
+        _selectAlarmRingtone.value = SPUtils.getDefaultAlarmRingtone(context)
+        _isScreenLockTaskReminder.value = SPUtils.getIsScreenlockTaskReminder(context)
+        _isAddTaskFromNotificationBar.value = SPUtils.getIsAddTaskFromNotificationBar(context)
+        _isSnoozeTaskReminder.value = SPUtils.getIsSnoozeTask(context)
+        _snoozeAfter.value = SPUtils.getSnoozeAfterValue(context)
 
-        // Init Daily reminder
-        initSelectDailyRington(context, activity)
-    }
-
-    private fun initNotificationHelp(context: Context, activity: Activity) {
-        _isFloatingWindow.value = Settings.canDrawOverlays(context)
-    }
-
-    private fun initSelectDefaultNotificationRington(context: Context, activity: Activity) {
-        // select ringron noti default
-        _selectNotificationRingtone.value = RingtoneEntity(
-            TODO_DEFAULT_RINGTONE_ID,
-            context.getString(R.string.todo_default),
-            Uri.parse("file:///android_asset/raw/to_do_default.mp3"),
-            RingtoneEntityTypeEnum.SYSTEM_RINGTONE
-        )
-    }
-
-    private fun initSnoozeAfter(context: Context, activity: Activity) {
-        _snoozeAfter.value = listSnoozeAfter[0]
-    }
-
-    private fun initSelectDefaultAlarmRington(context: Context, activity: Activity) {
-        // select rington alarm default
-        try {
-            val defaultRingtoneUri = RingtoneManager.getActualDefaultRingtoneUri(
-                activity.getApplicationContext(),
-                RingtoneManager.TYPE_RINGTONE
-            )
-            val defaultRingtone = RingtoneManager.getRingtone(activity, defaultRingtoneUri)
-
-            _selectAlarmRingtone.value = RingtoneEntity(
-                SYSTEM_RINGTONE_ID,
-                context.getString(R.string.system_default),
-                defaultRingtoneUri,
-                RingtoneEntityTypeEnum.SYSTEM_RINGTONE
-            )
-        } catch (e: Exception) {
-            Log.e("loadLocalRingtonesUris", "defaultRingtoneUri ", e)
-        }
-    }
-
-    private fun initSelectDailyRington(context: Context, activity: Activity) {
-        // select rington alarm default
-        try {
-            val defaultRingtoneUri = RingtoneManager.getActualDefaultRingtoneUri(
-                activity.getApplicationContext(),
-                RingtoneManager.TYPE_RINGTONE
-            )
-            val defaultRingtone = RingtoneManager.getRingtone(activity, defaultRingtoneUri)
-
-            _selectDailyRingtone.value = RingtoneEntity(
-                SYSTEM_RINGTONE_ID,
-                context.getString(R.string.system_default),
-                defaultRingtoneUri,
-                RingtoneEntityTypeEnum.SYSTEM_RINGTONE
-            )
-        } catch (e: Exception) {
-            Log.e("loadLocalRingtonesUris", "defaultRingtoneUri ", e)
-        }
+        // Daily Reminder
+        _isTodoReminder.value = SPUtils.getIsTodoReminder(context)
+        _selectDailyRingtone.value = SPUtils.getDailyRingtone(context)
     }
 
     /**
      * set default type
      */
-    fun setDefaultType(value: DefaultReminderTypeEnum) {
+    fun setDefaultType(context: Context, value: DefaultReminderTypeEnum) {
         _defaultReminderType.value = value
+        SPUtils.setDefaultReminderType(context, value)
     }
 
     /**
@@ -190,7 +142,7 @@ class NotiReminderViewModel @Inject constructor() : ViewModel() {
                 RingtoneEntity(
                     SYSTEM_RINGTONE_ID,
                     context.getString(R.string.system_default),
-                    defaultRingtoneUri,
+                    defaultRingtoneUri.toString(),
                     RingtoneEntityTypeEnum.SYSTEM_RINGTONE
                 )
             )
@@ -204,7 +156,7 @@ class NotiReminderViewModel @Inject constructor() : ViewModel() {
                 RingtoneEntity(
                     TODO_DEFAULT_RINGTONE_ID,
                     context.getString(R.string.todo_default),
-                    Uri.parse("file:///android_asset/raw/to_do_default.mp3"),
+                    Uri.parse(context.getString(R.string.default_todo_ringtone_path)).toString(),
                     RingtoneEntityTypeEnum.SYSTEM_RINGTONE
                 )
             )
@@ -231,7 +183,7 @@ class NotiReminderViewModel @Inject constructor() : ViewModel() {
                     RingtoneEntity(
                         currentPosition,
                         ringtone.getTitle(context),
-                        uri,
+                        uri.toString(),
                         RingtoneEntityTypeEnum.SYSTEM_RINGTONE
                     )
                 )
@@ -260,11 +212,17 @@ class NotiReminderViewModel @Inject constructor() : ViewModel() {
     /**
      * Set select entity
      */
-    fun selectDefaultRingtoneEntity(entity: RingtoneEntity, type: DefaultReminderTypeEnum) {
+    fun selectDefaultRingtoneEntity(
+        context: Context,
+        entity: RingtoneEntity,
+        type: DefaultReminderTypeEnum
+    ) {
         if (type == DefaultReminderTypeEnum.ALARM) {
             _selectAlarmRingtone.value = entity
+            SPUtils.setDefaultAlarmRingtone(context, entity)
         } else {
             _selectNotificationRingtone.value = entity
+            SPUtils.setDefaultNotificationRingtone(context, entity)
         }
     }
 
@@ -312,7 +270,7 @@ class NotiReminderViewModel @Inject constructor() : ViewModel() {
                 val file = File(
                     FileUtils.getRealPathFromURI(
                         context,
-                        entity.ringtoneUri
+                        Uri.parse(entity.ringtoneUri)
                     ).toString().replace("file:/", "").replace("content:/", "")
                 )
                 if (file.exists()) {
@@ -349,7 +307,7 @@ class NotiReminderViewModel @Inject constructor() : ViewModel() {
                         RingtoneEntity(
                             increasingId,
                             it.name,
-                            Uri.fromFile(it),
+                            Uri.fromFile(it).toString(),
                             RingtoneEntityTypeEnum.RECORD
                         )
                     }
@@ -373,63 +331,72 @@ class NotiReminderViewModel @Inject constructor() : ViewModel() {
     /**
      * set is screenlock
      */
-    fun setIsScreenlock(value: Boolean) {
+    fun setIsScreenlock(context: Context, value: Boolean) {
         _isScreenLockTaskReminder.value = value
+        SPUtils.setIsScreenLockTaskReminder(context, value)
     }
 
     /**
      * set is screenlock
      */
-    fun setIsAddTaskFromNotiBar(value: Boolean) {
+    fun setIsAddTaskFromNotiBar(context: Context, value: Boolean) {
         _isAddTaskFromNotificationBar.value = value
+        SPUtils.setIsAddTaskFromNotificationBar(context, value)
     }
 
     /**
      * set snooze task switch
      */
-    fun setIsSnoozeTaskReminder(value: Boolean) {
+    fun setIsSnoozeTaskReminder(context: Context, value: Boolean) {
         _isSnoozeTaskReminder.value = value
+        SPUtils.setIsSnoozeTask(context, value)
     }
 
     /**
      * set Snooze after
      */
-    fun setSnoozeAfter(value: SnoozeAfterModel) {
+    fun setSnoozeAfter(context: Context, value: SnoozeAfterModel) {
         _snoozeAfter.value = value
+        SPUtils.setSnoozeAfterValue(context, value)
     }
 
     /**
      * set isTodo Reminder
      */
-    fun setIsTodoReminder(value: Boolean) {
+    fun setIsTodoReminder(context: Context, value: Boolean) {
         _isTodoReminder.value = value
+        SPUtils.setIsTodoReminder(context, value)
     }
 
     /**
      * set isTodo Reminder
      */
-    fun setIsAllowNotification(value: Boolean) {
+    fun setIsAllowNotification(context: Context, value: Boolean) {
         _isAllowNotification.value = value
+        SPUtils.setIsAllowNotification(context, value)
     }
 
     /**
      * set isTodo Reminder
      */
-    fun setIsIgnoreBattery(value: Boolean) {
+    fun setIsIgnoreBattery(context: Context, value: Boolean) {
         _isIgnoreBattery.value = value
+        SPUtils.setIsIgnoreBattery(context, value)
     }
 
     /**
      * set isTodo Reminder
      */
-    fun setIsFloatWindow(value: Boolean) {
+    fun setIsFloatWindow(context: Context, value: Boolean) {
         _isFloatingWindow.value = value
+        SPUtils.setIsFloatWindow(context, value)
     }
 
     /**
      * Set dailyringtone entity
      */
-    fun selectDailyRingtoneEntity(entity: RingtoneEntity) {
+    fun selectDailyRingtoneEntity(context: Context, entity: RingtoneEntity) {
         _selectDailyRingtone.value = entity
+        SPUtils.setDailyRingtone(context, entity)
     }
 }

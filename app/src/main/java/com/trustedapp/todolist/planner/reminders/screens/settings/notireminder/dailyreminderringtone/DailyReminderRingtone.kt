@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.media.MediaPlayer
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
@@ -92,7 +93,7 @@ class DailyReminderRingtone : BaseDialogFragment<FragmentDailyReminderRingtoneBi
             playRingtone(selItem)
         }
         btnDone.setOnClickListener {
-            viewModel.selectDailyRingtoneEntity(selItem)
+            context?.let { it1 -> viewModel.selectDailyRingtoneEntity(it1, selItem) }
             dismiss()
         }
     }
@@ -163,7 +164,7 @@ class DailyReminderRingtone : BaseDialogFragment<FragmentDailyReminderRingtoneBi
 
             } else {
                 mediaPlayer =
-                    MediaPlayer.create(context?.getApplicationContext(), entity.ringtoneUri)
+                    MediaPlayer.create(context?.getApplicationContext(), Uri.parse(entity.ringtoneUri))
             }
 
             mediaPlayer?.setOnPreparedListener {

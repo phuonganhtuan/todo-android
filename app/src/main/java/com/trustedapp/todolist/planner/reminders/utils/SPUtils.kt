@@ -1,6 +1,19 @@
 package com.trustedapp.todolist.planner.reminders.utils
 
 import android.content.Context
+import android.media.RingtoneManager
+import android.net.Uri
+import android.provider.Settings
+import android.util.Log
+import com.google.gson.Gson
+import com.trustedapp.todolist.planner.reminders.R
+import com.trustedapp.todolist.planner.reminders.data.models.entity.RingtoneEntity
+import com.trustedapp.todolist.planner.reminders.data.models.entity.RingtoneEntityTypeEnum
+import com.trustedapp.todolist.planner.reminders.data.models.entity.SYSTEM_RINGTONE_ID
+import com.trustedapp.todolist.planner.reminders.data.models.entity.TODO_DEFAULT_RINGTONE_ID
+import com.trustedapp.todolist.planner.reminders.data.models.model.SnoozeAfterModel
+import com.trustedapp.todolist.planner.reminders.screens.settings.notireminder.DefaultReminderTypeEnum
+import com.trustedapp.todolist.planner.reminders.screens.settings.notireminder.listSnoozeAfter
 
 object SPUtils {
 
@@ -20,6 +33,23 @@ object SPUtils {
     private const val THEME_SCENERY_KEY = "theme_scenery"
 
     private const val CURRENT_LANG_KEY = "CurrentKey"
+
+    private const val IS_ALLOW_NOTIFICATION = "is_allow_notification"
+    private const val IS_IGNORE_BATTERY = "is_ignore_battery"
+    private const val IS_FLOAT_WINDOW = "is_float_window"
+
+    private const val DEFAULT_REMINDER_TYPE = "default_reminder_type"
+    private const val DEFAULT_NOTIFICATION_RINGTONE = "default_notification_ringtone"
+    private const val DEFAULT_ALARM_RINGTONE = "default_alarm_ringtone"
+
+    private const val IS_SCREENLOCK_TASK_REMINDER = "is_screenlock_task_reminder"
+    private const val IS_ADD_TASK_FROM_NOTIFICATION_BAR = "is_add_task_from_notification_bar"
+
+    private const val IS_SNOOZE_TASK_REMINDER = "is_snooze_task_reminder"
+    private const val SNOOZE_AFTER_VALUE = "snooze_after_value"
+
+    private const val IS_TODO_REMINDER = "is_todo_reminder"
+    private const val DAILY_REMINDER_RINGTONE = "daily_reminder_ringtone"
 
     fun getSavedTheme(context: Context): Triple<Int, Int, Int> {
         val sp = context.getSharedPreferences(TODO_SP_KEY, Context.MODE_PRIVATE)
@@ -88,4 +118,229 @@ object SPUtils {
     fun getCurrentLang(context: Context) =
         context.getSharedPreferences(TODO_SP_KEY, Context.MODE_PRIVATE)
             .getString(CURRENT_LANG_KEY, "")
+
+    fun getIsAllowNotification(context: Context): Boolean {
+        return context.getSharedPreferences(TODO_SP_KEY, Context.MODE_PRIVATE)
+            .getBoolean(IS_ALLOW_NOTIFICATION, true)
+    }
+
+    fun setIsAllowNotification(context: Context, value: Boolean) {
+        context.getSharedPreferences(TODO_SP_KEY, Context.MODE_PRIVATE)
+            .edit()
+            .putBoolean(IS_ALLOW_NOTIFICATION, value)
+            .apply()
+    }
+
+    fun getIsIgnoreBattery(context: Context): Boolean {
+        return context.getSharedPreferences(TODO_SP_KEY, Context.MODE_PRIVATE)
+            .getBoolean(IS_IGNORE_BATTERY, false)
+    }
+
+    fun setIsIgnoreBattery(context: Context, value: Boolean) {
+        context.getSharedPreferences(TODO_SP_KEY, Context.MODE_PRIVATE)
+            .edit()
+            .putBoolean(IS_IGNORE_BATTERY, value)
+            .apply()
+    }
+
+    fun getIsFloatWindow(context: Context): Boolean {
+        return context.getSharedPreferences(TODO_SP_KEY, Context.MODE_PRIVATE)
+            .getBoolean(IS_FLOAT_WINDOW, Settings.canDrawOverlays(context))
+    }
+
+    fun setIsFloatWindow(context: Context, value: Boolean) {
+        context.getSharedPreferences(TODO_SP_KEY, Context.MODE_PRIVATE)
+            .edit()
+            .putBoolean(IS_FLOAT_WINDOW, value)
+            .apply()
+    }
+
+    fun getDefaultRemminderType(context: Context): DefaultReminderTypeEnum {
+        val currentValue = context.getSharedPreferences(TODO_SP_KEY, Context.MODE_PRIVATE)
+            .getString(DEFAULT_REMINDER_TYPE, DefaultReminderTypeEnum.NOTIFICATION.name)
+        return when (currentValue) {
+            DefaultReminderTypeEnum.ALARM.name -> DefaultReminderTypeEnum.ALARM
+            else -> DefaultReminderTypeEnum.NOTIFICATION
+        }
+    }
+
+    fun setDefaultReminderType(context: Context, value: DefaultReminderTypeEnum) {
+        context.getSharedPreferences(TODO_SP_KEY, Context.MODE_PRIVATE)
+            .edit()
+            .putString(DEFAULT_REMINDER_TYPE, value.name)
+            .apply()
+    }
+
+    fun getDefaultNotificationRingtone(context: Context): RingtoneEntity? {
+        val currentValue = context.getSharedPreferences(TODO_SP_KEY, Context.MODE_PRIVATE)
+            .getString(
+                DEFAULT_NOTIFICATION_RINGTONE, Gson().toJson(
+                    RingtoneEntity(
+                        TODO_DEFAULT_RINGTONE_ID,
+                        context.getString(R.string.todo_default),
+                        Uri.parse(context.getString(R.string.default_todo_ringtone_path)).toString(),
+                        RingtoneEntityTypeEnum.SYSTEM_RINGTONE
+                    )
+                )
+            )
+        return Gson().fromJson(currentValue, RingtoneEntity::class.java)
+    }
+
+    fun setDefaultNotificationRingtone(context: Context, value: RingtoneEntity) {
+        context.getSharedPreferences(TODO_SP_KEY, Context.MODE_PRIVATE)
+            .edit()
+            .putString(DEFAULT_NOTIFICATION_RINGTONE, Gson().toJson(value))
+            .apply()
+    }
+
+    fun getDefaultAlarmRingtone(context: Context): RingtoneEntity? {
+        // select rington alarm default
+        var currentValue: String?
+        try {
+            val defaultRingtoneUri = RingtoneManager.getActualDefaultRingtoneUri(
+                context.applicationContext,
+                RingtoneManager.TYPE_RINGTONE
+            )
+            currentValue = context.getSharedPreferences(TODO_SP_KEY, Context.MODE_PRIVATE)
+                .getString(
+                    DEFAULT_ALARM_RINGTONE, Gson().toJson(
+                        RingtoneEntity(
+                            SYSTEM_RINGTONE_ID,
+                            context.getString(R.string.system_default),
+                            defaultRingtoneUri.toString(),
+                            RingtoneEntityTypeEnum.SYSTEM_RINGTONE
+                        )
+                    )
+                )
+
+        } catch (e: Exception) {
+            Log.e("loadLocalRingtonesUris", "defaultRingtoneUri ", e)
+            currentValue = context.getSharedPreferences(TODO_SP_KEY, Context.MODE_PRIVATE)
+                .getString(
+                    DEFAULT_NOTIFICATION_RINGTONE, Gson().toJson(
+                        RingtoneEntity(
+                            TODO_DEFAULT_RINGTONE_ID,
+                            context.getString(R.string.todo_default),
+                            Uri.parse(context.getString(R.string.default_todo_ringtone_path)).toString(),
+                            RingtoneEntityTypeEnum.SYSTEM_RINGTONE
+                        )
+                    )
+                )
+        }
+        return Gson().fromJson(currentValue, RingtoneEntity::class.java)
+    }
+
+    fun setDefaultAlarmRingtone(context: Context, value: RingtoneEntity) {
+        context.getSharedPreferences(TODO_SP_KEY, Context.MODE_PRIVATE)
+            .edit()
+            .putString(DEFAULT_ALARM_RINGTONE, Gson().toJson(value))
+            .apply()
+    }
+
+    fun getIsScreenlockTaskReminder(context: Context): Boolean {
+        return context.getSharedPreferences(TODO_SP_KEY, Context.MODE_PRIVATE)
+            .getBoolean(IS_SCREENLOCK_TASK_REMINDER, false)
+    }
+
+    fun setIsScreenLockTaskReminder(context: Context, value: Boolean) {
+        context.getSharedPreferences(TODO_SP_KEY, Context.MODE_PRIVATE)
+            .edit()
+            .putBoolean(IS_SCREENLOCK_TASK_REMINDER, value)
+            .apply()
+    }
+
+    fun getIsAddTaskFromNotificationBar(context: Context): Boolean {
+        return context.getSharedPreferences(TODO_SP_KEY, Context.MODE_PRIVATE)
+            .getBoolean(IS_ADD_TASK_FROM_NOTIFICATION_BAR, false)
+    }
+
+    fun setIsAddTaskFromNotificationBar(context: Context, value: Boolean) {
+        context.getSharedPreferences(TODO_SP_KEY, Context.MODE_PRIVATE)
+            .edit()
+            .putBoolean(IS_SCREENLOCK_TASK_REMINDER, value)
+            .apply()
+    }
+
+    fun getIsSnoozeTask(context: Context): Boolean {
+        return context.getSharedPreferences(TODO_SP_KEY, Context.MODE_PRIVATE)
+            .getBoolean(IS_SNOOZE_TASK_REMINDER, false)
+    }
+
+    fun setIsSnoozeTask(context: Context, value: Boolean) {
+        context.getSharedPreferences(TODO_SP_KEY, Context.MODE_PRIVATE)
+            .edit()
+            .putBoolean(IS_SNOOZE_TASK_REMINDER, value)
+            .apply()
+    }
+
+    fun getSnoozeAfterValue(context: Context): SnoozeAfterModel {
+        val currentValue = context.getSharedPreferences(TODO_SP_KEY, Context.MODE_PRIVATE)
+            .getString(SNOOZE_AFTER_VALUE, Gson().toJson(listSnoozeAfter[0]))
+        return Gson().fromJson(currentValue, SnoozeAfterModel::class.java)
+    }
+
+    fun setSnoozeAfterValue(context: Context, value: SnoozeAfterModel) {
+        context.getSharedPreferences(TODO_SP_KEY, Context.MODE_PRIVATE)
+            .edit()
+            .putString(
+                IS_SNOOZE_TASK_REMINDER, Gson().toJson(value)
+            )
+            .apply()
+    }
+
+    fun getIsTodoReminder(context: Context): Boolean {
+        return context.getSharedPreferences(TODO_SP_KEY, Context.MODE_PRIVATE)
+            .getBoolean(IS_TODO_REMINDER, false)
+    }
+
+    fun setIsTodoReminder(context: Context, value: Boolean) {
+        context.getSharedPreferences(TODO_SP_KEY, Context.MODE_PRIVATE)
+            .edit()
+            .putBoolean(IS_TODO_REMINDER, value)
+            .apply()
+    }
+
+    fun setDailyRingtone(context: Context, value: RingtoneEntity) {
+        context.getSharedPreferences(TODO_SP_KEY, Context.MODE_PRIVATE)
+            .edit()
+            .putString(DAILY_REMINDER_RINGTONE, Gson().toJson(value))
+            .apply()
+    }
+
+    fun getDailyRingtone(context: Context): RingtoneEntity? {
+        // select rington alarm default
+        var currentValue: String?
+        try {
+            val defaultRingtoneUri = RingtoneManager.getActualDefaultRingtoneUri(
+                context.applicationContext,
+                RingtoneManager.TYPE_RINGTONE
+            )
+            currentValue = context.getSharedPreferences(TODO_SP_KEY, Context.MODE_PRIVATE)
+                .getString(
+                    DAILY_REMINDER_RINGTONE, Gson().toJson(
+                        RingtoneEntity(
+                            SYSTEM_RINGTONE_ID,
+                            context.getString(R.string.system_default),
+                            defaultRingtoneUri.toString(),
+                            RingtoneEntityTypeEnum.SYSTEM_RINGTONE
+                        )
+                    )
+                )
+
+        } catch (e: Exception) {
+            Log.e("loadLocalRingtonesUris", "defaultRingtoneUri ", e)
+            currentValue = context.getSharedPreferences(TODO_SP_KEY, Context.MODE_PRIVATE)
+                .getString(
+                    DAILY_REMINDER_RINGTONE, Gson().toJson(
+                        RingtoneEntity(
+                            TODO_DEFAULT_RINGTONE_ID,
+                            context.getString(R.string.todo_default),
+                            Uri.parse("file:///android_asset/raw/to_do_default.mp3").toString(),
+                            RingtoneEntityTypeEnum.SYSTEM_RINGTONE
+                        )
+                    )
+                )
+        }
+        return Gson().fromJson(currentValue, RingtoneEntity::class.java)
+    }
 }

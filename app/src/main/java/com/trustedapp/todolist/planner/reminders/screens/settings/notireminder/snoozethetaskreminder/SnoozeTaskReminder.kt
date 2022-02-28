@@ -39,7 +39,7 @@ class SnoozeTaskReminder : BaseFragment<FragmentSnoozeTaskReminderBinding>() {
         observeData()
     }
 
-    private fun initView() = with(viewBinding){
+    private fun initView() = with(viewBinding) {
         setupToolbar()
 
     }
@@ -52,21 +52,25 @@ class SnoozeTaskReminder : BaseFragment<FragmentSnoozeTaskReminderBinding>() {
         button3.gone()
     }
 
-    private fun setEvents() = with(viewBinding){
+    private fun setEvents() = with(viewBinding) {
         layoutTop.button1.setOnClickListener { findNavController().popBackStack() }
-        swSnoozeTaskReminder.setOnCheckedChangeListener { sw, isChecked ->
-            viewModel.setIsSnoozeTaskReminder(isChecked)
+        swSnoozeTaskReminder.setOnClickListener {
+            context?.let { viewModel.setIsSnoozeTaskReminder(it, swSnoozeTaskReminder.isChecked) }
         }
         lnSnoozeAfter.setOnClickListener { findNavController().navigate(R.id.toSnoozeAfterDialog) }
     }
 
     @SuppressLint("UnsafeRepeatOnLifecycleDetector")
-    private fun observeData() = with(viewModel){
+    private fun observeData() = with(viewModel) {
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.CREATED) {
                 isSnoozeTaskReminder.collect {
-                    viewBinding.lnSnoozeAfter.isUserInteractionEnabled(it)
-                    viewBinding.lnSnoozeAfter.alpha = if (it) 1.0f else 0.5f
+                    viewBinding.apply {
+                        lnSnoozeAfter.isUserInteractionEnabled(it)
+                        lnSnoozeAfter.alpha = if (it) 1.0f else 0.5f
+                        swSnoozeTaskReminder.isChecked = it
+                    }
+
                 }
             }
         }
@@ -75,7 +79,9 @@ class SnoozeTaskReminder : BaseFragment<FragmentSnoozeTaskReminderBinding>() {
             repeatOnLifecycle(Lifecycle.State.CREATED) {
                 snoozeAfter.collect {
                     if (it != null) {
-                        viewBinding.tvSnoozeAfterValue.text = getString(it.nameResId)
+                        viewBinding.apply {
+                            tvSnoozeAfterValue.text = getString(it.nameResId)
+                        }
                     }
                 }
             }

@@ -102,7 +102,7 @@ class RecordRingtone : BaseFragment<FragmentRecordRingtoneBinding>() {
             viewModel.setRecording(!viewModel.isRecording.value)
         }
         adapter.itemSelectListener = {
-            viewModel.selectDefaultRingtoneEntity(it, type)
+            context?.let { it1 -> viewModel.selectDefaultRingtoneEntity(it1, it, type) }
         }
         adapter.imgPlayListener = {
             playRingtone(it)
@@ -257,7 +257,7 @@ class RecordRingtone : BaseFragment<FragmentRecordRingtoneBinding>() {
                 val entity = RingtoneEntity(
                     viewModel.listRecord.value.count() + 1,
                     output!!.substring(output!!.lastIndexOf("/") + 1),
-                    Uri.fromFile(File(output)),
+                    Uri.fromFile(File(output)).toString(),
                     RingtoneEntityTypeEnum.RECORD
                 )
                 viewModel.addRecord(entity)
@@ -281,7 +281,7 @@ class RecordRingtone : BaseFragment<FragmentRecordRingtoneBinding>() {
                 MediaPlayer.create(context?.applicationContext, R.raw.to_do_default)
 
             } else {
-                MediaPlayer.create(context?.applicationContext, entity.ringtoneUri)
+                MediaPlayer.create(context?.applicationContext, Uri.parse(entity.ringtoneUri))
             }
 
             mediaPlayer.setOnPreparedListener {

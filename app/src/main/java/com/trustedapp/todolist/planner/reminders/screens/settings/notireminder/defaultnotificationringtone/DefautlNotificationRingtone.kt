@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.media.MediaPlayer
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.provider.MediaStore
@@ -95,7 +96,7 @@ class DefautlNotificationRingtone : BaseFragment<FragmentDefautlNotificationRing
     private fun setupEvents() = with(viewBinding) {
         layoutTop.button1.setOnClickListener { findNavController().popBackStack() }
         adapter?.itemSelectListener = {
-            viewModel.selectDefaultRingtoneEntity(it, type)
+            context?.let { it1 -> viewModel.selectDefaultRingtoneEntity(it1, it, type) }
             playRingtone(it)
         }
         lnRecordRington.setOnClickListener {
@@ -205,7 +206,7 @@ class DefautlNotificationRingtone : BaseFragment<FragmentDefautlNotificationRing
 
             } else {
                 mediaPlayer =
-                    MediaPlayer.create(context?.getApplicationContext(), entity.ringtoneUri)
+                    MediaPlayer.create(context?.getApplicationContext(), Uri.parse(entity.ringtoneUri))
             }
 
             mediaPlayer?.setOnPreparedListener {

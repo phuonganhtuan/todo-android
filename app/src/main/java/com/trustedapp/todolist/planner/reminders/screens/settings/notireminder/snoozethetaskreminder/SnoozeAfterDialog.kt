@@ -12,6 +12,7 @@ import com.trustedapp.todolist.planner.reminders.base.BaseDialogFragment
 import com.trustedapp.todolist.planner.reminders.data.models.model.SnoozeAfterModel
 import com.trustedapp.todolist.planner.reminders.databinding.FragmentSnoozeAfterDialogBinding
 import com.trustedapp.todolist.planner.reminders.screens.settings.notireminder.NotiReminderViewModel
+import com.trustedapp.todolist.planner.reminders.screens.settings.notireminder.listSnoozeAfter
 
 class SnoozeAfterDialog : BaseDialogFragment<FragmentSnoozeAfterDialogBinding>() {
 
@@ -40,7 +41,7 @@ class SnoozeAfterDialog : BaseDialogFragment<FragmentSnoozeAfterDialogBinding>()
     }
 
     private fun initData() = with(viewBinding) {
-        adapter?.submitList(viewModel.listSnoozeAfter)
+        adapter?.submitList(listSnoozeAfter)
         viewModel.snoozeAfter.value.let {
             selItem = viewModel.snoozeAfter.value!!
             adapter?.selectEntity = selItem
@@ -51,7 +52,7 @@ class SnoozeAfterDialog : BaseDialogFragment<FragmentSnoozeAfterDialogBinding>()
 
     private fun setEvents() = with(viewBinding) {
         btnDone.setOnClickListener {
-            viewModel.setSnoozeAfter(selItem)
+            context?.let { it1 -> viewModel.setSnoozeAfter(it1, selItem) }
             dismiss()
         }
         adapter?.itemSelectListener = {

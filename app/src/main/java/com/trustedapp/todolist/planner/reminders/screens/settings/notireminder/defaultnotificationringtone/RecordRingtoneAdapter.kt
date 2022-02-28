@@ -1,5 +1,6 @@
 package com.trustedapp.todolist.planner.reminders.screens.settings.notireminder.defaultnotificationringtone
 
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.BaseAdapter
@@ -73,7 +74,7 @@ class ItemRecordRingtoneViewHolder(private val itemViewBinding: ItemSelectRecord
             ringtoneEntity = entity
 
             tvName.text = entity.name
-            tvDuration.text = FileUtils.getAudioFileLength(itemView.context, entity.ringtoneUri, true)
+            tvDuration.text = FileUtils.getAudioFileLength(itemView.context, Uri.parse(entity.ringtoneUri), true)
 
             val isSelect = selectEntity?.id == entity.id && entity.type == selectEntity.type
             val background = if (isSelect)

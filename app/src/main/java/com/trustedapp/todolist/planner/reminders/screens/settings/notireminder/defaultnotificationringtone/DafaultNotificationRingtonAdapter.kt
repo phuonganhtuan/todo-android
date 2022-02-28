@@ -76,6 +76,6 @@ class DafaultNotificationRingtonDiffCallback : BaseDiffCallBack<RingtoneEntity>(
         oldItem === newItem
 
     override fun areContentsTheSame(oldItem: RingtoneEntity, newItem: RingtoneEntity): Boolean {
-        return oldItem.id == newItem.id && oldItem.name == newItem.name && oldItem.ringtoneUri.toString() == newItem.ringtoneUri.toString()
+        return oldItem.id == newItem.id && oldItem.name == newItem.name && oldItem.ringtoneUri == newItem.ringtoneUri
     }
 }

@@ -46,7 +46,7 @@ class PermisDialogFragment : BaseDialogFragment<FragmentPermisDialogBinding>() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.setIsFloatWindow(Settings.canDrawOverlays(context))
+        context?.let { viewModel.setIsFloatWindow(it, Settings.canDrawOverlays(context)) }
     }
 
     private fun observeData() = with(viewModel){

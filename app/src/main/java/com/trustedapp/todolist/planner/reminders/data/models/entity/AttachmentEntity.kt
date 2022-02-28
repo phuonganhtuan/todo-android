@@ -42,7 +42,7 @@ enum class RingtoneEntityTypeEnum{
 data class RingtoneEntity(
     override var id: Int,
     var name: String = "",
-    var ringtoneUri: Uri = Uri.EMPTY,
+    var ringtoneUri: String = "",
     var type: RingtoneEntityTypeEnum = RingtoneEntityTypeEnum.SYSTEM_RINGTONE
 ):BaseEntity()
 

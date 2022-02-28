@@ -34,11 +34,11 @@ class NotificationHelpFragment : BaseFragment<FragmentNotificationHelpBinding>()
         observeData()
     }
 
-    private fun initView(){
+    private fun initView() {
         setupToolbar()
     }
 
-    private fun initData(){
+    private fun initData() {
 
     }
 
@@ -52,13 +52,26 @@ class NotificationHelpFragment : BaseFragment<FragmentNotificationHelpBinding>()
 
     private fun setupEvents() = with(viewBinding) {
         layoutTop.button1.setOnClickListener { findNavController().popBackStack() }
-        swAllowNotication.setOnCheckedChangeListener { _, isChecked -> viewModel.setIsAllowNotification(isChecked) }
-        swIgnoreBatterySaveMode.setOnCheckedChangeListener { _, isChecked -> viewModel.setIsIgnoreBattery(isChecked) }
+        swAllowNotication.setOnClickListener {
+            context?.let { it1 ->
+                viewModel.setIsAllowNotification(
+                    it1, swAllowNotication.isChecked
+                )
+            }
+        }
+        swIgnoreBatterySaveMode.setOnClickListener {
+            context?.let { it1 ->
+                viewModel.setIsIgnoreBattery(
+                    it1,
+                    swIgnoreBatterySaveMode.isChecked
+                )
+            }
+        }
         swFloatingWindow.setOnClickListener { onChangeFloatWindow() }
     }
 
     @SuppressLint("UnsafeRepeatOnLifecycleDetector")
-    private fun observeData() = with(viewModel){
+    private fun observeData() = with(viewModel) {
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 isFloatingWindow.collect {
@@ -68,9 +81,29 @@ class NotificationHelpFragment : BaseFragment<FragmentNotificationHelpBinding>()
                 }
             }
         }
+
+        lifecycleScope.launchWhenStarted {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                isAllowNotification.collect {
+                    viewBinding.apply {
+                        swAllowNotication.isChecked = it
+                    }
+                }
+            }
+        }
+
+        lifecycleScope.launchWhenStarted {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                isIgnoreBattery.collect {
+                    viewBinding.apply {
+                        swIgnoreBatterySaveMode.isChecked = it
+                    }
+                }
+            }
+        }
     }
 
-    private fun onChangeFloatWindow() = with(viewBinding){
+    private fun onChangeFloatWindow() = with(viewBinding) {
         swFloatingWindow.isChecked = !swFloatingWindow.isChecked
         findNavController().navigate(R.id.toPermisDialog)
     }

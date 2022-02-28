@@ -207,4 +207,5 @@
     <string name="fifteen_minutes">15 minutes</string>
     <string name="thirty_minutes">30 minutes</string>
     <string name="one_hour">1 hour</string>
+    <string name="default_todo_ringtone_path">file:///android_asset/raw/to_do_default.mp3</string>
 </resources>
