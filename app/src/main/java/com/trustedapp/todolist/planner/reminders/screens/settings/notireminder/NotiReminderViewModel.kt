@@ -134,10 +134,9 @@ class NotiReminderViewModel @Inject constructor() : ViewModel() {
         // Get current ringtone system
         try {
             val defaultRingtoneUri = RingtoneManager.getActualDefaultRingtoneUri(
-                activity.getApplicationContext(),
+                context,
                 RingtoneManager.TYPE_RINGTONE
             )
-            val defaultRingtone = RingtoneManager.getRingtone(activity, defaultRingtoneUri)
             alarms.add(
                 RingtoneEntity(
                     SYSTEM_RINGTONE_ID,
@@ -172,7 +171,7 @@ class NotiReminderViewModel @Inject constructor() : ViewModel() {
             val alarmsCount = alarmsCursor.count
             if (alarmsCount == 0 && !alarmsCursor.moveToFirst()) {
                 alarmsCursor.close()
-                return ArrayList()
+                return alarms
             }
             while (!alarmsCursor.isAfterLast && alarmsCursor.moveToNext()) {
                 val currentPosition = alarmsCursor.position
@@ -188,6 +187,7 @@ class NotiReminderViewModel @Inject constructor() : ViewModel() {
                     )
                 )
             }
+            alarmsCursor.close()
         } catch (ex: Exception) {
             ex.printStackTrace()
         }

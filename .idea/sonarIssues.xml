@@ -13,6 +13,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/trustedapp/todolist/planner/reminders/screens/newtask/attachment/SelectAttachmentBottomDialog.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/app/src/main/java/com/trustedapp/todolist/planner/reminders/screens/newtask/attachment/SelectAttachmentListViewModel.kt">
           <value>
             <set />
@@ -109,6 +114,41 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/app/src/main/res/values/themes.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../ReactNative/NativeModule/react-native-apero-ads/android/build.gradle">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../ReactNative/NativeModule/react-native-apero-ads/android/src/main/AndroidManifest.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../ReactNative/NativeModule/react-native-apero-ads/android/src/main/res/values/strings.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../ReactNative/NativeModule/react-native-apero-ads/android/src/main/res/xml/file_paths.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../ReactNative/NativeModule/react-native-apero-ads/example/android/app/build.gradle">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../ReactNative/NativeModule/react-native-apero-ads/example/android/app/src/main/AndroidManifest.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../ReactNative/NativeModule/react-native-apero-ads/example/android/build.gradle">
           <value>
             <set />
           </value>

@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.ColorStateList
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -29,6 +30,7 @@ import com.trustedapp.todolist.planner.reminders.data.models.entity.AttachmentAl
 import com.trustedapp.todolist.planner.reminders.data.models.entity.AttachmentType
 import com.trustedapp.todolist.planner.reminders.databinding.LayoutSelectAttachmentListBinding
 import com.trustedapp.todolist.planner.reminders.screens.newtask.NewTaskViewModel
+import com.trustedapp.todolist.planner.reminders.utils.getColorFromAttr
 import com.trustedapp.todolist.planner.reminders.utils.gone
 import com.trustedapp.todolist.planner.reminders.utils.hide
 import com.trustedapp.todolist.planner.reminders.utils.show
@@ -101,6 +103,7 @@ class SelectAttachmentBottomDialog :
 
             }
         }
+        loadingBar.indeterminateTintList = ColorStateList.valueOf(requireContext().getColorFromAttr(R.attr.colorPrimary))
     }
 
     private fun initData() = with(viewBinding) {
