@@ -27,7 +27,7 @@ class StandardTodayFactory(private val context: Context, intent: Intent?) :
 
     override fun onDataSetChanged() {
         todayTasks =
-            taskDao.getTaskInDay(DateTimeUtils.getComparableDateString(Calendar.getInstance().time))
+            taskDao.getTaskInDay(DateTimeUtils.getComparableDateString(Calendar.getInstance().time, isDefault = true))
                 .map { WidgetItemWrap(task = it) }.toMutableList()
         val future =
             taskDao.getFutureTask(DateTimeUtils.getTomorrow())

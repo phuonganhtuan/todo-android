@@ -19,10 +19,21 @@ import java.util.Calendar.*
 class MonthWidget : AppWidgetProvider() {
 
     companion object {
-        private const val PREVIOUS_MONTH_ACTION = "pma"
-        private const val NEXT_MONTH_ACTION = "nma"
+        const val PREVIOUS_MONTH_ACTION = "pma"
+        const val NEXT_MONTH_ACTION = "nma"
         const val INTENT_MONTH = "current_month"
         var currentMonth = Calendar.getInstance()
+
+        fun getPendingSelfIntent(context: Context?, action: String?): PendingIntent? {
+            val intent = Intent(context, MonthWidget::class.java)
+            intent.action = action
+            return PendingIntent.getBroadcast(
+                context,
+                0,
+                intent,
+                FLAG_IMMUTABLE or FLAG_CANCEL_CURRENT
+            )
+        }
     }
 
     override fun onReceive(context: Context?, intent: Intent?) {
@@ -58,8 +69,18 @@ class MonthWidget : AppWidgetProvider() {
             views.setImageViewResource(R.id.imageNextMonth, R.drawable.ic_next)
             views.setTextViewText(
                 R.id.textMonthYear,
-                DateTimeUtils.getMonthYearString(context, currentMonth)
+                DateTimeUtils.getMonthYearString(currentMonth)
             )
+
+            val dayTitle = DateTimeUtils.getCalendarDayTitle()
+            views.setTextViewText(R.id.textDay1, dayTitle[0])
+            views.setTextViewText(R.id.textDay2, dayTitle[1])
+            views.setTextViewText(R.id.textDay3, dayTitle[2])
+            views.setTextViewText(R.id.textDay4, dayTitle[3])
+            views.setTextViewText(R.id.textDay5, dayTitle[4])
+            views.setTextViewText(R.id.textDay6, dayTitle[5])
+            views.setTextViewText(R.id.textDay7, dayTitle[6])
+
             views.setRemoteAdapter(R.id.gridCalendar, intent)
             views.setOnClickPendingIntent(
                 R.id.imagePreviousMonth,
@@ -97,10 +118,52 @@ class MonthWidget : AppWidgetProvider() {
         currentMonth.set(DAY_OF_MONTH, 1)
         currentMonth.set(MONTH, currentMonth.get(MONTH) - 1)
     }
+}
 
-    private fun getPendingSelfIntent(context: Context?, action: String?): PendingIntent? {
-        val intent = Intent(context, javaClass)
-        intent.action = action
-        return PendingIntent.getBroadcast(context, 0, intent, FLAG_IMMUTABLE or FLAG_CANCEL_CURRENT)
+fun updateMonthWidget(
+    context: Context,
+    appWidgetManager: AppWidgetManager,
+    appWidgetIds: IntArray
+) {
+    for (appWidgetId in appWidgetIds) {
+        val intent = Intent(context, MonthRemoteService::class.java).apply {
+            putExtra(MonthWidget.INTENT_MONTH, MonthWidget.currentMonth.timeInMillis)
+        }
+        val views = RemoteViews(context.packageName, R.layout.layout_widget_month)
+        views.setImageViewResource(R.id.imagePreviousMonth, R.drawable.ic_previous)
+        views.setImageViewResource(R.id.imageNextMonth, R.drawable.ic_next)
+        views.setTextViewText(
+            R.id.textMonthYear,
+            DateTimeUtils.getMonthYearString(MonthWidget.currentMonth)
+        )
+
+        val dayTitle = DateTimeUtils.getCalendarDayTitle()
+        views.setTextViewText(R.id.textDay1, dayTitle[0])
+        views.setTextViewText(R.id.textDay2, dayTitle[1])
+        views.setTextViewText(R.id.textDay3, dayTitle[2])
+        views.setTextViewText(R.id.textDay4, dayTitle[3])
+        views.setTextViewText(R.id.textDay5, dayTitle[4])
+        views.setTextViewText(R.id.textDay6, dayTitle[5])
+        views.setTextViewText(R.id.textDay7, dayTitle[6])
+
+        views.setRemoteAdapter(R.id.gridCalendar, intent)
+        views.setOnClickPendingIntent(
+            R.id.imagePreviousMonth,
+            MonthWidget.getPendingSelfIntent(context, MonthWidget.PREVIOUS_MONTH_ACTION)
+        )
+        views.setOnClickPendingIntent(
+            R.id.imageNextMonth,
+            MonthWidget.getPendingSelfIntent(context, MonthWidget.NEXT_MONTH_ACTION)
+        )
+
+        val intentHome = Intent(context, HomeActivity::class.java).apply {
+            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        }
+        val pendingIntent =
+            PendingIntent.getActivity(context, 0, intentHome, FLAG_IMMUTABLE)
+
+        views.setOnClickPendingIntent(R.id.layoutWidget, pendingIntent)
+
+        appWidgetManager.updateAppWidget(appWidgetId, views)
     }
 }

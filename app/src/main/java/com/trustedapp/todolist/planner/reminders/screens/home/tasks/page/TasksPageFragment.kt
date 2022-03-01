@@ -45,6 +45,11 @@ class TasksPageFragment : BaseFragment<FragmentTasksPageBinding>() {
         setupEvents()
     }
 
+    override fun onStart() {
+        super.onStart()
+        adapter.notifyDataSetChanged()
+    }
+
     private fun initViews() = with(viewBinding) {
         recyclerTasks.adapter = adapter
         if (type == TaskPageType.TODAY) {

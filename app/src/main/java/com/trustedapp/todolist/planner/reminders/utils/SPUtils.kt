@@ -14,6 +14,9 @@ import com.trustedapp.todolist.planner.reminders.data.models.entity.TODO_DEFAULT
 import com.trustedapp.todolist.planner.reminders.data.models.model.SnoozeAfterModel
 import com.trustedapp.todolist.planner.reminders.screens.settings.notireminder.DefaultReminderTypeEnum
 import com.trustedapp.todolist.planner.reminders.screens.settings.notireminder.listSnoozeAfter
+import com.trustedapp.todolist.planner.reminders.setting.DateFormat
+import com.trustedapp.todolist.planner.reminders.setting.FirstDayOfWeek
+import com.trustedapp.todolist.planner.reminders.setting.TimeFormat
 
 object SPUtils {
 
@@ -50,6 +53,10 @@ object SPUtils {
 
     private const val IS_TODO_REMINDER = "is_todo_reminder"
     private const val DAILY_REMINDER_RINGTONE = "daily_reminder_ringtone"
+
+    const val FIRST_DAY_OF_WEEK_SETTING = "FirstDayOfWeek"
+    const val TIME_FORMAT_SETTING = "TimeFormat"
+    const val DATE_FORMAT_SETTING = "DateFormat"
 
     fun getSavedTheme(context: Context): Triple<Int, Int, Int> {
         val sp = context.getSharedPreferences(TODO_SP_KEY, Context.MODE_PRIVATE)
@@ -178,7 +185,8 @@ object SPUtils {
                     RingtoneEntity(
                         TODO_DEFAULT_RINGTONE_ID,
                         context.getString(R.string.todo_default),
-                        Uri.parse(context.getString(R.string.default_todo_ringtone_path)).toString(),
+                        Uri.parse(context.getString(R.string.default_todo_ringtone_path))
+                            .toString(),
                         RingtoneEntityTypeEnum.SYSTEM_RINGTONE
                     )
                 )
@@ -221,7 +229,8 @@ object SPUtils {
                         RingtoneEntity(
                             TODO_DEFAULT_RINGTONE_ID,
                             context.getString(R.string.todo_default),
-                            Uri.parse(context.getString(R.string.default_todo_ringtone_path)).toString(),
+                            Uri.parse(context.getString(R.string.default_todo_ringtone_path))
+                                .toString(),
                             RingtoneEntityTypeEnum.SYSTEM_RINGTONE
                         )
                     )
@@ -283,7 +292,7 @@ object SPUtils {
         context.getSharedPreferences(TODO_SP_KEY, Context.MODE_PRIVATE)
             .edit()
             .putString(
-                IS_SNOOZE_TASK_REMINDER, Gson().toJson(value)
+                SNOOZE_AFTER_VALUE, Gson().toJson(value)
             )
             .apply()
     }
@@ -343,4 +352,34 @@ object SPUtils {
         }
         return Gson().fromJson(currentValue, RingtoneEntity::class.java)
     }
+
+    fun saveTimeFormat(context: Context, format: String) =
+        context.getSharedPreferences(TODO_SP_KEY, Context.MODE_PRIVATE)
+            .edit()
+            .putString(TIME_FORMAT_SETTING, format)
+            .apply()
+
+    fun getTimeFormat(context: Context) =
+        context.getSharedPreferences(TODO_SP_KEY, Context.MODE_PRIVATE)
+            .getString(TIME_FORMAT_SETTING, TimeFormat.DEFAULT.name)
+
+    fun saveDateFormat(context: Context, format: String) =
+        context.getSharedPreferences(TODO_SP_KEY, Context.MODE_PRIVATE)
+            .edit()
+            .putString(DATE_FORMAT_SETTING, format)
+            .apply()
+
+    fun getDateFormat(context: Context) =
+        context.getSharedPreferences(TODO_SP_KEY, Context.MODE_PRIVATE)
+            .getString(DATE_FORMAT_SETTING, DateFormat.DDMMYYYY.name)
+
+    fun saveFirstDayOfWeek(context: Context, value: String) =
+        context.getSharedPreferences(TODO_SP_KEY, Context.MODE_PRIVATE)
+            .edit()
+            .putString(FIRST_DAY_OF_WEEK_SETTING, value)
+            .apply()
+
+    fun getFirstDayOfWeek(context: Context) =
+        context.getSharedPreferences(TODO_SP_KEY, Context.MODE_PRIVATE)
+            .getString(FIRST_DAY_OF_WEEK_SETTING, FirstDayOfWeek.AUTO.name)
 }
