@@ -113,6 +113,7 @@
     <string name="inter_splash_ads_id">ca-app-pub-3940256099942544/1033173712</string>
     <string name="inter_insert_ads_id">ca-app-pub-3940256099942544/1033173712</string>
     <string name="native_language_setup_ads_id">ca-app-pub-3940256099942544/2247696110</string>
+    <string name="native_language_setting_ads_id">ca-app-pub-3940256099942544/2247696110</string>
 
     <string name="facebook_app_id">1561758810851820</string>
     <string name="facebook_client_token">Facebook Client ID</string>

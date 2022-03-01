@@ -5,6 +5,6 @@ import android.graphics.drawable.Drawable
 data class LanguageModel(
     var id: Int,
     var langName: String,
-    var flagId: Drawable?,
+    var flagId: Drawable? = null,
     var langCode: String,
 )

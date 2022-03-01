@@ -14,10 +14,12 @@ import androidx.viewbinding.ViewBinding
 import com.google.android.material.snackbar.Snackbar
 import com.trustedapp.todolist.planner.reminders.R
 import com.trustedapp.todolist.planner.reminders.screens.theme.currentTheme
+import com.trustedapp.todolist.planner.reminders.utils.SPUtils
 import com.trustedapp.todolist.planner.reminders.widget.lite.LiteWidget
 import com.trustedapp.todolist.planner.reminders.widget.month.MonthWidget
 import com.trustedapp.todolist.planner.reminders.widget.month.updateMonthWidget
 import com.trustedapp.todolist.planner.reminders.widget.standard.StandardWidget
+import java.util.*
 
 
 abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
@@ -57,6 +59,18 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
             WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
             WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
         )
+    }
+
+    protected fun applyLanguage(languageCode: String) {
+        var langCode = languageCode
+        if (langCode.isEmpty()) langCode = "en"
+        val config = resources.configuration
+        val locale = Locale(langCode)
+        Locale.setDefault(locale)
+        config.setLocale(locale)
+        createConfigurationContext(config)
+        resources.updateConfiguration(config, resources.displayMetrics)
+        SPUtils.saveCurrentLang(this, langCode)
     }
 
     fun hideKeyboard() {

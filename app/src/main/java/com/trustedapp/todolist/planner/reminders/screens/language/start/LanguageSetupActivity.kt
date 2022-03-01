@@ -185,16 +185,6 @@ class LanguageSetupActivity : BaseActivity<ActivityLanguageBinding>() {
         }
     }
 
-    private fun applyLanguage(languageCode: String) {
-        val config = resources.configuration
-        val locale = Locale(languageCode)
-        Locale.setDefault(locale)
-        config.setLocale(locale)
-        createConfigurationContext(config)
-        resources.updateConfiguration(config, resources.displayMetrics)
-        SPUtils.saveCurrentLang(this, languageCode)
-    }
-
     private fun loadAds() = with(viewBinding) {
 //        if (!FirebaseRemoteConfig.getInstance().getBoolean("native_language_ad_enable")) {
 //            layoutAds.hide()
