@@ -1,9 +1,15 @@
 package com.trustedapp.todolist.planner.reminders.screens.settings.notireminder.notificationhelp
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.os.PowerManager
+import android.provider.Settings
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -16,6 +22,7 @@ import com.trustedapp.todolist.planner.reminders.screens.settings.notireminder.N
 import com.trustedapp.todolist.planner.reminders.utils.hide
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
+
 
 @AndroidEntryPoint
 class NotificationHelpFragment : BaseFragment<FragmentNotificationHelpBinding>() {
@@ -30,8 +37,27 @@ class NotificationHelpFragment : BaseFragment<FragmentNotificationHelpBinding>()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView()
+        initData()
         setupEvents()
         observeData()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        context?.let { it1 ->
+            viewModel.setIsAllowNotification(
+                it1, NotificationManagerCompat.from(it1).areNotificationsEnabled()
+            )
+        }
+
+        context?.let { it1 ->
+            val pm =
+                it1?.applicationContext?.getSystemService(Context.POWER_SERVICE) as PowerManager
+            viewModel.setIsIgnoreBattery(
+                it1,
+                pm.isIgnoringBatteryOptimizations(it1.packageName)
+            )
+        }
     }
 
     private fun initView() {
@@ -39,7 +65,6 @@ class NotificationHelpFragment : BaseFragment<FragmentNotificationHelpBinding>()
     }
 
     private fun initData() {
-
     }
 
     private fun setupToolbar() = with(viewBinding.layoutTop) {
@@ -53,19 +78,13 @@ class NotificationHelpFragment : BaseFragment<FragmentNotificationHelpBinding>()
     private fun setupEvents() = with(viewBinding) {
         layoutTop.button1.setOnClickListener { findNavController().popBackStack() }
         swAllowNotication.setOnClickListener {
-            context?.let { it1 ->
-                viewModel.setIsAllowNotification(
-                    it1, swAllowNotication.isChecked
-                )
-            }
+            swAllowNotication.isChecked = !swAllowNotication.isChecked
+            openNotificationSettingDetail()
+
         }
         swIgnoreBatterySaveMode.setOnClickListener {
-            context?.let { it1 ->
-                viewModel.setIsIgnoreBattery(
-                    it1,
-                    swIgnoreBatterySaveMode.isChecked
-                )
-            }
+            swIgnoreBatterySaveMode.isChecked = !swIgnoreBatterySaveMode.isChecked
+            openIgnoreSaverModeSettingDetail()
         }
         swFloatingWindow.setOnClickListener { onChangeFloatWindow() }
     }
@@ -106,5 +125,28 @@ class NotificationHelpFragment : BaseFragment<FragmentNotificationHelpBinding>()
     private fun onChangeFloatWindow() = with(viewBinding) {
         swFloatingWindow.isChecked = !swFloatingWindow.isChecked
         findNavController().navigate(R.id.toPermisDialog)
+    }
+
+    fun openNotificationSettingDetail() {
+        val settingsIntent: Intent = Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
+            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            .putExtra(Settings.EXTRA_APP_PACKAGE, context?.packageName)
+        startActivity(settingsIntent)
+    }
+
+    private fun openIgnoreSaverModeSettingDetail() {
+        context.let {
+            val intent = Intent()
+            val pm = it?.applicationContext?.getSystemService(Context.POWER_SERVICE) as PowerManager
+            if (pm.isIgnoringBatteryOptimizations(context?.packageName)) {
+                intent.action =
+                    Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS
+            } else {
+                intent.action = Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS
+                intent.data = Uri.parse("package:${it?.packageName}")
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+            startActivity(intent)
+        }
     }
 }

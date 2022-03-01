@@ -3,8 +3,10 @@ package com.trustedapp.todolist.planner.reminders.utils
 import android.content.Context
 import android.media.RingtoneManager
 import android.net.Uri
+import android.os.PowerManager
 import android.provider.Settings
 import android.util.Log
+import androidx.core.app.NotificationManagerCompat
 import com.google.gson.Gson
 import com.trustedapp.todolist.planner.reminders.R
 import com.trustedapp.todolist.planner.reminders.data.models.entity.RingtoneEntity
@@ -127,8 +129,15 @@ object SPUtils {
             .getString(CURRENT_LANG_KEY, "")
 
     fun getIsAllowNotification(context: Context): Boolean {
-        return context.getSharedPreferences(TODO_SP_KEY, Context.MODE_PRIVATE)
-            .getBoolean(IS_ALLOW_NOTIFICATION, true)
+        try {
+            return NotificationManagerCompat.from(context).areNotificationsEnabled()
+        } catch (e: Exception) {
+            return context.getSharedPreferences(TODO_SP_KEY, Context.MODE_PRIVATE)
+                .getBoolean(
+                    IS_ALLOW_NOTIFICATION,
+                    NotificationManagerCompat.from(context).areNotificationsEnabled()
+                )
+        }
     }
 
     fun setIsAllowNotification(context: Context, value: Boolean) {
@@ -139,8 +148,16 @@ object SPUtils {
     }
 
     fun getIsIgnoreBattery(context: Context): Boolean {
-        return context.getSharedPreferences(TODO_SP_KEY, Context.MODE_PRIVATE)
-            .getBoolean(IS_IGNORE_BATTERY, false)
+        try {
+            val pm = context?.applicationContext?.getSystemService(Context.POWER_SERVICE) as PowerManager
+            return pm.isIgnoringBatteryOptimizations(context?.packageName)
+        } catch (e: Exception) {
+            return context.getSharedPreferences(TODO_SP_KEY, Context.MODE_PRIVATE)
+                .getBoolean(
+                    IS_IGNORE_BATTERY,
+                    false
+                )
+        }
     }
 
     fun setIsIgnoreBattery(context: Context, value: Boolean) {
@@ -151,8 +168,12 @@ object SPUtils {
     }
 
     fun getIsFloatWindow(context: Context): Boolean {
-        return context.getSharedPreferences(TODO_SP_KEY, Context.MODE_PRIVATE)
-            .getBoolean(IS_FLOAT_WINDOW, Settings.canDrawOverlays(context))
+        try {
+            return Settings.canDrawOverlays(context)
+        } catch (e: Exception) {
+            return context.getSharedPreferences(TODO_SP_KEY, Context.MODE_PRIVATE)
+                .getBoolean(IS_FLOAT_WINDOW, Settings.canDrawOverlays(context))
+        }
     }
 
     fun setIsFloatWindow(context: Context, value: Boolean) {
