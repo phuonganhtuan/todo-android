@@ -137,7 +137,7 @@
             app:layout_constraintStart_toEndOf="@id/cardIcon" />
     </com.google.android.gms.ads.nativead.NativeAdView>
 
-    <RadioButton
+    <androidx.appcompat.widget.AppCompatRadioButton
         android:id="@+id/radioLanguage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

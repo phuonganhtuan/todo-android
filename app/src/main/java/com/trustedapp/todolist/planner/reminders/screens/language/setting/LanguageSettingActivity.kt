@@ -122,6 +122,16 @@ class LanguageSettingActivity : BaseActivity<ActivityLanguageSettingBinding>() {
                 langName = "China",
                 langCode = "zh"
             ),
+            LanguageModel(
+                id = 1,
+                langName = "Portugal",
+                langCode = "pt"
+            ),
+            LanguageModel(
+                id = 4,
+                langName = "Índia",
+                langCode = "hi"
+            ),
         )
 
         val langCode = langList.map { it.langCode }
