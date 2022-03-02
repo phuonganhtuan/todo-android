@@ -186,7 +186,7 @@
     <string name="auto">Aŭtomata</string>
     <string name="monday">Lundo</string>
     <string name="saturday">Sabaton</string>
-    <string name="sunday">dimanĉo</string>
+    <string name="sunday">Dimanĉo</string>
     <string name="we_are_working_hard_to_provide_a_better_user_experience">Ni laboras forte por provizi pli bonan sperton pri uzanto.</string>
     <string name="rate">Taksu</string>
     <string name="please_rate_us_5_stars_if_you_enjoy_our_app">Bonvolu taksas nin 5 stelojn se vi ĝuas nian programon</string>
@@ -202,4 +202,15 @@
     <string name="skip">Saltar</string>
     <string name="apply">Aplicar</string>
     <string name="color">Color</string>
+    <string name="event_icon">Icono de evento</string>
+    <string name="event_name">Nombre del evento</string>
+    <string name="count_type">Tipo de conteo</string>
+    <string name="day">Día</string>
+    <string name="remaining_days">Días restantes</string>
+    <string name="please_set_event_name">Establece el nombre del evento</string>
+    <string name="tap_to_set_event">Toque para configurar el evento</string>
+    <string name="alpha">Alfa</string>
+    <string name="my_tasks">Mis tareas</string>
+    <string name="future">Futuro</string>
+    <string name="completed">Terminado</string>
 </resources>

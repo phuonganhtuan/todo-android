@@ -1,5 +1,6 @@
 package com.trustedapp.todolist.planner.reminders.widget.month
 
+import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.Intent
 import android.view.View
@@ -16,14 +17,19 @@ class MonthTodayFactory(private val context: Context, private val intent: Intent
     RemoteViewsService.RemoteViewsFactory {
 
     private val taskDao by lazy { AppDatabase.invoke(context).taskDao() }
+    private var isDark = false
     private var days = listOf<DateModel>()
 
     override fun onCreate() {
     }
 
     override fun onDataSetChanged() {
-        val month = intent?.extras?.getLong(MonthWidget.INTENT_MONTH, Calendar.getInstance().timeInMillis) ?: Calendar.getInstance().timeInMillis
+        val month =
+            intent?.extras?.getLong(MonthWidget.INTENT_MONTH, Calendar.getInstance().timeInMillis)
+                ?: Calendar.getInstance().timeInMillis
         days = getDays(MonthWidget.currentMonth)
+        val id = intent?.extras?.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID) ?: 0
+        isDark = taskDao.getMonthWidgetModel(id)?.isDark ?: false
     }
 
     override fun onDestroy() {
@@ -47,7 +53,11 @@ class MonthTodayFactory(private val context: Context, private val intent: Intent
         val textColor = if (isSelected) {
             R.color.white
         } else {
-            if (item.isInMonth) R.color.color_cal_primary else R.color.color_cal_secondary
+            if (isDark) {
+                if (item.isInMonth) R.color.white else R.color.color_cal_secondary
+            } else {
+                if (item.isInMonth) R.color.color_cal_primary else R.color.color_cal_secondary
+            }
         }
         rv.setTextColor(R.id.textDay, ContextCompat.getColor(context, textColor))
 
@@ -79,7 +89,8 @@ class MonthTodayFactory(private val context: Context, private val intent: Intent
                 .get(Calendar.MONTH) == month.get(
                 Calendar.MONTH
             )
-        val tasks = taskDao.getTaskInDay(DateTimeUtils.getComparableDateString(it, isDefault = true))
+        val tasks =
+            taskDao.getTaskInDay(DateTimeUtils.getComparableDateString(it, isDefault = true))
         val tasksCatName = tasks.map { t -> t.category?.name.toString().lowercase() }
         DateModel(
             id = it.time.toInt(),

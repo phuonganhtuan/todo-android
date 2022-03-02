@@ -15,7 +15,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
-        android:text="My Tasks"
+        android:text="@string/my_tasks"
         android:fontFamily="@font/sf_rounded_extra_bold"
         android:textColor="@android:color/black"
         android:textSize="36sp"
@@ -38,17 +38,17 @@
         <com.google.android.material.tabs.TabItem
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Today" />
+            android:text="@string/today" />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Future" />
+            android:text="@string/future" />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Completed" />
+            android:text="@string/completed" />
     </com.google.android.material.tabs.TabLayout>
 
     <androidx.viewpager2.widget.ViewPager2

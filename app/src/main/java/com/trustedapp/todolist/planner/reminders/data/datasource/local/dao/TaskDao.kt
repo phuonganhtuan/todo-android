@@ -115,4 +115,40 @@ interface TaskDao {
 
     @Query("select * from BookmarkEntity")
     fun getBookmarks(): Flow<List<BookmarkEntity>>
+
+    @Query("select * from CountDownWidgetModel where widgetId = :widgetId")
+    fun getCountDownModel(widgetId: Int): CountDownWidgetModel?
+
+    @Delete
+    suspend fun deleteCountDownModel(entity: CountDownWidgetModel)
+
+    @Update(onConflict = REPLACE)
+    suspend fun updateCountDownModel(entity: CountDownWidgetModel)
+
+    @Insert(onConflict = REPLACE)
+    suspend fun insertCountDownModel(entity: CountDownWidgetModel)
+
+    @Query("select * from MonthWidgetModel where widgetId = :widgetId")
+    fun getMonthWidgetModel(widgetId: Int): MonthWidgetModel?
+
+    @Delete
+    suspend fun deleteMonthWidgetModel(entity: MonthWidgetModel)
+
+    @Update(onConflict = REPLACE)
+    suspend fun updateMonthWidgetModel(entity: MonthWidgetModel)
+
+    @Insert(onConflict = REPLACE)
+    suspend fun insertMonthWidgetModel(entity: MonthWidgetModel)
+
+//    @Query("select * from MonthWidgetModel where widgetId = :widgetId")
+//    fun getStandardWidgetModel(widgetId: Int): MonthWidgetModel?
+//
+//    @Delete
+//    suspend fun deleteStandardWidgetModel(entity: MonthWidgetModel)
+//
+//    @Update(onConflict = REPLACE)
+//    suspend fun updateStandardWidgetModel(entity: MonthWidgetModel)
+//
+//    @Insert(onConflict = REPLACE)
+//    suspend fun insertStandardWidgetModel(entity: CountDownWidgetModel)
 }
