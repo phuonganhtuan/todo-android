@@ -23,6 +23,8 @@ class CalendarTaskAdapter @Inject constructor() :
 
     var selectedDate = Calendar.getInstance().time
 
+    var isDark = false
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CalendarTaskViewHolder {
         val itemViewBinding =
             ItemCalendarTaskBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -30,7 +32,7 @@ class CalendarTaskAdapter @Inject constructor() :
     }
 
     override fun onBindViewHolder(holder: CalendarTaskViewHolder, position: Int) {
-        holder.displayData(getItem(position), selectedDate)
+        holder.displayData(getItem(position), selectedDate, isDark)
     }
 }
 
@@ -54,7 +56,7 @@ class CalendarTaskViewHolder(
 
     }
 
-    fun displayData(entity: DateModel, selectedDate: Date) = with(itemViewBinding) {
+    fun displayData(entity: DateModel, selectedDate: Date, isDark: Boolean) = with(itemViewBinding) {
         date = entity.date
         textDay.text =
             Calendar.getInstance().apply { time = entity.date }.get(Calendar.DAY_OF_MONTH)
@@ -66,7 +68,11 @@ class CalendarTaskViewHolder(
         val textColor = if (isSelected) {
             R.color.white
         } else {
-            if (entity.isInMonth) R.color.color_cal_primary else R.color.color_cal_secondary
+            if (isDark) {
+                if (entity.isInMonth) R.color.white else R.color.color_cal_secondary
+            } else {
+                if (entity.isInMonth) R.color.color_cal_primary else R.color.color_cal_secondary
+            }
         }
         textDay.setTextColor(ContextCompat.getColor(itemView.context, textColor))
         val isToday =
@@ -74,7 +80,7 @@ class CalendarTaskViewHolder(
                 Calendar.getInstance().time
             )
         val bgId = if (isSelected) R.drawable.bg_primary_rounded_8 else {
-            if (isToday) R.drawable.bg_today_calendar_task else R.drawable.bg_greybg_rounded_8
+            if (isToday) R.drawable.bg_today_calendar_task else R.color.transparent
         }
         layoutDay.background = ContextCompat.getDrawable(itemView.context, bgId)
         if (entity.hasTask) viewHasTask.show() else viewHasTask.gone()
