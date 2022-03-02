@@ -6,6 +6,7 @@ import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.content.Intent
+import android.view.View
 import android.widget.RemoteViews
 import com.trustedapp.todolist.planner.reminders.R
 import com.trustedapp.todolist.planner.reminders.data.datasource.local.database.AppDatabase
@@ -35,6 +36,7 @@ class CountdownWidget : AppWidgetProvider() {
             val widgetModel = widgetDao.getCountDownModel(appWidgetId)
 
             if (widgetModel != null) {
+                views.setViewVisibility(R.id.textNoEvent, View.GONE)
                 views.setTextViewText(R.id.textEvent, widgetModel.eventName)
                 views.setTextViewText(
                     R.id.textDate,
@@ -42,7 +44,8 @@ class CountdownWidget : AppWidgetProvider() {
                         Calendar.getInstance().apply { timeInMillis = widgetModel.date }.time
                     )
                 )
-                views.setImageViewResource(R.id.imageIcon, R.drawable.ic_balloon)
+                views.setTextViewText(R.id.textDay, context.getString(R.string.days))
+                views.setImageViewResource(R.id.imageIcon, countDownEventIconIds[widgetModel.iconIndex])
                 views.setImageViewResource(R.id.imageDate, R.drawable.ic_date)
                 val time = if (widgetModel.countType == CountDownType.REMAIN_DAYS.name) {
                     widgetModel.date - System.currentTimeMillis()
@@ -53,6 +56,8 @@ class CountdownWidget : AppWidgetProvider() {
                     R.id.textDayCount,
                     TimeUnit.MILLISECONDS.toDays(time).toString()
                 )
+            } else {
+                views.setViewVisibility(R.id.textNoEvent, View.VISIBLE)
             }
 
             val intent = Intent(context, CountDownWidgetSettingActivity::class.java).apply {
@@ -61,6 +66,7 @@ class CountdownWidget : AppWidgetProvider() {
             val pendingIntent =
                 PendingIntent.getActivity(context, appWidgetId, intent, FLAG_MUTABLE)
             views.setOnClickPendingIntent(R.id.layoutWidget, pendingIntent)
+            views.setOnClickPendingIntent(R.id.textNoEvent, pendingIntent)
             appWidgetManager.updateAppWidget(appWidgetId, views)
         }
     }
@@ -85,6 +91,7 @@ fun updateCountDownWidget(
     val widgetModel = widgetDao.getCountDownModel(appWidgetId)
 
     if (widgetModel != null) {
+        views.setViewVisibility(R.id.textNoEvent, View.GONE)
         views.setTextViewText(R.id.textEvent, widgetModel.eventName)
         views.setTextViewText(
             R.id.textDate,
@@ -92,6 +99,7 @@ fun updateCountDownWidget(
                 Calendar.getInstance().apply { timeInMillis = widgetModel.date }.time
             )
         )
+        views.setTextViewText(R.id.textDay, context.getString(R.string.days))
         views.setImageViewResource(R.id.imageIcon, countDownEventIconIds[widgetModel.iconIndex])
         views.setImageViewResource(R.id.imageDate, R.drawable.ic_date)
         val time = if (widgetModel.countType == CountDownType.REMAIN_DAYS.name) {
@@ -103,6 +111,8 @@ fun updateCountDownWidget(
             R.id.textDayCount,
             TimeUnit.MILLISECONDS.toDays(time).toString()
         )
+    } else {
+        views.setViewVisibility(R.id.textNoEvent, View.VISIBLE)
     }
 
     val intent = Intent(context, CountDownWidgetSettingActivity::class.java).apply {
@@ -111,5 +121,6 @@ fun updateCountDownWidget(
     val pendingIntent =
         PendingIntent.getActivity(context, appWidgetId, intent, FLAG_MUTABLE)
     views.setOnClickPendingIntent(R.id.layoutWidget, pendingIntent)
+    views.setOnClickPendingIntent(R.id.textNoEvent, pendingIntent)
     appWidgetManager.updateAppWidget(appWidgetId, views)
 }
