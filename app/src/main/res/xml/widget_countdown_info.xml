@@ -1,4 +1,5 @@
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:configure="com.trustedapp.todolist.planner.reminders.widget.countdown.CountDownWidgetSettingActivity"
     android:initialKeyguardLayout="@layout/layout_widget_countdown"
     android:initialLayout="@layout/layout_widget_countdown"
     android:minWidth="250dp"

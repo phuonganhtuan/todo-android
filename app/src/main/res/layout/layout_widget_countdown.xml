@@ -26,7 +26,6 @@
             android:ellipsize="end"
             android:lines="1"
             android:paddingHorizontal="4dp"
-            android:text="Happy birthday to me"
             android:textColor="@color/color_menu_text_default"
             android:textSize="16sp"
             android:textStyle="bold" />
@@ -48,7 +47,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
-                android:text="12/07/2022"
                 android:textColor="@color/color_text_secondary_dark"
                 android:textSize="15sp" />
         </LinearLayout>
@@ -60,7 +58,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingHorizontal="4dp"
-        android:text="342"
         android:textColor="@color/color_menu_text_default"
         android:textSize="30sp"
         android:textStyle="bold" />

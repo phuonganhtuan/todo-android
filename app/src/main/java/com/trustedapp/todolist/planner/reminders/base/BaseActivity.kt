@@ -33,8 +33,8 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
         }
         viewBinding = inflateViewBinding()
         setContentView(viewBinding.root)
-        onActivityReady()
         onActivityReady(savedInstanceState)
+        onActivityReady()
     }
 
     abstract fun onActivityReady()

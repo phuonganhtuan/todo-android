@@ -209,4 +209,10 @@
     <string name="thirty_minutes">30 minutes</string>
     <string name="one_hour">1 hour</string>
     <string name="default_todo_ringtone_path">file:///android_asset/raw/to_do_default.mp3</string>
+    <string name="event_icon">Event icon</string>
+    <string name="event_name">Event name</string>
+    <string name="count_type">Count type</string>
+    <string name="day">Day</string>
+    <string name="remaining_days">Remaining days</string>
+    <string name="please_set_event_name">Please set the event name</string>
 </resources>

@@ -115,4 +115,16 @@ interface TaskDao {
 
     @Query("select * from BookmarkEntity")
     fun getBookmarks(): Flow<List<BookmarkEntity>>
+
+    @Query("select * from CountDownWidgetModel where widgetId = :widgetId")
+    fun getCountDownModel(widgetId: Int): CountDownWidgetModel?
+
+    @Delete
+    suspend fun deleteCountDownModel(entity: CountDownWidgetModel)
+
+    @Update(onConflict = REPLACE)
+    suspend fun updateCountDownModel(entity: CountDownWidgetModel)
+
+    @Insert(onConflict = REPLACE)
+    suspend fun insertCountDownModel(entity: CountDownWidgetModel)
 }

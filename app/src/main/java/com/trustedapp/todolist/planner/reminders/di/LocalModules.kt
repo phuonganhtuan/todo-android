@@ -4,9 +4,13 @@ import android.content.Context
 import androidx.fragment.app.FragmentActivity
 import com.trustedapp.todolist.planner.reminders.data.datasource.local.database.AppDatabase
 import com.trustedapp.todolist.planner.reminders.data.datasource.local.datasource.TaskLocalDataSource
+import com.trustedapp.todolist.planner.reminders.data.datasource.local.datasource.WidgetDataSource
 import com.trustedapp.todolist.planner.reminders.data.datasource.local.impl.TaskLocalDataSourceImpl
+import com.trustedapp.todolist.planner.reminders.data.datasource.local.impl.WidgetDataSourceImpl
 import com.trustedapp.todolist.planner.reminders.data.repository.TaskRepository
+import com.trustedapp.todolist.planner.reminders.data.repository.WidgetRepository
 import com.trustedapp.todolist.planner.reminders.data.repository.impl.TaskRepositoryImpl
+import com.trustedapp.todolist.planner.reminders.data.repository.impl.WidgetRepositoryImpl
 import com.trustedapp.todolist.planner.reminders.screens.home.tasks.TasksPagerAdapter
 import dagger.Binds
 import dagger.Module
@@ -31,6 +35,16 @@ abstract class LocalModules {
     abstract fun bindMainLocalDataSource(
         mainLocalDataSource: TaskLocalDataSourceImpl
     ): TaskLocalDataSource
+
+    @Binds
+    abstract fun bindWidgetRepo(
+        widgetRepoImpl: WidgetRepositoryImpl
+    ): WidgetRepository
+
+    @Binds
+    abstract fun bindWidgetLocalDataSource(
+        widgetLocalDataSource: WidgetDataSourceImpl
+    ): WidgetDataSource
 }
 
 @Module
@@ -43,7 +57,7 @@ object DBModules {
     ) = AppDatabase.invoke(app)
 
     @Provides
-    fun provideYourDao(db: AppDatabase) = db.taskDao()
+    fun provideTaskDao(db: AppDatabase) = db.taskDao()
 }
 
 @Module

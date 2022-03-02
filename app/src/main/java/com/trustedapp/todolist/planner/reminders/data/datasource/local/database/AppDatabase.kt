@@ -16,6 +16,7 @@ import com.trustedapp.todolist.planner.reminders.data.models.entity.*
         BookmarkEntity::class,
         SubTaskEntity::class,
         ReminderEntity::class,
+        CountDownWidgetModel::class,
     ],
     version = 1,
     exportSchema = false
