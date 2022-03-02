@@ -23,12 +23,12 @@ android {
 
     buildTypes {
         debug {
-            resValue "string", "version_name", "Version ${defaultConfig.versionName}"
+            resValue "string", "version_name", "${defaultConfig.versionName}"
         }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            resValue "string", "version_name", "Version ${defaultConfig.versionName}"
+            resValue "string", "version_name", "${defaultConfig.versionName}"
         }
     }
     buildFeatures {

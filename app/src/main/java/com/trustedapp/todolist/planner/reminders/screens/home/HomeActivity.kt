@@ -3,17 +3,22 @@ package com.trustedapp.todolist.planner.reminders.screens.home
 import android.appwidget.AppWidgetManager
 import android.content.ComponentName
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import android.text.Html
+import android.text.Html.FROM_HTML_MODE_LEGACY
 import android.view.MenuItem
 import android.widget.ImageView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.get
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.bumptech.glide.Glide
+import com.trustedapp.todolist.planner.reminders.BuildConfig
 import com.trustedapp.todolist.planner.reminders.R
 import com.trustedapp.todolist.planner.reminders.common.chart.ChartColor
 import com.trustedapp.todolist.planner.reminders.databinding.ActivityHomeBinding
@@ -94,6 +99,13 @@ class HomeActivity : AppCompatActivity() {
                 .load(ContextCompat.getDrawable(this@HomeActivity, textureIds[texture]))
                 .into(imageBg)
         }
+        val versionItem: MenuItem = viewBinding.navigationSideView.menu.findItem(R.id.navVersion)
+        versionItem.title = Html.fromHtml(
+            String.format(
+                getString(R.string.version_info),
+                BuildConfig.VERSION_NAME
+            ), FROM_HTML_MODE_LEGACY
+        )
     }
 
     fun openDrawer() {
