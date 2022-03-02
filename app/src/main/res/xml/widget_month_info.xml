@@ -1,4 +1,5 @@
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:configure="com.trustedapp.todolist.planner.reminders.widget.month.MonthWidgetSettingActivity"
     android:initialKeyguardLayout="@layout/layout_widget_month"
     android:initialLayout="@layout/layout_widget_month"
     android:minWidth="250dp"

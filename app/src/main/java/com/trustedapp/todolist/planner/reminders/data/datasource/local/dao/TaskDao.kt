@@ -127,4 +127,28 @@ interface TaskDao {
 
     @Insert(onConflict = REPLACE)
     suspend fun insertCountDownModel(entity: CountDownWidgetModel)
+
+    @Query("select * from MonthWidgetModel where widgetId = :widgetId")
+    fun getMonthWidgetModel(widgetId: Int): MonthWidgetModel?
+
+    @Delete
+    suspend fun deleteMonthWidgetModel(entity: MonthWidgetModel)
+
+    @Update(onConflict = REPLACE)
+    suspend fun updateMonthWidgetModel(entity: MonthWidgetModel)
+
+    @Insert(onConflict = REPLACE)
+    suspend fun insertMonthWidgetModel(entity: MonthWidgetModel)
+
+//    @Query("select * from MonthWidgetModel where widgetId = :widgetId")
+//    fun getStandardWidgetModel(widgetId: Int): MonthWidgetModel?
+//
+//    @Delete
+//    suspend fun deleteStandardWidgetModel(entity: MonthWidgetModel)
+//
+//    @Update(onConflict = REPLACE)
+//    suspend fun updateStandardWidgetModel(entity: MonthWidgetModel)
+//
+//    @Insert(onConflict = REPLACE)
+//    suspend fun insertStandardWidgetModel(entity: CountDownWidgetModel)
 }

@@ -9,7 +9,9 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.widget.RemoteViews
+import androidx.core.content.ContextCompat
 import com.trustedapp.todolist.planner.reminders.R
+import com.trustedapp.todolist.planner.reminders.data.datasource.local.database.AppDatabase
 import com.trustedapp.todolist.planner.reminders.screens.home.HomeActivity
 import com.trustedapp.todolist.planner.reminders.utils.DateTimeUtils
 import java.util.*
@@ -60,13 +62,21 @@ class MonthWidget : AppWidgetProvider() {
         appWidgetManager: AppWidgetManager,
         appWidgetIds: IntArray
     ) {
+
+        val dao = AppDatabase.invoke(context).taskDao()
+
         for (appWidgetId in appWidgetIds) {
             val intent = Intent(context, MonthRemoteService::class.java).apply {
                 putExtra(INTENT_MONTH, currentMonth.timeInMillis)
+                putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
             }
             val views = RemoteViews(context.packageName, R.layout.layout_widget_month)
+
+            val widgetModel = dao.getMonthWidgetModel(appWidgetId)
+
             views.setImageViewResource(R.id.imagePreviousMonth, R.drawable.ic_previous)
             views.setImageViewResource(R.id.imageNextMonth, R.drawable.ic_next)
+            views.setImageViewResource(R.id.imageSetting, R.drawable.ic_setting)
             views.setTextViewText(
                 R.id.textMonthYear,
                 DateTimeUtils.getMonthYearString(currentMonth)
@@ -95,9 +105,37 @@ class MonthWidget : AppWidgetProvider() {
                 addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             }
             val pendingIntent =
-                PendingIntent.getActivity(context, 0, intentHome, FLAG_IMMUTABLE)
+                PendingIntent.getActivity(context, appWidgetId, intentHome, FLAG_IMMUTABLE)
+
+            val intentSetting = Intent(context, MonthWidgetSettingActivity::class.java).apply {
+                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
+            }
+            val pendingIntentSetting =
+                PendingIntent.getActivity(context, appWidgetId, intentSetting, FLAG_IMMUTABLE)
 
             views.setOnClickPendingIntent(R.id.layoutWidget, pendingIntent)
+            views.setOnClickPendingIntent(R.id.imageSetting, pendingIntentSetting)
+
+            if (widgetModel != null) {
+                val bg =
+                    if (widgetModel.isDark) R.drawable.bg_grey_dark_16 else R.drawable.bg_white_rounded_16
+                val textTitleColor = ContextCompat.getColor(
+                    context,
+                    if (widgetModel.isDark) R.color.white else R.color.color_menu_text_default
+                )
+                views.setFloat(R.id.viewBg, "setAlpha", widgetModel.alpha / 100f)
+                views.setTextColor(R.id.textMonthYear, textTitleColor)
+                views.setTextColor(R.id.textDay1, textTitleColor)
+                views.setTextColor(R.id.textDay2, textTitleColor)
+                views.setTextColor(R.id.textDay3, textTitleColor)
+                views.setTextColor(R.id.textDay4, textTitleColor)
+                views.setTextColor(R.id.textDay5, textTitleColor)
+                views.setTextColor(R.id.textDay6, textTitleColor)
+                views.setTextColor(R.id.textDay7, textTitleColor)
+
+                views.setInt(R.id.viewBg, "setBackgroundResource", bg)
+            }
 
             appWidgetManager.updateAppWidget(appWidgetId, views)
         }
@@ -125,13 +163,21 @@ fun updateMonthWidget(
     appWidgetManager: AppWidgetManager,
     appWidgetIds: IntArray
 ) {
+
+    val dao = AppDatabase.invoke(context).taskDao()
+
     for (appWidgetId in appWidgetIds) {
         val intent = Intent(context, MonthRemoteService::class.java).apply {
             putExtra(MonthWidget.INTENT_MONTH, MonthWidget.currentMonth.timeInMillis)
+            putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
         }
         val views = RemoteViews(context.packageName, R.layout.layout_widget_month)
+
+        val widgetModel = dao.getMonthWidgetModel(appWidgetId)
+
         views.setImageViewResource(R.id.imagePreviousMonth, R.drawable.ic_previous)
         views.setImageViewResource(R.id.imageNextMonth, R.drawable.ic_next)
+        views.setImageViewResource(R.id.imageSetting, R.drawable.ic_setting)
         views.setTextViewText(
             R.id.textMonthYear,
             DateTimeUtils.getMonthYearString(MonthWidget.currentMonth)
@@ -160,9 +206,37 @@ fun updateMonthWidget(
             addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         }
         val pendingIntent =
-            PendingIntent.getActivity(context, 0, intentHome, FLAG_IMMUTABLE)
+            PendingIntent.getActivity(context, appWidgetId, intentHome, FLAG_IMMUTABLE)
+
+        val intentSetting = Intent(context, MonthWidgetSettingActivity::class.java).apply {
+            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
+        }
+        val pendingIntentSetting =
+            PendingIntent.getActivity(context, appWidgetId, intentSetting, FLAG_IMMUTABLE)
 
         views.setOnClickPendingIntent(R.id.layoutWidget, pendingIntent)
+        views.setOnClickPendingIntent(R.id.imageSetting, pendingIntentSetting)
+
+        if (widgetModel != null) {
+            val bg =
+                if (widgetModel.isDark) R.drawable.bg_grey_dark_16 else R.drawable.bg_white_rounded_16
+            val textTitleColor = ContextCompat.getColor(
+                context,
+                if (widgetModel.isDark) R.color.white else R.color.color_menu_text_default
+            )
+            views.setFloat(R.id.viewBg, "setAlpha", widgetModel.alpha / 100f)
+            views.setTextColor(R.id.textMonthYear, textTitleColor)
+            views.setTextColor(R.id.textDay1, textTitleColor)
+            views.setTextColor(R.id.textDay2, textTitleColor)
+            views.setTextColor(R.id.textDay3, textTitleColor)
+            views.setTextColor(R.id.textDay4, textTitleColor)
+            views.setTextColor(R.id.textDay5, textTitleColor)
+            views.setTextColor(R.id.textDay6, textTitleColor)
+            views.setTextColor(R.id.textDay7, textTitleColor)
+
+            views.setInt(R.id.viewBg, "setBackgroundResource", bg)
+        }
 
         appWidgetManager.updateAppWidget(appWidgetId, views)
     }
