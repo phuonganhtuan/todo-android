@@ -32,6 +32,8 @@ android {
             resValue "string", "native_language_setup_ads_id", "ca-app-pub-3940256099942544/2247696110"
             resValue "string", "native_language_setting_ads_id", "ca-app-pub-3940256099942544/2247696110"
             resValue "string", "facebook_app_id", "1561758810851820"
+            resValue "string", "facebook_client_token", "Facebook Client ID"
+            resValue "string", "adjust_token", "yi2xcqd7a7ls"
         }
         release {
             manifestPlaceholders = [ads_id: "ca-app-pub-3940256099942544~3347511713"]
@@ -43,6 +45,8 @@ android {
             resValue "string", "native_language_setup_ads_id", "ca-app-pub-3940256099942544/2247696110"
             resValue "string", "native_language_setting_ads_id", "ca-app-pub-3940256099942544/2247696110"
             resValue "string", "facebook_app_id", "1561758810851820"
+            resValue "string", "facebook_client_token", "Facebook Client ID"
+            resValue "string", "adjust_token", "yi2xcqd7a7ls"
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
 

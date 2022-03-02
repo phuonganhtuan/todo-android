@@ -106,8 +106,7 @@
     <string name="could_not_open_this_attachment">Could not open this attachment.</string>
     <string name="could_not_find_app_handle_attachment">Could not find any app that can open this attachment.</string>
     <string name="dismiss">Dismiss</string>
-    <string name="facebook_client_token">Facebook Client ID</string>
-    <string name="adjust_token">yi2xcqd7a7ls</string>
+
     <string name="install">INSTALL</string>
     <string name="colors">Colors</string>
     <string name="textures">Textures</string>
@@ -159,7 +158,7 @@
     <string name="noti_and_reminder_title"><![CDATA[Noti & reminder]]></string>
     <string name="permis">Permis</string>
     <string name="permit_drawing_over_other_apps">Permit drawing over other apps</string>
-    <string name="permis_guild">This permission allows an to display on top of others apps you’re us-ing and interfere with your use of the interface in other applications, or change what you think you are seeing in other applications.</string>
+    <string name="permis_guild">This permission allows an to display on top of others apps you are us-ing and interfere with your use of the interface in other applications, or change what you think you are seeing in other applications.</string>
     <string name="notification_des">With 1-3s short ringtone</string>
     <string name="with_repeat_long_ringtone">With repeat long ringtone</string>
     <string name="ringtone_customization">RINGTONE CUSTOMIZATION</string>
@@ -199,4 +198,8 @@
     <string name="thirty_minutes">30 minutes</string>
     <string name="one_hour">1 hour</string>
     <string name="default_todo_ringtone_path">file:///android_asset/raw/to_do_default.mp3</string>
+    <string name="setup_themes">Setup themes</string>
+    <string name="skip">Skip</string>
+    <string name="apply">Apply</string>
+    <string name="color">Color</string>
 </resources>
