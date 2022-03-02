@@ -215,4 +215,5 @@
     <string name="day">Day</string>
     <string name="remaining_days">Remaining days</string>
     <string name="please_set_event_name">Please set the event name</string>
+    <string name="tap_to_set_event">Tap to set event</string>
 </resources>
