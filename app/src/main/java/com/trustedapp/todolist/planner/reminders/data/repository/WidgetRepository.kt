@@ -2,6 +2,8 @@ package com.trustedapp.todolist.planner.reminders.data.repository
 
 import com.trustedapp.todolist.planner.reminders.data.models.entity.CountDownWidgetModel
 import com.trustedapp.todolist.planner.reminders.data.models.entity.MonthWidgetModel
+import com.trustedapp.todolist.planner.reminders.data.models.entity.StandardWidgetModel
+import com.trustedapp.todolist.planner.reminders.data.models.entity.TaskShort
 
 interface WidgetRepository {
 
@@ -14,4 +16,9 @@ interface WidgetRepository {
     suspend fun deleteMonthWidgetModel(entity: MonthWidgetModel)
     suspend fun updateMonthWidgetModel(entity: MonthWidgetModel)
     suspend fun insertMonthWidgetModel(entity: MonthWidgetModel)
+
+    fun getStandardWidgetModel(widgetId: Int): StandardWidgetModel?
+    suspend fun deleteStandardWidgetModel(entity: StandardWidgetModel)
+    suspend fun updateStandardWidgetModel(entity: StandardWidgetModel)
+    suspend fun insertStandardWidgetModel(entity: StandardWidgetModel)
 }

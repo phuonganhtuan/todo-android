@@ -1,5 +1,7 @@
 package com.trustedapp.todolist.planner.reminders.data.datasource.local.datasource
 
+import androidx.room.Query
+import androidx.room.Transaction
 import com.trustedapp.todolist.planner.reminders.data.models.entity.*
 import kotlinx.coroutines.flow.Flow
 
@@ -41,4 +43,8 @@ interface TaskLocalDataSource {
     fun getBookmarks(): Flow<List<BookmarkEntity>>
     fun getReminder(taskId: Int): ReminderEntity?
     suspend fun deleteReminder(taskId: Int)
+
+    fun getFutureTask(dayTime: Long): List<TaskShort>
+    fun getFutureTaskAll(dayTime: Long): List<TaskShort>
+    fun getTaskInDayAll(dayString: String): List<TaskShort>
 }

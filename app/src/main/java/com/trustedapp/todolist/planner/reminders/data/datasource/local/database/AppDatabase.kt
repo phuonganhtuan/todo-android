@@ -18,6 +18,7 @@ import com.trustedapp.todolist.planner.reminders.data.models.entity.*
         ReminderEntity::class,
         CountDownWidgetModel::class,
         MonthWidgetModel::class,
+        StandardWidgetModel::class,
     ],
     version = 1,
     exportSchema = false

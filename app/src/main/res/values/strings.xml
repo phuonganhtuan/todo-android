@@ -209,7 +209,7 @@
     <string name="remaining_days">Remaining days</string>
     <string name="please_set_event_name">Please set the event name</string>
     <string name="tap_to_set_event">Tap to set event</string>
-    <string name="alpha">Alpha</string>
+    <string name="alpha">Opacity</string>
     <string name="my_tasks">My Tasks</string>
     <string name="future">Future</string>
     <string name="completed">Completed</string>
@@ -217,4 +217,9 @@
     <string name="today_task">Today tasks</string>
     <string name="future_task">Future tasks</string>
     <string name="done_task">Completed tasks</string>
+    <string name="time_range">Time range</string>
+    <string name="all_categories">All categories</string>
+    <string name="all_time">All time</string>
+    <string name="display_completed_tasks">Display completed tasks</string>
+    <string name="no_task_tap_button_to_add_new_task">No task, tap + button to add new task</string>
 </resources>

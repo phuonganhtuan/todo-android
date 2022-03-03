@@ -22,11 +22,18 @@ interface TaskDao {
     fun getFutureTask(dayTime: Long): List<TaskShort>
 
     @Transaction
+    @Query("select * from TaskEntity where calendar > :dayTime")
+    fun getFutureTaskAll(dayTime: Long): List<TaskShort>
+
+    @Transaction
     @Query("select * from TaskEntity where id = :id limit 1")
     fun getTask(id: Int): Task
 
     @Query("select * from CategoryEntity")
     fun getCategories(): Flow<List<CategoryEntity>>
+
+    @Query("select * from CategoryEntity where id = :id limit 1")
+    fun getCategory(id: Int): CategoryEntity?
 
     @Query("select * from ReminderEntity where taskId = :taskId limit 1")
     fun getReminder(taskId: Int): ReminderEntity?
@@ -98,6 +105,10 @@ interface TaskDao {
     @Query("select * from TaskEntity where dueDate == :dayString and isDone = 0")
     fun getTaskInDay(dayString: String): List<TaskShort>
 
+    @Transaction
+    @Query("select * from TaskEntity where dueDate == :dayString")
+    fun getTaskInDayAll(dayString: String): List<TaskShort>
+
     @Query("delete from AttachmentEntity where id = :id")
     suspend fun deleteAttachment(id: Int)
 
@@ -140,15 +151,15 @@ interface TaskDao {
     @Insert(onConflict = REPLACE)
     suspend fun insertMonthWidgetModel(entity: MonthWidgetModel)
 
-//    @Query("select * from MonthWidgetModel where widgetId = :widgetId")
-//    fun getStandardWidgetModel(widgetId: Int): MonthWidgetModel?
-//
-//    @Delete
-//    suspend fun deleteStandardWidgetModel(entity: MonthWidgetModel)
-//
-//    @Update(onConflict = REPLACE)
-//    suspend fun updateStandardWidgetModel(entity: MonthWidgetModel)
-//
-//    @Insert(onConflict = REPLACE)
-//    suspend fun insertStandardWidgetModel(entity: CountDownWidgetModel)
+    @Query("select * from StandardWidgetModel where widgetId = :widgetId")
+    fun getStandardWidgetModel(widgetId: Int): StandardWidgetModel?
+
+    @Delete
+    suspend fun deleteStandardWidgetModel(entity: StandardWidgetModel)
+
+    @Update(onConflict = REPLACE)
+    suspend fun updateStandardWidgetModel(entity: StandardWidgetModel)
+
+    @Insert(onConflict = REPLACE)
+    suspend fun insertStandardWidgetModel(entity: StandardWidgetModel)
 }

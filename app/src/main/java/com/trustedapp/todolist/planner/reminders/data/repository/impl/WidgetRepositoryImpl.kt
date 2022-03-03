@@ -3,6 +3,7 @@ package com.trustedapp.todolist.planner.reminders.data.repository.impl
 import com.trustedapp.todolist.planner.reminders.data.datasource.local.datasource.WidgetDataSource
 import com.trustedapp.todolist.planner.reminders.data.models.entity.CountDownWidgetModel
 import com.trustedapp.todolist.planner.reminders.data.models.entity.MonthWidgetModel
+import com.trustedapp.todolist.planner.reminders.data.models.entity.StandardWidgetModel
 import com.trustedapp.todolist.planner.reminders.data.repository.WidgetRepository
 
 class WidgetRepositoryImpl(private val dataSource: WidgetDataSource) : WidgetRepository {
@@ -28,4 +29,15 @@ class WidgetRepositoryImpl(private val dataSource: WidgetDataSource) : WidgetRep
 
     override suspend fun insertMonthWidgetModel(entity: MonthWidgetModel) =
         dataSource.insertMonthWidgetModel(entity)
+
+    override fun getStandardWidgetModel(widgetId: Int) = dataSource.getStandardWidgetModel(widgetId)
+
+    override suspend fun deleteStandardWidgetModel(entity: StandardWidgetModel) =
+        dataSource.deleteStandardWidgetModel(entity)
+
+    override suspend fun updateStandardWidgetModel(entity: StandardWidgetModel) =
+        dataSource.updateStandardWidgetModel(entity)
+
+    override suspend fun insertStandardWidgetModel(entity: StandardWidgetModel) =
+        dataSource.insertStandardWidgetModel(entity)
 }

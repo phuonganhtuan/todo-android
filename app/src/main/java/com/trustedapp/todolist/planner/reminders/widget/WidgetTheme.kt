@@ -16,6 +16,20 @@ val widgetBgs = listOf(
     R.drawable.bg_widget_11,
 )
 
+val widgetBgsRoundTop = listOf(
+    R.drawable.bg_widget_1_round_top,
+    R.drawable.bg_widget_2_round_top,
+    R.drawable.bg_widget_3_round_top,
+    R.drawable.bg_widget_4_round_top,
+    R.drawable.bg_widget_5_round_top,
+    R.drawable.bg_widget_6_round_top,
+    R.drawable.bg_widget_7_round_top,
+    R.drawable.bg_widget_8_round_top,
+    R.drawable.bg_widget_9_round_top,
+    R.drawable.bg_widget_10_round_top,
+    R.drawable.bg_widget_11_round_top,
+)
+
 val widgetBgColors = listOf(
     R.color.color_widget_bg_1,
     R.color.color_widget_bg_2,

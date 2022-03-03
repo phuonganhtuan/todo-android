@@ -31,15 +31,26 @@
         <entry key="app/src/main/res/drawable/bg_white_rounded_8.xml" value="0.2225" />
         <entry key="app/src/main/res/drawable/bg_widget_1.xml" value="0.1785" />
         <entry key="app/src/main/res/drawable/bg_widget_10.xml" value="0.1785" />
+        <entry key="app/src/main/res/drawable/bg_widget_10_round_top.xml" value="0.1785" />
         <entry key="app/src/main/res/drawable/bg_widget_11.xml" value="0.1785" />
+        <entry key="app/src/main/res/drawable/bg_widget_11_round_top.xml" value="0.1785" />
+        <entry key="app/src/main/res/drawable/bg_widget_1_round_top.xml" value="0.1785" />
         <entry key="app/src/main/res/drawable/bg_widget_2.xml" value="0.1785" />
+        <entry key="app/src/main/res/drawable/bg_widget_2_round_top.xml" value="0.1785" />
         <entry key="app/src/main/res/drawable/bg_widget_3.xml" value="0.1785" />
+        <entry key="app/src/main/res/drawable/bg_widget_3_round_top.xml" value="0.1785" />
         <entry key="app/src/main/res/drawable/bg_widget_4.xml" value="0.1785" />
+        <entry key="app/src/main/res/drawable/bg_widget_4_round_top.xml" value="0.1785" />
         <entry key="app/src/main/res/drawable/bg_widget_5.xml" value="0.1785" />
+        <entry key="app/src/main/res/drawable/bg_widget_5_round_top.xml" value="0.1785" />
         <entry key="app/src/main/res/drawable/bg_widget_6.xml" value="0.1785" />
+        <entry key="app/src/main/res/drawable/bg_widget_6_round_top.xml" value="0.1785" />
         <entry key="app/src/main/res/drawable/bg_widget_7.xml" value="0.1785" />
+        <entry key="app/src/main/res/drawable/bg_widget_7_round_top.xml" value="0.1785" />
         <entry key="app/src/main/res/drawable/bg_widget_8.xml" value="0.1785" />
+        <entry key="app/src/main/res/drawable/bg_widget_8_round_top.xml" value="0.1785" />
         <entry key="app/src/main/res/drawable/bg_widget_9.xml" value="0.1785" />
+        <entry key="app/src/main/res/drawable/bg_widget_9_round_top.xml" value="0.1785" />
         <entry key="app/src/main/res/drawable/custom_thumb.xml" value="0.1365" />
         <entry key="app/src/main/res/drawable/custom_track.xml" value="0.1365" />
         <entry key="app/src/main/res/drawable/ic_calendar_outline.xml" value="0.121" />
@@ -95,6 +106,7 @@
         <entry key="app/src/main/res/layout/activity_widget.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_widget_count_down_setting.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_widget_month_setting.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_widget_standard_setting.xml" value="0.29628046173578454" />
         <entry key="app/src/main/res/layout/content_home.xml" value="0.10989583333333333" />
         <entry key="app/src/main/res/layout/fragment_calendar.xml" value="0.10371376811594203" />
         <entry key="app/src/main/res/layout/fragment_default_reminder_type_dialog.xml" value="0.10989583333333333" />
@@ -122,6 +134,7 @@
         <entry key="app/src/main/res/layout/item_select_radio.xml" value="0.1" />
         <entry key="app/src/main/res/layout/item_select_ratio.xml" value="0.659375" />
         <entry key="app/src/main/res/layout/item_select_record_ringtone.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/item_task_search.xml" value="0.2882298424467099" />
         <entry key="app/src/main/res/layout/item_widget_lite_task.xml" value="0.1954954954954955" />
         <entry key="app/src/main/res/layout/item_widget_lite_task_1.xml" value="0.3256756756756757" />
         <entry key="app/src/main/res/layout/item_widget_lite_task_2.xml" value="0.3256756756756757" />
@@ -152,6 +165,7 @@
         <entry key="app/src/main/res/menu/repeat_at_menu.xml" value="0.16354166666666667" />
         <entry key="app/src/main/res/menu/screen_lock_menu.xml" value="0.16354166666666667" />
         <entry key="app/src/main/res/menu/task_detail_menu.xml" value="0.2898148148148148" />
+        <entry key="app/src/main/res/menu/widget_time_filter_menu.xml" value="0.3051920641620937" />
         <entry key="app/src/main/res/xml/widget_standard_info.xml" value="0.3256756756756757" />
       </map>
     </option>

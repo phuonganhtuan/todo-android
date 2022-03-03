@@ -4,6 +4,7 @@ import com.trustedapp.todolist.planner.reminders.data.datasource.local.dao.TaskD
 import com.trustedapp.todolist.planner.reminders.data.datasource.local.datasource.WidgetDataSource
 import com.trustedapp.todolist.planner.reminders.data.models.entity.CountDownWidgetModel
 import com.trustedapp.todolist.planner.reminders.data.models.entity.MonthWidgetModel
+import com.trustedapp.todolist.planner.reminders.data.models.entity.StandardWidgetModel
 
 class WidgetDataSourceImpl(private val dao: TaskDao) : WidgetDataSource {
 
@@ -28,4 +29,15 @@ class WidgetDataSourceImpl(private val dao: TaskDao) : WidgetDataSource {
 
     override suspend fun insertMonthWidgetModel(entity: MonthWidgetModel) =
         dao.insertMonthWidgetModel(entity)
+
+    override fun getStandardWidgetModel(widgetId: Int) = dao.getStandardWidgetModel(widgetId)
+
+    override suspend fun deleteStandardWidgetModel(entity: StandardWidgetModel) =
+        dao.deleteStandardWidgetModel(entity)
+
+    override suspend fun updateStandardWidgetModel(entity: StandardWidgetModel) =
+        dao.updateStandardWidgetModel(entity)
+
+    override suspend fun insertStandardWidgetModel(entity: StandardWidgetModel) =
+        dao.insertStandardWidgetModel(entity)
 }

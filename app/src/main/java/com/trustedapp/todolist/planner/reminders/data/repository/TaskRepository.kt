@@ -41,4 +41,8 @@ interface TaskRepository {
     fun getBookmarks(): Flow<List<BookmarkEntity>>
     fun getReminder(taskId: Int): ReminderEntity?
     suspend fun deleteReminder(taskId: Int)
+
+    fun getFutureTask(dayTime: Long): List<TaskShort>
+    fun getFutureTaskAll(dayTime: Long): List<TaskShort>
+    fun getTaskInDayAll(dayString: String): List<TaskShort>
 }

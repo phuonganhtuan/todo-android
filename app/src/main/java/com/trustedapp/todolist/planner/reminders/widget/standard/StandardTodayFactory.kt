@@ -1,5 +1,6 @@
 package com.trustedapp.todolist.planner.reminders.widget.standard
 
+import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.Intent
 import android.view.View
@@ -8,40 +9,110 @@ import android.widget.RemoteViewsService
 import androidx.core.content.ContextCompat
 import com.trustedapp.todolist.planner.reminders.R
 import com.trustedapp.todolist.planner.reminders.data.datasource.local.database.AppDatabase
+import com.trustedapp.todolist.planner.reminders.data.models.entity.BaseEntity
 import com.trustedapp.todolist.planner.reminders.data.models.entity.TaskShort
 import com.trustedapp.todolist.planner.reminders.utils.Constants
 import com.trustedapp.todolist.planner.reminders.utils.DateTimeUtils
+import com.trustedapp.todolist.planner.reminders.utils.getStringByLocale
 import com.trustedapp.todolist.planner.reminders.widget.standard.StandardWidget.Companion.ACTION_CLICK_ITEM
 import com.trustedapp.todolist.planner.reminders.widget.standard.StandardWidget.Companion.ACTION_DONE_ITEM
 import java.util.*
 import kotlin.random.Random
 
-class StandardTodayFactory(private val context: Context, intent: Intent?) :
+class StandardTodayFactory(private val context: Context, private val intent: Intent?) :
     RemoteViewsService.RemoteViewsFactory {
 
     private val taskDao by lazy { AppDatabase.invoke(context).taskDao() }
     private var todayTasks = mutableListOf<WidgetItemWrap>()
 
+    private var isOnlyToday = false
+
+    private var categoryId: Int? = null
+    private var containCompleted = true
+
     override fun onCreate() {
     }
 
     override fun onDataSetChanged() {
-        todayTasks =
-            taskDao.getTaskInDay(DateTimeUtils.getComparableDateString(Calendar.getInstance().time, isDefault = true))
-                .map { WidgetItemWrap(task = it) }.toMutableList()
-        val future =
-            taskDao.getFutureTask(DateTimeUtils.getTomorrow())
-                .map { WidgetItemWrap(task = it, isOther = true) }
-                .toMutableList()
-        if (future.isEmpty()) {
-            future.add(WidgetItemWrap(task = null, isHeader = true, header = "Other"))
-        } else {
-            future[0].apply {
-                isHeader = true
-                header = "Other"
+
+        val id = intent?.extras?.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID)
+
+        id?.let {
+            val widgetModel = taskDao.getStandardWidgetModel(id)
+            if (widgetModel != null) {
+                isOnlyToday = widgetModel.isOnlyToday
+                categoryId = widgetModel.categoryId
+                containCompleted = widgetModel.containCompleted
             }
         }
-        todayTasks.addAll(future)
+
+        todayTasks = if (containCompleted) {
+            taskDao.getTaskInDayAll(
+                DateTimeUtils.getComparableDateString(
+                    Calendar.getInstance().time,
+                    isDefault = true
+                )
+            )
+                .map { WidgetItemWrap(task = it) }.toMutableList()
+        } else {
+            taskDao.getTaskInDay(
+                DateTimeUtils.getComparableDateString(
+                    Calendar.getInstance().time,
+                    isDefault = true
+                )
+            )
+                .map { WidgetItemWrap(task = it) }.toMutableList()
+        }
+        if (categoryId != null) {
+            todayTasks =
+                todayTasks.filter { item -> item.task == null || item.task?.task?.categoryId == categoryId }
+                    .toMutableList()
+        }
+        if (todayTasks.isEmpty()) {
+            todayTasks.add(
+                WidgetItemWrap(
+                    task = null,
+                    isHeader = !isOnlyToday,
+                    header = context.getStringByLocale(R.string.today)
+                )
+            )
+        } else {
+            todayTasks[0].apply {
+                isHeader = !isOnlyToday
+                header = context.getStringByLocale(R.string.today)
+            }
+        }
+        if (!isOnlyToday) {
+            var future = if (containCompleted) {
+                taskDao.getFutureTaskAll(DateTimeUtils.getTomorrow())
+                    .map { WidgetItemWrap(task = it, isOther = true) }
+                    .toMutableList()
+            } else {
+                taskDao.getFutureTask(DateTimeUtils.getTomorrow())
+                    .map { WidgetItemWrap(task = it, isOther = true) }
+                    .toMutableList()
+            }
+            if (categoryId != null) {
+                future =
+                    future.filter { item -> item.task == null || item.task?.task?.categoryId == categoryId }
+                        .toMutableList()
+            }
+            if (future.isEmpty()) {
+                future.add(
+                    WidgetItemWrap(
+                        task = null,
+                        isHeader = !isOnlyToday,
+                        header = context.getStringByLocale(R.string.future_task)
+                    )
+                )
+            } else {
+                future[0].apply {
+                    isHeader = !isOnlyToday
+                    header = context.getStringByLocale(R.string.future_task)
+                }
+            }
+            todayTasks.addAll(future)
+        }
     }
 
     override fun onDestroy() {
@@ -59,8 +130,10 @@ class StandardTodayFactory(private val context: Context, intent: Intent?) :
         }
         if (todayTasks[position].task == null) {
             rv.setViewVisibility(R.id.layoutWidgetContent, View.GONE)
+            rv.setViewVisibility(R.id.textEmpty, View.VISIBLE)
             return rv
         } else {
+            rv.setViewVisibility(R.id.textEmpty, View.GONE)
             rv.setViewVisibility(R.id.layoutWidgetContent, View.VISIBLE)
         }
         rv.setTextViewText(R.id.textTitleWidget, todayTasks[position].task?.task?.title)
@@ -118,8 +191,9 @@ class StandardTodayFactory(private val context: Context, intent: Intent?) :
 }
 
 data class WidgetItemWrap(
+    override var id: Int = 0,
     var task: TaskShort?,
     var isHeader: Boolean = false,
     var header: String = "",
     var isOther: Boolean = false,
-)
+) : BaseEntity()

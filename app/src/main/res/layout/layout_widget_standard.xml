@@ -1,20 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layoutWidget"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="top"
-    android:background="@drawable/bg_white_rounded"
     android:gravity="top">
+
+    <TextView
+        android:id="@+id/viewBg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_white_rounded" />
+
+    <TextView
+        android:id="@+id/viewBgTitle"
+        android:layout_width="match_parent"
+        android:layout_alignTop="@id/textTitleWidget"
+        android:layout_alignBottom="@id/textTitleWidget"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_widget_1_round_top" />
 
     <TextView
         android:id="@+id/textTitleWidget"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_green_bg_top_rounded"
         android:fontFamily="@font/sf_rounded_medium"
         android:padding="16dp"
-        android:text="@string/today"
+        android:text="@string/tasks"
         android:textColor="@color/color_menu_text_default"
         android:textSize="16sp"
         android:textStyle="bold" />

@@ -57,4 +57,8 @@ class TaskRepositoryImpl @Inject constructor(
     override fun getBookmarks() = taskDataSource.getBookmarks()
     override fun getReminder(taskId: Int) = taskDataSource.getReminder(taskId)
     override suspend fun deleteReminder(taskId: Int) = taskDataSource.deleteReminder(taskId)
+
+    override fun getFutureTask(dayTime: Long) = taskDataSource.getFutureTask(dayTime)
+    override fun getFutureTaskAll(dayTime: Long) = taskDataSource.getFutureTaskAll(dayTime)
+    override fun getTaskInDayAll(dayString: String) = taskDataSource.getTaskInDayAll(dayString)
 }
