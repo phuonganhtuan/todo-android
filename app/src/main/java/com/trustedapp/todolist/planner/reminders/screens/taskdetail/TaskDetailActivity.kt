@@ -54,6 +54,10 @@ class TaskDetailActivity : BaseActivity<ActivityTaskDetailBinding>() {
     }
 
     private fun initView() = with(viewBinding) {
+        loadBannerAds()
+    }
+
+    private fun loadBannerAds() = with(viewBinding){
         if (Firebase.remoteConfig.getBoolean(SPUtils.KEY_BANNER) && isInternetAvailable() == true) {
             include.visibility = View.VISIBLE
             Admod.getInstance()
@@ -172,6 +176,14 @@ class TaskDetailActivity : BaseActivity<ActivityTaskDetailBinding>() {
                         showToastMessage(getString(R.string.saved))
                         finish()
                     }
+                }
+            }
+        }
+
+        lifecycleScope.launchWhenStarted {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                NetworkState.isHasInternet.collect {
+                    loadBannerAds()
                 }
             }
         }

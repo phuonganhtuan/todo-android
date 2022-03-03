@@ -3,8 +3,11 @@ package com.trustedapp.todolist.planner.reminders.base
 import android.app.Activity
 import android.appwidget.AppWidgetManager
 import android.content.ComponentName
+import android.content.Intent
+import android.content.IntentFilter
 import android.content.res.Configuration
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import android.os.Build
 import android.os.Bundle
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
@@ -14,6 +17,7 @@ import androidx.viewbinding.ViewBinding
 import com.google.android.material.snackbar.Snackbar
 import com.trustedapp.todolist.planner.reminders.R
 import com.trustedapp.todolist.planner.reminders.screens.theme.currentTheme
+import com.trustedapp.todolist.planner.reminders.utils.NetworkChangeReceiver
 import com.trustedapp.todolist.planner.reminders.utils.SPUtils
 import com.trustedapp.todolist.planner.reminders.widget.lite.LiteWidget
 import com.trustedapp.todolist.planner.reminders.widget.month.MonthWidget
@@ -23,7 +27,7 @@ import java.util.*
 
 
 abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
-
+    private val networkReceiver = NetworkChangeReceiver()
     protected lateinit var viewBinding: VB
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,6 +43,18 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
         )
         onActivityReady(savedInstanceState)
         onActivityReady()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val filter = IntentFilter()
+        filter.addAction("android.net.conn.CONNECTIVITY_CHANGE")
+        registerReceiver(networkReceiver, filter)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        unregisterReceiver(networkReceiver)
     }
 
     abstract fun onActivityReady()
@@ -75,6 +91,7 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
         createConfigurationContext(config)
         resources.updateConfiguration(config, resources.displayMetrics)
         SPUtils.saveCurrentLang(this, langCode)
+        reload()
     }
 
     fun hideKeyboard() {
@@ -85,7 +102,6 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
 
     fun updateWidget() {
         val appWidgetManager = AppWidgetManager.getInstance(applicationContext)
-
         val components = listOf(
             StandardWidget::class.java,
             LiteWidget::class.java,
@@ -113,6 +129,19 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
                     )
                 ), R.id.gridCalendar
             )
+        }
+    }
+
+    fun reload(){
+        if (Build.VERSION.SDK_INT >= 11) {
+            recreate()
+        } else {
+            val intent = intent
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+            finish()
+            overridePendingTransition(0, 0)
+            startActivity(intent)
+            overridePendingTransition(0, 0)
         }
     }
 }

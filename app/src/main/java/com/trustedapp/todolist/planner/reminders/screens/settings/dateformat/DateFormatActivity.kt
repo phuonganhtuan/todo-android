@@ -1,15 +1,22 @@
 package com.trustedapp.todolist.planner.reminders.screens.settings.dateformat
 
+import android.content.IntentFilter
 import android.os.Bundle
+import android.view.View
 import androidx.core.view.get
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import com.ads.control.ads.Admod
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.trustedapp.todolist.planner.reminders.R
 import com.trustedapp.todolist.planner.reminders.base.BaseActivity
 import com.trustedapp.todolist.planner.reminders.databinding.ActivityDateFormatBinding
 import com.trustedapp.todolist.planner.reminders.setting.DateFormat
-import com.trustedapp.todolist.planner.reminders.utils.DateTimeUtils
-import com.trustedapp.todolist.planner.reminders.utils.SPUtils
-import com.trustedapp.todolist.planner.reminders.utils.hide
+import com.trustedapp.todolist.planner.reminders.utils.*
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 import java.util.*
 
 @AndroidEntryPoint
@@ -25,6 +32,7 @@ class DateFormatActivity : BaseActivity<ActivityDateFormatBinding>() {
         initViews()
         initData()
         setupEvents()
+        obseverData()
     }
 
     private fun initViews() = with(viewBinding) {
@@ -47,6 +55,18 @@ class DateFormatActivity : BaseActivity<ActivityDateFormatBinding>() {
             Calendar.getInstance().time,
             DateTimeUtils.DATE_FORMAT_TYPE_3
         )
+        // Load Banner ads
+        loadBannerAds()
+    }
+
+    private fun loadBannerAds() = with(viewBinding) {
+        if (Firebase.remoteConfig.getBoolean(SPUtils.KEY_BANNER) && isInternetAvailable()) {
+            include.visibility = View.VISIBLE
+            Admod.getInstance()
+                .loadBanner(this@DateFormatActivity, getString(R.string.banner_ads_id))
+        } else {
+            include.visibility = View.GONE
+        }
     }
 
     private fun initData() {
@@ -84,6 +104,16 @@ class DateFormatActivity : BaseActivity<ActivityDateFormatBinding>() {
                 DateFormat.MMDDYYYY.name
             )
             updateWidget()
+        }
+    }
+
+    fun obseverData(){
+        lifecycleScope.launchWhenStarted {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                NetworkState.isHasInternet.collect {
+                    loadBannerAds()
+                }
+            }
         }
     }
 }

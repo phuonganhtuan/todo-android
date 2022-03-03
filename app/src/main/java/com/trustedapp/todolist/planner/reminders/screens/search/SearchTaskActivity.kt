@@ -1,6 +1,7 @@
 package com.trustedapp.todolist.planner.reminders.screens.search
 
 import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
@@ -49,10 +50,15 @@ class SearchTaskActivity : BaseActivity<ActivitySearchTaskBinding>() {
         recyclerRecent.adapter = recentAdapter
         editSearch.requestFocus()
         // Load Banner ads
+        loadBannerAds()
+    }
+
+    private fun loadBannerAds() = with(viewBinding) {
         if (Firebase.remoteConfig.getBoolean(SPUtils.KEY_BANNER) && isInternetAvailable()) {
             include.visibility = View.VISIBLE
-            Admod.getInstance().loadBanner(this@SearchTaskActivity, getString(R.string.banner_ads_id))
-        }else{
+            Admod.getInstance()
+                .loadBanner(this@SearchTaskActivity, getString(R.string.banner_ads_id))
+        } else {
             include.visibility = View.GONE
         }
     }
@@ -74,6 +80,14 @@ class SearchTaskActivity : BaseActivity<ActivitySearchTaskBinding>() {
                 recentSearch.collect {
                     recentAdapter.submitList(it)
                     if (it.isEmpty()) viewBinding.layoutRecent.gone() else viewBinding.layoutRecent.show()
+                }
+            }
+        }
+
+        lifecycleScope.launchWhenStarted {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                NetworkState.isHasInternet.collect {
+                    loadBannerAds()
                 }
             }
         }

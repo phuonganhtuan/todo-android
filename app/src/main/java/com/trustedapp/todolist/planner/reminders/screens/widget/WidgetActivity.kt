@@ -7,16 +7,27 @@ import android.content.ComponentName
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.view.View
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import com.ads.control.ads.Admod
 import com.bumptech.glide.Glide
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.trustedapp.todolist.planner.reminders.R
 import com.trustedapp.todolist.planner.reminders.base.BaseActivity
 import com.trustedapp.todolist.planner.reminders.databinding.ActivityWidgetBinding
+import com.trustedapp.todolist.planner.reminders.utils.NetworkState
+import com.trustedapp.todolist.planner.reminders.utils.SPUtils
 import com.trustedapp.todolist.planner.reminders.utils.gone
+import com.trustedapp.todolist.planner.reminders.utils.isInternetAvailable
 import com.trustedapp.todolist.planner.reminders.widget.countdown.CountdownWidget
 import com.trustedapp.todolist.planner.reminders.widget.lite.LiteWidget
 import com.trustedapp.todolist.planner.reminders.widget.month.MonthWidget
 import com.trustedapp.todolist.planner.reminders.widget.standard.StandardWidget
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 
 
 @AndroidEntryPoint
@@ -31,6 +42,7 @@ class WidgetActivity : BaseActivity<ActivityWidgetBinding>() {
     override fun onActivityReady() {
         initViews()
         setupEvents()
+        obseverData()
     }
 
     private fun initViews() = with(viewBinding) {
@@ -65,6 +77,17 @@ class WidgetActivity : BaseActivity<ActivityWidgetBinding>() {
             Glide.with(this@WidgetActivity).load(R.drawable.img_w_7).into(image1)
             Glide.with(this@WidgetActivity).load(R.drawable.img_w_8).into(image2)
         }
+        loadBannerAds()
+    }
+
+    private fun loadBannerAds() = with(viewBinding){
+        if (Firebase.remoteConfig.getBoolean(SPUtils.KEY_BANNER) && isInternetAvailable() == true) {
+            include.visibility = View.VISIBLE
+            Admod.getInstance()
+                .loadBanner(this@WidgetActivity, getString(R.string.banner_ads_id))
+        } else {
+            include.visibility = View.GONE
+        }
     }
 
     private fun setupEvents() = with(viewBinding) {
@@ -95,6 +118,16 @@ class WidgetActivity : BaseActivity<ActivityWidgetBinding>() {
                     pinnedWidgetCallbackIntent, FLAG_IMMUTABLE
                 )
                 mAppWidgetManager.requestPinAppWidget(myProvider, Bundle(), successCallback)
+            }
+        }
+    }
+
+    fun obseverData(){
+        lifecycleScope.launchWhenStarted {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                NetworkState.isHasInternet.collect {
+                    loadBannerAds()
+                }
             }
         }
     }

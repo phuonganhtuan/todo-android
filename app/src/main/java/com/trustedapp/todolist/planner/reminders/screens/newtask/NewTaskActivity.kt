@@ -1,5 +1,6 @@
 package com.trustedapp.todolist.planner.reminders.screens.newtask
 
+import android.content.IntentFilter
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
@@ -12,9 +13,7 @@ import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.trustedapp.todolist.planner.reminders.R
 import com.trustedapp.todolist.planner.reminders.base.BaseActivity
 import com.trustedapp.todolist.planner.reminders.databinding.ActivityNewTaskBinding
-import com.trustedapp.todolist.planner.reminders.utils.SPUtils
-import com.trustedapp.todolist.planner.reminders.utils.hide
-import com.trustedapp.todolist.planner.reminders.utils.isInternetAvailable
+import com.trustedapp.todolist.planner.reminders.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 
@@ -38,6 +37,10 @@ class NewTaskActivity : BaseActivity<ActivityNewTaskBinding>() {
 
     private fun initView() = with(viewBinding) {
         // Load Banner ads
+        loadBannerAds()
+    }
+
+    private fun loadBannerAds() = with(viewBinding) {
         if (Firebase.remoteConfig.getBoolean(SPUtils.KEY_BANNER) && isInternetAvailable()) {
             include.visibility = View.VISIBLE
             Admod.getInstance()
@@ -45,11 +48,6 @@ class NewTaskActivity : BaseActivity<ActivityNewTaskBinding>() {
         } else {
             include.visibility = View.GONE
         }
-    }
-
-    override fun onPause() {
-        super.onPause()
-        updateWidget()
     }
 
     private fun setupToolbar() = with(viewBinding.layoutTop) {
@@ -71,6 +69,14 @@ class NewTaskActivity : BaseActivity<ActivityNewTaskBinding>() {
                         showToastMessage(getString(R.string.added_task))
                         finish()
                     }
+                }
+            }
+        }
+
+        lifecycleScope.launchWhenStarted {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                NetworkState.isHasInternet.collect {
+                    loadBannerAds()
                 }
             }
         }
