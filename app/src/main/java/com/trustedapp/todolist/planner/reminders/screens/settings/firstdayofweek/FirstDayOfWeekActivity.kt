@@ -1,14 +1,23 @@
 package com.trustedapp.todolist.planner.reminders.screens.settings.firstdayofweek
 
+import android.content.IntentFilter
 import android.os.Bundle
+import android.view.View
 import androidx.core.view.get
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import com.ads.control.ads.Admod
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.trustedapp.todolist.planner.reminders.R
 import com.trustedapp.todolist.planner.reminders.base.BaseActivity
 import com.trustedapp.todolist.planner.reminders.databinding.ActivityFirstDayOfWeekBinding
 import com.trustedapp.todolist.planner.reminders.setting.FirstDayOfWeek
-import com.trustedapp.todolist.planner.reminders.utils.SPUtils
-import com.trustedapp.todolist.planner.reminders.utils.hide
+import com.trustedapp.todolist.planner.reminders.utils.*
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.InternalCoroutinesApi
+import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class FirstDayOfWeekActivity : BaseActivity<ActivityFirstDayOfWeekBinding>() {
@@ -23,6 +32,7 @@ class FirstDayOfWeekActivity : BaseActivity<ActivityFirstDayOfWeekBinding>() {
         initViews()
         initData()
         setupEvents()
+        obseverData()
     }
 
     private fun initViews() = with(viewBinding) {
@@ -32,6 +42,18 @@ class FirstDayOfWeekActivity : BaseActivity<ActivityFirstDayOfWeekBinding>() {
             button3.hide()
             button4.hide()
             textTitle.text = getString(R.string.first_day_of_week)
+        }
+        // Load Banner ads
+        loadBannerAds()
+    }
+
+    private fun loadBannerAds() = with(viewBinding) {
+        if (Firebase.remoteConfig.getBoolean(SPUtils.KEY_BANNER) && isInternetAvailable()) {
+            include.visibility = View.VISIBLE
+            Admod.getInstance()
+                .loadBanner(this@FirstDayOfWeekActivity, getString(R.string.banner_ads_id))
+        } else {
+            include.visibility = View.GONE
         }
     }
 
@@ -77,6 +99,16 @@ class FirstDayOfWeekActivity : BaseActivity<ActivityFirstDayOfWeekBinding>() {
                 FirstDayOfWeek.SUNDAY.name
             )
             updateWidget()
+        }
+    }
+
+    fun obseverData(){
+        lifecycleScope.launchWhenStarted {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                NetworkState.isHasInternet.collect {
+                    loadBannerAds()
+                }
+            }
         }
     }
 }

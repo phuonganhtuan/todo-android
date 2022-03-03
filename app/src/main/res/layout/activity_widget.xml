@@ -51,4 +51,11 @@
                 layout="@layout/layout_widget_preview"/>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+    <include
+        android:id="@+id/include"
+        layout="@layout/layout_banner_control"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        app:layout_constraintBottom_toBottomOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
