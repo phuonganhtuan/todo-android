@@ -81,6 +81,9 @@ class CountDownWidgetSettingActivity : BaseActivity<ActivityWidgetCountDownSetti
             finish()
             return
         }
+        val resultValue = Intent()
+        resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId)
+        setResult(RESULT_OK, resultValue)
         viewModel.getData(appWidgetId)
         viewBinding.apply {
             val iconButtonList = listOf(icon1, icon2, icon3, icon4, icon5, icon6, icon7, icon8)
