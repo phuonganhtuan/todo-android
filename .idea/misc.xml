@@ -29,6 +29,17 @@
         <entry key="app/src/main/res/drawable/bg_white_rounded.xml" value="0.2225" />
         <entry key="app/src/main/res/drawable/bg_white_rounded_16.xml" value="0.2225" />
         <entry key="app/src/main/res/drawable/bg_white_rounded_8.xml" value="0.2225" />
+        <entry key="app/src/main/res/drawable/bg_widget_1.xml" value="0.1785" />
+        <entry key="app/src/main/res/drawable/bg_widget_10.xml" value="0.1785" />
+        <entry key="app/src/main/res/drawable/bg_widget_11.xml" value="0.1785" />
+        <entry key="app/src/main/res/drawable/bg_widget_2.xml" value="0.1785" />
+        <entry key="app/src/main/res/drawable/bg_widget_3.xml" value="0.1785" />
+        <entry key="app/src/main/res/drawable/bg_widget_4.xml" value="0.1785" />
+        <entry key="app/src/main/res/drawable/bg_widget_5.xml" value="0.1785" />
+        <entry key="app/src/main/res/drawable/bg_widget_6.xml" value="0.1785" />
+        <entry key="app/src/main/res/drawable/bg_widget_7.xml" value="0.1785" />
+        <entry key="app/src/main/res/drawable/bg_widget_8.xml" value="0.1785" />
+        <entry key="app/src/main/res/drawable/bg_widget_9.xml" value="0.1785" />
         <entry key="app/src/main/res/drawable/custom_thumb.xml" value="0.1365" />
         <entry key="app/src/main/res/drawable/custom_track.xml" value="0.1365" />
         <entry key="app/src/main/res/drawable/ic_calendar_outline.xml" value="0.121" />

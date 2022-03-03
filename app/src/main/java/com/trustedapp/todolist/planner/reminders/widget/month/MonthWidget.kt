@@ -14,6 +14,8 @@ import com.trustedapp.todolist.planner.reminders.R
 import com.trustedapp.todolist.planner.reminders.data.datasource.local.database.AppDatabase
 import com.trustedapp.todolist.planner.reminders.screens.home.HomeActivity
 import com.trustedapp.todolist.planner.reminders.utils.DateTimeUtils
+import com.trustedapp.todolist.planner.reminders.widget.widgetBgColors
+import com.trustedapp.todolist.planner.reminders.widget.widgetBgs
 import java.util.*
 import java.util.Calendar.*
 
@@ -118,8 +120,7 @@ class MonthWidget : AppWidgetProvider() {
             views.setOnClickPendingIntent(R.id.imageSetting, pendingIntentSetting)
 
             if (widgetModel != null) {
-                val bg =
-                    if (widgetModel.isDark) R.drawable.bg_grey_dark_16 else R.drawable.bg_white_rounded_16
+                val bg = widgetBgs[widgetBgColors.indexOf(widgetModel.color)]
                 val textTitleColor = ContextCompat.getColor(
                     context,
                     if (widgetModel.isDark) R.color.white else R.color.color_menu_text_default
@@ -219,8 +220,7 @@ fun updateMonthWidget(
         views.setOnClickPendingIntent(R.id.imageSetting, pendingIntentSetting)
 
         if (widgetModel != null) {
-            val bg =
-                if (widgetModel.isDark) R.drawable.bg_grey_dark_16 else R.drawable.bg_white_rounded_16
+            val bg = widgetBgs[widgetBgColors.indexOf(widgetModel.color)]
             val textTitleColor = ContextCompat.getColor(
                 context,
                 if (widgetModel.isDark) R.color.white else R.color.color_menu_text_default

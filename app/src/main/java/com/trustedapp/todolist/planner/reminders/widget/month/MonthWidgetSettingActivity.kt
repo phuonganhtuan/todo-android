@@ -23,6 +23,9 @@ import com.trustedapp.todolist.planner.reminders.screens.home.calendar.CalendarT
 import com.trustedapp.todolist.planner.reminders.screens.theme.ThemeTextureColorAdapter
 import com.trustedapp.todolist.planner.reminders.utils.DateTimeUtils
 import com.trustedapp.todolist.planner.reminders.utils.hide
+import com.trustedapp.todolist.planner.reminders.widget.isWidgetLightContent
+import com.trustedapp.todolist.planner.reminders.widget.widgetBgColors
+import com.trustedapp.todolist.planner.reminders.widget.widgetBgs
 import kotlinx.coroutines.flow.collect
 import java.util.*
 
@@ -41,9 +44,7 @@ class MonthWidgetSettingActivity : BaseActivity<ActivityWidgetMonthSettingBindin
 
     private var alpha = 100
 
-    private val colorList = listOf(R.color.white, R.color.color_grey_dark)
-
-    private var selectedColor = colorList[0]
+    private var selectedColor = widgetBgColors[0]
 
     private val adapter: ThemeTextureColorAdapter by lazy {
         ThemeTextureColorAdapter()
@@ -97,14 +98,14 @@ class MonthWidgetSettingActivity : BaseActivity<ActivityWidgetMonthSettingBindin
             finish()
             return
         }
-        adapter.submitList(colorList.map { ContextCompat.getDrawable(this, it) })
+        adapter.submitList(widgetBgColors.map { ContextCompat.getDrawable(this, it) })
         viewModel.getData(appWidgetId)
         viewModel.setupDays(Calendar.getInstance())
     }
 
     private fun setupEvents() = with(viewBinding) {
         buttonSave.setOnClickListener {
-            viewModel.saveData(selectedColor, alpha, selectedColor == colorList[1])
+            viewModel.saveData(selectedColor, alpha, isWidgetLightContent(selectedColor))
             Handler(Looper.getMainLooper()).postDelayed({
                 setupWidget()
             }, 200)
@@ -113,8 +114,8 @@ class MonthWidgetSettingActivity : BaseActivity<ActivityWidgetMonthSettingBindin
             finish()
         }
         adapter.onItemSelected = {
-            selectedColor = colorList[it]
-            updatePreview(it == 1)
+            selectedColor = widgetBgColors[it]
+            updatePreview(isWidgetLightContent(selectedColor))
             adapter.selectedIndex = it
             adapter.notifyDataSetChanged()
         }
@@ -130,6 +131,7 @@ class MonthWidgetSettingActivity : BaseActivity<ActivityWidgetMonthSettingBindin
             override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
                 preview.viewBg.alpha = seekbarAlpha.progress / 100f
                 alpha = seekbarAlpha.progress
+                textSeekbarProgress.text = "${seekbarAlpha.progress}%"
             }
         })
     }
@@ -140,10 +142,14 @@ class MonthWidgetSettingActivity : BaseActivity<ActivityWidgetMonthSettingBindin
                 widgetModel.collect {
                     viewBinding.apply {
                         seekbarAlpha.progress = it.alpha
-                        adapter.selectedIndex = colorList.indexOf(it.color)
+                        selectedColor = it.color
+                        alpha = it.alpha
+                        adapter.selectedIndex = widgetBgColors.indexOf(it.color)
                         adapter.notifyDataSetChanged()
                         preview.viewBg.alpha = alpha / 100f
-                        updatePreview(it.color == colorList[1])
+                        seekbarAlpha.progress = alpha
+                        textSeekbarProgress.text = "${seekbarAlpha.progress}%"
+                        updatePreview(isWidgetLightContent(selectedColor))
                     }
                 }
             }
@@ -160,10 +166,11 @@ class MonthWidgetSettingActivity : BaseActivity<ActivityWidgetMonthSettingBindin
     }
 
     private fun updatePreview(isDark: Boolean) = with(viewBinding.preview) {
-        val previewBg =
-            if (isDark) R.drawable.bg_grey_dark_16 else R.drawable.bg_white_rounded_16
         viewBg.background =
-            ContextCompat.getDrawable(this@MonthWidgetSettingActivity, previewBg)
+            ContextCompat.getDrawable(
+                this@MonthWidgetSettingActivity,
+                widgetBgs[widgetBgColors.indexOf(selectedColor)]
+            )
         val textTitleColor = ContextCompat.getColor(
             this@MonthWidgetSettingActivity,
             if (isDark) R.color.white else R.color.color_menu_text_default

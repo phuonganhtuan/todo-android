@@ -58,4 +58,16 @@
     <color name="color_green_bg_light">#eaf8f2</color>
 
     <color name="color_text_widget_secondary">#98a8a2</color>
+
+    <color name="color_widget_bg_1">#ffffff</color>
+    <color name="color_widget_bg_2">#2d2d2d</color>
+    <color name="color_widget_bg_3">#DC5555</color>
+    <color name="color_widget_bg_4">#E07940</color>
+    <color name="color_widget_bg_5">#F2E256</color>
+    <color name="color_widget_bg_6">#8ED96B</color>
+    <color name="color_widget_bg_7">#6BD997</color>
+    <color name="color_widget_bg_8">#3ED0C7</color>
+    <color name="color_widget_bg_9">#575AAA</color>
+    <color name="color_widget_bg_10">#C21EDD</color>
+    <color name="color_widget_bg_11">#D32F7E</color>
 </resources>

@@ -4,7 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_bg_main_grey">
+    android:background="#e8ecec">
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="@id/header"
+        app:layout_constraintEnd_toEndOf="@id/header"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/header"
+        android:background="@android:color/white"/>
 
     <include
         android:id="@+id/header"
@@ -12,6 +21,7 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardPreview"
+        android:layout_marginTop="16dp"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginHorizontal="32dp"
@@ -93,9 +103,21 @@
         android:layout_marginTop="8dp"
         android:progress="100"
         android:progressTint="?attr/colorPrimary"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/textSeekbarProgress"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textAlpha" />
+
+    <TextView
+        android:id="@+id/textSeekbarProgress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:textColor="@color/color_menu_text_default"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@id/seekbarAlpha"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/seekbarAlpha"
+        tools:text="90%" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/buttonSave"
