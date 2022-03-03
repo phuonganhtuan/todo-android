@@ -65,7 +65,6 @@
         android:textColor="@color/color_text_secondary_dark"
         android:textSize="14sp"
         android:text="@string/no_task_tap_button_to_add_new_task"
-        android:textStyle="bold"
         android:gravity="center"
         android:visibility="gone" />
 </LinearLayout>

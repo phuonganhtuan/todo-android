@@ -14,6 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import com.trustedapp.todolist.planner.reminders.R
 import com.trustedapp.todolist.planner.reminders.base.BaseDialogFragment
 import com.trustedapp.todolist.planner.reminders.databinding.FragmentRatingBinding
+import com.trustedapp.todolist.planner.reminders.utils.SPUtils
 import com.trustedapp.todolist.planner.reminders.utils.getColorFromAttr
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -88,12 +89,14 @@ class RatingDialogFragment : BaseDialogFragment<FragmentRatingBinding>() {
         val suggestString =
             SpannableString(getString(R.string.please_rate_us_5_stars_if_you_enjoy_our_app))
 
-        suggestString.setSpan(
-            ForegroundColorSpan(requireContext().getColorFromAttr(R.attr.colorPrimary)),
-            15,
-            22,
-            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-        )
+        if ((SPUtils.getCurrentLang(requireContext()) ?: "en") == "en") {
+            suggestString.setSpan(
+                ForegroundColorSpan(requireContext().getColorFromAttr(R.attr.colorPrimary)),
+                15,
+                22,
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+        }
         textSuggest.text = suggestString
     }
 }
