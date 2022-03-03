@@ -3,11 +3,9 @@ package com.trustedapp.todolist.planner.reminders.base
 import android.app.Activity
 import android.appwidget.AppWidgetManager
 import android.content.ComponentName
-import android.content.Intent
 import android.content.IntentFilter
 import android.content.res.Configuration
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
-import android.os.Build
 import android.os.Bundle
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
@@ -32,15 +30,12 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        applyLanguage(SPUtils.getCurrentLang(this) ?: "en")
+        applyLanguage(SPUtils.getCurrentLang(this) ?: "en")
         if (currentTheme != -1) {
             setTheme(currentTheme)
         }
         viewBinding = inflateViewBinding()
         setContentView(viewBinding.root)
-        applyLanguage(
-            SPUtils.getCurrentLang(this) ?: "en"
-        )
         onActivityReady(savedInstanceState)
         onActivityReady()
     }
@@ -91,7 +86,6 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
         createConfigurationContext(config)
         resources.updateConfiguration(config, resources.displayMetrics)
         SPUtils.saveCurrentLang(this, langCode)
-        reload()
     }
 
     fun hideKeyboard() {
@@ -129,19 +123,6 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
                     )
                 ), R.id.gridCalendar
             )
-        }
-    }
-
-    fun reload(){
-        if (Build.VERSION.SDK_INT >= 11) {
-            recreate()
-        } else {
-            val intent = intent
-            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-            finish()
-            overridePendingTransition(0, 0)
-            startActivity(intent)
-            overridePendingTransition(0, 0)
         }
     }
 }
