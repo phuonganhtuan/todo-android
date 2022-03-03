@@ -80,6 +80,7 @@
             android:name=".widget.countdown.CountDownWidgetSettingActivity" />
         <activity android:name=".widget.month.MonthWidgetSettingActivity" />
         <activity android:name=".widget.standard.StandardWidgetSettingActivity" />
+        <activity android:name=".widget.lite.LiteWidgetSettingActivity" />
 
         <receiver android:name=".alarm.AlarmHelper" />
         <receiver

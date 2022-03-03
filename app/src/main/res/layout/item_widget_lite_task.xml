@@ -9,7 +9,6 @@
         android:id="@+id/textHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#eaf8f2"
         android:fontFamily="@font/sf_rounded_medium"
         android:padding="12dp"
         android:textColor="@color/color_menu_text_default"
@@ -49,4 +48,17 @@
             android:textColor="#888888"
             android:textSize="12sp" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/textEmpty"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/sf_rounded_medium"
+        android:padding="12dp"
+        android:textColor="@color/color_text_secondary_dark"
+        android:textSize="14sp"
+        android:text="@string/no_task_tap_button_to_add_new_task"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:visibility="gone" />
 </LinearLayout>
