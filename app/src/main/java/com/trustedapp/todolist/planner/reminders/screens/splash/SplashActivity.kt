@@ -24,6 +24,7 @@ import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import com.trustedapp.todolist.planner.reminders.R
 import com.trustedapp.todolist.planner.reminders.screens.home.HomeActivity
 import com.trustedapp.todolist.planner.reminders.utils.SPUtils
+import com.trustedapp.todolist.planner.reminders.utils.applyLanguage
 import com.trustedapp.todolist.planner.reminders.utils.isInternetAvailable
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -34,6 +35,7 @@ class SplashActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        applyLanguage(SPUtils.getCurrentLang(this) ?: "en")
         if (Build.VERSION.SDK_INT >= 31) {
             setTheme(R.style.Theme_App_Starting)
             val splashScreen = installSplashScreen()

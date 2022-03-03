@@ -3,10 +3,12 @@ package com.trustedapp.todolist.planner.reminders.utils
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import android.util.Log
+import androidx.annotation.StringRes
 import kotlinx.coroutines.flow.MutableStateFlow
+import java.util.*
 
 fun Context.isInternetAvailable(): Boolean {
 
@@ -33,4 +35,22 @@ class NetworkChangeReceiver : BroadcastReceiver() {
 object NetworkState {
 
     val isHasInternet = MutableStateFlow(true)
+}
+
+fun Context.applyLanguage(languageCode: String) {
+    var langCode = languageCode
+    if (langCode.isEmpty()) langCode = "en"
+    val config = resources.configuration
+    val locale = Locale(langCode)
+    Locale.setDefault(locale)
+    config.setLocale(locale)
+    createConfigurationContext(config)
+    resources.updateConfiguration(config, resources.displayMetrics)
+    SPUtils.saveCurrentLang(this, langCode)
+}
+
+fun Context.getStringByLocale(@StringRes stringRes: Int): String {
+    val configuration = Configuration(resources.configuration)
+    configuration.setLocale(Locale(SPUtils.getCurrentLang(this) ?: "en"))
+    return createConfigurationContext(configuration).resources.getString(stringRes)
 }

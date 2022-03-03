@@ -40,6 +40,7 @@ import com.trustedapp.todolist.planner.reminders.screens.taskdetail.subtasks.Ite
 import com.trustedapp.todolist.planner.reminders.screens.taskdetail.subtasks.OnSubTaskDetailInteract
 import com.trustedapp.todolist.planner.reminders.screens.taskdetail.subtasks.SubTaskDetailAdapter
 import com.trustedapp.todolist.planner.reminders.utils.*
+import com.trustedapp.todolist.planner.reminders.utils.helper.getCatName
 import com.trustedapp.todolist.planner.reminders.utils.helper.getCategoryColor
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -188,7 +189,7 @@ class TaskDetailFragment : BaseFragment<FragmentTaskDetailBinding>() {
                         } else {
                             val catColor = getCategoryColor(requireContext(), it.category)
                             textCategory.setTextColor(catColor)
-                            textCategory.text = it.category?.name
+                            textCategory.text = getCatName(requireContext(), it.category!!.name)
                             selectCat(categories.value.indexOf(it.category))
                         }
                         if (it.task.isDone) imageDone.show() else imageDone.gone()
@@ -232,7 +233,7 @@ class TaskDetailFragment : BaseFragment<FragmentTaskDetailBinding>() {
                                     categories.value[it]
                                 )
                             )
-                            textCategory.text = categories.value[it].name
+                            textCategory.text = getCatName(requireContext(), categories.value[it].name)
                         }
                         categoryAdapter.selectedIndex = it
                         categoryAdapter.notifyDataSetChanged()

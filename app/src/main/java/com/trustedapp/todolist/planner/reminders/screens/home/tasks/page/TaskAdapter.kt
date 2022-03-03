@@ -16,6 +16,7 @@ import com.trustedapp.todolist.planner.reminders.databinding.ItemTaskBinding
 import com.trustedapp.todolist.planner.reminders.utils.DateTimeUtils
 import com.trustedapp.todolist.planner.reminders.utils.gone
 import com.trustedapp.todolist.planner.reminders.utils.helper.getBookmarkIcon
+import com.trustedapp.todolist.planner.reminders.utils.helper.getCatName
 import com.trustedapp.todolist.planner.reminders.utils.helper.getCategoryColor
 import com.trustedapp.todolist.planner.reminders.utils.show
 import javax.inject.Inject
@@ -84,7 +85,7 @@ class TaskViewHolder(
             cardCat.gone()
         } else {
             cardCat.show()
-            textCatName.text = entity.category!!.name.uppercase()
+            textCatName.text = getCatName(itemView.context, entity.category!!.name)
             val catColor = getCategoryColor(itemView.context, entity.category!!)
             textCatName.setTextColor(catColor)
             viewCatBg.setBackgroundColor(catColor)

@@ -18,6 +18,8 @@ android {
         versionCode 1
         versionName "1.0"
 
+        resConfigs "de", "en", "es", "fil", "fr", "hi", "in", "ja", "pt", "zh"
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 

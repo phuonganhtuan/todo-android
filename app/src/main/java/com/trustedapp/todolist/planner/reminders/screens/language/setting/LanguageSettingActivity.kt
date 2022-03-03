@@ -1,5 +1,6 @@
 package com.trustedapp.todolist.planner.reminders.screens.language.setting
 
+import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
 import androidx.lifecycle.Lifecycle
@@ -8,7 +9,9 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.trustedapp.todolist.planner.reminders.R
 import com.trustedapp.todolist.planner.reminders.base.BaseActivity
 import com.trustedapp.todolist.planner.reminders.databinding.ActivityLanguageSettingBinding
+import com.trustedapp.todolist.planner.reminders.screens.home.HomeActivity
 import com.trustedapp.todolist.planner.reminders.screens.language.LanguageModel
+import com.trustedapp.todolist.planner.reminders.utils.Constants.EXRA_LANGUAGE_UPDATED
 import com.trustedapp.todolist.planner.reminders.utils.NetworkChangeReceiver
 import com.trustedapp.todolist.planner.reminders.utils.NetworkState
 import com.trustedapp.todolist.planner.reminders.utils.SPUtils
@@ -17,6 +20,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import java.util.*
 import javax.inject.Inject
+
 
 @AndroidEntryPoint
 class LanguageSettingActivity : BaseActivity<ActivityLanguageSettingBinding>() {
@@ -51,6 +55,18 @@ class LanguageSettingActivity : BaseActivity<ActivityLanguageSettingBinding>() {
     override fun onPause() {
         super.onPause()
         unregisterReceiver(networkReceiver)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        val previousActivity = Intent(
+            this,
+            HomeActivity::class.java
+        ).apply {
+            putExtra(EXRA_LANGUAGE_UPDATED, true)
+        }
+        previousActivity.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        startActivity(previousActivity)
     }
 
     private fun initViews() = with(viewBinding) {
@@ -95,7 +111,7 @@ class LanguageSettingActivity : BaseActivity<ActivityLanguageSettingBinding>() {
             LanguageModel(
                 id = 3,
                 langName = "Indonesia",
-                langCode = "id"
+                langCode = "in"
             ),
             LanguageModel(
                 id = 4,
@@ -161,6 +177,7 @@ class LanguageSettingActivity : BaseActivity<ActivityLanguageSettingBinding>() {
             adapter.selectedItem = it
             adapter.notifyDataSetChanged()
             applyLanguage(langList[it].langCode)
+            header.textTitle.text = getString(R.string.language)
         }
     }
 }

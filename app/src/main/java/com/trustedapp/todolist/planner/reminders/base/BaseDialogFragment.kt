@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.viewbinding.ViewBinding
+import com.trustedapp.todolist.planner.reminders.utils.SPUtils
+import com.trustedapp.todolist.planner.reminders.utils.applyLanguage
 import com.trustedapp.todolist.planner.reminders.utils.windowWidth
 
 abstract class BaseDialogFragment<VB : ViewBinding> : DialogFragment() {
@@ -20,6 +22,9 @@ abstract class BaseDialogFragment<VB : ViewBinding> : DialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        (activity as? BaseActivity<*>)?.applyLanguage(
+            SPUtils.getCurrentLang(requireContext()) ?: "en"
+        )
         viewBinding = inflateViewBinding(container, savedInstanceState)
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         return viewBinding.root

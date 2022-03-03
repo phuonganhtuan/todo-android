@@ -9,6 +9,7 @@ import com.trustedapp.todolist.planner.reminders.base.BaseDiffCallBack
 import com.trustedapp.todolist.planner.reminders.base.BaseViewHolder
 import com.trustedapp.todolist.planner.reminders.data.models.entity.CategoryEntity
 import com.trustedapp.todolist.planner.reminders.databinding.ItemSelectCategoryBinding
+import com.trustedapp.todolist.planner.reminders.utils.helper.getCatName
 import com.trustedapp.todolist.planner.reminders.utils.helper.getCategoryColor
 import javax.inject.Inject
 
@@ -52,7 +53,7 @@ class SelectCategoryViewHolder(
 
     fun displayData(entity: CategoryEntity, isSelected: Boolean) = with(itemViewBinding) {
         val catColor = getCategoryColor(itemView.context, entity)
-        textCategory.text = entity.name
+        textCategory.text = getCatName(itemView.context, entity.name)
         textCategory.setTextColor(catColor)
         val bg = ContextCompat.getDrawable(
             itemView.context,

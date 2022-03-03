@@ -8,9 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
-import android.widget.PopupMenu
 import android.widget.PopupWindow
-import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.activityViewModels
@@ -26,7 +24,6 @@ import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.trustedapp.todolist.planner.reminders.R
-import com.trustedapp.todolist.planner.reminders.base.BaseActivity
 import com.trustedapp.todolist.planner.reminders.base.BaseFragment
 import com.trustedapp.todolist.planner.reminders.data.models.entity.CategoryEntity
 import com.trustedapp.todolist.planner.reminders.databinding.FragmentNewTaskBinding
@@ -36,6 +33,7 @@ import com.trustedapp.todolist.planner.reminders.screens.newtask.subtask.OnSubTa
 import com.trustedapp.todolist.planner.reminders.screens.newtask.subtask.SubTaskAdapter
 import com.trustedapp.todolist.planner.reminders.screens.taskdetail.attachment.AttachmentAdapter
 import com.trustedapp.todolist.planner.reminders.utils.*
+import com.trustedapp.todolist.planner.reminders.utils.helper.getCatName
 import com.trustedapp.todolist.planner.reminders.utils.helper.getCategoryColor
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -183,7 +181,8 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
                                     categories.value[it]
                                 )
                             )
-                            textCategory.text = categories.value[it].name
+                            textCategory.text =
+                                getCatName(requireContext(), categories.value[it].name)
                         }
                     }
                     categoryAdapter.selectedIndex = it
@@ -242,9 +241,14 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 customReminderTime.filter { it > 0 }
                     .combine(customReminderTimeUnit) { time, unit ->
-                        if  (time > 0) "${time.toString()} ${resources.getString(unit.getStringid()).lowercase()} ${resources.getString(R.string.before).lowercase()}" else ""
-                    }.filter { it.isNotEmpty() }.combine(selectedReminderTime.filter { it != ReminderTimeEnum.NONE }){ customValue, slReminder ->
-                        if (slReminder == ReminderTimeEnum.CUSTOM_DAY_BEFORE) customValue else resources.getString(slReminder.getStringid())
+                        if (time > 0) "${time.toString()} ${
+                            resources.getString(unit.getStringid()).lowercase()
+                        } ${resources.getString(R.string.before).lowercase()}" else ""
+                    }.filter { it.isNotEmpty() }
+                    .combine(selectedReminderTime.filter { it != ReminderTimeEnum.NONE }) { customValue, slReminder ->
+                        if (slReminder == ReminderTimeEnum.CUSTOM_DAY_BEFORE) customValue else resources.getString(
+                            slReminder.getStringid()
+                        )
                     }.collect {
                         viewBinding.textReminderTime.text = it
                     }
@@ -300,7 +304,7 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
 
                     if (it) {
                         viewBinding.textRepeatTime.show()
-                    }else{
+                    } else {
                         viewBinding.switchRepeat.isChecked = false
                         viewBinding.textRepeatTime.gone()
                     }
@@ -328,7 +332,7 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
     }
 
     private fun setupCatsPopup(cats: List<CategoryEntity>) {
-        val inflater = activity?.getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val inflater = requireContext().getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val popupView = inflater.inflate(R.layout.layout_select_category, null)
         popupView.elevation = 12f
 
@@ -411,10 +415,10 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
         findNavController().navigate(R.id.toAddRepeatOut)
     }
 
-    private fun isAllowInterNewTaskAds(): Boolean{
+    private fun isAllowInterNewTaskAds(): Boolean {
         context.let {
-            if (it != null){
-                val numberOfNewTask =  SPUtils.getNumberNewTask(it)
+            if (it != null) {
+                val numberOfNewTask = SPUtils.getNumberNewTask(it)
                 val newNumberOfTask = numberOfNewTask + 1
                 SPUtils.setNumberNewTask(it, newNumberOfTask)
                 return newNumberOfTask % 2 == 0
@@ -423,7 +427,7 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
         return false
     }
 
-    private fun createTaskCallback() = with(viewBinding){
+    private fun createTaskCallback() = with(viewBinding) {
         viewModel.createTask(
             requireContext(),
             editTaskName.text.toString().trim(),
@@ -444,7 +448,7 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
             })
     }
 
-    private fun loadInterCreate(){
+    private fun loadInterCreate() {
         if (!Firebase.remoteConfig.getBoolean(SPUtils.KEY_INTER_INSERT)) {
             isLoadingAds = false
             createTaskCallback()
@@ -472,6 +476,7 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
                         isLoadingAds = false
                         createTaskCallback()
                     }
+
                     override fun onAdLeftApplication() {
                         super.onAdLeftApplication()
                         isLoadingAds = false

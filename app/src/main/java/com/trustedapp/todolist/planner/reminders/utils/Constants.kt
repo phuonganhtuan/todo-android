@@ -10,4 +10,6 @@ object Constants {
     const val RECORD_RINGTONE_FOLDER = "/TodoRecord"
     const val RECORD_RINGTONE_PREFIX = "Ringtone_"
     const val RECORD_RINGTONE_EXTENSION = "mp3"
+
+    const val EXRA_LANGUAGE_UPDATED = "LanguageUpdated"
 }

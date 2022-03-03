@@ -9,8 +9,11 @@ data class CategoryEntity(
     override var id: Int = 0,
     var name: String,
     var color: String = "",
-): BaseEntity()
+) : BaseEntity()
 
 enum class DefaultCategories {
-    WORK, PERSONAL, BIRTHDAY, WISHLIST
+    WORK,
+    PERSONAL,
+    BIRTHDAY,
+    WISHLIST
 }

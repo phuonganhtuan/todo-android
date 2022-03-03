@@ -82,6 +82,8 @@
         <entry key="app/src/main/res/layout/activity_theme.xml" value="0.32133333333333336" />
         <entry key="app/src/main/res/layout/activity_time_format.xml" value="0.17387387387387387" />
         <entry key="app/src/main/res/layout/activity_widget.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/activity_widget_count_down_setting.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_widget_month_setting.xml" value="0.25" />
         <entry key="app/src/main/res/layout/content_home.xml" value="0.10989583333333333" />
         <entry key="app/src/main/res/layout/fragment_calendar.xml" value="0.10371376811594203" />
         <entry key="app/src/main/res/layout/fragment_default_reminder_type_dialog.xml" value="0.10989583333333333" />
@@ -100,9 +102,12 @@
         <entry key="app/src/main/res/layout/fragment_task_detail.xml" value="0.10989583333333333" />
         <entry key="app/src/main/res/layout/fragment_tasks.xml" value="0.10989583333333333" />
         <entry key="app/src/main/res/layout/fragment_tasks_page.xml" value="0.10989583333333333" />
+        <entry key="app/src/main/res/layout/item_calendar_task_page.xml" value="0.32133333333333336" />
         <entry key="app/src/main/res/layout/item_calendar_widget.xml" value="0.3256756756756757" />
+        <entry key="app/src/main/res/layout/item_chart.xml" value="0.2898148148148148" />
         <entry key="app/src/main/res/layout/item_language.xml" value="0.2063063063063063" />
         <entry key="app/src/main/res/layout/item_language_setting.xml" value="0.31216216216216214" />
+        <entry key="app/src/main/res/layout/item_select_category.xml" value="0.29008341056533826" />
         <entry key="app/src/main/res/layout/item_select_radio.xml" value="0.1" />
         <entry key="app/src/main/res/layout/item_select_ratio.xml" value="0.659375" />
         <entry key="app/src/main/res/layout/item_select_record_ringtone.xml" value="0.25" />
@@ -113,6 +118,7 @@
         <entry key="app/src/main/res/layout/item_widget_standard_task_2.xml" value="0.3256756756756757" />
         <entry key="app/src/main/res/layout/layout_add_calendar.xml" value="0.10371376811594203" />
         <entry key="app/src/main/res/layout/layout_calendar.xml" value="0.32133333333333336" />
+        <entry key="app/src/main/res/layout/layout_calendar_with_task.xml" value="0.32133333333333336" />
         <entry key="app/src/main/res/layout/layout_delete_task.xml" value="0.23108108108108108" />
         <entry key="app/src/main/res/layout/layout_side_navigation_header.xml" value="0.10989583333333333" />
         <entry key="app/src/main/res/layout/layout_toolbar.xml" value="0.10371376811594203" />
@@ -127,12 +133,14 @@
         <entry key="app/src/main/res/layout/layout_widget_standard_1.xml" value="0.22" />
         <entry key="app/src/main/res/layout/layout_widget_standard_2.xml" value="0.3256756756756757" />
         <entry key="app/src/main/res/menu/activity_main_drawer.xml" value="0.10989583333333333" />
+        <entry key="app/src/main/res/menu/count_type_menu.xml" value="0.31216216216216214" />
         <entry key="app/src/main/res/menu/main_bottom_menu.xml" value="0.10989583333333333" />
         <entry key="app/src/main/res/menu/menu_main.xml" value="0.5" />
         <entry key="app/src/main/res/menu/reminder_menu.xml" value="0.16354166666666667" />
         <entry key="app/src/main/res/menu/reminder_type_menu.xml" value="0.16354166666666667" />
         <entry key="app/src/main/res/menu/repeat_at_menu.xml" value="0.16354166666666667" />
         <entry key="app/src/main/res/menu/screen_lock_menu.xml" value="0.16354166666666667" />
+        <entry key="app/src/main/res/menu/task_detail_menu.xml" value="0.2898148148148148" />
         <entry key="app/src/main/res/xml/widget_standard_info.xml" value="0.3256756756756757" />
       </map>
     </option>

@@ -10,6 +10,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
 import com.google.android.material.snackbar.Snackbar
+import com.trustedapp.todolist.planner.reminders.utils.SPUtils
+import com.trustedapp.todolist.planner.reminders.utils.applyLanguage
 
 abstract class BaseFragment<VB : ViewBinding> : Fragment() {
 
@@ -20,6 +22,9 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        (activity as? BaseActivity<*>)?.applyLanguage(
+            SPUtils.getCurrentLang(requireContext()) ?: "en"
+        )
         viewBinding = inflateViewBinding(container, savedInstanceState)
         return viewBinding.root
     }

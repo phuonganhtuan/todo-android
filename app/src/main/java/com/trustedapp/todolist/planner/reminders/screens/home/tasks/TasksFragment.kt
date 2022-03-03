@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.viewModels
 import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.tabs.TabLayout
 import com.trustedapp.todolist.planner.reminders.R
 import com.trustedapp.todolist.planner.reminders.base.BaseFragment
 import com.trustedapp.todolist.planner.reminders.data.models.model.TaskPageType
@@ -16,7 +17,6 @@ import com.trustedapp.todolist.planner.reminders.screens.home.HomeActivity
 import com.trustedapp.todolist.planner.reminders.screens.home.tasks.page.TasksPageFragment
 import com.trustedapp.todolist.planner.reminders.screens.newtask.NewTaskActivity
 import com.trustedapp.todolist.planner.reminders.screens.search.SearchTaskActivity
-import com.google.android.material.tabs.TabLayout
 import com.trustedapp.todolist.planner.reminders.utils.hide
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -57,11 +57,13 @@ class TasksFragment : BaseFragment<FragmentTasksBinding>() {
 
     @SuppressLint("NotifyDataSetChanged")
     private fun initData() {
-        pagerAdapter?.fragments = listOf(
-            TasksPageFragment.newInstance(TaskPageType.TODAY),
-            TasksPageFragment.newInstance(TaskPageType.FUTURE),
-            TasksPageFragment.newInstance(TaskPageType.DONE)
-        )
+        if (pagerAdapter?.fragments?.size != 3) {
+            pagerAdapter?.fragments = listOf(
+                TasksPageFragment.newInstance(TaskPageType.TODAY),
+                TasksPageFragment.newInstance(TaskPageType.FUTURE),
+                TasksPageFragment.newInstance(TaskPageType.DONE)
+            )
+        }
         pagerAdapter?.notifyDataSetChanged()
     }
 

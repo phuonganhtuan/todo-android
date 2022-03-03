@@ -213,4 +213,7 @@
     <string name="my_tasks">My Tasks</string>
     <string name="future">Future</string>
     <string name="completed">Completed</string>
+    <string name="today_task">Today tasks</string>
+    <string name="future_task">Future tasks</string>
+    <string name="done_task">Completed tasks</string>
 </resources>

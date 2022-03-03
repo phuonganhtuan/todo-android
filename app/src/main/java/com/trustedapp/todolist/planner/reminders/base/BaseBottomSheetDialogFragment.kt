@@ -16,6 +16,8 @@ import com.trustedapp.todolist.planner.reminders.utils.windowWidth
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.trustedapp.todolist.planner.reminders.utils.SPUtils
+import com.trustedapp.todolist.planner.reminders.utils.applyLanguage
 
 abstract class BaseBottomSheetDialogFragment<VB : ViewBinding> : BottomSheetDialogFragment() {
 
@@ -40,6 +42,9 @@ abstract class BaseBottomSheetDialogFragment<VB : ViewBinding> : BottomSheetDial
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        (activity as? BaseActivity<*>)?.applyLanguage(
+            SPUtils.getCurrentLang(requireContext()) ?: "en"
+        )
         viewBinding = inflateViewBinding(container, savedInstanceState)
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         return viewBinding.root

@@ -83,13 +83,21 @@ class TaskDetailActivity : BaseActivity<ActivityTaskDetailBinding>() {
         val popup = PopupMenu(this, viewBinding.layoutTop.button4)
         popup.menuInflater.inflate(R.menu.task_detail_menu, popup.menu)
         val item = popup.menu.getItem(0)
+        val item1 = popup.menu.getItem(1)
+        val item2= popup.menu.getItem(2)
+        val item3 = popup.menu.getItem(3)
+        val item4 = popup.menu.getItem(4)
         val title =
             if (viewModel.task.value.task.isDone) R.string.mark_as_undone else R.string.mark_as_done
-        val s = SpannableString(getString(title))
+        val s = SpannableString(getStringByLocale(title))
         s.setSpan(
             ForegroundColorSpan(getColorFromAttr(R.attr.colorPrimary)), 0, s.length, 0
         )
         item.title = s
+        item1.title = getStringByLocale(R.string.share)
+        item2.title = getStringByLocale(R.string.delete)
+        item3.title = getStringByLocale(R.string.duplicate_task)
+        item4.title = getStringByLocale(R.string.bookmark)
         popup.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.markAsDone -> markAsDone()

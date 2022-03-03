@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.trustedapp.todolist.planner.reminders.alarm.ScheduleHelper
 import com.trustedapp.todolist.planner.reminders.data.models.entity.TaskShort
+import com.trustedapp.todolist.planner.reminders.data.models.model.TaskPageType
 import com.trustedapp.todolist.planner.reminders.data.repository.TaskRepository
 import com.trustedapp.todolist.planner.reminders.utils.DateTimeUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,6 +23,8 @@ import javax.inject.Inject
 @HiltViewModel
 @ExperimentalCoroutinesApi
 class TasksPageViewModel @Inject constructor(private val repository: TaskRepository) : ViewModel() {
+
+    var type: TaskPageType? = null
 
     val todayTasks: Flow<List<TaskShort>>
         get() = allTasks.map {

@@ -6,6 +6,7 @@ import com.trustedapp.todolist.planner.reminders.R
 import com.trustedapp.todolist.planner.reminders.data.models.entity.CategoryEntity
 import com.trustedapp.todolist.planner.reminders.data.models.entity.DefaultCategories
 import com.trustedapp.todolist.planner.reminders.utils.getColorFromAttr
+import com.trustedapp.todolist.planner.reminders.utils.getStringByLocale
 
 fun getCategoryColor(context: Context, category: CategoryEntity?) = if (category != null) {
     when (category.name.uppercase()) {
@@ -26,3 +27,12 @@ fun getCategoryColor(context: Context, category: CategoryEntity?) = if (category
 } else {
     ContextCompat.getColor(context, R.color.color_text_secondary_dark)
 }
+
+fun getCatName(context: Context, name: String) =
+    when (name.uppercase()) {
+        DefaultCategories.WORK.name.uppercase() -> context.getStringByLocale(R.string.cat_work)
+        DefaultCategories.BIRTHDAY.name.uppercase() -> context.getStringByLocale(R.string.cat_birthday)
+        DefaultCategories.PERSONAL.name.uppercase() -> context.getStringByLocale(R.string.cat_personal)
+        DefaultCategories.WISHLIST.name.uppercase() -> context.getStringByLocale(R.string.cat_wish_list)
+        else -> name
+    }

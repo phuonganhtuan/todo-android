@@ -3,7 +3,6 @@ package com.trustedapp.todolist.planner.reminders.screens.home
 import android.appwidget.AppWidgetManager
 import android.content.ComponentName
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
@@ -14,7 +13,6 @@ import android.widget.ImageView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.view.get
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.bumptech.glide.Glide
@@ -34,7 +32,9 @@ import com.trustedapp.todolist.planner.reminders.screens.theme.currentTheme
 import com.trustedapp.todolist.planner.reminders.screens.theme.sceneryIds
 import com.trustedapp.todolist.planner.reminders.screens.theme.textureIds
 import com.trustedapp.todolist.planner.reminders.screens.widget.WidgetActivity
+import com.trustedapp.todolist.planner.reminders.utils.Constants.EXRA_LANGUAGE_UPDATED
 import com.trustedapp.todolist.planner.reminders.utils.SPUtils
+import com.trustedapp.todolist.planner.reminders.utils.applyLanguage
 import com.trustedapp.todolist.planner.reminders.utils.gone
 import com.trustedapp.todolist.planner.reminders.utils.show
 import com.trustedapp.todolist.planner.reminders.widget.lite.LiteWidget
@@ -61,10 +61,19 @@ class HomeActivity : AppCompatActivity() {
 //            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
 //            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
 //        )
+        applyLanguage(SPUtils.getCurrentLang(this) ?: "en")
         setupTheme()
         viewBinding = inflateViewBinding()
         setContentView(viewBinding.root)
         onActivityReady()
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        val isLanguageUpdated = intent?.extras?.getBoolean(EXRA_LANGUAGE_UPDATED)
+        if (isLanguageUpdated == true) {
+            recreate()
+        }
     }
 
     override fun onPause() {

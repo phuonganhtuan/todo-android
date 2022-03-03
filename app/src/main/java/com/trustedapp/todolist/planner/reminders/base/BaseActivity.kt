@@ -28,11 +28,15 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+//        applyLanguage(SPUtils.getCurrentLang(this) ?: "en")
         if (currentTheme != -1) {
             setTheme(currentTheme)
         }
         viewBinding = inflateViewBinding()
         setContentView(viewBinding.root)
+        applyLanguage(
+            SPUtils.getCurrentLang(this) ?: "en"
+        )
         onActivityReady(savedInstanceState)
         onActivityReady()
     }
