@@ -50,6 +50,12 @@ class NewTaskActivity : BaseActivity<ActivityNewTaskBinding>() {
         }
     }
 
+    override fun onPause() {
+        super.onPause()
+        updateWidget()
+    }
+
+
     private fun setupToolbar() = with(viewBinding.layoutTop) {
         button1.setImageResource(R.drawable.ic_arrow_left)
         button4.hide()

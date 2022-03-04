@@ -45,6 +45,10 @@ class TimeFormatActivity : BaseActivity<ActivityTimeFormatBinding>() {
             textTitle.text = getString(R.string.time_format)
         }
         // Load Banner ads
+        loadBannerAds()
+    }
+
+    private fun loadBannerAds() = with(viewBinding) {
         if (Firebase.remoteConfig.getBoolean(SPUtils.KEY_BANNER) && isInternetAvailable()) {
             include.visibility = View.VISIBLE
             Admod.getInstance()
@@ -97,7 +101,7 @@ class TimeFormatActivity : BaseActivity<ActivityTimeFormatBinding>() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 NetworkState.isHasInternet.collect {
                     viewBinding.include.apply {
-                        if (it) show() else gone()
+                        loadBannerAds()
                     }
                 }
             }
