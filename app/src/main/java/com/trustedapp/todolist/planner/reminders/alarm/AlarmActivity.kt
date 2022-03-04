@@ -6,13 +6,16 @@ import android.view.WindowManager
 import com.trustedapp.todolist.planner.reminders.base.BaseActivity
 import com.trustedapp.todolist.planner.reminders.databinding.ActivityAlarmBinding
 import com.trustedapp.todolist.planner.reminders.utils.Constants
+import com.trustedapp.todolist.planner.reminders.utils.SPUtils
+import com.trustedapp.todolist.planner.reminders.utils.gone
+import com.trustedapp.todolist.planner.reminders.utils.show
 import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
 class AlarmActivity : BaseActivity<ActivityAlarmBinding>() {
 
-    private  val handler = Handler(Looper.getMainLooper())
+    private val handler = Handler(Looper.getMainLooper())
 
     override fun inflateViewBinding() = ActivityAlarmBinding.inflate(layoutInflater)
     override fun onActivityReady(savedInstanceState: Bundle?) {
@@ -25,6 +28,11 @@ class AlarmActivity : BaseActivity<ActivityAlarmBinding>() {
     }
 
     private fun initViews() = with(viewBinding) {
+        if (SPUtils.getIsSnoozeTask(this@AlarmActivity)) {
+            buttonSnooze.show()
+        } else {
+            buttonSnooze.gone()
+        }
         window.addFlags(
             WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON or
                     WindowManager.LayoutParams.FLAG_ALLOW_LOCK_WHILE_SCREEN_ON
@@ -44,6 +52,30 @@ class AlarmActivity : BaseActivity<ActivityAlarmBinding>() {
 
     private fun setupEvents() = with(viewBinding) {
         buttonDismiss.setOnClickListener {
+            val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+            vibrator.cancel()
+            handler.removeCallbacksAndMessages(null)
+            finish()
+        }
+        buttonSnooze.setOnClickListener {
+
+            val snoozeAfter = SPUtils.getSnoozeAfterValue(this@AlarmActivity).offset
+            val taskId = intent.extras?.getInt(Constants.KEY_TASK_ID) ?: 0
+            val taskTitle = intent.extras?.getString(Constants.KEY_TASK_TITLE) ?: ""
+            val taskCalendar =
+                intent.extras?.getLong(Constants.KEY_TASK_TIME) ?: System.currentTimeMillis()
+            val reminderType = intent.extras?.getString(Constants.KEY_REMINDER_TYPE) ?: ""
+            val screenLockReminder =
+                intent.extras?.getBoolean(Constants.KEY_SCREEN_LOCK_ENABLED) ?: false
+            ScheduleHelper.createSnoozeAlarm(
+                this@AlarmActivity,
+                snoozeAfter,
+                taskId,
+                taskTitle,
+                taskCalendar,
+                reminderType,
+                screenLockReminder
+            )
             val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
             vibrator.cancel()
             handler.removeCallbacksAndMessages(null)
