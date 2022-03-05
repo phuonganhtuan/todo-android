@@ -16,6 +16,7 @@ import com.trustedapp.todolist.planner.reminders.screens.newtask.ReminderTypeEnu
 import com.trustedapp.todolist.planner.reminders.screens.taskdetail.TaskDetailActivity
 import com.trustedapp.todolist.planner.reminders.utils.Constants
 import com.trustedapp.todolist.planner.reminders.utils.DateTimeUtils
+import com.trustedapp.todolist.planner.reminders.utils.SPUtils
 
 
 class AlarmHelper : BroadcastReceiver() {
@@ -59,6 +60,7 @@ class AlarmHelper : BroadcastReceiver() {
         mBuilder.setAutoCancel(true)
         mBuilder.priority = Notification.PRIORITY_HIGH
         mBuilder.setOnlyAlertOnce(true)
+        mBuilder.setVisibility(if (SPUtils.getIsScreenlockTaskReminder(context)) NotificationCompat.VISIBILITY_PUBLIC else NotificationCompat.VISIBILITY_SECRET)
         mBuilder.setCategory(NotificationCompat.CATEGORY_ALARM)
         mBuilder.build().flags = Notification.PRIORITY_HIGH
         mBuilder.setContentIntent(pendingIntent)
@@ -67,6 +69,8 @@ class AlarmHelper : BroadcastReceiver() {
             val channel =
                 NotificationChannel(channelId, "channel name", NotificationManager.IMPORTANCE_HIGH)
             channel.enableVibration(true)
+            channel.lockscreenVisibility =
+                if (SPUtils.getIsScreenlockTaskReminder(context)) NotificationCompat.VISIBILITY_PUBLIC else NotificationCompat.VISIBILITY_SECRET
             notificationManager.createNotificationChannel(channel)
             mBuilder.setChannelId(channelId)
         }
@@ -140,6 +144,7 @@ class AlarmHelper : BroadcastReceiver() {
                     )
                 )
                 .setAutoCancel(true)
+                .setVisibility(if (SPUtils.getIsScreenlockTaskReminder(context)) NotificationCompat.VISIBILITY_PUBLIC else NotificationCompat.VISIBILITY_SECRET)
                 .setPriority(NotificationCompat.PRIORITY_MAX)
                 .setCategory(NotificationCompat.CATEGORY_ALARM)
                 .setContentIntent(pendingIntentContent)
@@ -149,6 +154,8 @@ class AlarmHelper : BroadcastReceiver() {
             val channel =
                 NotificationChannel(channelId, "channel name", NotificationManager.IMPORTANCE_HIGH)
             channel.enableVibration(true)
+            channel.lockscreenVisibility =
+                if (SPUtils.getIsScreenlockTaskReminder(context)) NotificationCompat.VISIBILITY_PUBLIC else NotificationCompat.VISIBILITY_SECRET
             notificationManager.createNotificationChannel(channel)
             notificationBuilder.setChannelId(channelId)
         }

@@ -40,7 +40,13 @@ class AlarmActivity : BaseActivity<ActivityAlarmBinding>() {
         val bundle = intent.extras
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
             setTurnScreenOn(true)
-            setShowWhenLocked(bundle?.getBoolean(Constants.KEY_SCREEN_LOCK_ENABLED, false) ?: false)
+            if (SPUtils.getIsScreenlockTaskReminder(this@AlarmActivity)) {
+                setShowWhenLocked(
+                    bundle?.getBoolean(Constants.KEY_SCREEN_LOCK_ENABLED, false) ?: false
+                )
+            } else {
+                setShowWhenLocked(false)
+            }
         }
         val taskTitle = bundle?.getString(Constants.KEY_TASK_TITLE)
         val taskTime = bundle?.getString(Constants.KEY_TASK_TIME)
