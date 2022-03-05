@@ -145,7 +145,31 @@ object ScheduleHelper {
             putExtra(Constants.KEY_TASK_ID, 3)
             putExtra(Constants.KEY_TASK_TITLE, "task.title")
             putExtra(Constants.KEY_TASK_TIME, System.currentTimeMillis())
-            putExtra(Constants.KEY_REMINDER_TYPE, ReminderTypeEnum.ALARM)
+            putExtra(Constants.KEY_REMINDER_TYPE, ReminderTypeEnum.ALARM.name)
+            putExtra(Constants.KEY_SCREEN_LOCK_ENABLED, true)
+        }
+        val pendingIntent =
+            PendingIntent.getBroadcast(
+                context,
+                3,
+                alarmIntent,
+                FLAG_MUTABLE or PendingIntent.FLAG_CANCEL_CURRENT
+            )
+        alarmManager?.setExactAndAllowWhileIdle(
+            AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 5000L, pendingIntent
+        )
+    }
+
+    fun createTestNotification(context: Context) {
+        if (alarmManager == null) {
+            alarmManager = context.getSystemService(Context.ALARM_SERVICE) as? AlarmManager
+        }
+        val alarmIntent = Intent(context, AlarmHelper::class.java).apply {
+            action = "action"
+            putExtra(Constants.KEY_TASK_ID, 3)
+            putExtra(Constants.KEY_TASK_TITLE, "task.title")
+            putExtra(Constants.KEY_TASK_TIME, System.currentTimeMillis())
+            putExtra(Constants.KEY_REMINDER_TYPE, ReminderTypeEnum.NOTIFICATION.name)
             putExtra(Constants.KEY_SCREEN_LOCK_ENABLED, true)
         }
         val pendingIntent =

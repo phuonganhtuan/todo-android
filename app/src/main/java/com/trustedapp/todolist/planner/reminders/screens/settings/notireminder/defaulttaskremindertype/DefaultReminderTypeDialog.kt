@@ -49,6 +49,7 @@ class DefaultReminderTypeDialog : BaseDialogFragment<FragmentDefaultReminderType
         }
         lnAlarm.setOnClickListener {
             selItem = DefaultReminderTypeEnum.ALARM
+            requestOverlayPermission()
             onChange()
         }
 

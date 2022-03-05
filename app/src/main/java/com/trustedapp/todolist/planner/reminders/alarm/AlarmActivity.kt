@@ -1,9 +1,13 @@
 package com.trustedapp.todolist.planner.reminders.alarm
 
 import android.content.Context
+import android.media.MediaPlayer
+import android.net.Uri
 import android.os.*
 import android.view.WindowManager
+import com.trustedapp.todolist.planner.reminders.R
 import com.trustedapp.todolist.planner.reminders.base.BaseActivity
+import com.trustedapp.todolist.planner.reminders.data.models.entity.TODO_DEFAULT_RINGTONE_ID
 import com.trustedapp.todolist.planner.reminders.databinding.ActivityAlarmBinding
 import com.trustedapp.todolist.planner.reminders.utils.Constants
 import com.trustedapp.todolist.planner.reminders.utils.SPUtils
@@ -17,6 +21,8 @@ class AlarmActivity : BaseActivity<ActivityAlarmBinding>() {
 
     private val handler = Handler(Looper.getMainLooper())
 
+    private var mediaPlayer = MediaPlayer()
+
     override fun inflateViewBinding() = ActivityAlarmBinding.inflate(layoutInflater)
     override fun onActivityReady(savedInstanceState: Bundle?) {
 
@@ -25,6 +31,14 @@ class AlarmActivity : BaseActivity<ActivityAlarmBinding>() {
     override fun onActivityReady() {
         initViews()
         setupEvents()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (mediaPlayer.isPlaying) {
+            mediaPlayer.stop()
+            mediaPlayer.release()
+        }
     }
 
     private fun initViews() = with(viewBinding) {
@@ -52,8 +66,29 @@ class AlarmActivity : BaseActivity<ActivityAlarmBinding>() {
         val taskTime = bundle?.getString(Constants.KEY_TASK_TIME)
         textTaskTime.text = taskTime?.replace(" ", System.lineSeparator())
         textTaskName.text = taskTitle
+        playRingtone()
         content.startRippleAnimation()
         vibratePhone()
+    }
+
+    private fun playRingtone() {
+        val ringtone = SPUtils.getDefaultAlarmRingtone(this@AlarmActivity)
+        try {
+            mediaPlayer = if (ringtone?.id == TODO_DEFAULT_RINGTONE_ID) {
+                MediaPlayer.create(applicationContext, R.raw.to_do_default)
+
+            } else {
+                MediaPlayer.create(applicationContext, Uri.parse(ringtone?.ringtoneUri))
+            }
+
+            mediaPlayer.setOnPreparedListener {
+                Handler(Looper.getMainLooper()).postDelayed({
+                    it.stop()
+                }, it.duration.toLong())
+                it.start()
+            }
+        } catch (exception: Exception) {
+        }
     }
 
     private fun setupEvents() = with(viewBinding) {

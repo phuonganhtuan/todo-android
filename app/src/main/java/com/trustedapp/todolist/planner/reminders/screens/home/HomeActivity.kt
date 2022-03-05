@@ -90,7 +90,6 @@ class HomeActivity : AppCompatActivity() {
         }
         ChartColor.initChartColor(this)
         setupEvents()
-        requestPermissions()
     }
 
     private fun initViews() = viewBinding.contentHome.apply {
@@ -154,16 +153,6 @@ class HomeActivity : AppCompatActivity() {
         }
         currentTheme = themeId
         setTheme(themeId)
-    }
-
-    private fun requestPermissions() {
-        if (!Settings.canDrawOverlays(this)) {
-            val intent = Intent(
-                Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                Uri.parse("package:" + packageName)
-            )
-            startActivityForResult(intent, 0)
-        }
     }
 
     private fun onNavigationItemSelectedListener(item: MenuItem) {

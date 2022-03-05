@@ -222,4 +222,8 @@
     <string name="all_time">All time</string>
     <string name="display_completed_tasks">Display completed tasks</string>
     <string name="no_task_tap_button_to_add_new_task">No task, tap + button to add new task</string>
+    <string name="custom">Custom</string>
+    <string name="enable">Enable</string>
+    <string name="to_display_alarm_to_do_list_needs_overlay_permission_to_be_enabled">To display alarm, To-do list needs overlay permission to be enabled</string>
+    <string name="alarm_reminder_suggestion">Alarm reminder suggestion</string>
 </resources>
