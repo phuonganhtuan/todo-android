@@ -33,7 +33,7 @@ object NotificationHelper {
         val builder = NotificationCompat.Builder(context, "channel_id_add")
         builder.setSmallIcon(R.drawable.ic_time_outline)
         builder.setContentText(context.getString(R.string.app_name))
-        builder.setContentTitle(context.getString(R.string.create_task_suggest))
+        builder.setContentTitle(context.getString(R.string.organize_tasks_easier_with_to_do_list))
         builder.setDefaults(NotificationCompat.DEFAULT_VIBRATE)
         builder.setAutoCancel(false)
         builder.priority = Notification.PRIORITY_DEFAULT
