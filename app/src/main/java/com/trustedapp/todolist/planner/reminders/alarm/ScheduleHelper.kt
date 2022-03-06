@@ -132,8 +132,58 @@ object ScheduleHelper {
             alarmManager = context.getSystemService(Context.ALARM_SERVICE) as? AlarmManager
         }
         alarmManager?.setExactAndAllowWhileIdle(
-            AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + offset, pendingIntent
+            AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 7000, pendingIntent
         )
+    }
+
+    fun createDailyReminder(context: Context) {
+
+        if (alarmManager == null) {
+            alarmManager = context.getSystemService(Context.ALARM_SERVICE) as? AlarmManager
+        }
+        val calendar = Calendar.getInstance()
+        calendar[Calendar.HOUR_OF_DAY] = 9
+        calendar[Calendar.MINUTE] = 0
+        calendar[Calendar.SECOND] = 0
+
+        if (calendar.time < Date()) calendar.add(Calendar.DAY_OF_MONTH, 1)
+
+        val alarmIntent = Intent(context, DailyReminderBroadcast::class.java)
+        val pendingIntent =
+            PendingIntent.getBroadcast(
+                context,
+                -2,
+                alarmIntent,
+                FLAG_MUTABLE or PendingIntent.FLAG_CANCEL_CURRENT
+            )
+        alarmManager?.setRepeating(
+            AlarmManager.RTC_WAKEUP,
+            calendar.timeInMillis,
+            AlarmManager.INTERVAL_DAY,
+            pendingIntent
+        )
+    }
+
+    fun cancelDailyReminder(context: Context) {
+        if (alarmManager == null) {
+            alarmManager = context.getSystemService(Context.ALARM_SERVICE) as? AlarmManager
+        }
+        val calendar = Calendar.getInstance()
+        calendar[Calendar.HOUR_OF_DAY] = 9
+        calendar[Calendar.MINUTE] = 0
+        calendar[Calendar.SECOND] = 0
+
+        if (calendar.time < Date()) calendar.add(Calendar.DAY_OF_MONTH, 1)
+
+        val alarmIntent = Intent(context, DailyReminderBroadcast::class.java)
+        val pendingIntent =
+            PendingIntent.getBroadcast(
+                context,
+                -2,
+                alarmIntent,
+                FLAG_MUTABLE or PendingIntent.FLAG_CANCEL_CURRENT
+            )
+        alarmManager?.cancel(pendingIntent)
     }
 
     fun createTestAlarm(context: Context) {

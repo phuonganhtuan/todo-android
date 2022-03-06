@@ -5,7 +5,6 @@ import android.content.ComponentName
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.provider.Settings
 import android.text.Html
 import android.text.Html.FROM_HTML_MODE_LEGACY
 import android.view.MenuItem
@@ -18,6 +17,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.bumptech.glide.Glide
 import com.trustedapp.todolist.planner.reminders.BuildConfig
 import com.trustedapp.todolist.planner.reminders.R
+import com.trustedapp.todolist.planner.reminders.alarm.NotificationHelper
 import com.trustedapp.todolist.planner.reminders.common.chart.ChartColor
 import com.trustedapp.todolist.planner.reminders.databinding.ActivityHomeBinding
 import com.trustedapp.todolist.planner.reminders.screens.home.tasks.suggest.SuggestActivity
@@ -113,6 +113,9 @@ class HomeActivity : AppCompatActivity() {
                 getString(R.string.version_info),
                 BuildConfig.VERSION_NAME
             ), FROM_HTML_MODE_LEGACY
+        )
+        if (SPUtils.getIsAddTaskFromNotificationBar(this@HomeActivity)) NotificationHelper.createAddTaskNotification(
+            this@HomeActivity
         )
     }
 

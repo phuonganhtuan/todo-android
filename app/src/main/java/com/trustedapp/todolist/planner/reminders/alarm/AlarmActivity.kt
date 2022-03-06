@@ -9,11 +9,10 @@ import com.trustedapp.todolist.planner.reminders.R
 import com.trustedapp.todolist.planner.reminders.base.BaseActivity
 import com.trustedapp.todolist.planner.reminders.data.models.entity.TODO_DEFAULT_RINGTONE_ID
 import com.trustedapp.todolist.planner.reminders.databinding.ActivityAlarmBinding
-import com.trustedapp.todolist.planner.reminders.utils.Constants
-import com.trustedapp.todolist.planner.reminders.utils.SPUtils
-import com.trustedapp.todolist.planner.reminders.utils.gone
-import com.trustedapp.todolist.planner.reminders.utils.show
+import com.trustedapp.todolist.planner.reminders.screens.newtask.ReminderTypeEnum
+import com.trustedapp.todolist.planner.reminders.utils.*
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.*
 
 
 @AndroidEntryPoint
@@ -37,7 +36,6 @@ class AlarmActivity : BaseActivity<ActivityAlarmBinding>() {
         super.onDestroy()
         if (mediaPlayer.isPlaying) {
             mediaPlayer.stop()
-            mediaPlayer.release()
         }
     }
 
@@ -63,8 +61,10 @@ class AlarmActivity : BaseActivity<ActivityAlarmBinding>() {
             }
         }
         val taskTitle = bundle?.getString(Constants.KEY_TASK_TITLE)
-        val taskTime = bundle?.getString(Constants.KEY_TASK_TIME)
-        textTaskTime.text = taskTime?.replace(" ", System.lineSeparator())
+        val taskTime = bundle?.getLong(Constants.KEY_TASK_TIME)
+        textTaskTime.text = DateTimeUtils.getShortTimeFromDate(
+            Calendar.getInstance().apply { timeInMillis = taskTime ?: 0 }.time
+        ).replace(" ", System.lineSeparator())
         textTaskName.text = taskTitle
         playRingtone()
         content.startRippleAnimation()
@@ -80,13 +80,10 @@ class AlarmActivity : BaseActivity<ActivityAlarmBinding>() {
             } else {
                 MediaPlayer.create(applicationContext, Uri.parse(ringtone?.ringtoneUri))
             }
-
-            mediaPlayer.setOnPreparedListener {
-                Handler(Looper.getMainLooper()).postDelayed({
-                    it.stop()
-                }, it.duration.toLong())
+            mediaPlayer.setOnCompletionListener {
                 it.start()
             }
+            mediaPlayer.start()
         } catch (exception: Exception) {
         }
     }
@@ -104,8 +101,8 @@ class AlarmActivity : BaseActivity<ActivityAlarmBinding>() {
             val taskId = intent.extras?.getInt(Constants.KEY_TASK_ID) ?: 0
             val taskTitle = intent.extras?.getString(Constants.KEY_TASK_TITLE) ?: ""
             val taskCalendar =
-                intent.extras?.getLong(Constants.KEY_TASK_TIME) ?: System.currentTimeMillis()
-            val reminderType = intent.extras?.getString(Constants.KEY_REMINDER_TYPE) ?: ""
+                intent.extras?.getLong(Constants.KEY_TASK_TIME)
+                    ?: System.currentTimeMillis()
             val screenLockReminder =
                 intent.extras?.getBoolean(Constants.KEY_SCREEN_LOCK_ENABLED) ?: false
             ScheduleHelper.createSnoozeAlarm(
@@ -114,7 +111,7 @@ class AlarmActivity : BaseActivity<ActivityAlarmBinding>() {
                 taskId,
                 taskTitle,
                 taskCalendar,
-                reminderType,
+                ReminderTypeEnum.ALARM.name,
                 screenLockReminder
             )
             val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator

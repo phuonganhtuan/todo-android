@@ -7,6 +7,7 @@ import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.media.AudioManager
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Build
@@ -17,6 +18,7 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.trustedapp.todolist.planner.reminders.R
 import com.trustedapp.todolist.planner.reminders.data.models.entity.TODO_DEFAULT_RINGTONE_ID
+import com.trustedapp.todolist.planner.reminders.screens.newtask.NewTaskActivity
 import com.trustedapp.todolist.planner.reminders.screens.newtask.ReminderTypeEnum
 import com.trustedapp.todolist.planner.reminders.screens.taskdetail.TaskDetailActivity
 import com.trustedapp.todolist.planner.reminders.utils.Constants
@@ -55,7 +57,11 @@ class AlarmHelper : BroadcastReceiver() {
                 it.stop()
             }, 2000)
         }
-        mediaPlayer.start()
+        val manager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+        manager.setStreamVolume(AudioManager.STREAM_MUSIC, 10, 0)
+        if (manager.ringerMode == AudioManager.RINGER_MODE_NORMAL) {
+            mediaPlayer.start()
+        }
 
         val pendingIntent =
             PendingIntent.getActivity(context, id, intent1, PendingIntent.FLAG_MUTABLE)
@@ -92,16 +98,18 @@ class AlarmHelper : BroadcastReceiver() {
                 NotificationChannel(
                     channelId,
                     "channel name notification",
-                    NotificationManager.IMPORTANCE_LOW
+                    NotificationManager.IMPORTANCE_HIGH
                 )
             channel.enableVibration(true)
+            channel.setSound(null, null)
             channel.lockscreenVisibility =
                 if (SPUtils.getIsScreenlockTaskReminder(context)) NotificationCompat.VISIBILITY_PUBLIC else NotificationCompat.VISIBILITY_SECRET
             notificationManager.createNotificationChannel(channel)
             builder.setChannelId(channelId)
         }
         val notification: Notification = builder.build()
-        notificationManager.notify(0, notification)
+        notificationManager.cancel(id)
+        notificationManager.notify(id, notification)
     }
 
     private fun createAlarm(context: Context, intent: Intent) {
@@ -118,11 +126,10 @@ class AlarmHelper : BroadcastReceiver() {
                 )
             )
             putExtra(
-                Constants.KEY_TASK_TIME, DateTimeUtils.getShortTimeFromMillisecond(
-                    bundle.getLong(
-                        Constants.KEY_TASK_TIME,
-                        System.currentTimeMillis()
-                    )
+                Constants.KEY_TASK_TIME,
+                bundle.getLong(
+                    Constants.KEY_TASK_TIME,
+                    System.currentTimeMillis()
                 )
             )
             putExtra(
@@ -149,7 +156,7 @@ class AlarmHelper : BroadcastReceiver() {
                 context,
                 id,
                 alarmIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE
             )
 
         val notificationBuilder: NotificationCompat.Builder =
@@ -170,6 +177,7 @@ class AlarmHelper : BroadcastReceiver() {
                     )
                 )
                 .setAutoCancel(true)
+                .setSound(null)
                 .setVisibility(if (SPUtils.getIsScreenlockTaskReminder(context)) NotificationCompat.VISIBILITY_PUBLIC else NotificationCompat.VISIBILITY_SECRET)
                 .setPriority(NotificationCompat.PRIORITY_MAX)
                 .setCategory(NotificationCompat.CATEGORY_ALARM)
@@ -180,6 +188,7 @@ class AlarmHelper : BroadcastReceiver() {
             val channel =
                 NotificationChannel(channelId, "channel name", NotificationManager.IMPORTANCE_HIGH)
             channel.enableVibration(true)
+            channel.setSound(null, null)
             channel.lockscreenVisibility =
                 if (SPUtils.getIsScreenlockTaskReminder(context)) NotificationCompat.VISIBILITY_PUBLIC else NotificationCompat.VISIBILITY_SECRET
             notificationManager.createNotificationChannel(channel)
@@ -187,6 +196,7 @@ class AlarmHelper : BroadcastReceiver() {
         }
         val notification: Notification =
             notificationBuilder.build().apply { flags = NotificationCompat.PRIORITY_HIGH }
+        notificationManager.cancel(id)
         notificationManager.notify(id, notification)
     }
 }
