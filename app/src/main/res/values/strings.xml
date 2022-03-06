@@ -191,7 +191,7 @@
     <string name="rate">Rate</string>
     <string name="please_rate_us_5_stars_if_you_enjoy_our_app">Please rate us 5 stars if you enjoy our app</string>
     <string name="feedback_subject">To-do List feedback from user</string>
-    <string name="url_policy">https://google.com</string>
+
     <string name="snooze_after">Snooze after</string>
     <string name="five_minutes">5 minutes</string>
     <string name="fifteen_minutes">15 minutes</string>
@@ -222,4 +222,8 @@
     <string name="all_time">All time</string>
     <string name="display_completed_tasks">Display completed tasks</string>
     <string name="no_task_tap_button_to_add_new_task">No task, tap + button to add new task</string>
+    <string name="custom">Custom</string>
+    <string name="enable">Enable</string>
+    <string name="to_display_alarm_to_do_list_needs_overlay_permission_to_be_enabled">To display alarm, To-do list needs overlay permission to be enabled</string>
+    <string name="alarm_reminder_suggestion">Alarm reminder suggestion</string>
 </resources>

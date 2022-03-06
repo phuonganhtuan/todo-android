@@ -11,8 +11,10 @@ import com.trustedapp.todolist.planner.reminders.initdata.bms
 import com.trustedapp.todolist.planner.reminders.initdata.cat1
 import com.trustedapp.todolist.planner.reminders.initdata.taskDetail
 import com.trustedapp.todolist.planner.reminders.initdata.tasks
+import com.trustedapp.todolist.planner.reminders.screens.settings.notireminder.DefaultReminderTypeEnum
 import com.trustedapp.todolist.planner.reminders.utils.DateTimeUtils
 import com.trustedapp.todolist.planner.reminders.utils.FileUtils
+import com.trustedapp.todolist.planner.reminders.utils.SPUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -158,6 +160,9 @@ enum class RepeatAtEnum {
 @HiltViewModel
 class NewTaskViewModel @Inject constructor(private val repository: TaskRepository) : ViewModel() {
 
+    val isNewTask: StateFlow<Boolean> get() = _isNewTask
+    private val _isNewTask = MutableStateFlow(false)
+
     val canAddSubTask: StateFlow<Boolean> get() = _canAddSubTask
     private val _canAddSubTask = MutableStateFlow(false)
 
@@ -217,6 +222,16 @@ class NewTaskViewModel @Inject constructor(private val repository: TaskRepositor
 
     val validated: StateFlow<Boolean> get() = _validated
     private val _validated = MutableStateFlow(false)
+
+    fun setIsNewTask(context: Context, isNewTask: Boolean) {
+        _isNewTask.value = isNewTask
+        _selectedReminderType.value = if (SPUtils.getDefaultRemminderType(context) == DefaultReminderTypeEnum.NOTIFICATION) {
+            ReminderTypeEnum.NOTIFICATION
+        } else {
+            ReminderTypeEnum.ALARM
+        }
+        _selectedReminderScreenLock.value = SPUtils.getIsScreenlockTaskReminder(context)
+    }
 
     fun addSubTask() {
         val currentSubTasks = _subtasks.value.toMutableList()

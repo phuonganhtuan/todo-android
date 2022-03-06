@@ -191,7 +191,7 @@
     <string name="rate">Taux</string>
     <string name="please_rate_us_5_stars_if_you_enjoy_our_app">S\'il vous plaît évaluez-nous 5 étoiles si vous appréciez notre application</string>
     <string name="feedback_subject">Liste des commentaires de liste des utilisateurs</string>
-    <string name="url_policy">https://google.com</string>
+
     <string name="snooze_after">Snooze après</string>
     <string name="five_minutes">5Minutes</string>
     <string name="fifteen_minutes">15Minutes</string>
@@ -213,4 +213,17 @@
     <string name="my_tasks">Mes tâches</string>
     <string name="future">Avenir</string>
     <string name="completed">Complété</string>
+
+    <string name="today_task">Tâches d\'aujourd\'hui</string>
+    <string name="future_task">Tâches futures</string>
+    <string name="done_task">Tâche terminées</string>
+    <string name="time_range">Intervalle de temps</string>
+    <string name="all_categories">Toutes catégories</string>
+    <string name="all_time">Tout le temps</string>
+    <string name="display_completed_tasks">Afficher les tâches terminées</string>
+    <string name="no_task_tap_button_to_add_new_task">Pas de tâche, appuyez sur le bouton + pour ajouter une nouvelle tâche</string>
+    <string name="custom">Personnalisé</string>
+    <string name="enable">Permettre</string>
+    <string name="to_display_alarm_to_do_list_needs_overlay_permission_to_be_enabled">Pour afficher l\'alarme, la liste des besoins de la liste de tâches pour être activée</string>
+    <string name="alarm_reminder_suggestion">Suggestion de rappel d\'alarme</string>
 </resources>

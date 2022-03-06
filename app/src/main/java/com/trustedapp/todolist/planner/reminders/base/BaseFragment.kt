@@ -2,6 +2,7 @@ package com.trustedapp.todolist.planner.reminders.base
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
 import com.google.android.material.snackbar.Snackbar
+import com.trustedapp.todolist.planner.reminders.screens.permission.RequestOverlayDialogFragment
 import com.trustedapp.todolist.planner.reminders.utils.SPUtils
 import com.trustedapp.todolist.planner.reminders.utils.applyLanguage
 
@@ -56,6 +58,17 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
             for (i in 0 until view.childCount) {
                 val innerView = view.getChildAt(i)
                 hideKeyboardTouchOutside(innerView)
+            }
+        }
+    }
+
+    protected fun requestOverlayPermission() {
+        if (!Settings.canDrawOverlays(requireContext())) {
+            activity?.supportFragmentManager?.let {
+                RequestOverlayDialogFragment().show(
+                    it,
+                    RequestOverlayDialogFragment::class.java.simpleName
+                )
             }
         }
     }

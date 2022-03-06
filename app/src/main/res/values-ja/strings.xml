@@ -191,7 +191,7 @@
     <string name="rate">割合</string>
     <string name="please_rate_us_5_stars_if_you_enjoy_our_app">あなたが私たちのアプリを楽しむならば5つ星を評価してください</string>
     <string name="feedback_subject">ユーザーからのフィードバックをリストします</string>
-    <string name="url_policy">https://google.com</string>
+
     <string name="snooze_after">後のねえ</string>
     <string name="five_minutes">5分</string>
     <string name="fifteen_minutes">15分</string>
@@ -213,4 +213,17 @@
     <string name="my_tasks">私のタスク</string>
     <string name="future">未来</string>
     <string name="completed">完了</string>
+
+    <string name="today_task">今日の仕事</string>
+    <string name="future_task">将来の仕事</string>
+    <string name="done_task">完成したタスク</string>
+    <string name="time_range">時間範囲</string>
+    <string name="all_categories">すべてのカテゴリ</string>
+    <string name="all_time">常に</string>
+    <string name="display_completed_tasks">完成したタスクを表示します</string>
+    <string name="no_task_tap_button_to_add_new_task">タスクなし、+ボタンをタップして新しいタスクを追加する</string>
+    <string name="custom">カスタム</string>
+    <string name="enable">有効</string>
+    <string name="to_display_alarm_to_do_list_needs_overlay_permission_to_be_enabled">アラームを表示するには、To-Doリストのニーズオーバーレイ許可を有効にする必要があります。</string>
+    <string name="alarm_reminder_suggestion">アラームリマインダの提案</string>
 </resources>

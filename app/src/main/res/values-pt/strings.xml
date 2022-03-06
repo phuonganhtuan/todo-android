@@ -191,7 +191,7 @@
     <string name="rate">Avaliar</string>
     <string name="please_rate_us_5_stars_if_you_enjoy_our_app">Por favor, avalie-nos 5 estrelas se você aproveitar nosso aplicativo</string>
     <string name="feedback_subject">Feedback da lista de fazer do usuário</string>
-    <string name="url_policy">https://google.com</string>
+
     <string name="snooze_after">Snooze depois</string>
     <string name="five_minutes">5 minutos</string>
     <string name="fifteen_minutes">15 minutos.</string>
@@ -213,4 +213,17 @@
     <string name="my_tasks">Minhas tarefas</string>
     <string name="future">Futuro</string>
     <string name="completed">Concluído</string>
+
+    <string name="today_task">Hoje tarefas</string>
+    <string name="future_task">Tarefas futuras</string>
+    <string name="done_task">Tarefas concluídas</string>
+    <string name="time_range">Faixa de tempo</string>
+    <string name="all_categories">Toda a categorias</string>
+    <string name="all_time">Tempo todo</string>
+    <string name="display_completed_tasks">Exibir tarefas concluídas</string>
+    <string name="no_task_tap_button_to_add_new_task">Nenhuma tarefa, toque em + botão para adicionar novos Tarefa</string>
+    <string name="custom">Personalizada</string>
+    <string name="enable">Habilitar</string>
+    <string name="to_display_alarm_to_do_list_needs_overlay_permission_to_be_enabled">Para exibir o alarme, a lista de tarefas precisa de permissão de sobreposição para ser ativada</string>
+    <string name="alarm_reminder_suggestion">Sugestão do lembrete de alarme</string>
 </resources>

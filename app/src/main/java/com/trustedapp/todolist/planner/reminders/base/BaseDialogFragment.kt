@@ -3,12 +3,14 @@ package com.trustedapp.todolist.planner.reminders.base
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.viewbinding.ViewBinding
+import com.trustedapp.todolist.planner.reminders.screens.permission.RequestOverlayDialogFragment
 import com.trustedapp.todolist.planner.reminders.utils.SPUtils
 import com.trustedapp.todolist.planner.reminders.utils.applyLanguage
 import com.trustedapp.todolist.planner.reminders.utils.windowWidth
@@ -45,5 +47,16 @@ abstract class BaseDialogFragment<VB : ViewBinding> : DialogFragment() {
 
     protected fun showToastMessage(message: String) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+    }
+
+    protected fun requestOverlayPermission() {
+        if (!Settings.canDrawOverlays(requireContext())) {
+            activity?.supportFragmentManager?.let {
+                RequestOverlayDialogFragment().show(
+                    it,
+                    RequestOverlayDialogFragment::class.java.simpleName
+                )
+            }
+        }
     }
 }

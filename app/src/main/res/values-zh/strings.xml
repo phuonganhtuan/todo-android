@@ -191,7 +191,7 @@
     <string name="rate">速度</string>
     <string name="please_rate_us_5_stars_if_you_enjoy_our_app">如果您喜欢我们的应用，请评价美国5星</string>
     <string name="feedback_subject">待办事项列表来自用户的反馈</string>
-    <string name="url_policy">https://google.com</string>
+
     <string name="snooze_after">贪睡后</string>
     <string name="five_minutes">5 分钟</string>
     <string name="fifteen_minutes">15 分钟</string>
@@ -213,4 +213,17 @@
     <string name="my_tasks">我的任务</string>
     <string name="future">未来</string>
     <string name="completed">完全的</string>
+
+    <string name="today_task">今天任务</string>
+    <string name="future_task">未来的任务</string>
+    <string name="done_task">完成任务</string>
+    <string name="time_range">时间范围</string>
+    <string name="all_categories">所有类别</string>
+    <string name="all_time">整天</string>
+    <string name="display_completed_tasks">显示已完成的任务</string>
+    <string name="no_task_tap_button_to_add_new_task">没有任务，点击+按钮以添加新任务</string>
+    <string name="custom">风俗</string>
+    <string name="enable">使能够</string>
+    <string name="to_display_alarm_to_do_list_needs_overlay_permission_to_be_enabled">要显示警报，待办事项列表需要启用覆盖权限</string>
+    <string name="alarm_reminder_suggestion">警报提醒建议</string>
 </resources>

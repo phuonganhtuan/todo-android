@@ -191,7 +191,7 @@
     <string name="rate">भाव</string>
     <string name="please_rate_us_5_stars_if_you_enjoy_our_app">यदि आप हमारे ऐप का आनंद लेते हैं तो कृपया हमें 5 सितारे रेट करें</string>
     <string name="feedback_subject">उपयोगकर्ता से टू-डू सूची प्रतिक्रिया</string>
-    <string name="url_policy">https://google.com</string>
+
     <string name="snooze_after">बाद में स्नूज़ करें</string>
     <string name="five_minutes">5 मिनट</string>
     <string name="fifteen_minutes">15 मिनट</string>
@@ -213,4 +213,17 @@
     <string name="my_tasks">मेरा काम</string>
     <string name="future">भविष्य</string>
     <string name="completed">पुरा होना</string>
+
+    <string name="today_task">आज के कार्य</string>
+    <string name="future_task">भविष्य के कार्य</string>
+    <string name="done_task">पूर्ण किए गए कार्य</string>
+    <string name="time_range">समय सीमा</string>
+    <string name="all_categories">सब वर्ग</string>
+    <string name="all_time">पूरा समय</string>
+    <string name="display_completed_tasks">पूर्ण किए गए कार्यों को प्रदर्शित करें</string>
+    <string name="no_task_tap_button_to_add_new_task">कोई कार्य नहीं, नया कार्य जोड़ने के लिए + बटन टैप करें</string>
+    <string name="custom">रीति</string>
+    <string name="enable">सक्षम</string>
+    <string name="to_display_alarm_to_do_list_needs_overlay_permission_to_be_enabled">अलार्म प्रदर्शित करने के लिए, सूची को सक्षम करने के लिए ओवरले अनुमति की आवश्यकता है</string>
+    <string name="alarm_reminder_suggestion">अलार्म अनुस्मारक सुझाव</string>
 </resources>

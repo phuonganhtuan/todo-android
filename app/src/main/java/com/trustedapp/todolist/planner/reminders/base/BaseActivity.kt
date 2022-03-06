@@ -7,6 +7,7 @@ import android.content.IntentFilter
 import android.content.res.Configuration
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.os.Bundle
+import android.provider.Settings
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
@@ -14,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
 import com.google.android.material.snackbar.Snackbar
 import com.trustedapp.todolist.planner.reminders.R
+import com.trustedapp.todolist.planner.reminders.screens.permission.RequestOverlayDialogFragment
 import com.trustedapp.todolist.planner.reminders.screens.theme.currentTheme
 import com.trustedapp.todolist.planner.reminders.utils.NetworkChangeReceiver
 import com.trustedapp.todolist.planner.reminders.utils.SPUtils
@@ -122,6 +124,16 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
                         MonthWidget::class.java
                     )
                 ), R.id.gridCalendar
+            )
+        }
+    }
+
+
+    protected fun requestOverlayPermission() {
+        if (!Settings.canDrawOverlays(this)) {
+            RequestOverlayDialogFragment().show(
+                supportFragmentManager,
+                RequestOverlayDialogFragment::class.java.simpleName
             )
         }
     }

@@ -191,7 +191,7 @@
     <string name="rate">Kecepatan</string>
     <string name="please_rate_us_5_stars_if_you_enjoy_our_app">Silakan beri peringkat kami 5 bintang jika Anda menikmati aplikasi kami</string>
     <string name="feedback_subject">TO-DO Daftar Umpan Balik dari Pengguna</string>
-    <string name="url_policy">https://google.com</string>
+
     <string name="snooze_after">Snooze sesudahnya</string>
     <string name="five_minutes">5 menit</string>
     <string name="fifteen_minutes">15 menit</string>
@@ -213,4 +213,17 @@
     <string name="my_tasks">Tugas saya</string>
     <string name="future">Masa depan</string>
     <string name="completed">Lengkap</string>
+
+    <string name="today_task">Tugas hari ini</string>
+    <string name="future_task">Tugas Masa Depan</string>
+    <string name="done_task">Tugas yang selesai</string>
+    <string name="time_range">Rentang waktu</string>
+    <string name="all_categories">Semua Kategori</string>
+    <string name="all_time">Sepanjang waktu</string>
+    <string name="display_completed_tasks">Tampilkan tugas yang selesai</string>
+    <string name="no_task_tap_button_to_add_new_task">Tidak ada tugas, ketuk + tombol untuk menambahkan tugas baru</string>
+    <string name="custom">Kebiasaan</string>
+    <string name="enable">Memungkinkan</string>
+    <string name="to_display_alarm_to_do_list_needs_overlay_permission_to_be_enabled">Untuk menampilkan alarm, untuk melakukan izin overlay yang harus diaktifkan</string>
+    <string name="alarm_reminder_suggestion">Saran Pengingat Alarm</string>
 </resources>

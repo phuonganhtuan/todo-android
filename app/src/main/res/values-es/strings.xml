@@ -191,7 +191,7 @@
     <string name="rate">Taksu</string>
     <string name="please_rate_us_5_stars_if_you_enjoy_our_app">Bonvolu taksas nin 5 stelojn se vi ĝuas nian programon</string>
     <string name="feedback_subject">To-do LIST-reagoj de uzanto</string>
-    <string name="url_policy">https://google.com</string>
+
     <string name="snooze_after">Snooze post</string>
     <string name="five_minutes">5 minutoj</string>
     <string name="fifteen_minutes">15 minutoj</string>
@@ -213,4 +213,17 @@
     <string name="my_tasks">Mis tareas</string>
     <string name="future">Futuro</string>
     <string name="completed">Terminado</string>
+
+    <string name="today_task">Hodiaŭ taskoj</string>
+    <string name="future_task">Estontaj Taskoj</string>
+    <string name="done_task">Kompletaj taskoj</string>
+    <string name="time_range">Tempo-teritorioe</string>
+    <string name="all_categories">Ĉiuj kategorioj</string>
+    <string name="all_time">Ĉiam</string>
+    <string name="display_completed_tasks">Montri kompletajn taskojn</string>
+    <string name="no_task_tap_button_to_add_new_task">Neniu tasko, premu + butonon por aldoni novan taskon</string>
+    <string name="custom">Kutimo</string>
+    <string name="enable">Ebligu</string>
+    <string name="to_display_alarm_to_do_list_needs_overlay_permission_to_be_enabled">Por montri alarmon, al-fari liston bezonas tegu permeson por esti ebligita</string>
+    <string name="alarm_reminder_suggestion">Alarmo-memoriga sugesto</string>
 </resources>

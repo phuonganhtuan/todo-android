@@ -173,6 +173,7 @@ class TaskDetailActivity : BaseActivity<ActivityTaskDetailBinding>() {
             repeatOnLifecycle(Lifecycle.State.CREATED) {
                 isAdded.collect {
                     if (it) {
+                        requestOverlayPermission()
                         showToastMessage(getString(R.string.saved))
                         finish()
                     }

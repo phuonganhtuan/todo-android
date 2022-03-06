@@ -191,7 +191,7 @@
     <string name="rate">Tarief</string>
     <string name="please_rate_us_5_stars_if_you_enjoy_our_app">Beoordeel ons alsjeblieft 5 sterren als je van onze app geniet</string>
     <string name="feedback_subject">To-do List feedback from user</string>
-    <string name="url_policy">https://google.com</string>
+
     <string name="snooze_after">Snooze na</string>
     <string name="five_minutes">5 minuten</string>
     <string name="fifteen_minutes">15 minuten</string>
@@ -213,4 +213,17 @@
     <string name="my_tasks">Meine Aufgaben</string>
     <string name="future">Zukunft</string>
     <string name="completed">Abgeschlossen</string>
+
+    <string name="today_task">Taken van vandaag</string>
+    <string name="future_task">Toekomstige taken</string>
+    <string name="done_task">Voltooide taken</string>
+    <string name="time_range">Tijdsbestek</string>
+    <string name="all_categories">Alle categorieën</string>
+    <string name="all_time">Alle time</string>
+    <string name="display_completed_tasks">Display voltooide taken</string>
+    <string name="no_task_tap_button_to_add_new_task">Geen taak, tik op + knop om nieuwe taak toe te voegen</string>
+    <string name="custom">Aangepast</string>
+    <string name="enable">Inschakelen</string>
+    <string name="to_display_alarm_to_do_list_needs_overlay_permission_to_be_enabled">Om alarm weer te geven, heeft To-Do-lijst overlay-toestemming nodig om te worden ingeschakeld</string>
+    <string name="alarm_reminder_suggestion">Alarm Herinneringssuggestie</string>
 </resources>

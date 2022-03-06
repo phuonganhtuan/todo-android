@@ -10,7 +10,6 @@ import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
-import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
@@ -26,11 +25,16 @@ import com.trustedapp.todolist.planner.reminders.R
 import com.trustedapp.todolist.planner.reminders.base.BaseFragment
 import com.trustedapp.todolist.planner.reminders.base.LoadDataState
 import com.trustedapp.todolist.planner.reminders.data.models.entity.RingtoneEntity
+import com.trustedapp.todolist.planner.reminders.data.models.entity.RingtoneEntityTypeEnum
+import com.trustedapp.todolist.planner.reminders.data.models.entity.SYSTEM_RINGTONE_ID
 import com.trustedapp.todolist.planner.reminders.data.models.entity.TODO_DEFAULT_RINGTONE_ID
 import com.trustedapp.todolist.planner.reminders.databinding.FragmentDefautlNotificationRingtoneBinding
 import com.trustedapp.todolist.planner.reminders.screens.settings.notireminder.DefaultReminderTypeEnum
 import com.trustedapp.todolist.planner.reminders.screens.settings.notireminder.NotiReminderViewModel
-import com.trustedapp.todolist.planner.reminders.utils.*
+import com.trustedapp.todolist.planner.reminders.utils.getColorFromAttr
+import com.trustedapp.todolist.planner.reminders.utils.gone
+import com.trustedapp.todolist.planner.reminders.utils.hide
+import com.trustedapp.todolist.planner.reminders.utils.show
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.filter
@@ -74,16 +78,20 @@ class DefautlNotificationRingtone : BaseFragment<FragmentDefautlNotificationRing
         adapter = DafaultNotificationRingtonAdapter()
         recycleSystemRingtone.adapter = adapter
         recycleSystemRingtone.layoutManager = LinearLayoutManager(context)
-        loadingBar.indeterminateTintList = ColorStateList.valueOf(requireContext().getColorFromAttr(R.attr.colorPrimary))
+        loadingBar.indeterminateTintList =
+            ColorStateList.valueOf(requireContext().getColorFromAttr(R.attr.colorPrimary))
     }
 
     private fun initData() = with(viewBinding) {
-        type = when (arguments?.getString("type")){
+        type = when (arguments?.getString("type")) {
             DefaultReminderTypeEnum.ALARM.name -> DefaultReminderTypeEnum.ALARM
             else -> DefaultReminderTypeEnum.NOTIFICATION
         }
-        layoutTop.textTitle.text = if (type == DefaultReminderTypeEnum.ALARM) getString(R.string.default_alarm_rington) else getString(R.string.default_notification_rington)
-        if (viewModel.listSystemRingtone.value.count() == 0){
+        layoutTop.textTitle.text =
+            if (type == DefaultReminderTypeEnum.ALARM) getString(R.string.default_alarm_rington) else getString(
+                R.string.default_notification_rington
+            )
+        if (viewModel.listSystemRingtone.value.count() == 0) {
             checkPermission(
                 Manifest.permission.READ_EXTERNAL_STORAGE,
                 READ_PERMISSION_CODE, {
@@ -124,19 +132,21 @@ class DefautlNotificationRingtone : BaseFragment<FragmentDefautlNotificationRing
 
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                selectNotificationRingtone?.filter { it != null && type == DefaultReminderTypeEnum.NOTIFICATION }?.collect {
-                    adapter?.selectEntity = it
-                    adapter?.notifyDataSetChanged()
-                }
+                selectNotificationRingtone?.filter { it != null && type == DefaultReminderTypeEnum.NOTIFICATION }
+                    ?.collect {
+                        adapter?.selectEntity = it
+                        adapter?.notifyDataSetChanged()
+                    }
             }
         }
 
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                selectAlarmRingtone?.filter { it != null && type == DefaultReminderTypeEnum.ALARM }?.collect {
-                    adapter?.selectEntity = it
-                    adapter?.notifyDataSetChanged()
-                }
+                selectAlarmRingtone?.filter { it != null && type == DefaultReminderTypeEnum.ALARM }
+                    ?.collect {
+                        adapter?.selectEntity = it
+                        adapter?.notifyDataSetChanged()
+                    }
             }
         }
 
@@ -152,6 +162,11 @@ class DefautlNotificationRingtone : BaseFragment<FragmentDefautlNotificationRing
                 }
             }
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        stopRingtone()
     }
 
     override fun onDestroy() {
@@ -189,7 +204,7 @@ class DefautlNotificationRingtone : BaseFragment<FragmentDefautlNotificationRing
         }
     }
 
-    private fun stopRingtone(){
+    private fun stopRingtone() {
         if (mediaPlayer != null && mediaPlayer?.isPlaying == true) {
             mediaPlayer?.stop()
         }
@@ -206,13 +221,16 @@ class DefautlNotificationRingtone : BaseFragment<FragmentDefautlNotificationRing
 
             } else {
                 mediaPlayer =
-                    MediaPlayer.create(context?.getApplicationContext(), Uri.parse(entity.ringtoneUri))
+                    MediaPlayer.create(
+                        context?.getApplicationContext(),
+                        Uri.parse(entity.ringtoneUri)
+                    )
             }
 
             mediaPlayer?.setOnPreparedListener {
                 Handler().postDelayed(Runnable {
                     it.stop();
-                } , it.duration.toLong())
+                }, it.duration.toLong())
                 it.start()
             }
         } catch (e: Exception) {
@@ -222,15 +240,22 @@ class DefautlNotificationRingtone : BaseFragment<FragmentDefautlNotificationRing
     }
 
     private fun pickAudioFileFromDevice() {
-        val intent = Intent( Intent.ACTION_GET_CONTENT )
+        val intent = Intent(Intent.ACTION_GET_CONTENT)
         intent.type = "audio/*"
-        val chooserIntent = Intent.createChooser( intent, getString(R.string.music_on_device))
-        startActivityForResult( chooserIntent, REQUEST_MUSIC_FROM_DEVICE )
+        val chooserIntent = Intent.createChooser(intent, getString(R.string.music_on_device))
+        startActivityForResult(chooserIntent, REQUEST_MUSIC_FROM_DEVICE)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if(requestCode == REQUEST_MUSIC_FROM_DEVICE && resultCode == Activity.RESULT_OK){
+        if (requestCode == REQUEST_MUSIC_FROM_DEVICE && resultCode == Activity.RESULT_OK) {
             val audio = data?.data
+            val entity = RingtoneEntity(
+                id = SYSTEM_RINGTONE_ID,
+                name = getString(R.string.custom),
+                ringtoneUri = audio.toString(),
+                type = RingtoneEntityTypeEnum.MUSIC_ON_DEVICE
+            )
+            viewModel.selectDefaultRingtoneEntity(requireContext(), entity, type)
         }
         super.onActivityResult(requestCode, resultCode, data)
     }

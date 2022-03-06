@@ -76,6 +76,7 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
     }
 
     private fun initData() {
+        viewModel.setIsNewTask(requireContext(), true)
         viewModel.addSubTask()
         validateTask()
     }
