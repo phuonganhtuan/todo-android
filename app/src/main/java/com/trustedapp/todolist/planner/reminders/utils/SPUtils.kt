@@ -287,7 +287,7 @@ object SPUtils {
     fun setIsAddTaskFromNotificationBar(context: Context, value: Boolean) {
         context.getSharedPreferences(TODO_SP_KEY, Context.MODE_PRIVATE)
             .edit()
-            .putBoolean(IS_SCREENLOCK_TASK_REMINDER, value)
+            .putBoolean(IS_ADD_TASK_FROM_NOTIFICATION_BAR, value)
             .apply()
     }
 
