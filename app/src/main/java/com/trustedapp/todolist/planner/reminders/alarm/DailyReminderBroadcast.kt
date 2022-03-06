@@ -59,8 +59,8 @@ class DailyReminderBroadcast : BroadcastReceiver() {
 
         val builder = NotificationCompat.Builder(context, "channel_id_daily")
         builder.setSmallIcon(R.drawable.ic_app_icon)
-        builder.setContentText(context.getString(R.string.app_name))
-        builder.setContentTitle(context.getString(R.string.organize_tasks_easier_with_to_do_list))
+        builder.setContentTitle(context.getString(R.string.app_name))
+        builder.setContentText(context.getString(R.string.organize_tasks_easier_with_to_do_list))
         builder.setDefaults(NotificationCompat.DEFAULT_VIBRATE)
         builder.setAutoCancel(false)
         builder.priority = Notification.PRIORITY_HIGH
