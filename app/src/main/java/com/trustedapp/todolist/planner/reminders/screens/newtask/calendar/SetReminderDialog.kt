@@ -86,6 +86,9 @@ class SetReminderDialog : BaseDialogFragment<FragmentSetReminderBinding>() {
                     val popup = PopupMenu(requireContext(), viewBinding.tvReminderTypeValue)
                     popup.menuInflater.inflate(R.menu.reminder_type_menu, popup.menu)
                     selReminderType = popup.menu.findItem(it.getItemMenuId())
+                    if (it == ReminderTypeEnum.ALARM) {
+                        requestOverlayPermission()
+                    }
                 }
             }
         }
