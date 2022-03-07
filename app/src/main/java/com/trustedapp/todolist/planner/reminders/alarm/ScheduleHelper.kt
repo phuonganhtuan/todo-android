@@ -132,7 +132,7 @@ object ScheduleHelper {
             alarmManager = context.getSystemService(Context.ALARM_SERVICE) as? AlarmManager
         }
         alarmManager?.setExactAndAllowWhileIdle(
-            AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 7000, pendingIntent
+            AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + offset, pendingIntent
         )
     }
 
