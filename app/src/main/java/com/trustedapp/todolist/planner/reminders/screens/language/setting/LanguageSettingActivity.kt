@@ -3,19 +3,20 @@ package com.trustedapp.todolist.planner.reminders.screens.language.setting
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
+import android.view.View
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.ads.control.ads.Admod
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.trustedapp.todolist.planner.reminders.R
 import com.trustedapp.todolist.planner.reminders.base.BaseActivity
 import com.trustedapp.todolist.planner.reminders.databinding.ActivityLanguageSettingBinding
 import com.trustedapp.todolist.planner.reminders.screens.home.HomeActivity
 import com.trustedapp.todolist.planner.reminders.screens.language.LanguageModel
+import com.trustedapp.todolist.planner.reminders.utils.*
 import com.trustedapp.todolist.planner.reminders.utils.Constants.EXRA_LANGUAGE_UPDATED
-import com.trustedapp.todolist.planner.reminders.utils.NetworkChangeReceiver
-import com.trustedapp.todolist.planner.reminders.utils.NetworkState
-import com.trustedapp.todolist.planner.reminders.utils.SPUtils
-import com.trustedapp.todolist.planner.reminders.utils.hide
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import java.util.*
@@ -78,6 +79,7 @@ class LanguageSettingActivity : BaseActivity<ActivityLanguageSettingBinding>() {
             textTitle.text = getString(R.string.language)
         }
         recyclerLanguage.adapter = adapter
+        loadBannerAds()
     }
 
     private fun observeData() {
@@ -86,6 +88,7 @@ class LanguageSettingActivity : BaseActivity<ActivityLanguageSettingBinding>() {
                 NetworkState.isHasInternet.collect {
                     adapter.enableAds = it
                     adapter.notifyDataSetChanged()
+                    loadBannerAds()
                 }
             }
         }
@@ -178,6 +181,16 @@ class LanguageSettingActivity : BaseActivity<ActivityLanguageSettingBinding>() {
             adapter.notifyDataSetChanged()
             applyLanguage(langList[it].langCode)
             header.textTitle.text = getString(R.string.language)
+        }
+    }
+
+    private fun loadBannerAds() = with(viewBinding) {
+        if (Firebase.remoteConfig.getBoolean(SPUtils.KEY_BANNER) && isInternetAvailable()) {
+            include.visibility = View.VISIBLE
+            Admod.getInstance()
+                .loadBanner(this@LanguageSettingActivity, getString(R.string.banner_ads_id))
+        } else {
+            include.visibility = View.GONE
         }
     }
 }
