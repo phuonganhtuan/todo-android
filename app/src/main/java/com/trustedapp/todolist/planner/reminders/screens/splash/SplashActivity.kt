@@ -85,16 +85,7 @@ class SplashActivity : AppCompatActivity() {
 
     private fun loadConfig() {
         Firebase.remoteConfig.fetchAndActivate()
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    val updated = task.result
-                    Log.e("loadConfig", "Config params updated: $updated")
-                    Log.e("loadConfig", "Config params updated: $Firebase.remoteConfig")
-                } else {
-                    Log.e("loadConfig", "Config params updated - false")
-                }
-                loadInterSplash()
-            }
+        loadInterSplash()
     }
 
     private fun configureObjectAnimator(
