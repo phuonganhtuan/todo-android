@@ -54,9 +54,7 @@ class RatingDialogFragment : BaseDialogFragment<FragmentRatingBinding>() {
 
         currentRating = view.tag.toString().toInt()
         if (currentRating > 5 || currentRating < 1) return@with
-        if (currentRating < 4) {
-            dismiss()
-        }
+
 
         for (i in 0 until currentRating) {
             stars[i].setImageResource(R.drawable.ic_star_filled)
@@ -67,20 +65,26 @@ class RatingDialogFragment : BaseDialogFragment<FragmentRatingBinding>() {
     }
 
     private fun rate() = lifecycleScope.launch {
-        try {
-            startActivity(
-                Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse("market://details?id=" + requireContext().packageName)
+
+        if (currentRating < 4) {
+            dismiss()
+        }else{
+            try {
+                startActivity(
+                    Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse("market://details?id=" + requireContext().packageName)
+                    )
                 )
-            )
-        } catch (e1: ActivityNotFoundException) {
-            startActivity(
-                Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse("http://play.google.com/store/apps/details?id=" + requireContext().packageName)
+            } catch (e1: ActivityNotFoundException) {
+                startActivity(
+                    Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse("http://play.google.com/store/apps/details?id=" + requireContext().packageName)
+                    )
                 )
-            )
+            }
+            context?.let { SPUtils.setIsRate(it, true) }
         }
     }
 

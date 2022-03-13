@@ -72,6 +72,7 @@ class SetRepeatAtDialog : BaseDialogFragment<FragmentSetRepeatBinding>() {
             R.id.option_monthly -> viewModel.selectRepeatAt(RepeatAtEnum.MONTHLY)
             R.id.option_yearly -> viewModel.selectRepeatAt(RepeatAtEnum.YEARLY)
         }
+        viewModel.onCheckChangeRepeat(true)
         dismiss()
     }
 

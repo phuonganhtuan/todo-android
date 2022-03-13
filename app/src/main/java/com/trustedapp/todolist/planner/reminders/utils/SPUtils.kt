@@ -32,6 +32,7 @@ object SPUtils {
     const val KEY_INTER_INSERT = "inter_insert"
     const val KEY_INTER_THEME = "inter_theme"
     private const val KEY_NUMBER_CREATE_TASK = "number_create_task"
+    const val KEY_RATING_APPEAR_NUMBER = "rating_appear_number"
 
     private const val THEME_COLOR_KEY = "theme_color"
     private const val THEME_TEXTURE_KEY = "theme_texture"
@@ -59,6 +60,8 @@ object SPUtils {
     const val FIRST_DAY_OF_WEEK_SETTING = "FirstDayOfWeek"
     const val TIME_FORMAT_SETTING = "TimeFormat"
     const val DATE_FORMAT_SETTING = "DateFormat"
+
+    private const val IS_RATED = "IsRated"
 
     fun getSavedTheme(context: Context): Triple<Int, Int, Int> {
         val sp = context.getSharedPreferences(TODO_SP_KEY, Context.MODE_PRIVATE)
@@ -149,7 +152,8 @@ object SPUtils {
 
     fun getIsIgnoreBattery(context: Context): Boolean {
         try {
-            val pm = context?.applicationContext?.getSystemService(Context.POWER_SERVICE) as PowerManager
+            val pm =
+                context?.applicationContext?.getSystemService(Context.POWER_SERVICE) as PowerManager
             return pm.isIgnoringBatteryOptimizations(context?.packageName)
         } catch (e: Exception) {
             return context.getSharedPreferences(TODO_SP_KEY, Context.MODE_PRIVATE)
@@ -403,4 +407,16 @@ object SPUtils {
     fun getFirstDayOfWeek(context: Context) =
         context.getSharedPreferences(TODO_SP_KEY, Context.MODE_PRIVATE)
             .getString(FIRST_DAY_OF_WEEK_SETTING, FirstDayOfWeek.AUTO.name)
+
+    fun getIsRate(context: Context): Boolean {
+        return context.getSharedPreferences(TODO_SP_KEY, Context.MODE_PRIVATE)
+            .getBoolean(IS_RATED, false)
+    }
+
+    fun setIsRate(context: Context, value: Boolean) {
+        context.getSharedPreferences(TODO_SP_KEY, Context.MODE_PRIVATE)
+            .edit()
+            .putBoolean(IS_RATED, value)
+            .apply()
+    }
 }

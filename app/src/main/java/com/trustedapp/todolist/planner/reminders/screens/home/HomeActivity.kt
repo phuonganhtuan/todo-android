@@ -32,6 +32,7 @@ import com.trustedapp.todolist.planner.reminders.screens.theme.currentTheme
 import com.trustedapp.todolist.planner.reminders.screens.theme.sceneryIds
 import com.trustedapp.todolist.planner.reminders.screens.theme.textureIds
 import com.trustedapp.todolist.planner.reminders.screens.widget.WidgetActivity
+import com.trustedapp.todolist.planner.reminders.utils.Constants.EXRA_APPEAR_RATE
 import com.trustedapp.todolist.planner.reminders.utils.Constants.EXRA_LANGUAGE_UPDATED
 import com.trustedapp.todolist.planner.reminders.utils.SPUtils
 import com.trustedapp.todolist.planner.reminders.utils.applyLanguage
@@ -70,6 +71,11 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
+        val isAppearRate = intent?.extras?.getBoolean(EXRA_APPEAR_RATE)
+        if (isAppearRate == true) {
+            rateApp()
+        }
+
         val isLanguageUpdated = intent?.extras?.getBoolean(EXRA_LANGUAGE_UPDATED)
         if (isLanguageUpdated == true) {
             recreate()
@@ -169,10 +175,7 @@ class HomeActivity : AppCompatActivity() {
             R.id.navLanguage -> LanguageSettingActivity::class.java
             R.id.navPolicy -> PolicyActivity::class.java
             R.id.navRateApp -> {
-                RatingDialogFragment().show(
-                    supportFragmentManager,
-                    RatingDialogFragment::class.java.simpleName
-                )
+                rateApp()
                 return
             }
             R.id.navShareApp -> {
@@ -186,6 +189,15 @@ class HomeActivity : AppCompatActivity() {
             else -> return
         }
         startActivity(Intent(this, activity))
+    }
+
+    private fun rateApp() {
+        if (!SPUtils.getIsRate(this)) {
+            RatingDialogFragment().show(
+                supportFragmentManager,
+                RatingDialogFragment::class.java.simpleName
+            )
+        }
     }
 
     private fun updateWidget() {

@@ -1,5 +1,6 @@
 package com.trustedapp.todolist.planner.reminders.screens.newtask
 
+import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
 import android.view.View
@@ -13,6 +14,8 @@ import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.trustedapp.todolist.planner.reminders.R
 import com.trustedapp.todolist.planner.reminders.base.BaseActivity
 import com.trustedapp.todolist.planner.reminders.databinding.ActivityNewTaskBinding
+import com.trustedapp.todolist.planner.reminders.screens.home.HomeActivity
+import com.trustedapp.todolist.planner.reminders.screens.settings.rating.RatingDialogFragment
 import com.trustedapp.todolist.planner.reminders.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -67,6 +70,18 @@ class NewTaskActivity : BaseActivity<ActivityNewTaskBinding>() {
         layoutTop.button1.setOnClickListener { finish() }
     }
 
+    private fun isShowRating(): Boolean {
+        try {
+            val numberOfNewTask = SPUtils.getNumberNewTask(this)
+            var numberAppearRating =
+                Firebase.remoteConfig.getString(SPUtils.KEY_RATING_APPEAR_NUMBER)
+            var numberAppearRatingArr = numberAppearRating.split(",")
+            return numberAppearRatingArr.contains(numberOfNewTask.toString())
+        } catch (e: Exception) {
+            return false
+        }
+    }
+
     private fun observeData() = with(viewModel) {
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -74,7 +89,11 @@ class NewTaskActivity : BaseActivity<ActivityNewTaskBinding>() {
                     if (it) {
                         requestOverlayPermission()
                         showToastMessage(getString(R.string.added_task))
-                        finish()
+                        if (isShowRating()) {
+                            backToHomeAndShowRate()
+                        } else {
+                            finish()
+                        }
                     }
                 }
             }
@@ -87,5 +106,16 @@ class NewTaskActivity : BaseActivity<ActivityNewTaskBinding>() {
                 }
             }
         }
+    }
+
+    fun backToHomeAndShowRate() {
+        val previousActivity = Intent(
+            this,
+            HomeActivity::class.java
+        ).apply {
+            putExtra(Constants.EXRA_APPEAR_RATE, true)
+        }
+        previousActivity.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        startActivity(previousActivity)
     }
 }

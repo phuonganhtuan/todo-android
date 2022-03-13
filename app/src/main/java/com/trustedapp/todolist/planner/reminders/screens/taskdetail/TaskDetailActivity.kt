@@ -17,6 +17,7 @@ import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.trustedapp.todolist.planner.reminders.R
 import com.trustedapp.todolist.planner.reminders.base.BaseActivity
 import com.trustedapp.todolist.planner.reminders.databinding.ActivityTaskDetailBinding
+import com.trustedapp.todolist.planner.reminders.screens.home.HomeActivity
 import com.trustedapp.todolist.planner.reminders.screens.newtask.NewTaskViewModel
 import com.trustedapp.todolist.planner.reminders.utils.*
 import dagger.hilt.android.AndroidEntryPoint
@@ -57,7 +58,7 @@ class TaskDetailActivity : BaseActivity<ActivityTaskDetailBinding>() {
         loadBannerAds()
     }
 
-    private fun loadBannerAds() = with(viewBinding){
+    private fun loadBannerAds() = with(viewBinding) {
         if (Firebase.remoteConfig.getBoolean(SPUtils.KEY_BANNER) && isInternetAvailable() == true) {
             include.visibility = View.VISIBLE
             Admod.getInstance()
@@ -88,7 +89,7 @@ class TaskDetailActivity : BaseActivity<ActivityTaskDetailBinding>() {
         popup.menuInflater.inflate(R.menu.task_detail_menu, popup.menu)
         val item = popup.menu.getItem(0)
         val item1 = popup.menu.getItem(1)
-        val item2= popup.menu.getItem(2)
+        val item2 = popup.menu.getItem(2)
         val item3 = popup.menu.getItem(3)
         val item4 = popup.menu.getItem(4)
         val title =
@@ -140,6 +141,18 @@ class TaskDetailActivity : BaseActivity<ActivityTaskDetailBinding>() {
         findNavController(R.id.task_nav_host_fragment).navigate(R.id.toBookmark)
     }
 
+    private fun isShowRating(): Boolean {
+        try {
+            val numberOfNewTask = SPUtils.getNumberNewTask(this)
+            var numberAppearRating =
+                Firebase.remoteConfig.getString(SPUtils.KEY_RATING_APPEAR_NUMBER)
+            var numberAppearRatingArr = numberAppearRating.split(",")
+            return numberAppearRatingArr.contains(numberOfNewTask.toString())
+        } catch (e: Exception) {
+            return false
+        }
+    }
+
     private fun observeData() = with(viewModel) {
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -175,7 +188,11 @@ class TaskDetailActivity : BaseActivity<ActivityTaskDetailBinding>() {
                     if (it) {
                         requestOverlayPermission()
                         showToastMessage(getString(R.string.saved))
-                        finish()
+                        if (isShowRating()) {
+                            backToHomeAndShowRate()
+                        } else {
+                            finish()
+                        }
                     }
                 }
             }
@@ -188,5 +205,16 @@ class TaskDetailActivity : BaseActivity<ActivityTaskDetailBinding>() {
                 }
             }
         }
+    }
+
+    fun backToHomeAndShowRate() {
+        val previousActivity = Intent(
+            this,
+            HomeActivity::class.java
+        ).apply {
+            putExtra(Constants.EXRA_APPEAR_RATE, true)
+        }
+        previousActivity.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        startActivity(previousActivity)
     }
 }

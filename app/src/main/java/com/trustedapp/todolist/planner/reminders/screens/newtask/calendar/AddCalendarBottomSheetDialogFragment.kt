@@ -195,7 +195,7 @@ class AddCalendarBottomSheetDialogFragment :
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.selectedRepeatAt.filter { it != RepeatAtEnum.NONE }
-                    .filter { viewModel.isCheckedRepeat.value == true }
+//                    .filter { viewModel.isCheckedRepeat.value == true }
                     .collect {
                         viewBinding.apply {
                             tvRepeatValue.setText(resources.getString(it.getStringid()))
@@ -213,12 +213,16 @@ class AddCalendarBottomSheetDialogFragment :
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.isCheckedRepeat.collect {
                     viewBinding.apply {
-                        swRepeat.isChecked = it
                         if (it) {
                             tvRepeatValue.show()
-                        } else {
-                            swRepeat.isChecked = false
+                        }
+                        swRepeat.isChecked = it
+                        if (!it) {
                             tvRepeatValue.gone()
+//                            tvRepeatValue.gone()
+//                            viewModel.onCheckChangeRepeat(false)
+//                            viewModel.resetRepeatDefault()
+
                         }
                     }
                 }

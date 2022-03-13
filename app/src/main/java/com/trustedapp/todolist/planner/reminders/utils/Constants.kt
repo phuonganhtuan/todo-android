@@ -12,4 +12,5 @@ object Constants {
     const val RECORD_RINGTONE_EXTENSION = "mp3"
 
     const val EXRA_LANGUAGE_UPDATED = "LanguageUpdated"
+    const val EXRA_APPEAR_RATE = "AppearRate"
 }

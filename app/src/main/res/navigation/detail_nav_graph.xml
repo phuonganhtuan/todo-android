@@ -36,6 +36,9 @@
 
         <action android:id="@+id/toAddRepeatDetail"
             app:destination="@id/AddRepeatFragment"/>
+        <action
+            android:id="@+id/toRatingFragment"
+            app:destination="@id/ratingDialogFragment2" />
     </fragment>
 
     <dialog
@@ -106,4 +109,9 @@
         android:name="com.trustedapp.todolist.planner.reminders.screens.newtask.calendar.SetCustomReminderTime"
         android:label="SetCustomReminderTime"
         tools:layout="@layout/fragment_set_custom_reminder_time"/>
+    <dialog
+        android:id="@+id/ratingDialogFragment2"
+        android:name="com.trustedapp.todolist.planner.reminders.screens.settings.rating.RatingDialogFragment"
+        android:label="RatingDialogFragment"
+        tools:layout="@layout/fragment_rating"/>
 </navigation>
