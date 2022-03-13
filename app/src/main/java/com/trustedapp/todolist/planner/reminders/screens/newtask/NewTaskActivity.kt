@@ -87,7 +87,7 @@ class NewTaskActivity : BaseActivity<ActivityNewTaskBinding>() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 isAdded.collect {
                     if (it) {
-                        requestOverlayPermission()
+//                        requestOverlayPermission()
                         showToastMessage(getString(R.string.added_task))
                         if (isShowRating()) {
                             backToHomeAndShowRate()
