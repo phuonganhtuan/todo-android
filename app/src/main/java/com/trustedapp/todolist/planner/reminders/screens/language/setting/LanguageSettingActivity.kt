@@ -16,7 +16,6 @@ import com.trustedapp.todolist.planner.reminders.databinding.ActivityLanguageSet
 import com.trustedapp.todolist.planner.reminders.screens.home.HomeActivity
 import com.trustedapp.todolist.planner.reminders.screens.language.LanguageModel
 import com.trustedapp.todolist.planner.reminders.utils.*
-import com.trustedapp.todolist.planner.reminders.utils.Constants.EXRA_LANGUAGE_UPDATED
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import java.util.*
@@ -62,16 +61,6 @@ class LanguageSettingActivity : BaseActivity<ActivityLanguageSettingBinding>() {
 
     override fun onDestroy() {
         super.onDestroy()
-        if (isChangeLanguage) {
-            val previousActivity = Intent(
-                this,
-                HomeActivity::class.java
-            ).apply {
-                putExtra(EXRA_LANGUAGE_UPDATED, true)
-            }
-            previousActivity.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-            startActivity(previousActivity)
-        }
     }
 
     private fun initViews() = with(viewBinding) {
@@ -188,6 +177,12 @@ class LanguageSettingActivity : BaseActivity<ActivityLanguageSettingBinding>() {
             if (isChangeLanguage) {
                 applyLanguage(langList[it].langCode)
                 header.textTitle.text = getString(R.string.language)
+                val previousActivity = Intent(
+                    this@LanguageSettingActivity,
+                    HomeActivity::class.java
+                )
+                previousActivity.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+                startActivity(previousActivity)
             }
             finish()
         }
