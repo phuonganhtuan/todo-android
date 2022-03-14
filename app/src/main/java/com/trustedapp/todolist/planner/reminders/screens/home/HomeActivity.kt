@@ -3,17 +3,23 @@ package com.trustedapp.todolist.planner.reminders.screens.home
 import android.appwidget.AppWidgetManager
 import android.content.ComponentName
 import android.content.Intent
+import android.content.IntentFilter
 import android.net.Uri
 import android.os.Bundle
 import android.text.Html
 import android.text.Html.FROM_HTML_MODE_LEGACY
 import android.view.MenuItem
+import android.view.View
 import android.widget.ImageView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
+import com.ads.control.ads.Admod
 import com.bumptech.glide.Glide
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.ktx.remoteConfig
@@ -34,17 +40,15 @@ import com.trustedapp.todolist.planner.reminders.screens.theme.currentTheme
 import com.trustedapp.todolist.planner.reminders.screens.theme.sceneryIds
 import com.trustedapp.todolist.planner.reminders.screens.theme.textureIds
 import com.trustedapp.todolist.planner.reminders.screens.widget.WidgetActivity
+import com.trustedapp.todolist.planner.reminders.utils.*
 import com.trustedapp.todolist.planner.reminders.utils.Constants.EXRA_APPEAR_RATE
 import com.trustedapp.todolist.planner.reminders.utils.Constants.EXRA_LANGUAGE_UPDATED
-import com.trustedapp.todolist.planner.reminders.utils.SPUtils
-import com.trustedapp.todolist.planner.reminders.utils.applyLanguage
-import com.trustedapp.todolist.planner.reminders.utils.gone
-import com.trustedapp.todolist.planner.reminders.utils.show
 import com.trustedapp.todolist.planner.reminders.widget.lite.LiteWidget
 import com.trustedapp.todolist.planner.reminders.widget.month.MonthWidget
 import com.trustedapp.todolist.planner.reminders.widget.month.updateMonthWidget
 import com.trustedapp.todolist.planner.reminders.widget.standard.StandardWidget
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 import java.lang.Exception
 
 @AndroidEntryPoint
@@ -58,6 +62,8 @@ class HomeActivity : AppCompatActivity() {
 
     private var texture = -1
     private var scenery = -1
+
+    private val networkReceiver = NetworkChangeReceiver()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,9 +91,17 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        val filter = IntentFilter()
+        filter.addAction("android.net.conn.CONNECTIVITY_CHANGE")
+        registerReceiver(networkReceiver, filter)
+    }
+
     override fun onPause() {
         super.onPause()
         updateWidget()
+        unregisterReceiver(networkReceiver)
     }
 
     private fun onActivityReady() {
@@ -99,6 +113,7 @@ class HomeActivity : AppCompatActivity() {
         }
         ChartColor.initChartColor(this)
         setupEvents()
+        observeData()
     }
 
     private fun initViews() = viewBinding.contentHome.apply {
@@ -126,6 +141,7 @@ class HomeActivity : AppCompatActivity() {
         if (SPUtils.getIsAddTaskFromNotificationBar(this@HomeActivity)) NotificationHelper.createAddTaskNotification(
             this@HomeActivity
         )
+        loadBannerAds()
     }
 
     fun openDrawer() {
@@ -272,7 +288,7 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-    fun isShowRateWhenExitApp(): Boolean {
+    private fun isShowRateWhenExitApp(): Boolean {
         try {
             val ratingExitNumber =
                 Firebase.remoteConfig.getString(SPUtils.KEY_RATING_EXIT_NUMBER).split(",".toRegex())
@@ -281,6 +297,26 @@ class HomeActivity : AppCompatActivity() {
             return ratingExitNumber.contains(currentNumber.toString())
         } catch (e: Exception) {
             return false
+        }
+    }
+
+    private fun loadBannerAds() = with(viewBinding.contentHome) {
+        if (Firebase.remoteConfig.getBoolean(SPUtils.KEY_BANNER) && isInternetAvailable()) {
+            include.visibility = View.VISIBLE
+            Admod.getInstance()
+                .loadBanner(this@HomeActivity, getString(R.string.banner_ads_id))
+        } else {
+            include.visibility = View.GONE
+        }
+    }
+
+    private fun observeData() {
+        lifecycleScope.launchWhenStarted {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                NetworkState.isHasInternet.collect {
+                    loadBannerAds()
+                }
+            }
         }
     }
 
