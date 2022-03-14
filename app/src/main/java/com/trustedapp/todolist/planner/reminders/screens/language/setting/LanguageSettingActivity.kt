@@ -35,6 +35,8 @@ class LanguageSettingActivity : BaseActivity<ActivityLanguageSettingBinding>() {
     @Inject
     lateinit var adapter: LanguageSettingAdapter
 
+    private var isChangeLanguage = false
+
     override fun onActivityReady(savedInstanceState: Bundle?) {
 
     }
@@ -60,14 +62,16 @@ class LanguageSettingActivity : BaseActivity<ActivityLanguageSettingBinding>() {
 
     override fun onDestroy() {
         super.onDestroy()
-        val previousActivity = Intent(
-            this,
-            HomeActivity::class.java
-        ).apply {
-            putExtra(EXRA_LANGUAGE_UPDATED, true)
+        if (isChangeLanguage) {
+            val previousActivity = Intent(
+                this,
+                HomeActivity::class.java
+            ).apply {
+                putExtra(EXRA_LANGUAGE_UPDATED, true)
+            }
+            previousActivity.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            startActivity(previousActivity)
         }
-        previousActivity.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-        startActivity(previousActivity)
     }
 
     private fun initViews() = with(viewBinding) {
@@ -179,8 +183,13 @@ class LanguageSettingActivity : BaseActivity<ActivityLanguageSettingBinding>() {
         adapter.onItemSelected = {
             adapter.selectedItem = it
             adapter.notifyDataSetChanged()
-            applyLanguage(langList[it].langCode)
-            header.textTitle.text = getString(R.string.language)
+            isChangeLanguage =
+                SPUtils.getCurrentLang(this@LanguageSettingActivity) != langList[it].langCode
+            if (isChangeLanguage) {
+                applyLanguage(langList[it].langCode)
+                header.textTitle.text = getString(R.string.language)
+            }
+            finish()
         }
     }
 
