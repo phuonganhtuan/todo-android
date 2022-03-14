@@ -300,7 +300,7 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-    private fun loadBannerAds() = with(viewBinding.contentHome) {
+    private fun loadBannerAds() = with(viewBinding) {
         if (Firebase.remoteConfig.getBoolean(SPUtils.KEY_BANNER) && isInternetAvailable()) {
             include.visibility = View.VISIBLE
             Admod.getInstance()
