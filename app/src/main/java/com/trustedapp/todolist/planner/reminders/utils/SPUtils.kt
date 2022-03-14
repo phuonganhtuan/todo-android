@@ -33,6 +33,7 @@ object SPUtils {
     const val KEY_INTER_THEME = "inter_theme"
     private const val KEY_NUMBER_CREATE_TASK = "number_create_task"
     const val KEY_RATING_APPEAR_NUMBER = "rating_appear_number"
+    const val KEY_RATING_EXIT_NUMBER = "rating_exit_number"
 
     private const val THEME_COLOR_KEY = "theme_color"
     private const val THEME_TEXTURE_KEY = "theme_texture"
@@ -62,6 +63,7 @@ object SPUtils {
     const val DATE_FORMAT_SETTING = "DateFormat"
 
     private const val IS_RATED = "IsRated"
+    private const val EXIT_NUMBER = "exitNumber"
 
     fun getSavedTheme(context: Context): Triple<Int, Int, Int> {
         val sp = context.getSharedPreferences(TODO_SP_KEY, Context.MODE_PRIVATE)
@@ -417,6 +419,19 @@ object SPUtils {
         context.getSharedPreferences(TODO_SP_KEY, Context.MODE_PRIVATE)
             .edit()
             .putBoolean(IS_RATED, value)
+            .apply()
+    }
+
+    fun getExitNumber(context: Context): Int {
+        return context.getSharedPreferences(TODO_SP_KEY, Context.MODE_PRIVATE).getInt(EXIT_NUMBER, 0)
+    }
+
+    fun inCreaseNumberExit(context: Context){
+        val currentNumber = getExitNumber(context)
+        val newNumber = currentNumber + 1
+        context.getSharedPreferences(TODO_SP_KEY, Context.MODE_PRIVATE)
+            .edit()
+            .putInt(EXIT_NUMBER, newNumber)
             .apply()
     }
 }

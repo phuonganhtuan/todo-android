@@ -146,7 +146,7 @@ class TaskDetailActivity : BaseActivity<ActivityTaskDetailBinding>() {
             val numberOfNewTask = SPUtils.getNumberNewTask(this)
             var numberAppearRating =
                 Firebase.remoteConfig.getString(SPUtils.KEY_RATING_APPEAR_NUMBER)
-            var numberAppearRatingArr = numberAppearRating.split(",")
+            var numberAppearRatingArr = numberAppearRating.split(",".toRegex())
             return numberAppearRatingArr.contains(numberOfNewTask.toString())
         } catch (e: Exception) {
             return false

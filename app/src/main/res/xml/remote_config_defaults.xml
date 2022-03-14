@@ -25,5 +25,9 @@
         <key>rating_appear_number</key>
         <value>1,10,20</value>
     </entry>
+    <entry>
+        <key>rating_exit_number</key>
+        <value>1,2,3,4,6,8,10</value>
+    </entry>
 </defaultsMap>
     <!-- END xml_defaults -->

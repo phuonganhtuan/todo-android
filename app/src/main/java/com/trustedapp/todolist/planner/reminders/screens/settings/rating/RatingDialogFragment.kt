@@ -27,6 +27,8 @@ class RatingDialogFragment : BaseDialogFragment<FragmentRatingBinding>() {
 
     var currentRating = 5
 
+    var callBackWhenRate: (() -> Unit)? = null
+
     override fun inflateViewBinding(
         container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -42,6 +44,7 @@ class RatingDialogFragment : BaseDialogFragment<FragmentRatingBinding>() {
         buttonRate.setOnClickListener {
             rate()
             dismiss()
+            callBackWhenRate?.let { it1 -> it1() }
         }
         star1.setOnClickListener(::beginInputRating)
         star2.setOnClickListener(::beginInputRating)
@@ -55,7 +58,6 @@ class RatingDialogFragment : BaseDialogFragment<FragmentRatingBinding>() {
         currentRating = view.tag.toString().toInt()
         if (currentRating > 5 || currentRating < 1) return@with
 
-
         for (i in 0 until currentRating) {
             stars[i].setImageResource(R.drawable.ic_star_filled)
         }
@@ -65,10 +67,9 @@ class RatingDialogFragment : BaseDialogFragment<FragmentRatingBinding>() {
     }
 
     private fun rate() = lifecycleScope.launch {
-
         if (currentRating < 4) {
             dismiss()
-        }else{
+        } else {
             try {
                 startActivity(
                     Intent(

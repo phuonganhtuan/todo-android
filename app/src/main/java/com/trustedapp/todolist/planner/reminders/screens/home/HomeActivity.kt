@@ -15,6 +15,8 @@ import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.bumptech.glide.Glide
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.trustedapp.todolist.planner.reminders.BuildConfig
 import com.trustedapp.todolist.planner.reminders.R
 import com.trustedapp.todolist.planner.reminders.alarm.NotificationHelper
@@ -43,6 +45,7 @@ import com.trustedapp.todolist.planner.reminders.widget.month.MonthWidget
 import com.trustedapp.todolist.planner.reminders.widget.month.updateMonthWidget
 import com.trustedapp.todolist.planner.reminders.widget.standard.StandardWidget
 import dagger.hilt.android.AndroidEntryPoint
+import java.lang.Exception
 
 @AndroidEntryPoint
 class HomeActivity : AppCompatActivity() {
@@ -251,4 +254,34 @@ class HomeActivity : AppCompatActivity() {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         startActivity(intent)
     }
+
+    override fun onBackPressed() {
+        if (isShowRateWhenExitApp()) {
+            if (!SPUtils.getIsRate(this)) {
+                val rateDialog = RatingDialogFragment()
+                rateDialog.callBackWhenRate = {
+                    finish()
+                }
+                rateDialog.show(
+                    supportFragmentManager,
+                    RatingDialogFragment::class.java.simpleName
+                )
+            }
+        } else {
+            finish()
+        }
+    }
+
+    fun isShowRateWhenExitApp(): Boolean {
+        try {
+            val ratingExitNumber =
+                Firebase.remoteConfig.getString(SPUtils.KEY_RATING_EXIT_NUMBER).split(",".toRegex())
+            SPUtils.inCreaseNumberExit(this)
+            val currentNumber = SPUtils.getExitNumber(this)
+            return ratingExitNumber.contains(currentNumber.toString())
+        } catch (e: Exception) {
+            return false
+        }
+    }
+
 }
