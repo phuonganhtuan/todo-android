@@ -84,7 +84,7 @@ class TaskDetailFragment : BaseFragment<FragmentTaskDetailBinding>() {
         initData()
         setupEvents()
         observeData()
-        prepareInterUpdate()
+//        prepareInterUpdate()
     }
 
     private fun initViews() = with(viewBinding) {
@@ -357,7 +357,7 @@ class TaskDetailFragment : BaseFragment<FragmentTaskDetailBinding>() {
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 isSaving.collect {
-                    if (it) loadInterUpdate()
+                    if (it) updateTaskCallback()
                 }
             }
         }

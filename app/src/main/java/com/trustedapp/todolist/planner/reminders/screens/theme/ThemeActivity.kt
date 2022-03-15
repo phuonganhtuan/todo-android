@@ -5,12 +5,19 @@ import android.graphics.drawable.Drawable
 import android.os.Bundle
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toDrawable
+import com.ads.control.ads.Admod
+import com.ads.control.funtion.AdCallback
+import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.interstitial.InterstitialAd
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.trustedapp.todolist.planner.reminders.R
 import com.trustedapp.todolist.planner.reminders.base.BaseActivity
 import com.trustedapp.todolist.planner.reminders.databinding.ActivityThemeBinding
 import com.trustedapp.todolist.planner.reminders.screens.home.HomeActivity
 import com.trustedapp.todolist.planner.reminders.utils.SPUtils
 import com.trustedapp.todolist.planner.reminders.utils.gone
+import com.trustedapp.todolist.planner.reminders.utils.isInternetAvailable
 import com.trustedapp.todolist.planner.reminders.utils.show
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -32,6 +39,10 @@ class ThemeActivity : BaseActivity<ActivityThemeBinding>() {
 
     private var currentStep = 1
 
+    private var isLoadingAds = false
+
+    private var interstitialCreateAd: InterstitialAd? = null
+
     override fun inflateViewBinding() = ActivityThemeBinding.inflate(layoutInflater)
 
     override fun onActivityReady(savedInstanceState: Bundle?) {
@@ -42,6 +53,7 @@ class ThemeActivity : BaseActivity<ActivityThemeBinding>() {
         initViews()
         initData()
         setupEvents()
+        prepareInterTheme()
     }
 
     private fun initViews() = with(viewBinding) {
@@ -86,22 +98,21 @@ class ThemeActivity : BaseActivity<ActivityThemeBinding>() {
             toStep(currentStep - 1)
         }
         textSkip.setOnClickListener {
-            SPUtils.saveTheme(this@ThemeActivity, 0, -1, -1)
-            toHome()
+            loadInterTheme()
         }
         textApply.setOnClickListener {
-            SPUtils.saveTheme(
-                this@ThemeActivity,
-                colorAdapter.selectedIndex,
-                textureAdapter.selectedIndex,
-                sceneryAdapter.selectedIndex
-            )
-            toHome()
+            loadInterTheme()
         }
     }
 
     private fun toHome() {
-        startActivity(Intent(this@ThemeActivity, HomeActivity::class.java))
+        SPUtils.saveTheme(
+            this@ThemeActivity,
+            if (colorAdapter.selectedIndex > -1) colorAdapter.selectedIndex else 0,
+            textureAdapter.selectedIndex,
+            sceneryAdapter.selectedIndex
+        )
+        startActivity(Intent(this, HomeActivity::class.java))
         finish()
     }
 
@@ -154,4 +165,56 @@ class ThemeActivity : BaseActivity<ActivityThemeBinding>() {
     private fun getColorDrawable(color: Int) = ContextCompat.getColor(this, color).toDrawable()
 
     private fun getDrawableCompat(drawable: Int) = ContextCompat.getDrawable(this, drawable)!!
+
+    private fun prepareInterTheme() {
+
+//        isLoadingAds = true
+        Admod.getInstance().getInterstitalAds(
+            this@ThemeActivity,
+            getString(R.string.inter_theme_ads_id),
+            object : AdCallback() {
+                override fun onInterstitialLoad(interstitialAd: InterstitialAd) {
+                    interstitialCreateAd = interstitialAd
+                }
+            })
+    }
+
+    private fun loadInterTheme() {
+        if (!Firebase.remoteConfig.getBoolean(SPUtils.KEY_INTER_THEME)) {
+            isLoadingAds = false
+            toHome()
+            return
+        }
+
+        if (!this.isInternetAvailable()) {
+            isLoadingAds = false
+            toHome()
+            return
+        }
+
+        Admod.getInstance().setOpenActivityAfterShowInterAds(true)
+        Admod.getInstance()
+            .forceShowInterstitial(
+                this@ThemeActivity,
+                interstitialCreateAd,
+                object : AdCallback() {
+                    override fun onAdClosed() {
+                        isLoadingAds = false
+                        toHome()
+                    }
+
+                    override fun onAdLeftApplication() {
+                        super.onAdLeftApplication()
+                        isLoadingAds = false
+                        toHome()
+
+                    }
+
+                    override fun onAdFailedToLoad(i: LoadAdError?) {
+                        super.onAdFailedToLoad(i)
+                        isLoadingAds = false
+                        toHome()
+                    }
+                })
+    }
 }

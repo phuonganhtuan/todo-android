@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.util.Log
 import android.view.View
 import android.view.animation.AnticipateInterpolator
@@ -36,6 +37,7 @@ class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         applyLanguage(SPUtils.getCurrentLang(this) ?: "en")
+        getRemoteConfig()
         if (Build.VERSION.SDK_INT >= 31) {
             setTheme(R.style.Theme_App_Starting)
             val splashScreen = installSplashScreen()
@@ -45,7 +47,7 @@ class SplashActivity : AppCompatActivity() {
             setTheme(R.style.Theme_AndroidBP_NoActionBar)
             setContentView(R.layout.activity_splash)
         }
-        getRemoteConfig()
+        loadInterSplash()
 
     }
 
@@ -85,7 +87,7 @@ class SplashActivity : AppCompatActivity() {
 
     private fun loadConfig() {
         Firebase.remoteConfig.fetchAndActivate()
-        loadInterSplash()
+
     }
 
     private fun configureObjectAnimator(
@@ -112,44 +114,52 @@ class SplashActivity : AppCompatActivity() {
             toHomeDelayed()
             return
         }
-        isLoadingAds = true
+        object : CountDownTimer(4000, 1000) {
 
-        Admod.getInstance().getInterstitalAds(
-            this@SplashActivity,
-            getString(R.string.inter_splash_ads_id),
-            object : AdCallback() {
-                override fun onInterstitialLoad(interstitialAd: InterstitialAd) {
-                    Admod.getInstance().setOpenActivityAfterShowInterAds(true)
-                    Admod.getInstance()
-                        .forceShowInterstitial(
-                            this@SplashActivity,
-                            interstitialAd,
-                            object : AdCallback() {
-                                override fun onAdClosed() {
-                                    isLoadingAds = false
-                                    toHomeDelayed()
-                                }
-                            })
-                }
-
-                override fun onAdClosed() {
-                    super.onAdClosed()
-                    isLoadingAds = false
-                    toHomeDelayed()
-                }
-
-                override fun onAdLeftApplication() {
-                    super.onAdLeftApplication()
-                    isLoadingAds = false
-                    toHomeDelayed()
-                }
-
-                override fun onAdFailedToLoad(i: LoadAdError?) {
-                    super.onAdFailedToLoad(i)
-                    isLoadingAds = false
-                    toHomeDelayed()
-                }
+            override fun onTick(millisUntilFinished: Long) {
             }
-        )
+
+            override fun onFinish() {
+                isLoadingAds = true
+
+                Admod.getInstance().getInterstitalAds(
+                    this@SplashActivity,
+                    getString(R.string.inter_splash_ads_id),
+                    object : AdCallback() {
+                        override fun onInterstitialLoad(interstitialAd: InterstitialAd) {
+                            Admod.getInstance().setOpenActivityAfterShowInterAds(true)
+                            Admod.getInstance()
+                                .forceShowInterstitial(
+                                    this@SplashActivity,
+                                    interstitialAd,
+                                    object : AdCallback() {
+                                        override fun onAdClosed() {
+                                            isLoadingAds = false
+                                            toHomeDelayed()
+                                        }
+                                    })
+                        }
+
+                        override fun onAdClosed() {
+                            super.onAdClosed()
+                            isLoadingAds = false
+                            toHomeDelayed()
+                        }
+
+                        override fun onAdLeftApplication() {
+                            super.onAdLeftApplication()
+                            isLoadingAds = false
+                            toHomeDelayed()
+                        }
+
+                        override fun onAdFailedToLoad(i: LoadAdError?) {
+                            super.onAdFailedToLoad(i)
+                            isLoadingAds = false
+                            toHomeDelayed()
+                        }
+                    }
+                )
+            }
+        }.start()
     }
 }
