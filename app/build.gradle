@@ -37,7 +37,7 @@ android {
             resValue "string", "facebook_app_id", "1561758810851820"
             resValue "string", "facebook_client_token", "Facebook Client ID"
             resValue "string", "adjust_token", "yi2xcqd7a7ls"
-            resValue "string", "url_policy", "https://google.com"
+            resValue "string", "url_policy", "https://firebasestorage.googleapis.com/v0/b/to-do-list-congvt.appspot.com/o/Privacy%20Policy.html?alt=media&token=e76b0e38-eb00-46ca-b50f-91051564bb13"
         }
         release {
             manifestPlaceholders = [ads_id: "ca-app-pub-3940256099942544~3347511713"]
@@ -52,7 +52,7 @@ android {
             resValue "string", "facebook_app_id", "1561758810851820"
             resValue "string", "facebook_client_token", "Facebook Client ID"
             resValue "string", "adjust_token", "yi2xcqd7a7ls"
-            resValue "string", "url_policy", "https://google.com"
+            resValue "string", "url_policy", "https://firebasestorage.googleapis.com/v0/b/to-do-list-congvt.appspot.com/o/Privacy%20Policy.html?alt=media&token=e76b0e38-eb00-46ca-b50f-91051564bb13"
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
 

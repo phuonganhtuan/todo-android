@@ -79,8 +79,8 @@ class LanguageSettingActivity : BaseActivity<ActivityLanguageSettingBinding>() {
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 NetworkState.isHasInternet.collect {
-                    adapter.enableAds = it
-                    adapter.notifyDataSetChanged()
+//                    adapter.enableAds = false
+//                    adapter.notifyDataSetChanged()
                     loadBannerAds()
                 }
             }

@@ -20,7 +20,7 @@ class LanguageSettingAdapter @Inject constructor() :
 
     var onItemSelected: ((Int) -> Unit)? = null
     var selectedItem = 0
-    var enableAds = true
+    var enableAds = false
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LanguageSettingVH {
         val itemViewBinding =
