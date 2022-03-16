@@ -33,7 +33,7 @@
             android:exported="false" />
         <activity
             android:name=".screens.home.HomeActivity"
-            android:launchMode="singleTop"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AndroidBP.NoActionBar"
             tools:ignore="LockedOrientationActivity" />
