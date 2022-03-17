@@ -226,4 +226,8 @@
     <string name="enable">Ebligu</string>
     <string name="to_display_alarm_to_do_list_needs_overlay_permission_to_be_enabled">Por montri alarmon, al-fari liston bezonas tegu permeson por esti ebligita</string>
     <string name="alarm_reminder_suggestion">Alarmo-memoriga sugesto</string>
+    <string name="theme">Theme</string>
+    <string name="pure_color">Color puro</string>
+    <string name="texture">Textura</string>
+    <string name="scenery">Paisaje</string>
 </resources>

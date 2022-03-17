@@ -36,6 +36,7 @@ import com.trustedapp.todolist.planner.reminders.screens.settings.notireminder.N
 import com.trustedapp.todolist.planner.reminders.screens.settings.policy.PolicyActivity
 import com.trustedapp.todolist.planner.reminders.screens.settings.rating.RatingDialogFragment
 import com.trustedapp.todolist.planner.reminders.screens.settings.timeformat.TimeFormatActivity
+import com.trustedapp.todolist.planner.reminders.screens.theme.ThemeSettingActivity
 import com.trustedapp.todolist.planner.reminders.screens.theme.currentTheme
 import com.trustedapp.todolist.planner.reminders.screens.theme.sceneryIds
 import com.trustedapp.todolist.planner.reminders.screens.theme.textureIds
@@ -43,6 +44,7 @@ import com.trustedapp.todolist.planner.reminders.screens.widget.WidgetActivity
 import com.trustedapp.todolist.planner.reminders.utils.*
 import com.trustedapp.todolist.planner.reminders.utils.Constants.EXRA_APPEAR_RATE
 import com.trustedapp.todolist.planner.reminders.utils.Constants.EXRA_LANGUAGE_UPDATED
+import com.trustedapp.todolist.planner.reminders.utils.Constants.EXTRA_THEME_UPDATE
 import com.trustedapp.todolist.planner.reminders.widget.lite.LiteWidget
 import com.trustedapp.todolist.planner.reminders.widget.month.MonthWidget
 import com.trustedapp.todolist.planner.reminders.widget.month.updateMonthWidget
@@ -87,6 +89,11 @@ class HomeActivity : AppCompatActivity() {
 
         val isLanguageUpdated = intent?.extras?.getBoolean(EXRA_LANGUAGE_UPDATED)
         if (isLanguageUpdated == true) {
+            recreate()
+        }
+
+        val isThemeUpdate = intent?.extras?.getBoolean(EXTRA_THEME_UPDATE)
+        if (isThemeUpdate == true) {
             recreate()
         }
     }
@@ -193,6 +200,7 @@ class HomeActivity : AppCompatActivity() {
             R.id.navDateFormat -> DateFormatActivity::class.java
             R.id.navLanguage -> LanguageSettingActivity::class.java
             R.id.navPolicy -> PolicyActivity::class.java
+            R.id.navTheme -> ThemeSettingActivity::class.java
             R.id.navRateApp -> {
                 rateApp()
                 return

@@ -226,4 +226,8 @@
     <string name="enable">Inschakelen</string>
     <string name="to_display_alarm_to_do_list_needs_overlay_permission_to_be_enabled">Om alarm weer te geven, heeft To-Do-lijst overlay-toestemming nodig om te worden ingeschakeld</string>
     <string name="alarm_reminder_suggestion">Alarm Herinneringssuggestie</string>
+    <string name="theme">Theme</string>
+    <string name="pure_color">Pure kleur</string>
+    <string name="texture">Textuur</string>
+    <string name="scenery">Landschap</string>
 </resources>

@@ -226,4 +226,8 @@
     <string name="enable">有効</string>
     <string name="to_display_alarm_to_do_list_needs_overlay_permission_to_be_enabled">アラームを表示するには、To-Doリストのニーズオーバーレイ許可を有効にする必要があります。</string>
     <string name="alarm_reminder_suggestion">アラームリマインダの提案</string>
+    <string name="theme">Theme</string>
+    <string name="pure_color">ピュアカラー</string>
+    <string name="texture">テクスチャ</string>
+    <string name="scenery">景色</string>
 </resources>

@@ -226,4 +226,8 @@
     <string name="enable">Permettre</string>
     <string name="to_display_alarm_to_do_list_needs_overlay_permission_to_be_enabled">Pour afficher l\'alarme, la liste des besoins de la liste de tâches pour être activée</string>
     <string name="alarm_reminder_suggestion">Suggestion de rappel d\'alarme</string>
+    <string name="theme">Theme</string>
+    <string name="pure_color">Couleur pure</string>
+    <string name="texture">Texture</string>
+    <string name="scenery">Paysage</string>
 </resources>

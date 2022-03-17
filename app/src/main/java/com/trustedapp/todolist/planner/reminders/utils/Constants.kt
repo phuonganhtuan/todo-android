@@ -13,4 +13,5 @@ object Constants {
 
     const val EXRA_LANGUAGE_UPDATED = "LanguageUpdated"
     const val EXRA_APPEAR_RATE = "AppearRate"
+    const val EXTRA_THEME_UPDATE = "ThemeUpdated"
 }
