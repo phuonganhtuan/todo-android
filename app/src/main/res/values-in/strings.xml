@@ -226,4 +226,8 @@
     <string name="enable">Memungkinkan</string>
     <string name="to_display_alarm_to_do_list_needs_overlay_permission_to_be_enabled">Untuk menampilkan alarm, untuk melakukan izin overlay yang harus diaktifkan</string>
     <string name="alarm_reminder_suggestion">Saran Pengingat Alarm</string>
+    <string name="theme">Theme</string>
+    <string name="pure_color">Warna murni</string>
+    <string name="texture">Tekstur</string>
+    <string name="scenery">Pemandangan</string>
 </resources>

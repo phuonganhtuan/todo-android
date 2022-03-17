@@ -226,4 +226,8 @@
     <string name="enable">सक्षम</string>
     <string name="to_display_alarm_to_do_list_needs_overlay_permission_to_be_enabled">अलार्म प्रदर्शित करने के लिए, सूची को सक्षम करने के लिए ओवरले अनुमति की आवश्यकता है</string>
     <string name="alarm_reminder_suggestion">अलार्म अनुस्मारक सुझाव</string>
+    <string name="theme">Theme</string>
+    <string name="pure_color">शुद्ध रंग</string>
+    <string name="texture">बनावट</string>
+    <string name="scenery">सीनरी</string>
 </resources>

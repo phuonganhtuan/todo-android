@@ -15,6 +15,10 @@
             android:icon="@drawable/ic_settings_widget"
             android:title="@string/widget" />
         <item
+            android:id="@+id/navTheme"
+            android:icon="@drawable/ic_settings_theme"
+            android:title="@string/theme" />
+        <item
             android:id="@+id/navNotiReminder"
             android:icon="@drawable/ic_settings_noti_reminder"
             android:title="@string/noti_and_reminder" />

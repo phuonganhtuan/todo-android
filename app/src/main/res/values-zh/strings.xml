@@ -226,4 +226,8 @@
     <string name="enable">使能够</string>
     <string name="to_display_alarm_to_do_list_needs_overlay_permission_to_be_enabled">要显示警报，待办事项列表需要启用覆盖权限</string>
     <string name="alarm_reminder_suggestion">警报提醒建议</string>
+    <string name="theme">Theme</string>
+    <string name="pure_color">纯色</string>
+    <string name="texture">质地</string>
+    <string name="scenery">风景</string>
 </resources>
