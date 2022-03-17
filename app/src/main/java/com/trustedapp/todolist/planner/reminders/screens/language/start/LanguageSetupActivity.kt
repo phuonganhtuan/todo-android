@@ -11,6 +11,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.ads.control.ads.Admod
 import com.ads.control.funtion.AdCallback
 import com.google.android.gms.ads.nativead.NativeAd
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.trustedapp.todolist.planner.reminders.R
 import com.trustedapp.todolist.planner.reminders.base.BaseActivity
 import com.trustedapp.todolist.planner.reminders.databinding.ActivityLanguageBinding
@@ -95,13 +96,13 @@ class LanguageSetupActivity : BaseActivity<ActivityLanguageBinding>() {
             ),
             LanguageModel(
                 id = 2,
-                langName = "Spanish",
+                langName = "Espanha",
                 flagId = ContextCompat.getDrawable(this, R.drawable.flag_spain),
                 langCode = "es"
             ),
             LanguageModel(
                 id = 3,
-                langName = "France",
+                langName = "França",
                 flagId = ContextCompat.getDrawable(this, R.drawable.flag_france),
                 langCode = "fr"
             ),
@@ -166,9 +167,6 @@ class LanguageSetupActivity : BaseActivity<ActivityLanguageBinding>() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 NetworkState.isHasInternet.collect {
                     layoutAds.visibility = if (it) {
-//                        if (!FirebaseRemoteConfig.getInstance()
-//                                .getBoolean("native_language_ad_enable")
-//                        ) {
                         if (false) {
                             View.INVISIBLE
                         } else {
@@ -186,10 +184,10 @@ class LanguageSetupActivity : BaseActivity<ActivityLanguageBinding>() {
     }
 
     private fun loadAds() = with(viewBinding) {
-//        if (!FirebaseRemoteConfig.getInstance().getBoolean("native_language_ad_enable")) {
-//            layoutAds.hide()
-//            return@with
-//        }
+        if (!FirebaseRemoteConfig.getInstance().getBoolean(SPUtils.KEY_NATIVE_LANGUAGE)) {
+            layoutAds.hide()
+            return@with
+        }
         if (!isInternetAvailable()) return@with
         skeletonLayout.showSkeleton()
         Admod.getInstance()
