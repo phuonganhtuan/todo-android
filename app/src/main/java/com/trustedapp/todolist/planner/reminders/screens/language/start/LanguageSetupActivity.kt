@@ -167,14 +167,10 @@ class LanguageSetupActivity : BaseActivity<ActivityLanguageBinding>() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 NetworkState.isHasInternet.collect {
                     layoutAds.visibility = if (it) {
-                        if (false) {
-                            View.INVISIBLE
-                        } else {
-                            if (nativeAds == null) {
-                                loadAds()
-                            }
-                            View.VISIBLE
+                        if (nativeAds == null) {
+                            loadAds()
                         }
+                        View.VISIBLE
                     } else {
                         View.INVISIBLE
                     }

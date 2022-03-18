@@ -5,8 +5,12 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toDrawable
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.ads.control.ads.Admod
 import com.ads.control.funtion.AdCallback
 import com.bumptech.glide.Glide
@@ -16,12 +20,12 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.trustedapp.todolist.planner.reminders.R
 import com.trustedapp.todolist.planner.reminders.base.BaseActivity
-import com.trustedapp.todolist.planner.reminders.databinding.ActivityThemeBinding
 import com.trustedapp.todolist.planner.reminders.databinding.ActivityThemeSettingBinding
 import com.trustedapp.todolist.planner.reminders.screens.home.HomeActivity
 import com.trustedapp.todolist.planner.reminders.utils.*
 import com.trustedapp.todolist.planner.reminders.utils.Constants.EXTRA_THEME_UPDATE
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -59,7 +63,8 @@ class ThemeSettingActivity : BaseActivity<ActivityThemeSettingBinding>() {
         initViews()
         initData()
         setupEvents()
-        prepareInterTheme()
+//        prepareInterTheme()
+        observeData()
     }
 
     private fun initViews() = with(viewBinding) {
@@ -92,6 +97,7 @@ class ThemeSettingActivity : BaseActivity<ActivityThemeSettingBinding>() {
                 .load(ContextCompat.getDrawable(this@ThemeSettingActivity, textureIds[texture]))
                 .into(imageBgPreview)
         }
+        loadBannerAds()
     }
 
     private fun initData() {
@@ -134,7 +140,7 @@ class ThemeSettingActivity : BaseActivity<ActivityThemeSettingBinding>() {
             finish()
         }
         textApply.setOnClickListener {
-            loadInterTheme()
+            toHome()
         }
         textColor.setOnClickListener {
             toStep(1)
@@ -144,6 +150,26 @@ class ThemeSettingActivity : BaseActivity<ActivityThemeSettingBinding>() {
         }
         textImage.setOnClickListener {
             toStep(3)
+        }
+    }
+
+    private fun observeData() {
+        lifecycleScope.launchWhenStarted {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                NetworkState.isHasInternet.collect {
+                    loadBannerAds()
+                }
+            }
+        }
+    }
+
+    private fun loadBannerAds() = with(viewBinding) {
+        if (Firebase.remoteConfig.getBoolean(SPUtils.KEY_BANNER) && isInternetAvailable()) {
+            include.visibility = View.VISIBLE
+            Admod.getInstance()
+                .loadBanner(this@ThemeSettingActivity, getString(R.string.banner_ads_id))
+        } else {
+            include.visibility = View.GONE
         }
     }
 
@@ -161,7 +187,8 @@ class ThemeSettingActivity : BaseActivity<ActivityThemeSettingBinding>() {
     }
 
     private fun toStep(step: Int) = with(viewBinding) {
-        val greyColor = ContextCompat.getColor(this@ThemeSettingActivity, R.color.color_text_secondary)
+        val greyColor =
+            ContextCompat.getColor(this@ThemeSettingActivity, R.color.color_text_secondary)
         textColor.setTextColor(greyColor)
         textTexture.setTextColor(greyColor)
         textImage.setTextColor(greyColor)

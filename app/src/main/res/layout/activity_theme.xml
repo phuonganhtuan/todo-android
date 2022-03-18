@@ -199,7 +199,7 @@
         android:layout_height="8dp"
         android:layout_marginBottom="16dp"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/include"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
@@ -222,4 +222,15 @@
             android:layout_height="8dp"
             android:background="@drawable/bg_white_ripple_rounded_stroke_grey_8" />
     </LinearLayout>
+
+    <include
+        android:id="@+id/include"
+        layout="@layout/layout_banner_control"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -80,7 +80,7 @@
             android:id="@+id/adView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="invisible">
+            android:visibility="visible">
 
             <com.faltenreich.skeletonlayout.SkeletonLayout
                 android:id="@+id/skeletonLayout"
@@ -110,7 +110,7 @@
                         android:layout_width="0dp"
                         android:layout_height="0dp"
                         android:layout_marginStart="8dp"
-                        android:background="@drawable/bg_ripple_white_stroke_rounded_8"
+                        android:background="@drawable/bg_white_rounded_8_no_ripple"
                         app:layout_constraintBottom_toBottomOf="@id/ad_body"
                         app:layout_constraintEnd_toEndOf="@id/ad_body"
                         app:layout_constraintStart_toStartOf="parent"

@@ -1,10 +1,15 @@
 package com.trustedapp.todolist.planner.reminders.screens.theme
 
 import android.content.Intent
+import android.content.IntentFilter
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toDrawable
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.ads.control.ads.Admod
 import com.ads.control.funtion.AdCallback
 import com.google.android.gms.ads.LoadAdError
@@ -15,11 +20,10 @@ import com.trustedapp.todolist.planner.reminders.R
 import com.trustedapp.todolist.planner.reminders.base.BaseActivity
 import com.trustedapp.todolist.planner.reminders.databinding.ActivityThemeBinding
 import com.trustedapp.todolist.planner.reminders.screens.home.HomeActivity
-import com.trustedapp.todolist.planner.reminders.utils.SPUtils
-import com.trustedapp.todolist.planner.reminders.utils.gone
-import com.trustedapp.todolist.planner.reminders.utils.isInternetAvailable
-import com.trustedapp.todolist.planner.reminders.utils.show
+import com.trustedapp.todolist.planner.reminders.screens.home.canShowSuggest
+import com.trustedapp.todolist.planner.reminders.utils.*
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -53,6 +57,7 @@ class ThemeActivity : BaseActivity<ActivityThemeBinding>() {
         initViews()
         initData()
         setupEvents()
+        observeData()
         prepareInterTheme()
     }
 
@@ -61,6 +66,7 @@ class ThemeActivity : BaseActivity<ActivityThemeBinding>() {
         recyclerTextures.adapter = textureAdapter
         recyclerSceneries.adapter = sceneryAdapter
         toStep(1)
+        loadBannerAds()
     }
 
     private fun initData() {
@@ -98,7 +104,9 @@ class ThemeActivity : BaseActivity<ActivityThemeBinding>() {
             toStep(currentStep - 1)
         }
         textSkip.setOnClickListener {
-            loadInterTheme()
+            canShowSuggest = true
+            startActivity(Intent(this@ThemeActivity, HomeActivity::class.java))
+            finish()
         }
         textApply.setOnClickListener {
             loadInterTheme()
@@ -162,6 +170,26 @@ class ThemeActivity : BaseActivity<ActivityThemeBinding>() {
         }
     }
 
+    private fun observeData() {
+        lifecycleScope.launchWhenStarted {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                NetworkState.isHasInternet.collect {
+                    loadBannerAds()
+                }
+            }
+        }
+    }
+
+    private fun loadBannerAds() = with(viewBinding) {
+        if (Firebase.remoteConfig.getBoolean(SPUtils.KEY_BANNER) && isInternetAvailable()) {
+            include.visibility = View.VISIBLE
+            Admod.getInstance()
+                .loadBanner(this@ThemeActivity, getString(R.string.banner_ads_id))
+        } else {
+            include.visibility = View.GONE
+        }
+    }
+
     private fun getColorDrawable(color: Int) = ContextCompat.getColor(this, color).toDrawable()
 
     private fun getDrawableCompat(drawable: Int) = ContextCompat.getDrawable(this, drawable)!!
@@ -182,12 +210,14 @@ class ThemeActivity : BaseActivity<ActivityThemeBinding>() {
     private fun loadInterTheme() {
         if (!Firebase.remoteConfig.getBoolean(SPUtils.KEY_INTER_THEME)) {
             isLoadingAds = false
+            canShowSuggest = true
             toHome()
             return
         }
 
         if (!this.isInternetAvailable()) {
             isLoadingAds = false
+            canShowSuggest = true
             toHome()
             return
         }
@@ -206,6 +236,7 @@ class ThemeActivity : BaseActivity<ActivityThemeBinding>() {
                     override fun onAdLeftApplication() {
                         super.onAdLeftApplication()
                         isLoadingAds = false
+                        canShowSuggest = true
                         toHome()
 
                     }
@@ -213,6 +244,7 @@ class ThemeActivity : BaseActivity<ActivityThemeBinding>() {
                     override fun onAdFailedToLoad(i: LoadAdError?) {
                         super.onAdFailedToLoad(i)
                         isLoadingAds = false
+                        canShowSuggest = true
                         toHome()
                     }
                 })

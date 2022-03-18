@@ -100,6 +100,11 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        if (SPUtils.isFirstTime(this) && canShowSuggest) {
+            viewModel.createInitData()
+            SPUtils.saveFirstTimeLaunched(this)
+            showSuggest()
+        }
         val filter = IntentFilter()
         filter.addAction("android.net.conn.CONNECTIVITY_CHANGE")
         registerReceiver(networkReceiver, filter)
@@ -108,16 +113,12 @@ class HomeActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
         updateWidget()
+        canShowSuggest = true
         unregisterReceiver(networkReceiver)
     }
 
     private fun onActivityReady() {
         initViews()
-        if (SPUtils.isFirstTime(this)) {
-            viewModel.createInitData()
-            SPUtils.saveFirstTimeLaunched(this)
-            showSuggest()
-        }
         ChartColor.initChartColor(this)
         setupEvents()
         observeData()
@@ -329,3 +330,5 @@ class HomeActivity : AppCompatActivity() {
     }
 
 }
+
+var canShowSuggest = false

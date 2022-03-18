@@ -16,15 +16,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <include android:id="@+id/header"
-        layout="@layout/layout_toolbar"/>
+    <include
+        android:id="@+id/header"
+        layout="@layout/layout_toolbar" />
 
     <TextView
         android:id="@+id/textApply"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:layout_marginTop="12dp"
+        android:layout_marginEnd="8dp"
         android:background="@drawable/bg_primary_rounded_8"
         android:paddingHorizontal="12dp"
         android:paddingVertical="2dp"
@@ -62,9 +63,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:src="@drawable/bg_theme_preview"
+        app:layout_constraintBottom_toTopOf="@id/viewBottom"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/viewBottom"
         app:layout_constraintTop_toBottomOf="@id/viewTop" />
 
     <ImageView
@@ -124,7 +125,7 @@
         android:textColor="@color/color_menu_text_default"
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@id/layoutThemeSelection"
-        app:layout_constraintStart_toEndOf="@id/textColor"/>
+        app:layout_constraintStart_toEndOf="@id/textColor" />
 
     <TextView
         android:id="@+id/textImage"
@@ -146,7 +147,7 @@
         android:layout_marginBottom="16dp"
         android:animateLayoutChanges="true"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/include"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
@@ -186,4 +187,15 @@
             tools:itemCount="6"
             tools:listitem="@layout/item_theme_scenery" />
     </LinearLayout>
+
+    <include
+        android:id="@+id/include"
+        layout="@layout/layout_banner_control"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

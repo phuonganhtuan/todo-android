@@ -226,7 +226,7 @@
     <string name="enable">Habilitar</string>
     <string name="to_display_alarm_to_do_list_needs_overlay_permission_to_be_enabled">Para exibir o alarme, a lista de tarefas precisa de permissão de sobreposição para ser ativada</string>
     <string name="alarm_reminder_suggestion">Sugestão do lembrete de alarme</string>
-    <string name="theme">Theme</string>
+    <string name="theme">Tema</string>
     <string name="pure_color">Cor pura</string>
     <string name="texture">Textura</string>
     <string name="scenery">Cenário</string>

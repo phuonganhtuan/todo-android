@@ -180,8 +180,9 @@ class LanguageSettingActivity : BaseActivity<ActivityLanguageSettingBinding>() {
                 val previousActivity = Intent(
                     this@LanguageSettingActivity,
                     HomeActivity::class.java
-                )
-                previousActivity.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+                ).apply {
+                    putExtra(Constants.EXRA_LANGUAGE_UPDATED, true)
+                }
                 startActivity(previousActivity)
             }
             finish()
