@@ -15,7 +15,7 @@ android {
         applicationId "com.trustedapp.todolist.planner.reminders"
         minSdkVersion 24
         targetSdkVersion 31
-        versionCode 4
+        versionCode 5
         versionName "1.0"
 
         resConfigs "de", "en", "es", "fil", "fr", "hi", "in", "ja", "pt", "zh"
