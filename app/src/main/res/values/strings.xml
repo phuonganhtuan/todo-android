@@ -230,4 +230,5 @@
     <string name="pure_color">Pure color</string>
     <string name="texture">Texture</string>
     <string name="scenery">Scenery</string>
+    <string name="feedback_mail" translatable="false">mailto:demomail@gmail.com</string>
 </resources>

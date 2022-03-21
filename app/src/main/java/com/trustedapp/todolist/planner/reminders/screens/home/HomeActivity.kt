@@ -51,7 +51,6 @@ import com.trustedapp.todolist.planner.reminders.widget.month.updateMonthWidget
 import com.trustedapp.todolist.planner.reminders.widget.standard.StandardWidget
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
-import java.lang.Exception
 
 @AndroidEntryPoint
 class HomeActivity : AppCompatActivity() {
@@ -69,10 +68,6 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        window.setFlags(
-//            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-//            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
-//        )
         applyLanguage(SPUtils.getCurrentLang(this) ?: "en")
         setupTheme()
         viewBinding = inflateViewBinding()
@@ -168,7 +163,6 @@ class HomeActivity : AppCompatActivity() {
         }
         navigationSideView.setNavigationItemSelectedListener {
             onNavigationItemSelectedListener(it)
-//            layoutDrawer.close()
             true
         }
     }
@@ -275,7 +269,7 @@ class HomeActivity : AppCompatActivity() {
     private fun sendFeedback() {
         val intent = Intent(Intent.ACTION_SENDTO)
         intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.feedback_subject))
-        intent.data = Uri.parse("mailto:demomail@gmail.com")
+        intent.data = Uri.parse(getString(R.string.feedback_mail))
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         startActivity(intent)
     }
@@ -297,16 +291,14 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-    private fun isShowRateWhenExitApp(): Boolean {
-        try {
-            val ratingExitNumber =
-                Firebase.remoteConfig.getString(SPUtils.KEY_RATING_EXIT_NUMBER).split(",".toRegex())
-            SPUtils.inCreaseNumberExit(this)
-            val currentNumber = SPUtils.getExitNumber(this)
-            return ratingExitNumber.contains(currentNumber.toString())
-        } catch (e: Exception) {
-            return false
-        }
+    private fun isShowRateWhenExitApp() = try {
+        val ratingExitNumber =
+            Firebase.remoteConfig.getString(SPUtils.KEY_RATING_EXIT_NUMBER).split(",".toRegex())
+        SPUtils.inCreaseNumberExit(this)
+        val currentNumber = SPUtils.getExitNumber(this)
+        ratingExitNumber.contains(currentNumber.toString())
+    } catch (e: Exception) {
+        false
     }
 
     private fun loadBannerAds() = with(viewBinding) {
