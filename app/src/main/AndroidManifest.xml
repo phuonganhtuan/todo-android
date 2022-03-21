@@ -24,6 +24,7 @@
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
@@ -76,8 +77,7 @@
         <activity android:name=".screens.settings.dateformat.DateFormatActivity" />
         <activity android:name=".screens.language.setting.LanguageSettingActivity" />
         <activity android:name=".screens.settings.policy.PolicyActivity" />
-        <activity
-            android:name=".widget.countdown.CountDownWidgetSettingActivity" />
+        <activity android:name=".widget.countdown.CountDownWidgetSettingActivity" />
         <activity android:name=".widget.month.MonthWidgetSettingActivity" />
         <activity android:name=".widget.standard.StandardWidgetSettingActivity" />
         <activity android:name=".widget.lite.LiteWidgetSettingActivity" />
