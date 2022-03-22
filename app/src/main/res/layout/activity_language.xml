@@ -79,8 +79,8 @@
         <com.google.android.gms.ads.nativead.NativeAdView
             android:id="@+id/adView"
             android:layout_width="match_parent"
-            android:background="@drawable/bg_white_stroke_grey_border_rounded_8"
             android:layout_height="wrap_content"
+            android:background="@drawable/bg_white_stroke_grey_border_rounded_8"
             android:visibility="visible">
 
             <com.faltenreich.skeletonlayout.SkeletonLayout
@@ -178,12 +178,13 @@
 
                     <TextView
                         android:id="@+id/imageAdDesc"
-                        android:layout_width="wrap_content"
+                        android:layout_width="32dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
+                        android:background="@color/color_mine_yellow"
+                        android:gravity="center"
                         android:padding="4dp"
                         android:text="@string/ad"
-                        android:textColor="?attr/colorPrimary"
+                        android:textColor="@android:color/white"
                         android:textSize="12sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -192,9 +193,9 @@
 
             <TextView
                 android:id="@+id/imageAdDescLoading"
-                android:layout_width="wrap_content"
+                android:layout_width="32dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:gravity="center"
                 android:padding="4dp"
                 android:text="@string/ad"
                 android:textColor="@color/color_text_secondary"
