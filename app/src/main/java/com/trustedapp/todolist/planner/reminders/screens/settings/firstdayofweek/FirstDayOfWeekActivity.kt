@@ -44,7 +44,7 @@ class FirstDayOfWeekActivity : BaseActivity<ActivityFirstDayOfWeekBinding>() {
             textTitle.text = getString(R.string.first_day_of_week)
         }
         // Load Banner ads
-        loadBannerAds()
+//        loadBannerAds()
     }
 
     private fun loadBannerAds() = with(viewBinding) {
@@ -106,7 +106,7 @@ class FirstDayOfWeekActivity : BaseActivity<ActivityFirstDayOfWeekBinding>() {
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 NetworkState.isHasInternet.collect {
-                    loadBannerAds()
+//                    loadBannerAds()
                 }
             }
         }

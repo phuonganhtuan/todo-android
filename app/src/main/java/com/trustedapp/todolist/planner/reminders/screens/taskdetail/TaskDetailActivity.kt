@@ -55,7 +55,7 @@ class TaskDetailActivity : BaseActivity<ActivityTaskDetailBinding>() {
     }
 
     private fun initView() = with(viewBinding) {
-        loadBannerAds()
+//        loadBannerAds()
     }
 
     private fun loadBannerAds() = with(viewBinding) {
@@ -201,7 +201,7 @@ class TaskDetailActivity : BaseActivity<ActivityTaskDetailBinding>() {
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 NetworkState.isHasInternet.collect {
-                    loadBannerAds()
+//                    loadBannerAds()
                 }
             }
         }

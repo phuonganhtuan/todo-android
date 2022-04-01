@@ -50,7 +50,7 @@ class SearchTaskActivity : BaseActivity<ActivitySearchTaskBinding>() {
         recyclerRecent.adapter = recentAdapter
         editSearch.requestFocus()
         // Load Banner ads
-        loadBannerAds()
+//        loadBannerAds()
     }
 
     private fun loadBannerAds() = with(viewBinding) {
@@ -87,7 +87,7 @@ class SearchTaskActivity : BaseActivity<ActivitySearchTaskBinding>() {
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 NetworkState.isHasInternet.collect {
-                    loadBannerAds()
+//                    loadBannerAds()
                 }
             }
         }

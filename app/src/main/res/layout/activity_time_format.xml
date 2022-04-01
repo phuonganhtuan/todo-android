@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <include
@@ -13,10 +13,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@id/include"
         android:layout_below="@id/header"
         android:background="@color/color_bg_main_grey"
-        android:orientation="vertical"
-        android:layout_above="@id/include">
+        android:orientation="vertical">
 
         <RadioGroup
             android:id="@+id/radioGroup"
@@ -53,11 +53,13 @@
                 android:textSize="16sp" />
         </RadioGroup>
     </LinearLayout>
+
     <include
         android:id="@+id/include"
         layout="@layout/layout_banner_control"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent" />
 </RelativeLayout>

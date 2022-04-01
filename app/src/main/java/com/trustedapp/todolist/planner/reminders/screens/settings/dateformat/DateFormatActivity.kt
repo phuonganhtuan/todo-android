@@ -56,7 +56,7 @@ class DateFormatActivity : BaseActivity<ActivityDateFormatBinding>() {
             DateTimeUtils.DATE_FORMAT_TYPE_3
         )
         // Load Banner ads
-        loadBannerAds()
+//        loadBannerAds()
     }
 
     private fun loadBannerAds() = with(viewBinding) {
@@ -111,7 +111,7 @@ class DateFormatActivity : BaseActivity<ActivityDateFormatBinding>() {
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 NetworkState.isHasInternet.collect {
-                    loadBannerAds()
+//                    loadBannerAds()
                 }
             }
         }

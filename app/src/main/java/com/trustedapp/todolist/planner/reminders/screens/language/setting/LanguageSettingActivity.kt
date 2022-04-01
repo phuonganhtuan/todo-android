@@ -72,7 +72,7 @@ class LanguageSettingActivity : BaseActivity<ActivityLanguageSettingBinding>() {
             textTitle.text = getString(R.string.language)
         }
         recyclerLanguage.adapter = adapter
-        loadBannerAds()
+//        loadBannerAds()
     }
 
     private fun observeData() {
@@ -81,7 +81,7 @@ class LanguageSettingActivity : BaseActivity<ActivityLanguageSettingBinding>() {
                 NetworkState.isHasInternet.collect {
 //                    adapter.enableAds = false
 //                    adapter.notifyDataSetChanged()
-                    loadBannerAds()
+//                    loadBannerAds()
                 }
             }
         }

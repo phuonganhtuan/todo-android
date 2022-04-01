@@ -28,6 +28,7 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
     </LinearLayout>
     <include
+        android:visibility="gone"
         android:id="@+id/include"
         layout="@layout/layout_banner_control"
         android:layout_width="match_parent"

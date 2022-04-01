@@ -77,7 +77,7 @@ class WidgetActivity : BaseActivity<ActivityWidgetBinding>() {
             Glide.with(this@WidgetActivity).load(R.drawable.img_w_7).into(image1)
             Glide.with(this@WidgetActivity).load(R.drawable.img_w_8).into(image2)
         }
-        loadBannerAds()
+//        loadBannerAds()
     }
 
     private fun loadBannerAds() = with(viewBinding){
@@ -126,7 +126,7 @@ class WidgetActivity : BaseActivity<ActivityWidgetBinding>() {
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 NetworkState.isHasInternet.collect {
-                    loadBannerAds()
+//                    loadBannerAds()
                 }
             }
         }

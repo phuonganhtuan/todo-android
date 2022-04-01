@@ -45,7 +45,7 @@ class TimeFormatActivity : BaseActivity<ActivityTimeFormatBinding>() {
             textTitle.text = getString(R.string.time_format)
         }
         // Load Banner ads
-        loadBannerAds()
+//        loadBannerAds()
     }
 
     private fun loadBannerAds() = with(viewBinding) {
@@ -101,7 +101,7 @@ class TimeFormatActivity : BaseActivity<ActivityTimeFormatBinding>() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 NetworkState.isHasInternet.collect {
                     viewBinding.include.apply {
-                        loadBannerAds()
+//                        loadBannerAds()
                     }
                 }
             }

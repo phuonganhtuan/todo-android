@@ -36,8 +36,8 @@
         android:hint="@string/search_task"
         android:inputType="text"
         android:lines="1"
-        android:paddingVertical="8dp"
         android:paddingHorizontal="16dp"
+        android:paddingVertical="8dp"
         android:textColor="@android:color/black"
         android:textColorHint="@color/color_text_secondary"
         app:layout_constraintBottom_toBottomOf="@id/cardBack"
@@ -48,11 +48,11 @@
     <View
         android:layout_width="0dp"
         android:layout_height="1dp"
-        android:background="@color/color_border_grey"
-        app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="12dp"
+        android:background="@color/color_border_grey"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cardBack"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cardBack" />
 
     <LinearLayout
         android:id="@+id/layoutRecent"
@@ -101,5 +101,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

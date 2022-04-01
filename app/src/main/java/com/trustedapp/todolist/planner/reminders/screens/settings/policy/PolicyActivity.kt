@@ -40,7 +40,7 @@ class PolicyActivity : BaseActivity<ActivityPolicyBinding>() {
             textTitle.text = getString(R.string.policy)
         }
         // Load Banner ads
-        loadBannerAds()
+//        loadBannerAds()
     }
 
     private fun loadBannerAds() = with(viewBinding) {
@@ -67,7 +67,7 @@ class PolicyActivity : BaseActivity<ActivityPolicyBinding>() {
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 NetworkState.isHasInternet.collect {
-                    loadBannerAds()
+//                    loadBannerAds()
                 }
             }
         }

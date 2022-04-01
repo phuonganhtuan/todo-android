@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?><!DOCTYPE resources [<!ENTITY versionName "1.0">]>
 <resources>
-    <string name="app_name">To-Do List</string>
+    <string name="app_name">Gawin mo!</string>
     <string name="action_settings">Mga setting</string>
 
     <string name="no_cat">Walang kategorya.</string>
@@ -8,7 +8,7 @@
     <string name="cat_birthday">Kaarawan</string>
     <string name="cat_wish_list">Wishlist.</string>
     <string name="cat_personal">Personal.</string>
-    <string name="cat_other">Iba</string>
+    <string name="cat_other">Iba</string>a
 
     <string name="tasks">Mga gawain</string>
     <string name="calendar">Kalendaryo</string>

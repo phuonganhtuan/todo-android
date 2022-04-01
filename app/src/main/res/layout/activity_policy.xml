@@ -7,9 +7,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@id/include"
         android:background="@android:color/white"
-        android:orientation="vertical"
-        android:layout_above="@id/include">
+        android:orientation="vertical">
 
         <include
             android:id="@+id/header"
@@ -28,5 +28,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent" />
 </RelativeLayout>

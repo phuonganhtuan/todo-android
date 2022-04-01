@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?><!DOCTYPE resources [<!ENTITY versionName "1.0">]>
 <resources>
-    <string name="app_name">To-Do List</string>
+    <string name="app_name">Lakukan!</string>
     <string name="action_settings">Réglages</string>
 
     <string name="no_cat">Pas de catégorie</string>

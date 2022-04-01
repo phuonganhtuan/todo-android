@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?><!DOCTYPE resources [<!ENTITY versionName "1.0">]>
 <resources>
-    <string name="app_name">To-Do List</string>
+    <string name="app_name">やれ！</string>
     <string name="action_settings">設定</string>
 
     <string name="no_cat">カテゴリーなし</string>

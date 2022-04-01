@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?><!DOCTYPE resources [<!ENTITY versionName "1.0">]>
 <resources>
-    <string name="app_name">To-Do List</string>
+    <string name="app_name">कर दो!</string>
     <string name="action_settings">समायोजन</string>
 
     <string name="no_cat">कोई श्रेणी नहीं</string>

@@ -97,7 +97,7 @@ class ThemeSettingActivity : BaseActivity<ActivityThemeSettingBinding>() {
                 .load(ContextCompat.getDrawable(this@ThemeSettingActivity, textureIds[texture]))
                 .into(imageBgPreview)
         }
-        loadBannerAds()
+//        loadBannerAds()
     }
 
     private fun initData() {
@@ -157,7 +157,7 @@ class ThemeSettingActivity : BaseActivity<ActivityThemeSettingBinding>() {
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 NetworkState.isHasInternet.collect {
-                    loadBannerAds()
+//                    loadBannerAds()
                 }
             }
         }
