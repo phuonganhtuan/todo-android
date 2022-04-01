@@ -66,7 +66,7 @@ class ThemeActivity : BaseActivity<ActivityThemeBinding>() {
         recyclerTextures.adapter = textureAdapter
         recyclerSceneries.adapter = sceneryAdapter
         toStep(1)
-        loadBannerAds()
+//        loadBannerAds()
     }
 
     private fun initData() {
@@ -174,7 +174,7 @@ class ThemeActivity : BaseActivity<ActivityThemeBinding>() {
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 NetworkState.isHasInternet.collect {
-                    loadBannerAds()
+//                    loadBannerAds()
                 }
             }
         }

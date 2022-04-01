@@ -223,6 +223,13 @@ class NewTaskViewModel @Inject constructor(private val repository: TaskRepositor
     val validated: StateFlow<Boolean> get() = _validated
     private val _validated = MutableStateFlow(false)
 
+    val isPressedCreateTask : StateFlow<Boolean> get() = _isPressedCreateTask
+    private val _isPressedCreateTask = MutableStateFlow(false)
+
+    fun setIsPressCreateTask(value: Boolean){
+        _isPressedCreateTask.value = value
+    }
+
     fun setIsNewTask(context: Context, isNewTask: Boolean) {
         _isNewTask.value = isNewTask
         _selectedReminderType.value = if (SPUtils.getDefaultRemminderType(context) == DefaultReminderTypeEnum.NOTIFICATION) {

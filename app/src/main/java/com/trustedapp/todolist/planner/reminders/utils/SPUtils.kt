@@ -34,6 +34,11 @@ object SPUtils {
     private const val KEY_NUMBER_CREATE_TASK = "number_create_task"
     const val KEY_RATING_APPEAR_NUMBER = "rating_appear_number"
     const val KEY_RATING_EXIT_NUMBER = "rating_exit_number"
+    const val KEY_NATIVE_CREATE_TASK = "Native_create_task"
+    const val KEY_NATIVE_EXIT = "native_exit"
+    const val KEY_NATIVE_EDIT_TASK = "Native_edit_task"
+    const val KEY_NATIVE_TASK = "native_task"
+
 
     private const val THEME_COLOR_KEY = "theme_color"
     private const val THEME_TEXTURE_KEY = "theme_texture"

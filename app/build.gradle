@@ -34,6 +34,9 @@ android {
             resValue "string", "inter_theme_ads_id", "ca-app-pub-3940256099942544/1033173712"
             resValue "string", "native_language_setup_ads_id", "ca-app-pub-3940256099942544/2247696110"
             resValue "string", "native_language_setting_ads_id", "ca-app-pub-3940256099942544/2247696110"
+            resValue "string", "native_create_task_ads_id", "ca-app-pub-3940256099942544/2247696110"
+            resValue "string", "native_edit_task_ads_id", "ca-app-pub-3940256099942544/2247696110"
+            resValue "string", "native_task_ads_id", "ca-app-pub-3940256099942544/2247696110"
 //            resValue "string", "facebook_app_id", "1561758810851820"
             resValue "string", "facebook_client_token", "Facebook Client ID"
 //            resValue "string", "adjust_token", "yi2xcqd7a7ls"
@@ -51,6 +54,9 @@ android {
             resValue "string", "inter_theme_ads_id", "ca-app-pub-3940256099942544/1033173712"
             resValue "string", "native_language_setup_ads_id", "ca-app-pub-3940256099942544/2247696110"
             resValue "string", "native_language_setting_ads_id", "ca-app-pub-3940256099942544/2247696110"
+            resValue "string", "native_create_task_ads_id", "ca-app-pub-3940256099942544/2247696110"
+            resValue "string", "native_edit_task_ads_id", "ca-app-pub-3940256099942544/2247696110"
+            resValue "string", "native_task_ads_id", "ca-app-pub-3940256099942544/2247696110"
 //            resValue "string", "facebook_app_id", "1561758810851820"
             resValue "string", "facebook_client_token", "Facebook Client ID"
 //            resValue "string", "adjust_token", "yi2xcqd7a7ls"
@@ -139,6 +145,7 @@ dependencies {
 
     // Facebook SDK
     implementation 'com.facebook.android:facebook-android-sdk:12.3.0'
+    implementation 'com.facebook.shimmer:shimmer:0.5.0'
 
     // Apero Ads
     implementation 'com.google.android.gms:play-services-ads:20.5.0'

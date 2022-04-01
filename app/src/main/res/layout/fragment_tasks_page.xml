@@ -16,6 +16,25 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <RelativeLayout
+        android:id="@+id/container_native_ad_small"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textTaskCount">
+
+        <include
+            android:id="@+id/layout_native_ads_small"
+            layout="@layout/view_ad_unified_small" />
+
+        <include
+            android:id="@+id/layout_shimmer_small"
+            layout="@layout/layout_shimmerframe_small" />
+
+    </RelativeLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerTasks"
         android:layout_width="0dp"
@@ -26,7 +45,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textTaskCount"
+        app:layout_constraintTop_toBottomOf="@+id/container_native_ad_small"
         tools:itemCount="20"
         tools:listitem="@layout/item_task" />
 

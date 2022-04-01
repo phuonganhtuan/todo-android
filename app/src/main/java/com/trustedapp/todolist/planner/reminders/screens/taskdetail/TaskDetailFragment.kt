@@ -23,7 +23,9 @@ import com.ads.control.ads.Admod
 import com.ads.control.funtion.AdCallback
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.interstitial.InterstitialAd
+import com.google.android.gms.ads.nativead.NativeAd
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.trustedapp.todolist.planner.reminders.R
 import com.trustedapp.todolist.planner.reminders.base.BaseActivity
@@ -72,6 +74,7 @@ class TaskDetailFragment : BaseFragment<FragmentTaskDetailBinding>() {
 
     private var isLoadingAds: Boolean = false
     private var interstitialCreateAd: InterstitialAd? = null
+    private var nativeAds: NativeAd? = null
 
     override fun inflateViewBinding(
         container: ViewGroup?,
@@ -361,6 +364,15 @@ class TaskDetailFragment : BaseFragment<FragmentTaskDetailBinding>() {
                 }
             }
         }
+
+        lifecycleScope.launchWhenStarted {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                NetworkState.isHasInternet.collect {
+//                    loadBannerAds()
+                    loadAds()
+                }
+            }
+        }
     }
 
     private fun toViewMode() = with(viewBinding) {
@@ -594,5 +606,28 @@ class TaskDetailFragment : BaseFragment<FragmentTaskDetailBinding>() {
             textTaskName.text.toString().trim(),
             editNote.text.toString().trim()
         )
+    }
+
+    private fun loadAds() = with(viewBinding) {
+        if (!FirebaseRemoteConfig.getInstance().getBoolean(SPUtils.KEY_NATIVE_EDIT_TASK)) {
+            layoutAds.hide()
+            return@with
+        }
+        if (!context?.isInternetAvailable()!!) return@with
+        skeletonLayout.showSkeleton()
+        Admod.getInstance()
+            .loadNativeAd(
+                activity,
+                getString(R.string.native_edit_task_ads_id),
+                object : AdCallback() {
+                    override fun onUnifiedNativeAdLoaded(unifiedNativeAd: NativeAd) {
+                        nativeAds = unifiedNativeAd
+                        skeletonLayout.showOriginal()
+                        imageAdDescLoading.gone()
+                        Admod.getInstance().populateUnifiedNativeAdView(unifiedNativeAd, adView)
+                        imageIcon.setImageDrawable(unifiedNativeAd.icon?.drawable)
+                        imageContent.setImageDrawable(unifiedNativeAd.mediaContent?.mainImage)
+                    }
+                })
     }
 }

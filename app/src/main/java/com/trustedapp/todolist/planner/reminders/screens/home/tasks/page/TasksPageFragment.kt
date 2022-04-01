@@ -3,21 +3,26 @@ package com.trustedapp.todolist.planner.reminders.screens.home.tasks.page
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.ads.control.ads.Admod
+import com.ads.control.funtion.AdCallback
+import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.nativead.NativeAd
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.trustedapp.todolist.planner.reminders.R
 import com.trustedapp.todolist.planner.reminders.base.BaseFragment
 import com.trustedapp.todolist.planner.reminders.data.models.model.TaskPageType
 import com.trustedapp.todolist.planner.reminders.databinding.FragmentTasksPageBinding
 import com.trustedapp.todolist.planner.reminders.screens.taskdetail.TaskDetailActivity
+import com.trustedapp.todolist.planner.reminders.utils.*
 import com.trustedapp.todolist.planner.reminders.utils.Constants.KEY_TASK_ID
-import com.trustedapp.todolist.planner.reminders.utils.getStringByLocale
-import com.trustedapp.todolist.planner.reminders.utils.gone
-import com.trustedapp.todolist.planner.reminders.utils.show
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
@@ -30,6 +35,8 @@ class TasksPageFragment : BaseFragment<FragmentTasksPageBinding>() {
     private val viewModel: TasksPageViewModel by viewModels()
 
     private var type = TaskPageType.TODAY
+
+    private var nativeAds: NativeAd? = null
 
     @Inject
     lateinit var adapter: TaskAdapter
@@ -70,6 +77,7 @@ class TasksPageFragment : BaseFragment<FragmentTasksPageBinding>() {
                 when (type) {
                     TaskPageType.TODAY -> {
                         todayTasks.collect {
+                            loadAds(it.count() > 0, true)
                             adapter.submitList(it)
                             viewBinding.textTaskCount.text =
                                 "${requireContext().getStringByLocale(R.string.today_task)} (${it.count()})"
@@ -78,6 +86,7 @@ class TasksPageFragment : BaseFragment<FragmentTasksPageBinding>() {
                     }
                     TaskPageType.FUTURE -> {
                         futureTasks.collect {
+                            loadAds(it.count() > 0, true)
                             adapter.submitList(it)
                             viewBinding.textTaskCount.text =
                                 "${requireContext().getStringByLocale(R.string.future_task)} (${it.count()})"
@@ -86,6 +95,7 @@ class TasksPageFragment : BaseFragment<FragmentTasksPageBinding>() {
                     }
                     TaskPageType.DONE -> {
                         doneTasks.collect {
+                            loadAds(it.count() > 0, true)
                             adapter.submitList(it)
                             viewBinding.textTaskCount.text =
                                 "${requireContext().getStringByLocale(R.string.done_task)} (${it.count()})"
@@ -105,6 +115,7 @@ class TasksPageFragment : BaseFragment<FragmentTasksPageBinding>() {
             imageNoTask.gone()
             textTaskCount.show()
         }
+        loadAds(isShow, false)
     }
 
     private fun setupEvents() = with(viewBinding) {
@@ -123,6 +134,67 @@ class TasksPageFragment : BaseFragment<FragmentTasksPageBinding>() {
                 viewModel.updateStatus(requireContext(), id)
             }
         })
+    }
+
+    private fun loadAds(isShow: Boolean, isPrepare: Boolean = false) = with(viewBinding) {
+        if (!isShow) {
+            containerNativeAdSmall.gone()
+            return@with
+        }
+
+        if (!FirebaseRemoteConfig.getInstance().getBoolean(SPUtils.KEY_NATIVE_TASK)) {
+            containerNativeAdSmall.gone()
+            return@with
+        }
+        if (!context?.isInternetAvailable()!!) {
+            containerNativeAdSmall.gone()
+            return@with
+        }
+
+        if (nativeAds != null) {
+            updateNativeAdsView(isPrepare)
+            return@with
+        }
+
+        Admod.getInstance()
+            .loadNativeAd(
+                activity,
+                getString(R.string.native_task_ads_id),
+                object : AdCallback() {
+                    override fun onAdClosed() {
+                        super.onAdClosed()
+                        updateNativeAdsView(isPrepare)
+                    }
+
+                    override fun onAdFailedToLoad(i: LoadAdError?) {
+                        super.onAdFailedToLoad(i)
+                        updateNativeAdsView(isPrepare)
+                    }
+
+                    override fun onUnifiedNativeAdLoaded(unifiedNativeAd: NativeAd?) {
+                        super.onUnifiedNativeAdLoaded(unifiedNativeAd)
+                        nativeAds = unifiedNativeAd
+                        updateNativeAdsView(isPrepare)
+                    }
+                })
+    }
+
+    fun updateNativeAdsView(isPrepare: Boolean) = with(viewBinding) {
+        containerNativeAdSmall.visibility = View.VISIBLE
+        layoutNativeAdsSmall.viewAdUnified.visibility = View.GONE
+        layoutShimmerSmall.shimmerContainerNativeSmall.visibility = View.VISIBLE
+        if (nativeAds != null && !isPrepare) {
+            Handler(Looper.getMainLooper()).postDelayed({
+                layoutShimmerSmall.shimmerContainerNativeSmall.stopShimmer()
+                layoutShimmerSmall.shimmerContainerNativeSmall.visibility = View.GONE
+                Admod.getInstance()
+                    .populateUnifiedNativeAdView(
+                        nativeAds,
+                        layoutNativeAdsSmall.viewAdUnified
+                    )
+                layoutNativeAdsSmall.viewAdUnified.visibility = View.VISIBLE
+            }, 500)
+        }
     }
 
     companion object {

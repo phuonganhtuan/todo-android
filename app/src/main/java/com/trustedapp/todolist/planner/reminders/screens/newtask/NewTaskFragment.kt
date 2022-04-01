@@ -21,7 +21,9 @@ import com.ads.control.ads.Admod
 import com.ads.control.funtion.AdCallback
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.interstitial.InterstitialAd
+import com.google.android.gms.ads.nativead.NativeAd
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.trustedapp.todolist.planner.reminders.R
 import com.trustedapp.todolist.planner.reminders.base.BaseFragment
@@ -60,6 +62,7 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
 
     private var isLoadingAds: Boolean = false
     private var interstitialCreateAd: InterstitialAd? = null
+    private var nativeAds: NativeAd? = null
 
     override fun inflateViewBinding(
         container: ViewGroup?,
@@ -124,9 +127,9 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
         switchReminder.setOnClickListener {
             onCheckChangeReminder()
         }
-        buttonCreateTask.setOnClickListener {
-            loadInterCreate()
-        }
+//        buttonCreateTask.setOnClickListener {
+//            loadInterCreate()
+//        }
         editTaskName.addTextChangedListener {
             validateTask()
         }
@@ -326,6 +329,26 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
                 }
             }
         }
+
+        lifecycleScope.launchWhenStarted {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                isPressedCreateTask.collect {
+                    if (it) {
+                        loadInterCreate()
+                        setIsPressCreateTask(false)
+                    }
+                }
+            }
+        }
+
+        lifecycleScope.launchWhenStarted {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                NetworkState.isHasInternet.collect {
+//                    loadBannerAds()
+                    loadAds()
+                }
+            }
+        }
     }
 
     private fun createNewCategory() {
@@ -489,6 +512,29 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
                         super.onAdFailedToLoad(i)
                         isLoadingAds = false
                         createTaskCallback()
+                    }
+                })
+    }
+
+    private fun loadAds() = with(viewBinding) {
+        if (!FirebaseRemoteConfig.getInstance().getBoolean(SPUtils.KEY_NATIVE_CREATE_TASK)) {
+            layoutAds.hide()
+            return@with
+        }
+        if (!context?.isInternetAvailable()!!) return@with
+        skeletonLayout.showSkeleton()
+        Admod.getInstance()
+            .loadNativeAd(
+                activity,
+                getString(R.string.native_create_task_ads_id),
+                object : AdCallback() {
+                    override fun onUnifiedNativeAdLoaded(unifiedNativeAd: NativeAd) {
+                        nativeAds = unifiedNativeAd
+                        skeletonLayout.showOriginal()
+                        imageAdDescLoading.gone()
+                        Admod.getInstance().populateUnifiedNativeAdView(unifiedNativeAd, adView)
+                        imageIcon.setImageDrawable(unifiedNativeAd.icon?.drawable)
+                        imageContent.setImageDrawable(unifiedNativeAd.mediaContent?.mainImage)
                     }
                 })
     }

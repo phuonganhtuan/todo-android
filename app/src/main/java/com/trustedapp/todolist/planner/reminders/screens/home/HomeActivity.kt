@@ -144,7 +144,7 @@ class HomeActivity : AppCompatActivity() {
         if (SPUtils.getIsAddTaskFromNotificationBar(this@HomeActivity)) NotificationHelper.createAddTaskNotification(
             this@HomeActivity
         )
-        loadBannerAds()
+//        loadBannerAds()
     }
 
     fun openDrawer() {

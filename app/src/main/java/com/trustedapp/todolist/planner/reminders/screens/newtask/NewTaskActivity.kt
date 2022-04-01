@@ -3,6 +3,8 @@ package com.trustedapp.todolist.planner.reminders.screens.newtask
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
+import android.util.DisplayMetrics
+import android.util.TypedValue
 import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
@@ -61,13 +63,25 @@ class NewTaskActivity : BaseActivity<ActivityNewTaskBinding>() {
 
     private fun setupToolbar() = with(viewBinding.layoutTop) {
         button1.setImageResource(R.drawable.ic_arrow_left)
-        button4.hide()
+
         button2.hide()
         button3.hide()
+        button4.setImageResource(R.drawable.ic_done_primary)
+        val layoutParams = button4.layoutParams
+        layoutParams.width = TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP,
+            64f,
+            resources.displayMetrics).toInt()
+        layoutParams.height = TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP,
+            64f,
+            resources.displayMetrics).toInt()
+        button4.layoutParams = layoutParams
     }
 
     private fun setupEvents() = with(viewBinding) {
         layoutTop.button1.setOnClickListener { finish() }
+        layoutTop.button4.setOnClickListener { viewModel.setIsPressCreateTask(true) }
     }
 
     private fun isShowRating(): Boolean {
@@ -103,6 +117,16 @@ class NewTaskActivity : BaseActivity<ActivityNewTaskBinding>() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 NetworkState.isHasInternet.collect {
 //                    loadBannerAds()
+                }
+            }
+        }
+
+        lifecycleScope.launchWhenStarted {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                validated.collect {
+                    viewBinding.layoutTop.button4.apply {
+                        if (it) show() else hide()
+                    }
                 }
             }
         }

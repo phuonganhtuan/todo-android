@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import android.util.TypedValue
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.widget.PopupMenu
@@ -157,8 +158,22 @@ class TaskDetailActivity : BaseActivity<ActivityTaskDetailBinding>() {
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 isEditing.collect {
-                    val icon = if (it) R.drawable.ic_done_grey else R.drawable.ic_edit
+                    val icon = if (it) R.drawable.ic_done_primary else R.drawable.ic_edit
+                    val size = if (it) 64f else 36f
                     viewBinding.layoutTop.button3.setImageResource(icon)
+
+                    val layoutParams = viewBinding.layoutTop.button3.layoutParams
+                    layoutParams.width = TypedValue.applyDimension(
+                        TypedValue.COMPLEX_UNIT_DIP,
+                        size,
+                        resources.displayMetrics
+                    ).toInt()
+                    layoutParams.height = TypedValue.applyDimension(
+                        TypedValue.COMPLEX_UNIT_DIP,
+                        size,
+                        resources.displayMetrics
+                    ).toInt()
+                    viewBinding.layoutTop.button3.layoutParams = layoutParams
                 }
             }
         }
