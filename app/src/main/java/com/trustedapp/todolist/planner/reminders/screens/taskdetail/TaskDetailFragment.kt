@@ -373,6 +373,22 @@ class TaskDetailFragment : BaseFragment<FragmentTaskDetailBinding>() {
                 }
             }
         }
+
+        lifecycleScope.launchWhenStarted {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                KeyboardState.isShowKeyboard.collect {
+                    updateVisibleNativeAdsWhenChangeKeyboard(it)
+                }
+            }
+        }
+    }
+
+    private fun updateVisibleNativeAdsWhenChangeKeyboard(isShow: Boolean) = with(viewBinding) {
+        if (nativeAds != null) {
+            layoutAds.apply {
+                if (isShow) gone() else show()
+            }
+        }
     }
 
     private fun toViewMode() = with(viewBinding) {
@@ -610,10 +626,13 @@ class TaskDetailFragment : BaseFragment<FragmentTaskDetailBinding>() {
 
     private fun loadAds() = with(viewBinding) {
         if (!FirebaseRemoteConfig.getInstance().getBoolean(SPUtils.KEY_NATIVE_EDIT_TASK)) {
-            layoutAds.hide()
+            layoutAds.gone()
             return@with
         }
-        if (!context?.isInternetAvailable()!!) return@with
+        if (!context?.isInternetAvailable()!!) {
+            layoutAds.gone()
+            return@with
+        }
         skeletonLayout.showSkeleton()
         Admod.getInstance()
             .loadNativeAd(

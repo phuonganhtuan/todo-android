@@ -1,11 +1,15 @@
 package com.trustedapp.todolist.planner.reminders.utils
 
+import android.app.Activity
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
+import android.graphics.Rect
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.util.TypedValue
+import android.view.View
 import androidx.annotation.StringRes
 import kotlinx.coroutines.flow.MutableStateFlow
 import java.util.*

@@ -20,14 +20,18 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.ads.control.ads.Admod
+import com.ads.control.funtion.AdCallback
 import com.bumptech.glide.Glide
+import com.google.android.gms.ads.nativead.NativeAd
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.trustedapp.todolist.planner.reminders.BuildConfig
 import com.trustedapp.todolist.planner.reminders.R
 import com.trustedapp.todolist.planner.reminders.alarm.NotificationHelper
 import com.trustedapp.todolist.planner.reminders.common.chart.ChartColor
 import com.trustedapp.todolist.planner.reminders.databinding.ActivityHomeBinding
+import com.trustedapp.todolist.planner.reminders.screens.home.exit.ExitDialogFragment
 import com.trustedapp.todolist.planner.reminders.screens.home.tasks.suggest.SuggestActivity
 import com.trustedapp.todolist.planner.reminders.screens.language.setting.LanguageSettingActivity
 import com.trustedapp.todolist.planner.reminders.screens.settings.dateformat.DateFormatActivity
@@ -65,6 +69,7 @@ class HomeActivity : AppCompatActivity() {
     private var scenery = -1
 
     private val networkReceiver = NetworkChangeReceiver()
+    var exitNativeAd: NativeAd? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -287,7 +292,9 @@ class HomeActivity : AppCompatActivity() {
                 )
             }
         } else {
-            finish()
+            val exitDialog = ExitDialogFragment()
+            exitDialog.exitNativeAd = exitNativeAd
+            exitDialog.show(supportFragmentManager, ExitDialogFragment::class.java.simpleName)
         }
     }
 
@@ -316,11 +323,29 @@ class HomeActivity : AppCompatActivity() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 NetworkState.isHasInternet.collect {
                     loadBannerAds()
+                    loadExitAds()
                 }
             }
         }
     }
 
+    private fun loadExitAds() = with(viewBinding) {
+        if (!FirebaseRemoteConfig.getInstance().getBoolean(SPUtils.KEY_NATIVE_EXIT)) {
+            return@with
+        }
+        if (!isInternetAvailable()) return@with
+        Admod.getInstance()
+            .loadNativeAd(
+                this@HomeActivity,
+                getString(R.string.native_exit_ads_id),
+                object : AdCallback() {
+                    override fun onUnifiedNativeAdLoaded(unifiedNativeAd: NativeAd) {
+                        super.onUnifiedNativeAdLoaded(unifiedNativeAd)
+                        exitNativeAd = unifiedNativeAd
+                    }
+                })
+    }
 }
+
 
 var canShowSuggest = false

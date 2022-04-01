@@ -231,4 +231,7 @@
     <string name="texture">Texture</string>
     <string name="scenery">Scenery</string>
     <string name="feedback_mail" translatable="false">mailto:demomail@gmail.com</string>
+    <string name="advertisement">Advertisement</string>
+    <string name="msg_dialog_exit">Are you sure you want to exit?</string>
+    <string name="exit">Exit</string>
 </resources>

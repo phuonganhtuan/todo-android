@@ -230,4 +230,6 @@
     <string name="pure_color">纯色</string>
     <string name="texture">质地</string>
     <string name="scenery">风景</string>
+    <string name="msg_dialog_exit">Are you sure you want to exit?</string>
+    <string name="exit">Exit</string>
 </resources>

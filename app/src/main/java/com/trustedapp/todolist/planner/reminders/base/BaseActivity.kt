@@ -17,18 +17,21 @@ import com.google.android.material.snackbar.Snackbar
 import com.trustedapp.todolist.planner.reminders.R
 import com.trustedapp.todolist.planner.reminders.screens.permission.RequestOverlayDialogFragment
 import com.trustedapp.todolist.planner.reminders.screens.theme.currentTheme
+import com.trustedapp.todolist.planner.reminders.utils.KeyboardState
+import com.trustedapp.todolist.planner.reminders.utils.KeyboardTriggerBehavior
 import com.trustedapp.todolist.planner.reminders.utils.NetworkChangeReceiver
 import com.trustedapp.todolist.planner.reminders.utils.SPUtils
 import com.trustedapp.todolist.planner.reminders.widget.lite.LiteWidget
 import com.trustedapp.todolist.planner.reminders.widget.month.MonthWidget
 import com.trustedapp.todolist.planner.reminders.widget.month.updateMonthWidget
 import com.trustedapp.todolist.planner.reminders.widget.standard.StandardWidget
+import kotlinx.coroutines.flow.StateFlow
 import java.util.*
-
 
 abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
     private val networkReceiver = NetworkChangeReceiver()
     protected lateinit var viewBinding: VB
+    private var keyboardTriggerBehavior: KeyboardTriggerBehavior? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,7 +43,22 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
         setContentView(viewBinding.root)
         onActivityReady(savedInstanceState)
         onActivityReady()
+        onObserverKeyboard()
     }
+
+    fun onObserverKeyboard(){
+        keyboardTriggerBehavior = KeyboardTriggerBehavior(this@BaseActivity).apply {
+            observe(this@BaseActivity, androidx.lifecycle.Observer {
+                when (it) {
+                    KeyboardTriggerBehavior.Status.OPEN -> KeyboardState.setIsShowKeyboard(true)
+                    KeyboardTriggerBehavior.Status.CLOSED -> KeyboardState.setIsShowKeyboard(false)
+                }
+            })
+        }
+    }
+
+
+
 
     override fun onResume() {
         super.onResume()

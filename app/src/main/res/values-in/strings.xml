@@ -230,4 +230,6 @@
     <string name="pure_color">Warna murni</string>
     <string name="texture">Tekstur</string>
     <string name="scenery">Pemandangan</string>
+    <string name="msg_dialog_exit">Are you sure you want to exit?</string>
+    <string name="exit">Exit</string>
 </resources>

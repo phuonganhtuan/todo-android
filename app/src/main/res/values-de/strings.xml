@@ -230,4 +230,6 @@
     <string name="pure_color">Pure kleur</string>
     <string name="texture">Textuur</string>
     <string name="scenery">Landschap</string>
+    <string name="msg_dialog_exit">Are you sure you want to exit?</string>
+    <string name="exit">Exit</string>
 </resources>

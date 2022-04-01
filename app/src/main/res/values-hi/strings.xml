@@ -230,4 +230,6 @@
     <string name="pure_color">शुद्ध रंग</string>
     <string name="texture">बनावट</string>
     <string name="scenery">सीनरी</string>
+    <string name="msg_dialog_exit">Are you sure you want to exit?</string>
+    <string name="exit">Exit</string>
 </resources>

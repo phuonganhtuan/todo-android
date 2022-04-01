@@ -230,4 +230,6 @@
     <string name="pure_color">ピュアカラー</string>
     <string name="texture">テクスチャ</string>
     <string name="scenery">景色</string>
+    <string name="msg_dialog_exit">Are you sure you want to exit?</string>
+    <string name="exit">Exit</string>
 </resources>

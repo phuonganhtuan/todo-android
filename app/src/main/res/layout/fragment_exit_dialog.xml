@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_dialog_exit">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:gravity="start"
+            android:padding="5dp"
+            android:text="@string/msg_dialog_exit"
+            android:textColor="@color/color_grey_dark"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <!--        <View-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="1dp"-->
+        <!--            android:layout_marginTop="20dp"-->
+        <!--            android:background="#0D4E4E4E" />-->
+
+        <!--        <TextView-->
+        <!--            android:id="@+id/tvTitle"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginTop="5dp"-->
+        <!--            android:gravity="center"-->
+        <!--            android:text="@string/advertisement"-->
+        <!--            android:visibility="gone"-->
+        <!--            android:textSize="14sp" />-->
+
+        <FrameLayout
+            android:id="@+id/frame_content"
+            android:layout_width="match_parent"
+            android:layout_height="330dp"
+            android:background="@drawable/bg_white_ripple_rounded_stroke_grey_8"
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <FrameLayout
+                android:id="@+id/fl_adplaceholder"
+                android:layout_width="match_parent"
+                android:layout_height="330dp"
+                android:orientation="vertical" />
+
+            <include
+                android:id="@+id/layout_shimmerframe"
+                layout="@layout/layout_shimmerframe"
+                android:visibility="visible" />
+
+            <include
+                android:id="@+id/layout_ads"
+                layout="@layout/frament_load_exit_ads"
+                android:visibility="gone" />
+        </FrameLayout>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnExit"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:background="@drawable/bg_stroke_white_border_grey_8"
+            android:gravity="center"
+            android:text="@string/exit"
+            android:textColor="@color/color_button_grey"
+            android:textSize="18dp"
+            android:textStyle="bold" />
+    </LinearLayout>
+</LinearLayout>
