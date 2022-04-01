@@ -77,7 +77,7 @@ class TasksPageFragment : BaseFragment<FragmentTasksPageBinding>() {
                 when (type) {
                     TaskPageType.TODAY -> {
                         todayTasks.collect {
-                            loadAds(it.count() > 0, true)
+
                             adapter.submitList(it)
                             viewBinding.textTaskCount.text =
                                 "${requireContext().getStringByLocale(R.string.today_task)} (${it.count()})"
@@ -86,7 +86,7 @@ class TasksPageFragment : BaseFragment<FragmentTasksPageBinding>() {
                     }
                     TaskPageType.FUTURE -> {
                         futureTasks.collect {
-                            loadAds(it.count() > 0, true)
+
                             adapter.submitList(it)
                             viewBinding.textTaskCount.text =
                                 "${requireContext().getStringByLocale(R.string.future_task)} (${it.count()})"
@@ -95,7 +95,6 @@ class TasksPageFragment : BaseFragment<FragmentTasksPageBinding>() {
                     }
                     TaskPageType.DONE -> {
                         doneTasks.collect {
-                            loadAds(it.count() > 0, true)
                             adapter.submitList(it)
                             viewBinding.textTaskCount.text =
                                 "${requireContext().getStringByLocale(R.string.done_task)} (${it.count()})"
@@ -104,6 +103,27 @@ class TasksPageFragment : BaseFragment<FragmentTasksPageBinding>() {
                     }
                 }
             }
+        }
+
+        lifecycleScope.launchWhenStarted {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                NetworkState.isHasInternet.collect {
+//                    loadBannerAds()
+                    updateAdsNativeWhenConnectInternet(it)
+                }
+            }
+        }
+    }
+
+    fun updateAdsNativeWhenConnectInternet(isInternet: Boolean) = with(viewBinding) {
+        if (isInternet) {
+            if (nativeAds != null) {
+                updateNativeAdsView(false)
+            } else {
+                loadAds(false)
+            }
+        } else {
+            containerNativeAdSmall.gone()
         }
     }
 
@@ -115,7 +135,6 @@ class TasksPageFragment : BaseFragment<FragmentTasksPageBinding>() {
             imageNoTask.gone()
             textTaskCount.show()
         }
-        loadAds(isShow, false)
     }
 
     private fun setupEvents() = with(viewBinding) {
@@ -136,11 +155,7 @@ class TasksPageFragment : BaseFragment<FragmentTasksPageBinding>() {
         })
     }
 
-    private fun loadAds(isShow: Boolean, isPrepare: Boolean = false) = with(viewBinding) {
-        if (!isShow) {
-            containerNativeAdSmall.gone()
-            return@with
-        }
+    private fun loadAds(isPrepare: Boolean = false) = with(viewBinding) {
 
         if (!FirebaseRemoteConfig.getInstance().getBoolean(SPUtils.KEY_NATIVE_TASK)) {
             containerNativeAdSmall.gone()
@@ -148,11 +163,6 @@ class TasksPageFragment : BaseFragment<FragmentTasksPageBinding>() {
         }
         if (!context?.isInternetAvailable()!!) {
             containerNativeAdSmall.gone()
-            return@with
-        }
-
-        if (nativeAds != null) {
-            updateNativeAdsView(isPrepare)
             return@with
         }
 
