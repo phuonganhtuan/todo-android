@@ -350,13 +350,13 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
             }
         }
 
-        lifecycleScope.launchWhenStarted {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                KeyboardState.isShowKeyboard.collect {
-                    updateVisibleNativeAdsWhenChangeKeyboard(it)
-                }
-            }
-        }
+//        lifecycleScope.launchWhenStarted {
+//            repeatOnLifecycle(Lifecycle.State.STARTED) {
+//                KeyboardState.isShowKeyboard.collect {
+//                    updateVisibleNativeAdsWhenChangeKeyboard(it)
+//                }
+//            }
+//        }
     }
 
     private fun updateVisibleNativeAdsWhenChangeKeyboard(isShow: Boolean) = with(viewBinding) {
