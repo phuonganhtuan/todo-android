@@ -104,22 +104,24 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun loadInterSplash() {
-        if (!Firebase.remoteConfig.getBoolean(SPUtils.KEY_INTER_SPLASH)) {
-            toHomeDelayed()
-            return
-        }
 
-        if (!isInternetAvailable()) {
-            isLoadingAds = false
-            toHomeDelayed()
-            return
-        }
         object : CountDownTimer(4000, 1000) {
 
             override fun onTick(millisUntilFinished: Long) {
             }
 
             override fun onFinish() {
+                if (!Firebase.remoteConfig.getBoolean(SPUtils.KEY_INTER_SPLASH)) {
+                    toHomeDelayed()
+                    return
+                }
+
+                if (!isInternetAvailable()) {
+                    isLoadingAds = false
+                    toHomeDelayed()
+                    return
+                }
+
                 isLoadingAds = true
 
                 Admod.getInstance().getInterstitalAds(
