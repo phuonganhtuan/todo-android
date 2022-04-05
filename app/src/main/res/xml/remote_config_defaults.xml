@@ -45,5 +45,9 @@
         <key>native_task</key>
         <value>true</value>
     </entry>
+    <entry>
+        <key>task_create</key>
+        <value>v0</value>
+    </entry>
 </defaultsMap>
     <!-- END xml_defaults -->

@@ -111,7 +111,7 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
             buttonAttachment,
             recyclerAttachment
         )
-        if (!Firebase.remoteConfig.getBoolean(SPUtils.KEY_NEW_TASK_NEW)) {
+        if (Firebase.remoteConfig.getString(SPUtils.KEY_NEW_TASK_NEW) == "v1") {
             textDetail.show()
             imageDetail.show()
             imageDetail.setImageResource(R.drawable.ic_arrow_down_16)
@@ -413,7 +413,7 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
                             recyclerAttachment
                         )
 
-                        if (!Firebase.remoteConfig.getBoolean(SPUtils.KEY_NEW_TASK_NEW)) {
+                        if (Firebase.remoteConfig.getString(SPUtils.KEY_NEW_TASK_NEW) == "v1") {
                             textDetail.show()
                             imageDetail.show()
                             if (it) {

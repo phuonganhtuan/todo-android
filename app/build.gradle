@@ -15,7 +15,7 @@ android {
         applicationId "com.trustedapp.todolist.planner.reminders"
         minSdkVersion 24
         targetSdkVersion 31
-        versionCode 5
+        versionCode 6
         versionName "1.0"
 
         resConfigs "de", "en", "es", "fil", "fr", "hi", "in", "ja", "pt", "zh"
@@ -70,6 +70,15 @@ android {
 
         }
     }
+
+    applicationVariants.all { variant ->
+        variant.outputs.all {
+            def date = new Date()
+            def formattedDate = date.format('ddMMyy_HHmm')
+            outputFileName = "Doit_v${defaultConfig.versionCode}(${defaultConfig.versionName})_${formattedDate}-${variant.buildType.name}.apk"
+        }
+    }
+
     buildFeatures {
         viewBinding true
     }

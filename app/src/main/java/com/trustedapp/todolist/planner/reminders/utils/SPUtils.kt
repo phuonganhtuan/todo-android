@@ -38,7 +38,7 @@ object SPUtils {
     const val KEY_NATIVE_EXIT = "native_exit"
     const val KEY_NATIVE_EDIT_TASK = "Native_edit_task"
     const val KEY_NATIVE_TASK = "native_task"
-    const val KEY_NEW_TASK_NEW = "new_task_version"
+    const val KEY_NEW_TASK_NEW = "task_create"
 
 
     private const val THEME_COLOR_KEY = "theme_color"
