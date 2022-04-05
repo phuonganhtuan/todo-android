@@ -166,8 +166,8 @@ class NewTaskViewModel @Inject constructor(private val repository: TaskRepositor
     val canAddSubTask: StateFlow<Boolean> get() = _canAddSubTask
     private val _canAddSubTask = MutableStateFlow(false)
 
-    val selectedDate: StateFlow<Date> get() = _selectedDate
-    private val _selectedDate = MutableStateFlow(Calendar.getInstance().time)
+    val selectedDate: StateFlow<Date?> get() = _selectedDate
+    private val _selectedDate = MutableStateFlow<Date?>(null)
 
     val selectedHour: StateFlow<Int> get() = _selectedHour
     private val _selectedHour = MutableStateFlow(-1)
@@ -223,20 +223,28 @@ class NewTaskViewModel @Inject constructor(private val repository: TaskRepositor
     val validated: StateFlow<Boolean> get() = _validated
     private val _validated = MutableStateFlow(false)
 
-    val isPressedCreateTask : StateFlow<Boolean> get() = _isPressedCreateTask
+    val isPressedCreateTask: StateFlow<Boolean> get() = _isPressedCreateTask
     private val _isPressedCreateTask = MutableStateFlow(false)
 
-    fun setIsPressCreateTask(value: Boolean){
+    val isShortMode: StateFlow<Boolean> get() = _isShortMode
+    private val _isShortMode = MutableStateFlow(true)
+
+    fun switchShortMode() {
+        _isShortMode.value = !_isShortMode.value
+    }
+
+    fun setIsPressCreateTask(value: Boolean) {
         _isPressedCreateTask.value = value
     }
 
     fun setIsNewTask(context: Context, isNewTask: Boolean) {
         _isNewTask.value = isNewTask
-        _selectedReminderType.value = if (SPUtils.getDefaultRemminderType(context) == DefaultReminderTypeEnum.NOTIFICATION) {
-            ReminderTypeEnum.NOTIFICATION
-        } else {
-            ReminderTypeEnum.ALARM
-        }
+        _selectedReminderType.value =
+            if (SPUtils.getDefaultRemminderType(context) == DefaultReminderTypeEnum.NOTIFICATION) {
+                ReminderTypeEnum.NOTIFICATION
+            } else {
+                ReminderTypeEnum.ALARM
+            }
         _selectedReminderScreenLock.value = SPUtils.getIsScreenlockTaskReminder(context)
     }
 
@@ -382,29 +390,29 @@ class NewTaskViewModel @Inject constructor(private val repository: TaskRepositor
 
     fun validate(title: String) = viewModelScope.launch {
         withContext(Dispatchers.IO) {
-            _validated.value =
-                _selectedHour.value != -1 &&
-                        _selectedMinute.value != -1 &&
-                        title.isNotEmpty()
+            _validated.value = title.isNotEmpty()
         }
     }
 
     fun createTask(context: Context, title: String, note: String) = viewModelScope.launch {
         withContext(Dispatchers.IO) {
-            val calendar = Calendar.getInstance().apply { time = _selectedDate.value }
-            calendar.apply {
-                set(HOUR_OF_DAY, if (_selectedHour.value == -1) 0 else _selectedHour.value)
-                set(MINUTE, if (_selectedMinute.value == -1) 0 else _selectedMinute.value)
-                set(SECOND, 0)
+            var calendar: Calendar? = getInstance()
+            if (_selectedDate.value != null) {
+                calendar = Calendar.getInstance().apply { time = _selectedDate.value!! }
+                calendar.apply {
+                    set(HOUR_OF_DAY, if (_selectedHour.value == -1) 0 else _selectedHour.value)
+                    set(MINUTE, if (_selectedMinute.value == -1) 0 else _selectedMinute.value)
+                    set(SECOND, 0)
+                }
             }
             val taskEntity = TaskEntity(
                 title = title,
                 categoryId = if (_selectedCatIndex.value == -1) null else _categories.value[_selectedCatIndex.value].id,
-                calendar = calendar.timeInMillis,
+                calendar = calendar?.timeInMillis,
                 isDone = false,
                 isMarked = false,
                 markId = null,
-                dueDate = DateTimeUtils.getComparableDateString(calendar.time, isDefault = true),
+                dueDate = if (_selectedHour.value == -1) "" else DateTimeUtils.getComparableDateString(calendar?.time, isDefault = true),
             )
             val taskId = repository.addTask(taskEntity)
             _subtasks.value.filter { st -> st.name.isNotEmpty() }.forEach {
@@ -430,7 +438,7 @@ class NewTaskViewModel @Inject constructor(private val repository: TaskRepositor
                     customReminderTimeUnit = _customReminderTimeUnit.value.name,
                     screenLockReminder = _selectedReminderScreenLock.value,
                     enableRepeat = _isCheckedRepeat.value,
-                    time = calendar.timeInMillis,
+                    time = calendar?.timeInMillis ?: 0,
                     taskId = taskId.toInt(),
                     repeatTime = if (_isCheckedRepeat.value) _selectedRepeatAt.value.name else RepeatAtEnum.NONE.name,
                 )
@@ -505,10 +513,16 @@ class NewTaskViewModel @Inject constructor(private val repository: TaskRepositor
             _attachments.value = _task.value.attachments
             _subtasks.value = _task.value.subTasks
             val calendar =
-                Calendar.getInstance().apply { timeInMillis = _task.value.task.calendar ?: 0L }
-            _selectedDate.value = calendar.time
-            _selectedHour.value = calendar.get(HOUR_OF_DAY)
-            _selectedMinute.value = calendar.get(MINUTE)
+                if (_task.value.task.calendar == null) null else Calendar.getInstance()
+                    .apply { timeInMillis = _task.value.task.calendar ?: 0L }
+            _selectedDate.value = calendar?.time
+            if (_task.value.task.dueDate?.isEmpty() == true) {
+                _selectedHour.value = -1
+                _selectedMinute.value = -1
+            } else {
+                _selectedHour.value = calendar?.get(HOUR_OF_DAY) ?: -1
+                _selectedMinute.value = calendar?.get(MINUTE) ?: -1
+            }
             _isCheckedReminder.value = _task.value.detail.isReminder
             _isCheckedRepeat.value = _task.value.detail.isRepeat
             _selectedRepeatAt.value = when (_task.value.reminder?.repeatTime) {
@@ -654,11 +668,14 @@ class NewTaskViewModel @Inject constructor(private val repository: TaskRepositor
     fun updateTask(context: Context, title: String, note: String) = viewModelScope.launch {
         withContext(Dispatchers.IO) {
             _isAdded.value = false
-            val calendar = Calendar.getInstance().apply { time = _selectedDate.value }
-            calendar.apply {
-                set(HOUR_OF_DAY, if (_selectedHour.value == -1) 0 else _selectedHour.value)
-                set(MINUTE, if (_selectedMinute.value == -1) 0 else _selectedMinute.value)
-                set(SECOND, 0)
+            var calendar: Calendar? = getInstance()
+            if (_selectedDate.value != null) {
+                calendar = Calendar.getInstance().apply { time = _selectedDate.value!! }
+                calendar.apply {
+                    set(HOUR_OF_DAY, if (_selectedHour.value == -1) 0 else _selectedHour.value)
+                    set(MINUTE, if (_selectedMinute.value == -1) 0 else _selectedMinute.value)
+                    set(SECOND, 0)
+                }
             }
             if (_task.value.reminder != null) {
                 ScheduleHelper.cancelAlarm(context, _task.value.task, _task.value.reminder!!)
@@ -667,8 +684,8 @@ class NewTaskViewModel @Inject constructor(private val repository: TaskRepositor
                 this.title = title
                 categoryId =
                     if (_selectedCatIndex.value == -1) _task.value.task.categoryId else _categories.value[_selectedCatIndex.value].id
-                this.calendar = calendar.timeInMillis
-                dueDate = DateTimeUtils.getComparableDateString(calendar.time, isDefault = true)
+                this.calendar = calendar?.timeInMillis
+                dueDate = if (_selectedHour.value == -1) "" else DateTimeUtils.getComparableDateString(calendar?.time, isDefault = true)
             }
             repository.updateTask(_task.value.task)
             _task.value.subTasks.forEach {
@@ -713,7 +730,7 @@ class NewTaskViewModel @Inject constructor(private val repository: TaskRepositor
                         customReminderTimeUnit = _customReminderTimeUnit.value.name
                         screenLockReminder = _selectedReminderScreenLock.value
                         enableRepeat = _isCheckedRepeat.value
-                        time = calendar.timeInMillis
+                        time = calendar?.timeInMillis ?: 0
                         repeatTime =
                             if (_isCheckedRepeat.value) _selectedRepeatAt.value.name else RepeatAtEnum.NONE.name
                         repository.updateReminder(this)
@@ -727,7 +744,7 @@ class NewTaskViewModel @Inject constructor(private val repository: TaskRepositor
                         customReminderTimeUnit = _customReminderTimeUnit.value.name,
                         screenLockReminder = _selectedReminderScreenLock.value,
                         enableRepeat = _isCheckedRepeat.value,
-                        time = calendar.timeInMillis,
+                        time = calendar?.timeInMillis ?: 0,
                         taskId = taskId,
                         repeatTime = if (_isCheckedRepeat.value) _selectedRepeatAt.value.name else RepeatAtEnum.NONE.name,
                     )

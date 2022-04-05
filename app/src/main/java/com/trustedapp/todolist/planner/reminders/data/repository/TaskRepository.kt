@@ -31,7 +31,7 @@ interface TaskRepository {
     suspend fun deleteSubtasks()
 
     fun searchTaskByName(name: String): List<TaskEntity>
-    fun getTaskInDay(dayString: String): List<TaskShort>
+    fun getTaskInDay(dayString: String, start: Long, end: Long): List<TaskShort>
 
     suspend fun deleteAttachment(id: Int)
     suspend fun deleteSubtask(id: Int)
@@ -44,5 +44,5 @@ interface TaskRepository {
 
     fun getFutureTask(dayTime: Long): List<TaskShort>
     fun getFutureTaskAll(dayTime: Long): List<TaskShort>
-    fun getTaskInDayAll(dayString: String): List<TaskShort>
+    fun getTaskInDayAll(dayString: String, start: Long, end: Long): List<TaskShort>
 }

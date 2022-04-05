@@ -11,6 +11,7 @@ import com.trustedapp.todolist.planner.reminders.databinding.ItemWidgetStandardT
 import com.trustedapp.todolist.planner.reminders.utils.DateTimeUtils
 import com.trustedapp.todolist.planner.reminders.utils.gone
 import com.trustedapp.todolist.planner.reminders.utils.show
+import java.util.*
 
 class StandardPreviewWidgetAdapter :
     ListAdapter<WidgetItemWrap, StandardPreviewWidgetVH>(WidgetItemWrapDiffCallback()) {
@@ -47,13 +48,21 @@ class StandardPreviewWidgetVH(private val itemViewBinding: ItemWidgetStandardTas
             layoutWidgetContent.show()
             textTitleWidget.text = entity.task?.task?.title
             val timeString = if (!entity.isOther) {
-                DateTimeUtils.getHourMinuteFromMillisecond(
-                    entity.task?.task?.calendar ?: 0L
-                )
+                if (entity.task?.task?.dueDate.isNullOrEmpty()) {
+                    ""
+                } else {
+                    DateTimeUtils.getHourMinuteFromMillisecond(
+                        entity.task?.task?.calendar ?: 0L
+                    )
+                }
             } else {
-                DateTimeUtils.getShortTimeFromMillisecond(
-                    entity.task?.task?.calendar ?: 0L
-                )
+                if (entity.task?.task?.dueDate.isNullOrEmpty()) {
+                    DateTimeUtils.getDayMonthFromMillisecond(entity.task?.task?.calendar ?: 0L )
+                } else {
+                    DateTimeUtils.getShortTimeFromMillisecond(
+                        entity.task?.task?.calendar ?: 0L
+                    )
+                }
             }
             textDes.text = timeString
             val imageId =

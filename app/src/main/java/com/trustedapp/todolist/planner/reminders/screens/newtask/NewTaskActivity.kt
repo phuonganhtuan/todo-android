@@ -70,11 +70,11 @@ class NewTaskActivity : BaseActivity<ActivityNewTaskBinding>() {
         val layoutParams = button4.layoutParams
         layoutParams.width = TypedValue.applyDimension(
             TypedValue.COMPLEX_UNIT_DIP,
-            64f,
+            48f,
             resources.displayMetrics).toInt()
         layoutParams.height = TypedValue.applyDimension(
             TypedValue.COMPLEX_UNIT_DIP,
-            64f,
+            48f,
             resources.displayMetrics).toInt()
         button4.layoutParams = layoutParams
     }

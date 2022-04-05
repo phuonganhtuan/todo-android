@@ -34,7 +34,7 @@ class TaskLocalDataSourceImpl @Inject constructor(private val dao: TaskDao) : Ta
     override fun getCategories() = dao.getCategories()
 
     override fun searchTaskByName(name: String) = dao.searchTaskByName(name)
-    override fun getTaskInDay(dayString: String) = dao.getTaskInDay(dayString)
+    override fun getTaskInDay(dayString: String, start: Long, end: Long) = dao.getTaskInDay(dayString, start, end)
 
     override suspend fun deleteAttachment(id: Int) = dao.deleteAttachment(id)
     override suspend fun deleteSubtask(id: Int) = dao.deleteSubtask(id)
@@ -47,5 +47,5 @@ class TaskLocalDataSourceImpl @Inject constructor(private val dao: TaskDao) : Ta
 
     override fun getFutureTask(dayTime: Long) = dao.getFutureTask(dayTime)
     override fun getFutureTaskAll(dayTime: Long) = dao.getFutureTaskAll(dayTime)
-    override fun getTaskInDayAll(dayString: String) = dao.getTaskInDayAll(dayString)
+    override fun getTaskInDayAll(dayString: String, start: Long, end: Long) = dao.getTaskInDayAll(dayString, start, end)
 }

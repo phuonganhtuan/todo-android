@@ -117,10 +117,12 @@ class AddCalendarBottomSheetDialogFragment :
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 selectedDate.collect {
                     viewBinding.apply {
-                        tvSelectedDate.text = DateTimeUtils.getComparableDateString(it)
-                        if (isFirstTime && DateTimeUtils.getComparableDateString(it) != DateTimeUtils.getComparableDateString(Calendar.getInstance().time)) {
-                            calendarView.setDate(Calendar.getInstance().apply { time = it })
-                            isFirstTime = false
+                        if (it != null) {
+                            tvSelectedDate.text = DateTimeUtils.getComparableDateString(it)
+                            if (isFirstTime && DateTimeUtils.getComparableDateString(it) != DateTimeUtils.getComparableDateString(Calendar.getInstance().time)) {
+                                calendarView.setDate(Calendar.getInstance().apply { time = it })
+                                isFirstTime = false
+                            }
                         }
                     }
                 }

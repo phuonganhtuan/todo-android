@@ -21,6 +21,27 @@ object DateTimeUtils {
         return calendar.timeInMillis
     }
 
+    fun getStartOfDay(day: Date): Date {
+        val calendar = Calendar.getInstance().apply { time = day }
+        calendar.apply {
+            set(HOUR_OF_DAY, 0)
+            set(MINUTE, 0)
+            set(SECOND, 0)
+        }
+        return calendar.time
+    }
+
+    fun getStartOfNextDay(day: Date): Date {
+        val calendar = Calendar.getInstance().apply { time = day }
+        calendar.apply {
+            set(DAY_OF_MONTH, calendar.get(DAY_OF_MONTH) + 1)
+            set(HOUR_OF_DAY, 0)
+            set(MINUTE, 0)
+            set(SECOND, 0)
+        }
+        return calendar.time
+    }
+
     fun getShortTimeFromDate(date: Date): String {
         val simpleDate = SimpleDateFormat("${getDayMonthFormat()} ${getTimeFormat()}")
         return simpleDate.format(date)
@@ -95,10 +116,11 @@ object DateTimeUtils {
     }
 
     fun getComparableDateString(
-        date: Date,
+        date: Date?,
         format: String? = null,
         isDefault: Boolean = false
     ): String {
+        if (date == null) return ""
         val dateFormat = SimpleDateFormat(
             if (isDefault) DATE_FORMAT_TYPE_2 else
                 if (format == null) getDateFormat() else format

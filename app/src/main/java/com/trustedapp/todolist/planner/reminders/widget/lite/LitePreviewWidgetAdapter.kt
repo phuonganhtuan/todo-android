@@ -12,6 +12,7 @@ import com.trustedapp.todolist.planner.reminders.utils.gone
 import com.trustedapp.todolist.planner.reminders.utils.show
 import com.trustedapp.todolist.planner.reminders.widget.standard.WidgetItemWrap
 import com.trustedapp.todolist.planner.reminders.widget.standard.WidgetItemWrapDiffCallback
+import java.util.*
 
 class LitePreviewWidgetAdapter :
     ListAdapter<WidgetItemWrap, LitePreviewWidgetVH>(WidgetItemWrapDiffCallback()) {
@@ -48,13 +49,23 @@ class LitePreviewWidgetVH(private val itemViewBinding: ItemWidgetLiteTaskBinding
             layoutWidgetContent.show()
             textTitleWidget.text = entity.task?.task?.title
             val timeString = if (!entity.isOther) {
-                DateTimeUtils.getHourMinuteFromMillisecond(
-                    entity.task?.task?.calendar ?: 0L
-                )
+                if (entity.task?.task?.dueDate.isNullOrEmpty()) {
+                    ""
+                } else {
+                    DateTimeUtils.getHourMinuteFromMillisecond(
+                        entity.task?.task?.calendar ?: 0L
+                    )
+                }
             } else {
-                DateTimeUtils.getShortTimeFromMillisecond(
-                    entity.task?.task?.calendar ?: 0L
-                )
+                if (entity.task?.task?.dueDate.isNullOrEmpty()) {
+                    DateTimeUtils.getDayMonthFromMillisecond(
+                        entity.task?.task?.calendar ?: 0L
+                    )
+                } else {
+                    DateTimeUtils.getShortTimeFromMillisecond(
+                        entity.task?.task?.calendar ?: 0L
+                    )
+                }
             }
             textDes.text = timeString
             val textColor = if (entity.isOther) {

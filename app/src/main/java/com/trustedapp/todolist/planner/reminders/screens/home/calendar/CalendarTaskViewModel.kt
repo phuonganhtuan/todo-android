@@ -69,7 +69,8 @@ class CalendarTaskViewModel @Inject constructor(private val repository: TaskRepo
                 DateTimeUtils.getComparableDateString(
                     day,
                     isDefault = true
-                )
+                ),
+                DateTimeUtils.getStartOfDay(day).time, DateTimeUtils.getStartOfNextDay(day).time
             )
         }
     }
@@ -105,7 +106,9 @@ class CalendarTaskViewModel @Inject constructor(private val repository: TaskRepo
                     DateTimeUtils.getComparableDateString(
                         _selectedDay.value,
                         isDefault = true
-                    )
+                    ),
+                    DateTimeUtils.getStartOfDay(_selectedDay.value).time,
+                    DateTimeUtils.getStartOfNextDay(_selectedDay.value).time
                 )
         }
     }
@@ -121,7 +124,9 @@ class CalendarTaskViewModel @Inject constructor(private val repository: TaskRepo
                     DateTimeUtils.getComparableDateString(
                         _selectedDay.value,
                         isDefault = true
-                    )
+                    ),
+                    DateTimeUtils.getStartOfDay(_selectedDay.value).time,
+                    DateTimeUtils.getStartOfNextDay(_selectedDay.value).time
                 )
         }
     }

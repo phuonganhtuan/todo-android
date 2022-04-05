@@ -42,7 +42,9 @@ class MonthWidgetSettingViewModel @Inject constructor(
                     DateTimeUtils.getComparableDateString(
                         it,
                         isDefault = true
-                    )
+                    ),
+                    DateTimeUtils.getStartOfDay(it).time,
+                    DateTimeUtils.getStartOfNextDay(it).time
                 )
                 val tasksCatName = tasks.map { t -> t.category?.name.toString().lowercase() }
                 DateModel(

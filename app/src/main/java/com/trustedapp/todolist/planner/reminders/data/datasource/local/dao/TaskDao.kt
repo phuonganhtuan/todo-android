@@ -102,12 +102,12 @@ interface TaskDao {
     fun searchTaskByName(name: String): List<TaskEntity>
 
     @Transaction
-    @Query("select * from TaskEntity where dueDate == :dayString and isDone = 0")
-    fun getTaskInDay(dayString: String): List<TaskShort>
+    @Query("select * from TaskEntity where (dueDate == :dayString or (calendar > :start and calendar <= :end)) and isDone = 0")
+    fun getTaskInDay(dayString: String, start: Long, end: Long): List<TaskShort>
 
     @Transaction
-    @Query("select * from TaskEntity where dueDate == :dayString")
-    fun getTaskInDayAll(dayString: String): List<TaskShort>
+    @Query("select * from TaskEntity where (dueDate == :dayString or (calendar > :start and calendar <= :end))")
+    fun getTaskInDayAll(dayString: String, start: Long, end: Long): List<TaskShort>
 
     @Query("delete from AttachmentEntity where id = :id")
     suspend fun deleteAttachment(id: Int)

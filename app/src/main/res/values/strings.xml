@@ -234,4 +234,5 @@
     <string name="advertisement">Advertisement</string>
     <string name="msg_dialog_exit">Are you sure you want to exit?</string>
     <string name="exit">Exit</string>
+    <string name="details">Details</string>
 </resources>

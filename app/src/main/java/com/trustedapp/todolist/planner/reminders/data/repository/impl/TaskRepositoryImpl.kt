@@ -47,7 +47,7 @@ class TaskRepositoryImpl @Inject constructor(
     override fun getCategories() = taskDataSource.getCategories()
 
     override fun searchTaskByName(name: String) = taskDataSource.searchTaskByName(name)
-    override fun getTaskInDay(dayString: String) = taskDataSource.getTaskInDay(dayString)
+    override fun getTaskInDay(dayString: String, start: Long, end: Long) = taskDataSource.getTaskInDay(dayString, start, end)
 
     override suspend fun deleteAttachment(id: Int) = taskDataSource.deleteAttachment(id)
     override suspend fun deleteSubtask(id: Int) = taskDataSource.deleteSubtask(id)
@@ -60,5 +60,5 @@ class TaskRepositoryImpl @Inject constructor(
 
     override fun getFutureTask(dayTime: Long) = taskDataSource.getFutureTask(dayTime)
     override fun getFutureTaskAll(dayTime: Long) = taskDataSource.getFutureTaskAll(dayTime)
-    override fun getTaskInDayAll(dayString: String) = taskDataSource.getTaskInDayAll(dayString)
+    override fun getTaskInDayAll(dayString: String, start: Long, end: Long) = taskDataSource.getTaskInDayAll(dayString, start, end)
 }

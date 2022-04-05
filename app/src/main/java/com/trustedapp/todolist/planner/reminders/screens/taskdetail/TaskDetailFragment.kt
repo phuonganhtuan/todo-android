@@ -196,6 +196,11 @@ class TaskDetailFragment : BaseFragment<FragmentTaskDetailBinding>() {
                             selectCat(categories.value.indexOf(it.category))
                         }
                         if (it.task.isDone) imageDone.show() else imageDone.gone()
+                        if (it.task.calendar == null) {
+                            imageCalendar.gone()
+                        } else {
+                            imageCalendar.show()
+                        }
                     }
                 }
             }

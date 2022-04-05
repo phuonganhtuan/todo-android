@@ -159,7 +159,7 @@ class TaskDetailActivity : BaseActivity<ActivityTaskDetailBinding>() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 isEditing.collect {
                     val icon = if (it) R.drawable.ic_done_primary else R.drawable.ic_edit
-                    val size = if (it) 64f else 36f
+                    val size = if (it) 48f else 36f
                     viewBinding.layoutTop.button3.setImageResource(icon)
 
                     val layoutParams = viewBinding.layoutTop.button3.layoutParams

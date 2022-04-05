@@ -121,7 +121,7 @@ class CalendarPageViewModel @Inject constructor(private val repository: TaskRepo
                         .get(Calendar.MONTH) == month.get(
                         Calendar.MONTH
                     )
-                val tasks = repository.getTaskInDay(DateTimeUtils.getComparableDateString(it, isDefault = true))
+                val tasks = repository.getTaskInDay(DateTimeUtils.getComparableDateString(it, isDefault = true), DateTimeUtils.getStartOfDay(it).time, DateTimeUtils.getStartOfNextDay(it).time)
                 val tasksCatName = tasks.map { t -> t.category?.name.toString().lowercase() }
                 DateModel(
                     id = it.time.toInt(),

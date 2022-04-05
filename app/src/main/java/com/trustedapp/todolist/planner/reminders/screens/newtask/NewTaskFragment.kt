@@ -89,6 +89,38 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
         recyclerAttachment.adapter = attachmentAdapter
         recyclerAttachment.itemAnimator = null
         hideDateTime()
+        val extendedViews = listOf(
+            layoutSubTask,
+            editNote,
+            imageCategory,
+            textSelectCategory,
+            textCategory,
+            imageCalendar,
+            buttonAddCalendar,
+            imageTime,
+            textTime,
+            imageReminder,
+            textReminder,
+            switchReminder,
+            textReminderTime,
+            imageRepeat,
+            textRepeat,
+            switchRepeat,
+            textRepeatTime,
+            imageAttachment,
+            buttonAttachment,
+            recyclerAttachment
+        )
+        if (!Firebase.remoteConfig.getBoolean(SPUtils.KEY_NEW_TASK_NEW)) {
+            textDetail.show()
+            imageDetail.show()
+            imageDetail.setImageResource(R.drawable.ic_arrow_down_16)
+            extendedViews.gone()
+        } else {
+            textDetail.gone()
+            imageDetail.gone()
+            extendedViews.show()
+        }
     }
 
     private fun setupEvents() = with(viewBinding) {
@@ -141,6 +173,9 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
             FileUtils.openAttachment(requireContext(), attachment)
         }
         hideKeyboardTouchOutside(layoutNewTask)
+        textDetail.setOnClickListener {
+            viewModel.switchShortMode()
+        }
     }
 
     private fun validateTask() {
@@ -346,6 +381,54 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
                 NetworkState.isHasInternet.collect {
 //                    loadBannerAds()
                     loadAds()
+                }
+            }
+        }
+
+        lifecycleScope.launchWhenStarted {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                isShortMode.collect {
+                    viewBinding.apply {
+
+                        val extendedViews = listOf(
+                            layoutSubTask,
+                            editNote,
+                            imageCategory,
+                            textSelectCategory,
+                            textCategory,
+                            imageCalendar,
+                            buttonAddCalendar,
+                            imageTime,
+                            textTime,
+                            imageReminder,
+                            textReminder,
+                            switchReminder,
+                            textReminderTime,
+                            imageRepeat,
+                            textRepeat,
+                            switchRepeat,
+                            textRepeatTime,
+                            imageAttachment,
+                            buttonAttachment,
+                            recyclerAttachment
+                        )
+
+                        if (!Firebase.remoteConfig.getBoolean(SPUtils.KEY_NEW_TASK_NEW)) {
+                            textDetail.show()
+                            imageDetail.show()
+                            if (it) {
+                                imageDetail.setImageResource(R.drawable.ic_arrow_down_16)
+                                extendedViews.gone()
+                            } else {
+                                imageDetail.setImageResource(R.drawable.ic_arrow_up_16)
+                                extendedViews.show()
+                            }
+                        } else {
+                            textDetail.gone()
+                            imageDetail.gone()
+                            extendedViews.show()
+                        }
+                    }
                 }
             }
         }

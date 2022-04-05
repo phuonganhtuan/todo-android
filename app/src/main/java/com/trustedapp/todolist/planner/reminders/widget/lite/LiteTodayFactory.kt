@@ -47,7 +47,9 @@ class LiteTodayFactory(private val context: Context, private val intent: Intent?
                 DateTimeUtils.getComparableDateString(
                     Calendar.getInstance().time,
                     isDefault = true
-                )
+                ),
+                DateTimeUtils.getStartOfDay(Calendar.getInstance().time).time,
+                DateTimeUtils.getStartOfNextDay(Calendar.getInstance().time).time
             )
                 .map { WidgetItemWrap(task = it) }.toMutableList()
         } else {
@@ -55,7 +57,9 @@ class LiteTodayFactory(private val context: Context, private val intent: Intent?
                 DateTimeUtils.getComparableDateString(
                     Calendar.getInstance().time,
                     isDefault = true
-                )
+                ),
+                DateTimeUtils.getStartOfDay(Calendar.getInstance().time).time,
+                DateTimeUtils.getStartOfNextDay(Calendar.getInstance().time).time
             )
                 .map { WidgetItemWrap(task = it) }.toMutableList()
         }
@@ -134,13 +138,23 @@ class LiteTodayFactory(private val context: Context, private val intent: Intent?
         }
         rv.setTextViewText(R.id.textTitleWidget, todayTasks[position].task?.task?.title)
         val timeString = if (!todayTasks[position].isOther) {
-            DateTimeUtils.getHourMinuteFromMillisecond(
-                todayTasks[position].task?.task?.calendar ?: 0L
-            )
+            if (todayTasks[position].task?.task?.dueDate.isNullOrEmpty()) {
+                ""
+            } else {
+                DateTimeUtils.getHourMinuteFromMillisecond(
+                    todayTasks[position].task?.task?.calendar ?: 0L
+                )
+            }
         } else {
-            DateTimeUtils.getShortTimeFromMillisecond(
-                todayTasks[position].task?.task?.calendar ?: 0L
-            )
+            if (todayTasks[position].task?.task?.dueDate.isNullOrEmpty()) {
+                DateTimeUtils.getDayMonthFromMillisecond(
+                    todayTasks[position].task?.task?.calendar ?: 0L
+                )
+            } else {
+                DateTimeUtils.getShortTimeFromMillisecond(
+                    todayTasks[position].task?.task?.calendar ?: 0L
+                )
+            }
         }
         rv.setTextViewText(R.id.textDes, timeString)
         val intentTask = Intent().apply {

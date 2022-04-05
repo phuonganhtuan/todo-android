@@ -61,7 +61,9 @@ class StandardWidgetSettingViewModel @Inject constructor(
                 DateTimeUtils.getComparableDateString(
                     Calendar.getInstance().time,
                     isDefault = true
-                )
+                ),
+                DateTimeUtils.getStartOfDay(Calendar.getInstance().time).time,
+                DateTimeUtils.getStartOfNextDay(Calendar.getInstance().time).time
             )
                 .map { WidgetItemWrap(task = it) }.toMutableList()
         } else {
@@ -69,7 +71,9 @@ class StandardWidgetSettingViewModel @Inject constructor(
                 DateTimeUtils.getComparableDateString(
                     Calendar.getInstance().time,
                     isDefault = true
-                )
+                ),
+                DateTimeUtils.getStartOfDay(Calendar.getInstance().time).time,
+                DateTimeUtils.getStartOfNextDay(Calendar.getInstance().time).time
             )
                 .map { WidgetItemWrap(task = it) }.toMutableList()
         }

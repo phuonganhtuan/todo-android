@@ -74,9 +74,17 @@ class TaskViewHolder(
         checkStatus.isChecked = entity.task.isDone
         textTaskTime.text = if (entity.task.calendar != null) {
             if (isHideDay) {
-                DateTimeUtils.getHourMinuteFromMillisecond(entity.task.calendar!!)
+                if (entity.task.dueDate.isNullOrEmpty()) {
+                    ""
+                } else {
+                    DateTimeUtils.getHourMinuteFromMillisecond(entity.task.calendar!!)
+                }
             } else {
-                DateTimeUtils.getShortTimeFromMillisecond(entity.task.calendar!!)
+                if (entity.task.dueDate.isNullOrEmpty()) {
+                    DateTimeUtils.getDayMonthFromMillisecond(entity.task.calendar!!)
+                } else {
+                    DateTimeUtils.getShortTimeFromMillisecond(entity.task.calendar!!)
+                }
             }
         } else {
             ""
