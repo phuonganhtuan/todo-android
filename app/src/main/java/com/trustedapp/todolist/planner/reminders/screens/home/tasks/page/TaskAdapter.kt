@@ -75,6 +75,7 @@ class TaskViewHolder(
         textTaskTime.text = if (entity.task.calendar != null) {
             if (isHideDay) {
                 if (entity.task.dueDate.isNullOrEmpty()) {
+                    textTaskTime.gone()
                     ""
                 } else {
                     DateTimeUtils.getHourMinuteFromMillisecond(entity.task.calendar!!)
@@ -87,6 +88,7 @@ class TaskViewHolder(
                 }
             }
         } else {
+            textTaskTime.gone()
             ""
         }
         if (entity.category == null) {

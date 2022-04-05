@@ -81,9 +81,12 @@ class AddCalendarBottomSheetDialogFragment :
     }
 
     private fun initData() = with(viewBinding) {
-        tvSelectedDate.setText(
-            DateTimeUtils.getComparableDateString(viewModel.selectedDate.value)
-        )
+        viewModel._hasTime.value = true
+        if (viewModel.selectedDate.value == null) {
+            tvSelectedDate.text = DateTimeUtils.getComparableDateString(Calendar.getInstance().time)
+        } else {
+            tvSelectedDate.text = DateTimeUtils.getComparableDateString(viewModel.selectedDate.value)
+        }
     }
 
     private fun setupEvent() = with(viewBinding) {

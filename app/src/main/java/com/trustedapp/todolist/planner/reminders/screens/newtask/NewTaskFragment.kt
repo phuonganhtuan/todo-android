@@ -250,12 +250,28 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 selectedDate.collect {
                     validateTask()
-                    if (_hasTime.value)
+                    if (it != null) {
                         viewBinding.buttonAddCalendar.text =
                             DateTimeUtils.getComparableDateString(it)
+                    } else if (_hasTime.value) {
+                        viewBinding.buttonAddCalendar.text =
+                            DateTimeUtils.getComparableDateString(Calendar.getInstance().time)
+                    }
                 }
             }
         }
+
+        lifecycleScope.launchWhenStarted {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                _hasTime.collect {
+                    if (selectedDate.value == null && it) {
+                        viewBinding.buttonAddCalendar.text =
+                            DateTimeUtils.getComparableDateString(Calendar.getInstance().time)
+                    }
+                }
+            }
+        }
+
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 selectedHour.filter { it > -1 }
@@ -266,7 +282,6 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
                         }
                         DateTimeUtils.getHourMinuteFromMillisecond(date.timeInMillis)
                     }.collect {
-                        _hasTime.value = true
                         viewBinding.buttonAddCalendar.text =
                             DateTimeUtils.getComparableDateString(selectedDate.value)
                         validateTask()
