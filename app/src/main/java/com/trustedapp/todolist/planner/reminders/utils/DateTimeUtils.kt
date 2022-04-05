@@ -21,24 +21,19 @@ object DateTimeUtils {
         return calendar.timeInMillis
     }
 
-    fun getStartOfDay(day: Date): Date {
+    fun getStartOfDay(day: Date): Long {
         val calendar = Calendar.getInstance().apply { time = day }
-        calendar.apply {
-            set(HOUR_OF_DAY, 0)
-            set(MINUTE, 0)
-            set(SECOND, 0)
-        }
-        return calendar.time
+        calendar.set(HOUR_OF_DAY, 0)
+        calendar.set(MINUTE, 0)
+        calendar.set(SECOND, 0)
+        return calendar.time.time
     }
 
     fun getStartOfNextDay(day: Date): Date {
         val calendar = Calendar.getInstance().apply { time = day }
-        calendar.apply {
-            set(DAY_OF_MONTH, calendar.get(DAY_OF_MONTH) + 1)
-            set(HOUR_OF_DAY, 0)
-            set(MINUTE, 0)
-            set(SECOND, 0)
-        }
+        calendar.set(HOUR_OF_DAY, 0)
+        calendar.set(MINUTE, 0)
+        calendar.set(SECOND, 0)
         return calendar.time
     }
 

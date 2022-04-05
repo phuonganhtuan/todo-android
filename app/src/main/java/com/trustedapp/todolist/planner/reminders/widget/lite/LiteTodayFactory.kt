@@ -48,8 +48,7 @@ class LiteTodayFactory(private val context: Context, private val intent: Intent?
                     Calendar.getInstance().time,
                     isDefault = true
                 ),
-                DateTimeUtils.getStartOfDay(Calendar.getInstance().time).time,
-                DateTimeUtils.getStartOfNextDay(Calendar.getInstance().time).time
+                DateTimeUtils.getStartOfDay(Calendar.getInstance().time)
             )
                 .map { WidgetItemWrap(task = it) }.toMutableList()
         } else {
@@ -58,8 +57,7 @@ class LiteTodayFactory(private val context: Context, private val intent: Intent?
                     Calendar.getInstance().time,
                     isDefault = true
                 ),
-                DateTimeUtils.getStartOfDay(Calendar.getInstance().time).time,
-                DateTimeUtils.getStartOfNextDay(Calendar.getInstance().time).time
+                DateTimeUtils.getStartOfDay(Calendar.getInstance().time)
             )
                 .map { WidgetItemWrap(task = it) }.toMutableList()
         }

@@ -399,11 +399,11 @@ class NewTaskViewModel @Inject constructor(private val repository: TaskRepositor
             var calendar: Calendar? = getInstance()
             if (_selectedDate.value != null) {
                 calendar = Calendar.getInstance().apply { time = _selectedDate.value!! }
-                calendar.apply {
-                    set(HOUR_OF_DAY, if (_selectedHour.value == -1) 0 else _selectedHour.value)
-                    set(MINUTE, if (_selectedMinute.value == -1) 0 else _selectedMinute.value)
-                    set(SECOND, 0)
-                }
+            }
+            calendar?.apply {
+                set(HOUR_OF_DAY, if (_selectedHour.value == -1) 0 else _selectedHour.value)
+                set(MINUTE, if (_selectedMinute.value == -1) 0 else _selectedMinute.value)
+                set(SECOND, 0)
             }
             val taskEntity = TaskEntity(
                 title = title,
@@ -671,11 +671,11 @@ class NewTaskViewModel @Inject constructor(private val repository: TaskRepositor
             var calendar: Calendar? = getInstance()
             if (_selectedDate.value != null) {
                 calendar = Calendar.getInstance().apply { time = _selectedDate.value!! }
-                calendar.apply {
-                    set(HOUR_OF_DAY, if (_selectedHour.value == -1) 0 else _selectedHour.value)
-                    set(MINUTE, if (_selectedMinute.value == -1) 0 else _selectedMinute.value)
-                    set(SECOND, 0)
-                }
+            }
+            calendar?.apply {
+                set(HOUR_OF_DAY, if (_selectedHour.value == -1) 0 else _selectedHour.value)
+                set(MINUTE, if (_selectedMinute.value == -1) 0 else _selectedMinute.value)
+                set(SECOND, 0)
             }
             if (_task.value.reminder != null) {
                 ScheduleHelper.cancelAlarm(context, _task.value.task, _task.value.reminder!!)

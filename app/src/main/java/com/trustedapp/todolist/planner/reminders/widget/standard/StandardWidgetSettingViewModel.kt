@@ -62,7 +62,7 @@ class StandardWidgetSettingViewModel @Inject constructor(
                     Calendar.getInstance().time,
                     isDefault = true
                 ),
-                DateTimeUtils.getStartOfDay(Calendar.getInstance().time).time,
+                DateTimeUtils.getStartOfDay(Calendar.getInstance().time),
                 DateTimeUtils.getStartOfNextDay(Calendar.getInstance().time).time
             )
                 .map { WidgetItemWrap(task = it) }.toMutableList()
@@ -72,7 +72,7 @@ class StandardWidgetSettingViewModel @Inject constructor(
                     Calendar.getInstance().time,
                     isDefault = true
                 ),
-                DateTimeUtils.getStartOfDay(Calendar.getInstance().time).time,
+                DateTimeUtils.getStartOfDay(Calendar.getInstance().time),
                 DateTimeUtils.getStartOfNextDay(Calendar.getInstance().time).time
             )
                 .map { WidgetItemWrap(task = it) }.toMutableList()

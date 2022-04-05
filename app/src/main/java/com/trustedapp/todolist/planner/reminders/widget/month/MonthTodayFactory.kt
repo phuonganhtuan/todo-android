@@ -92,8 +92,7 @@ class MonthTodayFactory(private val context: Context, private val intent: Intent
         val tasks =
             taskDao.getTaskInDay(
                 DateTimeUtils.getComparableDateString(it, isDefault = true),
-                DateTimeUtils.getStartOfDay(it).time,
-                DateTimeUtils.getStartOfNextDay(it).time
+                DateTimeUtils.getStartOfDay(it)
             )
         val tasksCatName = tasks.map { t -> t.category?.name.toString().lowercase() }
         DateModel(

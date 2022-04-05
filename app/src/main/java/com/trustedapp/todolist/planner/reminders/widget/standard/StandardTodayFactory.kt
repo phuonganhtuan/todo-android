@@ -52,8 +52,7 @@ class StandardTodayFactory(private val context: Context, private val intent: Int
                     Calendar.getInstance().time,
                     isDefault = true
                 ),
-                DateTimeUtils.getStartOfDay(Calendar.getInstance().time).time,
-                DateTimeUtils.getStartOfNextDay(Calendar.getInstance().time).time
+                DateTimeUtils.getStartOfDay(Calendar.getInstance().time)
             )
                 .map { WidgetItemWrap(task = it) }.toMutableList()
         } else {
@@ -62,8 +61,7 @@ class StandardTodayFactory(private val context: Context, private val intent: Int
                     Calendar.getInstance().time,
                     isDefault = true
                 ),
-                DateTimeUtils.getStartOfDay(Calendar.getInstance().time).time,
-                DateTimeUtils.getStartOfNextDay(Calendar.getInstance().time).time
+                DateTimeUtils.getStartOfDay(Calendar.getInstance().time)
             )
                 .map { WidgetItemWrap(task = it) }.toMutableList()
         }
