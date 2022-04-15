@@ -1,9 +1,7 @@
 package com.trustedapp.todolist.planner.reminders.screens.newtask
 
 import android.content.Intent
-import android.content.IntentFilter
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.util.TypedValue
 import android.view.View
 import androidx.activity.viewModels
@@ -17,7 +15,6 @@ import com.trustedapp.todolist.planner.reminders.R
 import com.trustedapp.todolist.planner.reminders.base.BaseActivity
 import com.trustedapp.todolist.planner.reminders.databinding.ActivityNewTaskBinding
 import com.trustedapp.todolist.planner.reminders.screens.home.HomeActivity
-import com.trustedapp.todolist.planner.reminders.screens.settings.rating.RatingDialogFragment
 import com.trustedapp.todolist.planner.reminders.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -71,11 +68,13 @@ class NewTaskActivity : BaseActivity<ActivityNewTaskBinding>() {
         layoutParams.width = TypedValue.applyDimension(
             TypedValue.COMPLEX_UNIT_DIP,
             48f,
-            resources.displayMetrics).toInt()
+            resources.displayMetrics
+        ).toInt()
         layoutParams.height = TypedValue.applyDimension(
             TypedValue.COMPLEX_UNIT_DIP,
             48f,
-            resources.displayMetrics).toInt()
+            resources.displayMetrics
+        ).toInt()
         button4.layoutParams = layoutParams
     }
 
@@ -126,6 +125,7 @@ class NewTaskActivity : BaseActivity<ActivityNewTaskBinding>() {
                 validated.collect {
                     viewBinding.layoutTop.button4.apply {
                         if (it) show() else hide()
+                        viewBinding.layoutTop.button4.isEnabled = it
                     }
                 }
             }

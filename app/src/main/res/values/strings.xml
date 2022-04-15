@@ -235,4 +235,6 @@
     <string name="msg_dialog_exit">Are you sure you want to exit?</string>
     <string name="exit">Exit</string>
     <string name="details">Details</string>
+    <string name="subcate_task_title">Subcate Task</string>
+    <string name="date_amp_time"><![CDATA[Date & Time]]></string>
 </resources>

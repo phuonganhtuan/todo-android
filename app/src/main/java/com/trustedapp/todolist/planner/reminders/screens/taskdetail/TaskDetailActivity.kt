@@ -12,6 +12,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import com.ads.control.ads.Admod
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.ktx.remoteConfig
@@ -57,6 +58,16 @@ class TaskDetailActivity : BaseActivity<ActivityTaskDetailBinding>() {
 
     private fun initView() = with(viewBinding) {
 //        loadBannerAds()
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.task_nav_host_fragment) as NavHostFragment
+        val inflater = navHostFragment.navController.navInflater
+        val graph = inflater.inflate(R.navigation.detail_nav_graph)
+        if (Firebase.remoteConfig.getString(SPUtils.KEY_NEW_TASK_NEW) == "v1") {
+            graph.setStartDestination(R.id.TaskDetailV1Fragment)
+            viewModel.toEditMode()
+        } else {
+            graph.setStartDestination(R.id.TaskDetailFragment)
+        }
+        navHostFragment.navController.graph = graph
     }
 
     private fun loadBannerAds() = with(viewBinding) {

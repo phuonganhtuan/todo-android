@@ -1,0 +1,533 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layoutDetail"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+    android:background="@color/color_bg_main_grey">
+
+    <EditText
+        android:id="@+id/textTaskName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:autofillHints="@null"
+        android:background="@android:color/transparent"
+        android:fontFamily="@font/sf_rounded_extra_bold"
+        android:hint="@string/task_name"
+        android:inputType="textMultiLine"
+        android:paddingHorizontal="16dp"
+        android:paddingBottom="8dp"
+        android:textColor="@color/black"
+        android:textSize="22sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Happy birthday to me" />
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:animateLayoutChanges="true"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toTopOf="@id/layoutAds"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textTaskName">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:animateLayoutChanges="true">
+
+            <LinearLayout
+                android:id="@+id/layoutSubTask"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:animateLayoutChanges="true"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/subcate_task_title"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerSubTasks"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:overScrollMode="never"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:itemCount="3"
+                    tools:listitem="@layout/item_subtask_editable" />
+
+                <TextView
+                    android:id="@+id/buttonNewSubTask"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/bg_greybg_rounded_8"
+                    android:padding="8dp"
+                    android:text="@string/plus_add"
+                    android:textColor="?attr/colorPrimary"
+                    android:textSize="16sp"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/lnCategory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/layoutSubTask">
+
+                <TextView
+                    android:id="@+id/tvCategoryTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/category"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/textCategory"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:background="@drawable/bg_rounded_stroke_grey_8"
+                    android:drawablePadding="8dp"
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="8dp"
+                    android:text="@string/no_category"
+                    android:textColor="@color/color_text_secondary_dark"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/tvNoteTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/note"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/lnCategory" />
+
+            <EditText
+                android:id="@+id/editNote"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:autofillHints="@null"
+                android:backgroundTint="@color/color_border_grey"
+                android:drawableStart="@drawable/ic_note"
+                android:drawablePadding="8dp"
+                android:hint="@string/note"
+                android:inputType="textMultiLine"
+                android:textColor="@android:color/black"
+                android:textColorHint="@color/color_text_secondary_dark"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvNoteTitle" />
+
+
+            <LinearLayout
+                android:id="@+id/lnAttachment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/editNote">
+
+                <TextView
+                    android:id="@+id/tvTitleAttachment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/attachment"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerAttachment"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:itemCount="3"
+                        tools:listitem="@layout/item_attachment" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/imageAttachment"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:contentDescription="@null"
+                            android:src="@drawable/ic_attachment" />
+
+                        <TextView
+                            android:id="@+id/buttonAttachment"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="8dp"
+                            android:text="@string/attachment"
+                            android:textSize="18sp" />
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvCalendarTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="36dp"
+                android:text="@string/date_amp_time"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/lnAttachment" />
+
+            <LinearLayout
+                android:id="@+id/lnCalendar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_rounded_stroke_grey_8"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="4dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvCalendarTitle">
+
+                <TextView
+                    android:id="@+id/buttonAddCalendar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:background="@drawable/bg_greybg_rounded_8"
+                    android:text="@string/add_calendar"
+                    android:textColor="@color/color_text_secondary_dark"
+                    android:textSize="18sp" />
+
+                <ImageView
+                    android:id="@+id/imageCalendar"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginHorizontal="8dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_calendar_outline" />
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/textTime"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:ellipsize="end"
+                android:textColor="@color/color_menu_text_default"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="@id/lnCalendar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/lnCalendar"
+                app:layout_constraintTop_toTopOf="@id/lnCalendar"
+                tools:text="04:54" />
+
+            <ImageView
+                android:id="@+id/imageReminder"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginTop="36dp"
+                android:src="@drawable/ic_reminder"
+                app:layout_constraintStart_toStartOf="@id/lnCalendar"
+                app:layout_constraintTop_toBottomOf="@id/lnCalendar" />
+
+            <TextView
+                android:id="@+id/textReminder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="@string/reminder"
+                android:textColor="@color/color_text_secondary_dark"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="@+id/imageReminder"
+                app:layout_constraintStart_toEndOf="@+id/imageReminder"
+                app:layout_constraintTop_toTopOf="@+id/imageReminder" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/switchReminder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:thumb="@drawable/custom_thumb"
+                app:layout_constraintBottom_toBottomOf="@id/textReminder"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/textReminder"
+                app:track="@drawable/custom_track" />
+
+            <TextView
+                android:id="@+id/textReminderTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/color_menu_text_default"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@id/textReminder"
+                app:layout_constraintTop_toBottomOf="@id/textReminder" />
+
+            <ImageView
+                android:id="@+id/imageRepeat"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginTop="36dp"
+                android:layout_marginBottom="150dp"
+                android:src="@drawable/ic_repeat"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@id/imageReminder"
+                app:layout_constraintTop_toBottomOf="@id/textReminderTime"
+                app:layout_constraintVertical_bias="0" />
+
+            <TextView
+                android:id="@+id/textRepeat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="@string/repeat"
+                android:textColor="@color/color_text_secondary_dark"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="@+id/imageRepeat"
+                app:layout_constraintStart_toEndOf="@+id/imageRepeat"
+                app:layout_constraintTop_toTopOf="@+id/imageRepeat" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/switchRepeat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:thumb="@drawable/custom_thumb"
+                app:layout_constraintBottom_toBottomOf="@id/textRepeat"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/textRepeat"
+                app:track="@drawable/custom_track" />
+
+            <TextView
+                android:id="@+id/textRepeatTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/color_menu_text_default"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@id/textRepeat"
+                app:layout_constraintTop_toBottomOf="@id/textRepeat" />
+
+
+            <ImageView
+                android:id="@+id/imageDone"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:layout_marginTop="64dp"
+                android:src="@drawable/ic_mark_as_done"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textRepeatTime" />
+
+            <View
+                android:id="@+id/viewIndicatorBottom"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="64dp"
+                android:background="@color/color_border_grey"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/imageDone" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/layoutAds"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginVertical="8dp"
+        android:visibility="gone"
+        app:cardBackgroundColor="@android:color/transparent"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_bias="1">
+
+        <com.google.android.gms.ads.nativead.NativeAdView
+            android:id="@+id/adView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_white_stroke_grey_border_rounded_8"
+            android:visibility="visible">
+
+            <com.faltenreich.skeletonlayout.SkeletonLayout
+                android:id="@+id/skeletonLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layoutContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="visible">
+
+                    <Button
+                        android:id="@+id/ad_call_to_action"
+                        style="@style/Widget.AppCompat.Button.Borderless"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:background="@drawable/bg_primary_rounded_16"
+                        android:textColor="@android:color/white"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/imageContent" />
+
+                    <ImageView
+                        android:id="@+id/imageContent"
+                        android:layout_width="0dp"
+                        android:layout_height="150dp"
+                        android:layout_marginHorizontal="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="16dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/ad_body" />
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cardIcon"
+                        android:layout_width="56dp"
+                        android:layout_height="56dp"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginTop="28dp"
+                        android:visibility="visible"
+                        app:cardBackgroundColor="@android:color/transparent"
+                        app:cardCornerRadius="4dp"
+                        app:cardElevation="0dp"
+                        app:layout_constraintBottom_toBottomOf="@id/ad_body"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <ImageView
+                            android:id="@+id/imageIcon"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:contentDescription="@string/ads_id" />
+                    </androidx.cardview.widget.CardView>
+
+                    <TextView
+                        android:id="@+id/ad_headline"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="24dp"
+                        android:layout_marginEnd="8dp"
+                        android:ellipsize="end"
+                        android:lines="1"
+                        android:textColor="@color/color_menu_text_default"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/cardIcon"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="Hoen asnd skn sdn lsa fl dsnf ks" />
+
+                    <TextView
+                        android:id="@+id/ad_body"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:ellipsize="end"
+                        android:gravity="center_vertical"
+                        android:lines="1"
+                        android:paddingStart="0dp"
+                        android:paddingEnd="8dp"
+                        android:paddingBottom="20dp"
+                        android:textColor="?attr/colorPrimary"
+                        android:textSize="12sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toEndOf="@id/cardIcon"
+                        app:layout_constraintTop_toBottomOf="@id/ad_headline"
+                        tools:text="Hoen asnd skn sd fhdsjk fhdsjf dskjf dskjf hdskjf kjdshf kjds fn lsahfjk d" />
+
+                    <TextView
+                        android:id="@+id/imageAdDesc"
+                        android:layout_width="32dp"
+                        android:layout_height="wrap_content"
+                        android:background="@color/color_mine_yellow"
+                        android:gravity="center"
+                        android:padding="4dp"
+                        android:text="@string/ad"
+                        android:textColor="@android:color/white"
+                        android:textSize="12sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.faltenreich.skeletonlayout.SkeletonLayout>
+
+            <TextView
+                android:id="@+id/imageAdDescLoading"
+                android:layout_width="32dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="4dp"
+                android:text="@string/ad"
+                android:textColor="@color/color_text_secondary"
+                android:textSize="12sp"
+                android:translationZ="6dp"
+                app:layout_constraintBottom_toBottomOf="@id/cardIcon"
+                app:layout_constraintStart_toEndOf="@id/cardIcon" />
+        </com.google.android.gms.ads.nativead.NativeAdView>
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -400,6 +400,19 @@ class NewTaskViewModel @Inject constructor(private val repository: TaskRepositor
             if (_selectedDate.value != null) {
                 calendar = Calendar.getInstance().apply { time = _selectedDate.value!! }
             }
+
+            if (_selectedHour.value == -1){
+                if (calendar != null) {
+                    _selectedHour.value = calendar.time.hours
+                }
+            }
+
+            if (_selectedMinute.value == -1){
+                if (calendar != null) {
+                    _selectedMinute.value = calendar.time.minutes
+                }
+            }
+
             calendar?.apply {
                 set(HOUR_OF_DAY, if (_selectedHour.value == -1) 0 else _selectedHour.value)
                 set(MINUTE, if (_selectedMinute.value == -1) 0 else _selectedMinute.value)

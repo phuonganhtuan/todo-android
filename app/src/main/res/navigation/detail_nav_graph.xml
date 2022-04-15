@@ -9,7 +9,7 @@
         android:id="@+id/TaskDetailFragment"
         android:name="com.trustedapp.todolist.planner.reminders.screens.taskdetail.TaskDetailFragment"
         android:label="@string/task_detail"
-        tools:layout="@layout/fragment_task_detail" >
+        tools:layout="@layout/fragment_task_detail">
 
         <action
             android:id="@+id/toSelectAttachment"
@@ -25,17 +25,19 @@
 
         <action
             android:id="@+id/toDeleteTask"
-            app:destination="@id/DeleteTaskFragment"/>
+            app:destination="@id/DeleteTaskFragment" />
 
         <action
             android:id="@+id/toBookmark"
-            app:destination="@id/BookmarkFragment"/>
+            app:destination="@id/BookmarkFragment" />
 
-        <action android:id="@+id/toAddReminderDetail"
-            app:destination="@id/AddReminderFragment"/>
+        <action
+            android:id="@+id/toAddReminderDetail"
+            app:destination="@id/AddReminderFragment" />
 
-        <action android:id="@+id/toAddRepeatDetail"
-            app:destination="@id/AddRepeatFragment"/>
+        <action
+            android:id="@+id/toAddRepeatDetail"
+            app:destination="@id/AddRepeatFragment" />
         <action
             android:id="@+id/toRatingFragment"
             app:destination="@id/ratingDialogFragment2" />
@@ -45,7 +47,7 @@
         android:id="@+id/SelectAttachmentFragment"
         android:name="com.trustedapp.todolist.planner.reminders.screens.newtask.attachment.SelectAttachmentDialogFragment"
         android:label="@string/select_attachment"
-        tools:layout="@layout/layout_select_attachment" >
+        tools:layout="@layout/layout_select_attachment">
 
         <action
             android:id="@+id/openAttachmentBottomDialog"
@@ -58,11 +60,13 @@
         android:label="@string/add_calendar"
         tools:layout="@layout/layout_add_calendar">
 
-        <action android:id="@+id/toAddReminder"
-            app:destination="@id/AddReminderFragment"/>
+        <action
+            android:id="@+id/toAddReminder"
+            app:destination="@id/AddReminderFragment" />
 
-        <action android:id="@+id/toAddRepeat"
-            app:destination="@id/AddRepeatFragment"/>
+        <action
+            android:id="@+id/toAddRepeat"
+            app:destination="@id/AddRepeatFragment" />
     </dialog>
 
     <dialog
@@ -75,13 +79,13 @@
         android:id="@+id/DeleteTaskFragment"
         android:name="com.trustedapp.todolist.planner.reminders.screens.taskdetail.DeleteTaskDialogFragment"
         android:label="@string/delete_repeat_task_reminder"
-        tools:layout="@layout/layout_delete_task"/>
+        tools:layout="@layout/layout_delete_task" />
 
     <dialog
         android:id="@+id/BookmarkFragment"
         android:name="com.trustedapp.todolist.planner.reminders.screens.taskdetail.bookmark.BookmarkDialogFragment"
         android:label="@string/bookmark"
-        tools:layout="@layout/layout_bookmark"/>
+        tools:layout="@layout/layout_bookmark" />
 
     <dialog
         android:id="@+id/AddReminderFragment"
@@ -97,21 +101,57 @@
         android:id="@+id/AddRepeatFragment"
         android:name="com.trustedapp.todolist.planner.reminders.screens.newtask.calendar.SetRepeatAtDialog"
         android:label="@string/repeat"
-        tools:layout="@layout/fragment_set_repeat"/>
+        tools:layout="@layout/fragment_set_repeat" />
 
     <dialog
         android:id="@+id/selectAttachmentBottomDialog"
         android:name="com.trustedapp.todolist.planner.reminders.screens.newtask.attachment.SelectAttachmentBottomDialog"
         android:label="SelectAttachmentBottomDialog"
-        tools:layout="@layout/layout_select_attachment_list"/>
+        tools:layout="@layout/layout_select_attachment_list" />
     <dialog
         android:id="@+id/CustomReminderTime"
         android:name="com.trustedapp.todolist.planner.reminders.screens.newtask.calendar.SetCustomReminderTime"
         android:label="SetCustomReminderTime"
-        tools:layout="@layout/fragment_set_custom_reminder_time"/>
+        tools:layout="@layout/fragment_set_custom_reminder_time" />
     <dialog
         android:id="@+id/ratingDialogFragment2"
         android:name="com.trustedapp.todolist.planner.reminders.screens.settings.rating.RatingDialogFragment"
         android:label="RatingDialogFragment"
-        tools:layout="@layout/fragment_rating"/>
+        tools:layout="@layout/fragment_rating" />
+    <fragment
+        android:id="@+id/TaskDetailV1Fragment"
+        android:name="com.trustedapp.todolist.planner.reminders.screens.taskdetail.TaskDetailV1Fragment"
+        android:label="TaskDetailV1Fragment"
+        tools:layout="@layout/fragment_task_detail_v1">
+        <action
+            android:id="@+id/toSelectAttachment"
+            app:destination="@id/SelectAttachmentFragment" />
+
+        <action
+            android:id="@+id/toAddCalendar"
+            app:destination="@id/AddCalendarBottomSheet" />
+
+        <action
+            android:id="@+id/toCreateCat"
+            app:destination="@id/AddCategoryFragment" />
+
+        <action
+            android:id="@+id/toDeleteTask"
+            app:destination="@id/DeleteTaskFragment" />
+
+        <action
+            android:id="@+id/toBookmark"
+            app:destination="@id/BookmarkFragment" />
+
+        <action
+            android:id="@+id/toAddReminderDetail"
+            app:destination="@id/AddReminderFragment" />
+
+        <action
+            android:id="@+id/toAddRepeatDetail"
+            app:destination="@id/AddRepeatFragment" />
+        <action
+            android:id="@+id/toRatingFragment"
+            app:destination="@id/ratingDialogFragment2" />
+    </fragment>
 </navigation>

@@ -1,13 +1,13 @@
-package com.trustedapp.todolist.planner.reminders.screens.newtask
+package com.trustedapp.todolist.planner.reminders.screens.taskdetail
 
 import android.annotation.SuppressLint
-import android.content.Context.LAYOUT_INFLATER_SERVICE
+import android.content.Context
 import android.graphics.Color
+import android.graphics.PorterDuff
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.PopupWindow
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
@@ -16,6 +16,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.ads.control.ads.Admod
 import com.ads.control.funtion.AdCallback
@@ -28,12 +29,16 @@ import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.trustedapp.todolist.planner.reminders.R
 import com.trustedapp.todolist.planner.reminders.base.BaseFragment
 import com.trustedapp.todolist.planner.reminders.data.models.entity.CategoryEntity
-import com.trustedapp.todolist.planner.reminders.databinding.FragmentNewTaskBinding
+import com.trustedapp.todolist.planner.reminders.databinding.FragmentTaskDetailV1Binding
+import com.trustedapp.todolist.planner.reminders.screens.newtask.NewTaskViewModel
+import com.trustedapp.todolist.planner.reminders.screens.newtask.ReminderTimeEnum
+import com.trustedapp.todolist.planner.reminders.screens.newtask.RepeatAtEnum
 import com.trustedapp.todolist.planner.reminders.screens.newtask.category.OnCatInteractListener
 import com.trustedapp.todolist.planner.reminders.screens.newtask.category.SelectCategoryAdapter
-import com.trustedapp.todolist.planner.reminders.screens.newtask.subtask.OnSubTaskInteract
-import com.trustedapp.todolist.planner.reminders.screens.newtask.subtask.SubTaskAdapter
 import com.trustedapp.todolist.planner.reminders.screens.taskdetail.attachment.AttachmentAdapter
+import com.trustedapp.todolist.planner.reminders.screens.taskdetail.subtasks.ItemMoveCallback
+import com.trustedapp.todolist.planner.reminders.screens.taskdetail.subtasks.OnSubTaskDetailInteract
+import com.trustedapp.todolist.planner.reminders.screens.taskdetail.subtasks.SubTaskDetailAdapter
 import com.trustedapp.todolist.planner.reminders.utils.*
 import com.trustedapp.todolist.planner.reminders.utils.helper.getCatName
 import com.trustedapp.todolist.planner.reminders.utils.helper.getCategoryColor
@@ -44,21 +49,26 @@ import kotlinx.coroutines.flow.filter
 import java.util.*
 import javax.inject.Inject
 
+
 @AndroidEntryPoint
-class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
+class TaskDetailV1Fragment : BaseFragment<FragmentTaskDetailV1Binding>() {
 
     private val viewModel: NewTaskViewModel by activityViewModels()
 
-    private var categoriesPopup: PopupWindow? = null
-
     @Inject
-    lateinit var subTaskAdapter: SubTaskAdapter
+    lateinit var subTaskAdapter: SubTaskDetailAdapter
+
+    private var categoriesPopup: PopupWindow? = null
 
     @Inject
     lateinit var categoryAdapter: SelectCategoryAdapter
 
     @Inject
     lateinit var attachmentAdapter: AttachmentAdapter
+
+//    private var listAnimator: RecyclerView.ItemAnimator? = null
+
+    var touchHelper: ItemTouchHelper? = null
 
     private var isLoadingAds: Boolean = false
     private var interstitialCreateAd: InterstitialAd? = null
@@ -67,7 +77,7 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
     override fun inflateViewBinding(
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ) = FragmentNewTaskBinding.inflate(layoutInflater, container, false)
+    ) = FragmentTaskDetailV1Binding.inflate(layoutInflater, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -75,74 +85,37 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
         initData()
         setupEvents()
         observeData()
-        prepareInterCreate()
-    }
-
-    private fun initData() {
-        viewModel.setIsNewTask(requireContext(), true)
-        viewModel.addSubTask()
-        validateTask()
+//        prepareInterUpdate()
     }
 
     private fun initViews() = with(viewBinding) {
         recyclerSubTasks.adapter = subTaskAdapter
         recyclerAttachment.adapter = attachmentAdapter
+//        listAnimator = recyclerSubTasks.itemAnimator
+        recyclerSubTasks.itemAnimator = null
         recyclerAttachment.itemAnimator = null
+        editNote.boldWhenFocus()
         hideDateTime()
-        val extendedViews = listOf(
-            layoutSubTask,
-            editNote,
-            imageCategory,
-            textSelectCategory,
-            textCategory,
-            imageCalendar,
-            buttonAddCalendar,
-            imageTime,
-            textTime,
-            imageReminder,
-            textReminder,
-            switchReminder,
-            textReminderTime,
-            imageRepeat,
-            textRepeat,
-            switchRepeat,
-            textRepeatTime,
-            imageAttachment,
-            buttonAttachment,
-            recyclerAttachment
-        )
-        if (Firebase.remoteConfig.getString(SPUtils.KEY_NEW_TASK_NEW) == "v1") {
-            textDetail.gone()
-            imageDetail.gone()
-            imageDetail.setImageResource(R.drawable.ic_arrow_down_16)
-            extendedViews.gone()
-        } else {
-            textDetail.gone()
-            imageDetail.gone()
-            extendedViews.gone()
-        }
+
+    }
+
+    private fun initData() {
+
+    }
+
+    private fun validateTask() {
+        viewModel.validate(viewBinding.textTaskName.text.toString().trim())
     }
 
     private fun setupEvents() = with(viewBinding) {
-        buttonNewSubTask.setOnClickListener {
-            viewModel.addSubTask()
-        }
-        buttonAddCalendar.setOnClickListener {
-            findNavController().navigate(R.id.toAddCalendar)
+        touchHelper = ItemTouchHelper(ItemMoveCallback(subTaskAdapter))
+        touchHelper?.attachToRecyclerView(recyclerSubTasks)
+        textCategory.setOnClickListener {
+            categoriesPopup?.showAsDropDown(it, -50, -20)
         }
         buttonAttachment.setOnClickListener {
             findNavController().navigate(R.id.toSelectAttachment)
         }
-        textCategory.setOnClickListener {
-            categoriesPopup?.showAsDropDown(it, -50, -20)
-        }
-        editTaskName.boldWhenFocus()
-        editNote.boldWhenFocus()
-        subTaskAdapter.setOnTaskListener(object : OnSubTaskInteract {
-            override fun onTitleChanged(index: Int, title: String) {
-                viewModel.updateSubTask(index, title)
-            }
-        })
         categoryAdapter.setOnCatListener(object : OnCatInteractListener {
             override fun onCatClick(index: Int) {
                 if (index == viewModel.categories.value.size) {
@@ -153,59 +126,60 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
                 categoriesPopup?.dismiss()
             }
         })
+        attachmentAdapter.onAttachmentRemoveListener = {
+            viewModel.removeAttachment(it)
+        }
+        subTaskAdapter.setOnTaskListener(object : OnSubTaskDetailInteract {
+            override fun onStateChange(index: Int, state: Boolean) {
+                viewModel.updateSubTaskState(index, state)
+            }
+
+            override fun onTitleChanged(index: Int, title: String) {
+                viewModel.updateSubTaskTitle(index, title)
+            }
+
+            override fun startDrag(viewHolder: RecyclerView.ViewHolder) {
+//                recyclerSubTasks.itemAnimator = listAnimator
+                touchHelper?.startDrag(viewHolder)
+            }
+
+            override fun endDrag() {
+//                recyclerSubTasks.itemAnimator = null
+                viewModel.setSubTasks(subTaskAdapter.newOrders)
+            }
+        })
+        buttonNewSubTask.setOnClickListener {
+            layoutDetail.clearFocus()
+            viewModel.addSubTask()
+        }
         switchRepeat.setOnClickListener {
             onCheckChangeRepeat()
         }
         switchReminder.setOnClickListener {
             onCheckChangeReminder()
         }
-//        buttonCreateTask.setOnClickListener {
-//            loadInterCreate()
-//        }
-        editTaskName.addTextChangedListener {
-            validateTask()
+        buttonAddCalendar.setOnClickListener {
+            findNavController().navigate(R.id.toAddCalendar)
         }
-        attachmentAdapter.onAttachmentRemoveListener = {
-            viewModel.removeAttachment(it)
+        textTaskName.addTextChangedListener {
+            validateTask()
         }
         attachmentAdapter.onAttachmentClickListener = {
             val attachment = viewModel.attachments.value[it]
             FileUtils.openAttachment(requireContext(), attachment)
         }
-        hideKeyboardTouchOutside(layoutNewTask)
-        textDetail.setOnClickListener {
-            viewModel.switchShortMode()
-        }
-    }
-
-    private fun validateTask() {
-        viewModel.validate(viewBinding.editTaskName.text.toString().trim())
+        hideKeyboardTouchOutside(layoutDetail)
     }
 
     @SuppressLint("UnsafeRepeatOnLifecycleDetector")
     private fun observeData() = with(viewModel) {
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                subtasks.collect {
-                    validateTask()
-                    subTaskAdapter.submitList(it)
-                }
-            }
-        }
-        lifecycleScope.launchWhenStarted {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                canAddSubTask.collect {
-                    validateTask()
-                    if (it) viewBinding.buttonNewSubTask.show() else viewBinding.buttonNewSubTask.gone()
-                }
-            }
-        }
-        lifecycleScope.launchWhenStarted {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                selectedCatIndex.collect {
-                    validateTask()
+                task.collect {
                     viewBinding.apply {
-                        if (it == -1) {
+                        textTaskName.setText(it.task.title)
+                        editNote.setText(it.detail.note)
+                        if (it.category == null) {
                             textCategory.setTextColor(
                                 ContextCompat.getColor(
                                     requireContext(),
@@ -213,6 +187,51 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
                                 )
                             )
                             textCategory.text = getString(R.string.no_category)
+                        } else {
+                            val catColor = getCategoryColor(requireContext(), it.category)
+                            textCategory.setTextColor(catColor)
+                            textCategory.text = getCatName(requireContext(), it.category!!.name)
+                            selectCat(categories.value.indexOf(it.category))
+                        }
+                        if (it.task.isDone) imageDone.show() else imageDone.gone()
+                        if (it.task.calendar == null) {
+                            imageCalendar.gone()
+                        } else {
+                            imageCalendar.show()
+                        }
+                    }
+                }
+            }
+        }
+        lifecycleScope.launchWhenStarted {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                attachments.collect {
+                    attachmentAdapter.submitList(it)
+                }
+            }
+        }
+        lifecycleScope.launchWhenStarted {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                subtasks.collect {
+                    viewBinding.layoutDetail.clearFocus()
+                    subTaskAdapter.newOrders = it.toMutableList()
+                    subTaskAdapter.submitList(it)
+                }
+            }
+        }
+        lifecycleScope.launchWhenStarted {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                isEditing.collect {
+                    if (it) this@TaskDetailV1Fragment.toEditMode() else this@TaskDetailV1Fragment.toViewMode()
+                }
+            }
+        }
+        lifecycleScope.launchWhenStarted {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                selectedCatIndex.collect {
+                    viewBinding.apply {
+                        if (it == -1) {
+                            return@apply
                         } else {
                             textCategory.setTextColor(
                                 getCategoryColor(
@@ -223,9 +242,9 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
                             textCategory.text =
                                 getCatName(requireContext(), categories.value[it].name)
                         }
+                        categoryAdapter.selectedIndex = it
+                        categoryAdapter.notifyDataSetChanged()
                     }
-                    categoryAdapter.selectedIndex = it
-                    categoryAdapter.notifyDataSetChanged()
                 }
             }
         }
@@ -243,6 +262,9 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
                     }
                     categoryAdapter.submitList(listCats)
                     setupCatsPopup(listCats)
+                    task.value.category?.let { cat ->
+                        selectCat(categories.value.indexOf(cat))
+                    }
                 }
             }
         }
@@ -250,47 +272,26 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 selectedDate.collect {
                     validateTask()
-                    if (it != null) {
-                        viewBinding.buttonAddCalendar.text =
-                            DateTimeUtils.getComparableDateString(it)
-                    } else if (_hasTime.value) {
-                        viewBinding.buttonAddCalendar.text =
-                            DateTimeUtils.getComparableDateString(Calendar.getInstance().time)
-                    }
+                    viewBinding.buttonAddCalendar.text = DateTimeUtils.getComparableDateString(it)
                 }
             }
         }
-
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                _hasTime.collect {
-                    if (selectedDate.value == null && it) {
-                        viewBinding.buttonAddCalendar.text =
-                            DateTimeUtils.getComparableDateString(Calendar.getInstance().time)
+                selectedHour.filter { it > -1 }
+                    .combine(selectedMinute.filter { it > -1 }) { hour, minute ->
+                        val date = Calendar.getInstance().apply {
+                            set(Calendar.HOUR_OF_DAY, hour)
+                            set(Calendar.MINUTE, minute)
+                        }
+                        DateTimeUtils.getHourMinuteFromMillisecond(date.timeInMillis)
+                    }.collect {
+                        validateTask()
+                        showDateTime()
+                        viewBinding.textTime.text = it
                     }
-                }
             }
         }
-
-//        lifecycleScope.launchWhenStarted {
-//            repeatOnLifecycle(Lifecycle.State.STARTED) {
-//                selectedHour.filter { it > -1 }
-//                    .combine(selectedMinute.filter { it > -1 }) { hour, minute ->
-//                        val date = Calendar.getInstance().apply {
-//                            set(Calendar.HOUR_OF_DAY, hour)
-//                            set(Calendar.MINUTE, minute)
-//                        }
-//                        DateTimeUtils.getHourMinuteFromMillisecond(date.timeInMillis)
-//                    }.collect {
-//                        viewBinding.buttonAddCalendar.text =
-//                            DateTimeUtils.getComparableDateString(selectedDate.value)
-//                        validateTask()
-//                        showDateTime()
-//                        viewBinding.textTime.text = it
-//                    }
-//            }
-//        }
-
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 customReminderTime.filter { it > 0 }
@@ -367,26 +368,8 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
         }
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                validated.collect {
-                    viewBinding.buttonCreateTask.isEnabled = it
-                }
-            }
-        }
-        lifecycleScope.launchWhenStarted {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                attachments.collect {
-                    attachmentAdapter.submitList(it)
-                }
-            }
-        }
-
-        lifecycleScope.launchWhenStarted {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                isPressedCreateTask.collect {
-                    if (it) {
-                        loadInterCreate()
-                        setIsPressCreateTask(false)
-                    }
+                isSaving.collect {
+                    if (it) updateTaskCallback()
                 }
             }
         }
@@ -396,54 +379,6 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
                 NetworkState.isHasInternet.collect {
 //                    loadBannerAds()
                     loadAds()
-                }
-            }
-        }
-
-        lifecycleScope.launchWhenStarted {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                isShortMode.collect {
-                    viewBinding.apply {
-
-                        val extendedViews = listOf(
-                            layoutSubTask,
-                            editNote,
-                            imageCategory,
-                            textSelectCategory,
-                            textCategory,
-                            imageCalendar,
-                            buttonAddCalendar,
-                            imageTime,
-                            textTime,
-                            imageReminder,
-                            textReminder,
-                            switchReminder,
-                            textReminderTime,
-                            imageRepeat,
-                            textRepeat,
-                            switchRepeat,
-                            textRepeatTime,
-                            imageAttachment,
-                            buttonAttachment,
-                            recyclerAttachment
-                        )
-
-                        if (Firebase.remoteConfig.getString(SPUtils.KEY_NEW_TASK_NEW) == "v1") {
-                            textDetail.gone()
-                            imageDetail.gone()
-                            if (it) {
-                                imageDetail.setImageResource(R.drawable.ic_arrow_down_16)
-                                extendedViews.gone()
-                            } else {
-                                imageDetail.setImageResource(R.drawable.ic_arrow_up_16)
-                                extendedViews.gone()
-                            }
-                        } else {
-                            textDetail.gone()
-                            imageDetail.gone()
-                            extendedViews.gone()
-                        }
-                    }
                 }
             }
         }
@@ -465,12 +400,81 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
         }
     }
 
+    private fun toViewMode() = with(viewBinding) {
+        subTaskAdapter.isEditing = false
+        attachmentAdapter.isEditing = false
+        textTaskName.isEnabled = false
+        attachmentAdapter.notifyDataSetChanged()
+        subTaskAdapter.notifyDataSetChanged()
+        editNote.isEnabled = false
+        editNote.background.setColorFilter(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.color_bg_main_grey
+            ), PorterDuff.Mode.SRC_ATOP
+        )
+        textCategory.apply {
+            isClickable = false
+            setCompoundDrawablesWithIntrinsicBounds(null, null, null, null)
+        }
+        buttonAttachment.isEnabled = false
+        buttonNewSubTask.gone()
+        buttonAddCalendar.isEnabled = false
+        switchReminder.isEnabled = false
+        switchRepeat.isEnabled = false
+        if (viewModel.task.value.detail.note.isEmpty()) {
+            editNote.gone()
+        } else {
+            editNote.show()
+        }
+        if (viewModel.task.value.attachments.isNullOrEmpty()) {
+            imageAttachment.gone()
+            buttonAttachment.gone()
+        } else {
+            imageAttachment.show()
+            buttonAttachment.show()
+        }
+    }
+
+    private fun toEditMode() = with(viewBinding) {
+        validateTask()
+        imageAttachment.show()
+        buttonAttachment.show()
+        subTaskAdapter.isEditing = true
+        attachmentAdapter.isEditing = true
+        textTaskName.isEnabled = true
+        attachmentAdapter.notifyDataSetChanged()
+        subTaskAdapter.notifyDataSetChanged()
+        editNote.background.setColorFilter(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.color_border_grey
+            ), PorterDuff.Mode.SRC_ATOP
+        )
+        editNote.show()
+        editNote.isEnabled = true
+        textCategory.apply {
+            isClickable = true
+            setCompoundDrawablesWithIntrinsicBounds(
+                null,
+                null,
+                ContextCompat.getDrawable(requireContext(), R.drawable.ic_arrow_down_16),
+                null
+            )
+        }
+        buttonAttachment.isEnabled = true
+        buttonNewSubTask.show()
+        buttonAddCalendar.isEnabled = true
+        switchReminder.isEnabled = true
+        switchRepeat.isEnabled = true
+    }
+
     private fun createNewCategory() {
         findNavController().navigate(R.id.toCreateCat)
     }
 
     private fun setupCatsPopup(cats: List<CategoryEntity>) {
-        val inflater = requireContext().getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val inflater = activity?.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val popupView = inflater.inflate(R.layout.layout_select_category, null)
         popupView.elevation = 12f
 
@@ -480,13 +484,12 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
             PopupWindow(
                 popupView,
                 480,
-                if (cats.size <= 5) WRAP_CONTENT else 600,
+                if (cats.size <= 5) ViewGroup.LayoutParams.WRAP_CONTENT else 600,
                 true
             )
     }
 
     private fun showDateTime() = with(viewBinding) {
-        imageTime.show()
         textTime.show()
         imageReminder.show()
         textReminder.show()
@@ -498,7 +501,6 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
     }
 
     private fun hideDateTime() = with(viewBinding) {
-        imageTime.gone()
         textTime.gone()
         imageReminder.gone()
         textReminder.gone()
@@ -524,11 +526,13 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
         } else {
             textReminderTime.gone()
             viewModel.onCheckChangeReminder(false)
+//            viewModel.resetRepeatDefault()
+//            viewModel.resetReminderDefault()
         }
     }
 
     private fun onClickReminder() {
-        findNavController().navigate(R.id.toAddReminderOut)
+        findNavController().navigate(R.id.toAddReminderDetail)
     }
 
     private fun onCheckChangeRepeat() = with(viewBinding) {
@@ -550,7 +554,7 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
     }
 
     private fun onClickRepeat() {
-        findNavController().navigate(R.id.toAddRepeatOut)
+        findNavController().navigate(R.id.toAddRepeatDetail)
     }
 
     private fun isAllowInterNewTaskAds(): Boolean {
@@ -565,15 +569,7 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
         return false
     }
 
-    private fun createTaskCallback() = with(viewBinding) {
-        viewModel.createTask(
-            requireContext(),
-            editTaskName.text.toString().trim(),
-            editNote.text.toString().trim()
-        )
-    }
-
-    private fun prepareInterCreate() {
+    private fun prepareInterUpdate() {
 
 //        isLoadingAds = true
         Admod.getInstance().getInterstitalAds(
@@ -586,21 +582,21 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
             })
     }
 
-    private fun loadInterCreate() {
+    private fun loadInterUpdate() {
         if (!Firebase.remoteConfig.getBoolean(SPUtils.KEY_INTER_INSERT)) {
             isLoadingAds = false
-            createTaskCallback()
+            updateTaskCallback()
             return
         }
         if (!isAllowInterNewTaskAds()) {
             isLoadingAds = false
-            createTaskCallback()
+            updateTaskCallback()
             return
         }
 
         if (context?.isInternetAvailable() == false) {
             isLoadingAds = false
-            createTaskCallback()
+            updateTaskCallback()
             return
         }
 
@@ -612,26 +608,34 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
                 object : AdCallback() {
                     override fun onAdClosed() {
                         isLoadingAds = false
-                        createTaskCallback()
+                        updateTaskCallback()
                     }
 
                     override fun onAdLeftApplication() {
                         super.onAdLeftApplication()
                         isLoadingAds = false
-                        createTaskCallback()
+                        updateTaskCallback()
 
                     }
 
                     override fun onAdFailedToLoad(i: LoadAdError?) {
                         super.onAdFailedToLoad(i)
                         isLoadingAds = false
-                        createTaskCallback()
+                        updateTaskCallback()
                     }
                 })
     }
 
+    private fun updateTaskCallback() = with(viewBinding) {
+        viewModel.updateTask(
+            requireContext(),
+            textTaskName.text.toString().trim(),
+            editNote.text.toString().trim()
+        )
+    }
+
     private fun loadAds() = with(viewBinding) {
-        if (!FirebaseRemoteConfig.getInstance().getBoolean(SPUtils.KEY_NATIVE_CREATE_TASK)) {
+        if (!FirebaseRemoteConfig.getInstance().getBoolean(SPUtils.KEY_NATIVE_EDIT_TASK)) {
             layoutAds.gone()
             return@with
         }
@@ -643,7 +647,7 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
         Admod.getInstance()
             .loadNativeAd(
                 activity,
-                getString(R.string.native_create_task_ads_id),
+                getString(R.string.native_edit_task_ads_id),
                 object : AdCallback() {
                     override fun onUnifiedNativeAdLoaded(unifiedNativeAd: NativeAd) {
                         nativeAds = unifiedNativeAd
