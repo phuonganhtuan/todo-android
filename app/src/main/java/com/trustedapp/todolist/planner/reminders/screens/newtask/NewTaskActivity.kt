@@ -12,6 +12,7 @@ import com.ads.control.ads.Admod
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.trustedapp.todolist.planner.reminders.R
+import com.trustedapp.todolist.planner.reminders.appstate.AppState
 import com.trustedapp.todolist.planner.reminders.base.BaseActivity
 import com.trustedapp.todolist.planner.reminders.databinding.ActivityNewTaskBinding
 import com.trustedapp.todolist.planner.reminders.screens.home.HomeActivity
@@ -107,6 +108,7 @@ class NewTaskActivity : BaseActivity<ActivityNewTaskBinding>() {
                         } else {
                             finish()
                         }
+                        AppState.setIsCreatedTask(true)
                     }
                 }
             }
@@ -141,5 +143,6 @@ class NewTaskActivity : BaseActivity<ActivityNewTaskBinding>() {
         }
         previousActivity.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         startActivity(previousActivity)
+
     }
 }

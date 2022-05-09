@@ -73,7 +73,7 @@
                             android:gravity="bottom"
                             android:text="Free app for reading PDF"
                             android:ellipsize="end"
-                            android:maxLines="1"
+                            android:maxLines="2"
                             android:textSize="15sp"
                             />
                     </LinearLayout>
@@ -92,6 +92,17 @@
                 android:textSize="18dp"
                 android:textStyle="bold" />
         </LinearLayout>
+        <TextView
+            android:id="@+id/imageAdDescLoading"
+            android:layout_width="32dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="4dp"
+            android:text="@string/ad"
+            android:textColor="@color/color_text_secondary"
+            android:textSize="12sp"
+            android:translationZ="6dp"
+            />
 
 <!--        <TextView style="@style/CustomTextViewAds" />-->
     </RelativeLayout>

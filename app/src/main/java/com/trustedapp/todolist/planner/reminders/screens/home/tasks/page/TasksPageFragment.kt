@@ -11,12 +11,14 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.ads.control.ads.Admod
 import com.ads.control.funtion.AdCallback
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.nativead.NativeAd
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.trustedapp.todolist.planner.reminders.R
+import com.trustedapp.todolist.planner.reminders.appstate.AppState
 import com.trustedapp.todolist.planner.reminders.base.BaseFragment
 import com.trustedapp.todolist.planner.reminders.data.models.model.TaskPageType
 import com.trustedapp.todolist.planner.reminders.databinding.FragmentTasksPageBinding
@@ -26,6 +28,7 @@ import com.trustedapp.todolist.planner.reminders.utils.Constants.KEY_TASK_ID
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
+import java.lang.Exception
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
@@ -77,7 +80,6 @@ class TasksPageFragment : BaseFragment<FragmentTasksPageBinding>() {
                 when (type) {
                     TaskPageType.TODAY -> {
                         todayTasks.collect {
-
                             adapter.submitList(it)
                             viewBinding.textTaskCount.text =
                                 "${requireContext().getStringByLocale(R.string.today_task)} (${it.count()})"
@@ -105,11 +107,27 @@ class TasksPageFragment : BaseFragment<FragmentTasksPageBinding>() {
             }
         }
 
+        lifecycleScope.launchWhenCreated {
+            NetworkState.isHasInternet.collect {
+//                    loadBannerAds()
+                updateAdsNativeWhenConnectInternet(it)
+            }
+        }
+
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                NetworkState.isHasInternet.collect {
-//                    loadBannerAds()
-                    updateAdsNativeWhenConnectInternet(it)
+                AppState.isCreatedTask.collect {
+                    if (it) {
+                        try {
+                            Handler(Looper.getMainLooper()).postDelayed({
+                                viewBinding.recyclerTasks.scrollToPosition(0)
+                            }, 200)
+                        } catch (exeption: Exception) {
+
+                        }
+                        AppState.setIsCreatedTask(false)
+                    }
+
                 }
             }
         }

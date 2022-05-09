@@ -10,7 +10,9 @@ import android.text.Html
 import android.text.Html.FROM_HTML_MODE_LEGACY
 import android.view.MenuItem
 import android.view.View
+import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.RelativeLayout
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -290,6 +292,10 @@ class HomeActivity : AppCompatActivity() {
                     supportFragmentManager,
                     RatingDialogFragment::class.java.simpleName
                 )
+            }else{
+                val exitDialog = ExitDialogFragment()
+                exitDialog.exitNativeAd = exitNativeAd
+                exitDialog.show(supportFragmentManager, ExitDialogFragment::class.java.simpleName)
             }
         } else {
             val exitDialog = ExitDialogFragment()
@@ -310,6 +316,7 @@ class HomeActivity : AppCompatActivity() {
 
     private fun loadBannerAds() = with(viewBinding) {
         if (Firebase.remoteConfig.getBoolean(SPUtils.KEY_BANNER) && isInternetAvailable()) {
+            include.findViewById<RelativeLayout>(R.id.ll_ads).findViewById<FrameLayout>(R.id.fl_shimemr).gone()
             include.visibility = View.VISIBLE
             Admod.getInstance()
                 .loadBanner(this@HomeActivity, getString(R.string.banner_ads_id))
@@ -319,12 +326,10 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun observeData() {
-        lifecycleScope.launchWhenStarted {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                NetworkState.isHasInternet.collect {
-                    loadBannerAds()
-                    loadExitAds()
-                }
+        lifecycleScope.launchWhenCreated {
+            NetworkState.isHasInternet.collect {
+                loadBannerAds()
+                loadExitAds()
             }
         }
     }

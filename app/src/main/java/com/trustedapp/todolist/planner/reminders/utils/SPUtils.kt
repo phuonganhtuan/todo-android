@@ -113,7 +113,7 @@ object SPUtils {
 
     fun getNumberNewTask(context: Context) =
         context.getSharedPreferences(TODO_SP_KEY, Context.MODE_PRIVATE)
-            .getInt(KEY_NUMBER_CREATE_TASK, -1)
+            .getInt(KEY_NUMBER_CREATE_TASK, 0)
 
     fun setNumberNewTask(context: Context, numberOfTask: Int) =
         context.getSharedPreferences(TODO_SP_KEY, Context.MODE_PRIVATE).edit()
