@@ -70,7 +70,7 @@
                             android:layout_weight="1"
                             android:background="@color/lightTransparent"
                             android:gravity="bottom"
-                            android:lines="1"
+                            android:maxLines="2"
                             android:textSize="10dp" />
                     </LinearLayout>
                 </LinearLayout>

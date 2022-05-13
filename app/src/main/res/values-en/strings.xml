@@ -233,4 +233,5 @@
     <string name="msg_dialog_exit">Are you sure you want to exit?</string>
     <string name="exit">Exit</string>
     <string name="details">Details</string>
+    <string name="this_action_can_contain_ads">This action can contain ads</string>
 </resources>

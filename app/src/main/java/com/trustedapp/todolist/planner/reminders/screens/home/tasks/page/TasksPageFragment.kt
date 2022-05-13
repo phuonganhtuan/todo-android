@@ -11,7 +11,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.ads.control.ads.Admod
 import com.ads.control.funtion.AdCallback
 import com.google.android.gms.ads.LoadAdError
@@ -28,7 +27,6 @@ import com.trustedapp.todolist.planner.reminders.utils.Constants.KEY_TASK_ID
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
-import java.lang.Exception
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
@@ -136,8 +134,10 @@ class TasksPageFragment : BaseFragment<FragmentTasksPageBinding>() {
     fun updateAdsNativeWhenConnectInternet(isInternet: Boolean) = with(viewBinding) {
         if (isInternet) {
             if (nativeAds != null) {
+                updateNativeAdsView(true)
                 updateNativeAdsView(false)
             } else {
+                updateNativeAdsView(true)
                 loadAds(false)
             }
         } else {
@@ -211,16 +211,22 @@ class TasksPageFragment : BaseFragment<FragmentTasksPageBinding>() {
         containerNativeAdSmall.visibility = View.VISIBLE
         layoutNativeAdsSmall.viewAdUnified.visibility = View.GONE
         layoutShimmerSmall.shimmerContainerNativeSmall.visibility = View.VISIBLE
+        layoutShimmerSmall.shimmerContainerNativeSmall.startShimmer()
         if (nativeAds != null && !isPrepare) {
             Handler(Looper.getMainLooper()).postDelayed({
-                layoutShimmerSmall.shimmerContainerNativeSmall.stopShimmer()
-                layoutShimmerSmall.shimmerContainerNativeSmall.visibility = View.GONE
-                Admod.getInstance()
-                    .populateUnifiedNativeAdView(
-                        nativeAds,
-                        layoutNativeAdsSmall.viewAdUnified
-                    )
-                layoutNativeAdsSmall.viewAdUnified.visibility = View.VISIBLE
+                try {
+                    layoutShimmerSmall.shimmerContainerNativeSmall.stopShimmer()
+                    layoutShimmerSmall.shimmerContainerNativeSmall.visibility = View.GONE
+                    Admod.getInstance()
+                        .populateUnifiedNativeAdView(
+                            nativeAds,
+                            layoutNativeAdsSmall.viewAdUnified
+                        )
+                    layoutNativeAdsSmall.viewAdUnified.visibility = View.VISIBLE
+                } catch (ex: Exception) {
+
+                }
+
             }, 500)
         }
     }

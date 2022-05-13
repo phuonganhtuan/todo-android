@@ -49,23 +49,25 @@
             android:layout_height="330dp"
             android:background="@drawable/bg_white_ripple_rounded_stroke_grey_8"
             android:orientation="vertical"
-            android:padding="8dp">
+            >
 
             <FrameLayout
                 android:id="@+id/fl_adplaceholder"
                 android:layout_width="match_parent"
                 android:layout_height="330dp"
+                android:padding="8dp"
                 android:orientation="vertical" />
 
             <include
                 android:id="@+id/layout_shimmerframe"
                 layout="@layout/layout_shimmerframe"
+                android:padding="8dp"
                 android:visibility="visible" />
 
             <include
                 android:id="@+id/layout_ads"
                 layout="@layout/frament_load_exit_ads"
-                android:visibility="gone" />
+                android:visibility="visible" />
         </FrameLayout>
 
         <androidx.appcompat.widget.AppCompatButton

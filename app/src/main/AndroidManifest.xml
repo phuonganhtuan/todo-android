@@ -51,7 +51,7 @@
             android:name=".screens.taskdetail.TaskDetailActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateVisible|adjustPan"
-            tools:ignore="LockedOrientationActivity" />/>
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".screens.newtask.NewTaskActivity"
             android:screenOrientation="portrait"

@@ -7,10 +7,13 @@ import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.lifecycle.lifecycleScope
+import com.google.android.play.core.review.ReviewManager
+import com.google.android.play.core.review.ReviewManagerFactory
 import com.trustedapp.todolist.planner.reminders.R
 import com.trustedapp.todolist.planner.reminders.base.BaseDialogFragment
 import com.trustedapp.todolist.planner.reminders.databinding.FragmentRatingBinding
@@ -29,6 +32,9 @@ class RatingDialogFragment : BaseDialogFragment<FragmentRatingBinding>() {
 
     var callBackWhenRate: (() -> Unit)? = null
 
+    private var manager: ReviewManager? = null
+
+    //    private val manager = activity?.let { FakeReviewManager(it) }
     override fun inflateViewBinding(
         container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -37,14 +43,17 @@ class RatingDialogFragment : BaseDialogFragment<FragmentRatingBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViews()
+        initData()
         setupEvents()
+    }
+
+    private fun initData() = with(viewBinding) {
+        manager = activity?.let { ReviewManagerFactory.create(it) }
     }
 
     private fun setupEvents() = with(viewBinding) {
         buttonRate.setOnClickListener {
             rate()
-            dismiss()
-            callBackWhenRate?.let { it1 -> it1() }
         }
         star1.setOnClickListener(::beginInputRating)
         star2.setOnClickListener(::beginInputRating)
@@ -68,24 +77,70 @@ class RatingDialogFragment : BaseDialogFragment<FragmentRatingBinding>() {
 
     private fun rate() = lifecycleScope.launch {
         if (currentRating < 4) {
-            dismiss()
+            callBackWhenRate?.let { it1 -> it1() }
         } else {
             try {
-                startActivity(
-                    Intent(
-                        Intent.ACTION_VIEW,
-                        Uri.parse("market://details?id=" + requireContext().packageName)
-                    )
-                )
-            } catch (e1: ActivityNotFoundException) {
-                startActivity(
-                    Intent(
-                        Intent.ACTION_VIEW,
-                        Uri.parse("http://play.google.com/store/apps/details?id=" + requireContext().packageName)
-                    )
-                )
+                Log.e("rate - manager", manager.toString())
+                val request = manager?.requestReviewFlow()
+                Log.e("rate - request", request.toString())
+                request?.addOnCompleteListener { task ->
+                    Log.e("rate - task", task.toString())
+                    if (task.isSuccessful) {
+                        // We got the ReviewInfo object
+                        val reviewInfo = task.result
+                        if (reviewInfo != null) {
+                            val flow = activity?.let { manager?.launchReviewFlow(it, reviewInfo) }
+                            flow?.addOnCompleteListener { _ ->
+                                // The flow has finished. The API does not indicate whether the user
+                                // reviewed or not, or even whether the review dialog was shown. Thus, no
+                                // matter the result, we continue our app flow.
+                                context?.let { SPUtils.setIsRate(it, true) }
+                                callBackWhenRate?.let { it1 -> it1() }
+                            }
+                        } else {
+                            try {
+                                startActivity(
+                                    Intent(
+                                        Intent.ACTION_VIEW,
+                                        Uri.parse("market://details?id=" + requireContext().packageName)
+                                    )
+                                )
+                            } catch (e1: ActivityNotFoundException) {
+                                startActivity(
+                                    Intent(
+                                        Intent.ACTION_VIEW,
+                                        Uri.parse("http://play.google.com/store/apps/details?id=" + requireContext().packageName)
+                                    )
+                                )
+                            }
+                            context?.let { SPUtils.setIsRate(it, true) }
+                            callBackWhenRate?.let { it1 -> it1() }
+                        }
+                    } else {
+                        try {
+                            startActivity(
+                                Intent(
+                                    Intent.ACTION_VIEW,
+                                    Uri.parse("market://details?id=" + requireContext().packageName)
+                                )
+                            )
+                        } catch (e1: ActivityNotFoundException) {
+                            Log.e("rate - ActivityNotFoundException", e1.message.toString())
+                            startActivity(
+                                Intent(
+                                    Intent.ACTION_VIEW,
+                                    Uri.parse("http://play.google.com/store/apps/details?id=" + requireContext().packageName)
+                                )
+                            )
+                        }
+                        context?.let { SPUtils.setIsRate(it, true) }
+                        callBackWhenRate?.let { it1 -> it1() }
+                    }
+                }
+            } catch (ex: Exception) {
+                Log.e("rate", ex.message.toString())
             }
-            context?.let { SPUtils.setIsRate(it, true) }
+
         }
     }
 

@@ -16,9 +16,7 @@ import android.widget.RelativeLayout
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.ads.control.ads.Admod
@@ -222,7 +220,11 @@ class HomeActivity : AppCompatActivity() {
 
     private fun rateApp() {
         if (!SPUtils.getIsRate(this)) {
-            RatingDialogFragment().show(
+            val rateDialog = RatingDialogFragment()
+            rateDialog.callBackWhenRate = {
+                rateDialog.dismiss()
+            }
+            rateDialog.show(
                 supportFragmentManager,
                 RatingDialogFragment::class.java.simpleName
             )
@@ -292,15 +294,27 @@ class HomeActivity : AppCompatActivity() {
                     supportFragmentManager,
                     RatingDialogFragment::class.java.simpleName
                 )
-            }else{
+            } else {
+                if (exitNativeAd == null) {
+                    loadExitAds(false)
+                } else {
+                    val exitDialog = ExitDialogFragment()
+                    exitDialog.exitNativeAd = exitNativeAd
+                    exitDialog.show(
+                        supportFragmentManager,
+                        ExitDialogFragment::class.java.simpleName
+                    )
+                }
+            }
+        } else {
+            if (exitNativeAd == null) {
+                loadExitAds(false)
+            } else {
                 val exitDialog = ExitDialogFragment()
                 exitDialog.exitNativeAd = exitNativeAd
                 exitDialog.show(supportFragmentManager, ExitDialogFragment::class.java.simpleName)
             }
-        } else {
-            val exitDialog = ExitDialogFragment()
-            exitDialog.exitNativeAd = exitNativeAd
-            exitDialog.show(supportFragmentManager, ExitDialogFragment::class.java.simpleName)
+
         }
     }
 
@@ -316,7 +330,13 @@ class HomeActivity : AppCompatActivity() {
 
     private fun loadBannerAds() = with(viewBinding) {
         if (Firebase.remoteConfig.getBoolean(SPUtils.KEY_BANNER) && isInternetAvailable()) {
-            include.findViewById<RelativeLayout>(R.id.ll_ads).findViewById<FrameLayout>(R.id.fl_shimemr).gone()
+            try {
+                include.findViewById<RelativeLayout>(R.id.ll_ads)
+                    .findViewById<FrameLayout>(R.id.fl_shimemr).gone()
+            } catch (ex: java.lang.Exception) {
+
+            }
+
             include.visibility = View.VISIBLE
             Admod.getInstance()
                 .loadBanner(this@HomeActivity, getString(R.string.banner_ads_id))
@@ -334,11 +354,21 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-    private fun loadExitAds() = with(viewBinding) {
+    private fun loadExitAds(isFirst: Boolean = true) = with(viewBinding) {
         if (!FirebaseRemoteConfig.getInstance().getBoolean(SPUtils.KEY_NATIVE_EXIT)) {
+            if (!isFirst) {
+                val exitDialog = ExitDialogFragment()
+                exitDialog.show(supportFragmentManager, ExitDialogFragment::class.java.simpleName)
+            }
             return@with
         }
-        if (!isInternetAvailable()) return@with
+        if (!isInternetAvailable()) {
+            if (!isFirst) {
+                val exitDialog = ExitDialogFragment()
+                exitDialog.show(supportFragmentManager, ExitDialogFragment::class.java.simpleName)
+            }
+            return@with
+        }
         Admod.getInstance()
             .loadNativeAd(
                 this@HomeActivity,
@@ -347,6 +377,14 @@ class HomeActivity : AppCompatActivity() {
                     override fun onUnifiedNativeAdLoaded(unifiedNativeAd: NativeAd) {
                         super.onUnifiedNativeAdLoaded(unifiedNativeAd)
                         exitNativeAd = unifiedNativeAd
+                        if (!isFirst) {
+                            val exitDialog = ExitDialogFragment()
+                            exitDialog.exitNativeAd = exitNativeAd
+                            exitDialog.show(
+                                supportFragmentManager,
+                                ExitDialogFragment::class.java.simpleName
+                            )
+                        }
                     }
                 })
     }
