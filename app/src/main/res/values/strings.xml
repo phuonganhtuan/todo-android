@@ -180,7 +180,7 @@
     <string name="todo_default">To-do default</string>
     <string name="recording">Recording</string>
     <string name="start_record">Start record</string>
-    <string name="ad">AD</string>
+    <string name="ad" translatable="false">AD</string>
     <string name="_24_hour">24 Hour</string>
     <string name="_12_hour">12 Hour</string>
     <string name="auto">Auto</string>
@@ -231,10 +231,10 @@
     <string name="texture">Texture</string>
     <string name="scenery">Scenery</string>
     <string name="feedback_mail" translatable="false">mailto:demomail@gmail.com</string>
-    <string name="advertisement">Advertisement</string>
     <string name="msg_dialog_exit">Are you sure you want to exit?</string>
     <string name="exit">Exit</string>
     <string name="details">Details</string>
+    <string name="advertisement">Advertisement</string>
     <string name="subcate_task_title">Subcate Task</string>
     <string name="date_amp_time"><![CDATA[Date & Time]]></string>
     <string name="this_action_can_contain_ads">This action can contain ads</string>

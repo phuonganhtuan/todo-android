@@ -180,7 +180,6 @@
     <string name="todo_default">Para fazer padrão</string>
     <string name="recording">Gravação</string>
     <string name="start_record">Iniciar registro</string>
-    <string name="ad">DE ANÚNCIOS</string>
     <string name="_24_hour">24 horas</string>
     <string name="_12_hour">12 horas.</string>
     <string name="auto">Auto</string>
@@ -230,8 +229,11 @@
     <string name="pure_color">Cor pura</string>
     <string name="texture">Textura</string>
     <string name="scenery">Cenário</string>
-    <string name="msg_dialog_exit">Are you sure you want to exit?</string>
-    <string name="exit">Exit</string>
-    <string name="details">Details</string>
+    <string name="msg_dialog_exit">Você tem certeza que quer sair?</string>
+    <string name="exit">Saída</string>
+    <string name="details">Detalhes</string>
     <string name="this_action_can_contain_ads">Esta ação pode conter anúncios</string>
+    <string name="advertisement">Propaganda</string>
+    <string name="subcate_task_title">Tarefa subcate</string>
+    <string name="date_amp_time"><![CDATA[Encontro & Tempo]]></string>
 </resources>

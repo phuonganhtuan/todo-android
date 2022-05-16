@@ -180,7 +180,6 @@
     <string name="todo_default">डिफ़ॉल्ट</string>
     <string name="recording">रिकॉर्डिंग</string>
     <string name="start_record">प्रारंभ रिकॉर्ड</string>
-    <string name="ad">विज्ञापन</string>
     <string name="_24_hour">24 घंटे</string>
     <string name="_12_hour">12 घंटे</string>
     <string name="auto">ऑटो</string>
@@ -230,8 +229,11 @@
     <string name="pure_color">शुद्ध रंग</string>
     <string name="texture">बनावट</string>
     <string name="scenery">सीनरी</string>
-    <string name="msg_dialog_exit">Are you sure you want to exit?</string>
-    <string name="exit">Exit</string>
-    <string name="details">Details</string>
+    <string name="msg_dialog_exit">क्या आप निश्चित हैं आपकी बाहर निकलने की इच्छा है?</string>
+    <string name="exit">बाहर निकलना</string>
+    <string name="details">विवरण</string>
     <string name="this_action_can_contain_ads">इस क्रिया में विज्ञापन हो सकते हैं</string>
+    <string name="advertisement">विज्ञापन</string>
+    <string name="subcate_task_title">अधीन कार्य</string>
+    <string name="date_amp_time"><![CDATA[दिनांक & समय]]></string>
 </resources>

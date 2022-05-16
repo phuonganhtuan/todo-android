@@ -77,6 +77,7 @@ class RatingDialogFragment : BaseDialogFragment<FragmentRatingBinding>() {
 
     private fun rate() = lifecycleScope.launch {
         if (currentRating < 4) {
+            context?.let { SPUtils.setIsRate(it, true) }
             callBackWhenRate?.let { it1 -> it1() }
         } else {
             try {

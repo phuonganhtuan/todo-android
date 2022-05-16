@@ -180,7 +180,6 @@
     <string name="todo_default">Untuk melakukan default</string>
     <string name="recording">Rekaman</string>
     <string name="start_record">Mulai Rekam</string>
-    <string name="ad">IKLAN</string>
     <string name="_24_hour">24 jam</string>
     <string name="_12_hour">12 jam</string>
     <string name="auto">Mobil</string>
@@ -230,8 +229,11 @@
     <string name="pure_color">Warna murni</string>
     <string name="texture">Tekstur</string>
     <string name="scenery">Pemandangan</string>
-    <string name="msg_dialog_exit">Are you sure you want to exit?</string>
-    <string name="exit">Exit</string>
-    <string name="details">Details</string>
+    <string name="msg_dialog_exit">Apakah Anda yakin ingin keluar?</string>
+    <string name="exit">KELUAR</string>
+    <string name="details">Detail</string>
     <string name="this_action_can_contain_ads">Tindakan ini dapat berisi iklan</string>
+    <string name="advertisement">Iklan</string>
+    <string name="subcate_task_title">Tugas Subsate</string>
+    <string name="date_amp_time"><![CDATA[Tanggal & Waktu]]></string>
 </resources>

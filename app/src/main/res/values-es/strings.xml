@@ -180,7 +180,6 @@
     <string name="todo_default">Defaŭlte</string>
     <string name="recording">Registrado</string>
     <string name="start_record">Start Record</string>
-    <string name="ad">Anonco</string>
     <string name="_24_hour">24 horoj</string>
     <string name="_12_hour">12 horoj</string>
     <string name="auto">Aŭtomata</string>
@@ -230,8 +229,11 @@
     <string name="pure_color">Color puro</string>
     <string name="texture">Textura</string>
     <string name="scenery">Paisaje</string>
-    <string name="msg_dialog_exit">Are you sure you want to exit?</string>
-    <string name="exit">Exit</string>
-    <string name="details">Details</string>
+    <string name="msg_dialog_exit">Ĉu vi certas, ke vi volas eliri?</string>
+    <string name="exit">Eliru</string>
+    <string name="details">Detaloj</string>
     <string name="this_action_can_contain_ads">Esta acción puede contener anuncios</string>
+    <string name="advertisement">Reklamado</string>
+    <string name="subcate_task_title">aĵoj</string>
+    <string name="date_amp_time"><![CDATA[Datum & tempo]]></string>
 </resources>

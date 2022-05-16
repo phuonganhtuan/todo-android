@@ -180,7 +180,6 @@
     <string name="todo_default">デフォルトのために</string>
     <string name="recording">録音</string>
     <string name="start_record">録音を開始します</string>
-    <string name="ad">広告</string>
     <string name="_24_hour">24時間</string>
     <string name="_12_hour">12時間</string>
     <string name="auto">オート</string>
@@ -230,8 +229,11 @@
     <string name="pure_color">ピュアカラー</string>
     <string name="texture">テクスチャ</string>
     <string name="scenery">景色</string>
-    <string name="msg_dialog_exit">Are you sure you want to exit?</string>
-    <string name="exit">Exit</string>
-    <string name="details">Details</string>
+    <string name="msg_dialog_exit">終了してよろしいですか?</string>
+    <string name="exit">出口</string>
+    <string name="details">詳細</string>
     <string name="this_action_can_contain_ads">このアクションには広告を含めることができます</string>
+    <string name="advertisement">広告</string>
+    <string name="subcate_task_title">タスクを提出します</string>
+    <string name="date_amp_time"><![CDATA[日にち & 時間]]></string>
 </resources>

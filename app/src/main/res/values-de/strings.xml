@@ -180,7 +180,6 @@
     <string name="todo_default">Standaard</string>
     <string name="recording">Opname</string>
     <string name="start_record">StartRecord</string>
-    <string name="ad">ADVERTENTIE</string>
     <string name="_24_hour">24 uur</string>
     <string name="_12_hour">12 uur</string>
     <string name="auto">Auto</string>
@@ -230,8 +229,11 @@
     <string name="pure_color">Pure kleur</string>
     <string name="texture">Textuur</string>
     <string name="scenery">Landschap</string>
-    <string name="msg_dialog_exit">Are you sure you want to exit?</string>
-    <string name="exit">Exit</string>
-    <string name="details">Details</string>
+    <string name="msg_dialog_exit">Weet u zeker dat u wilt afsluiten?</string>
+    <string name="exit">Uitgang</string>
+    <string name="details">details</string>
     <string name="this_action_can_contain_ads">Diese Aktion kann Werbung enthalten</string>
+    <string name="advertisement">Advertentie</string>
+    <string name="subcate_task_title">Subcate taak</string>
+    <string name="date_amp_time"><![CDATA[Datum & Tijd]]></string>
 </resources>
