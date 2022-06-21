@@ -229,6 +229,9 @@ class NewTaskViewModel @Inject constructor(private val repository: TaskRepositor
     val isShortMode: StateFlow<Boolean> get() = _isShortMode
     private val _isShortMode = MutableStateFlow(true)
 
+    val addedTaskId: StateFlow<Long> get() = _addedTaskId
+    private val _addedTaskId = MutableStateFlow(0L)
+
     fun switchShortMode() {
         _isShortMode.value = !_isShortMode.value
     }
@@ -428,6 +431,7 @@ class NewTaskViewModel @Inject constructor(private val repository: TaskRepositor
                 dueDate = if (_selectedHour.value == -1) "" else DateTimeUtils.getComparableDateString(calendar?.time, isDefault = true),
             )
             val taskId = repository.addTask(taskEntity)
+            _addedTaskId.value = taskId
             _subtasks.value.filter { st -> st.name.isNotEmpty() }.forEach {
                 it.taskId = taskId.toInt()
                 repository.addSubTasks(it)

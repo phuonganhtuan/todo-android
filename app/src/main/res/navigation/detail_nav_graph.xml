@@ -118,21 +118,22 @@
         android:name="com.trustedapp.todolist.planner.reminders.screens.settings.rating.RatingDialogFragment"
         android:label="RatingDialogFragment"
         tools:layout="@layout/fragment_rating" />
+
     <fragment
         android:id="@+id/TaskDetailV1Fragment"
         android:name="com.trustedapp.todolist.planner.reminders.screens.taskdetail.TaskDetailV1Fragment"
         android:label="TaskDetailV1Fragment"
         tools:layout="@layout/fragment_task_detail_v1">
         <action
-            android:id="@+id/toSelectAttachment"
+            android:id="@+id/toSelectAttachmentV1"
             app:destination="@id/SelectAttachmentFragment" />
 
         <action
-            android:id="@+id/toAddCalendar"
+            android:id="@+id/toAddCalendarV1"
             app:destination="@id/AddCalendarBottomSheet" />
 
         <action
-            android:id="@+id/toCreateCat"
+            android:id="@+id/toCreateCatV1"
             app:destination="@id/AddCategoryFragment" />
 
         <action
@@ -144,11 +145,11 @@
             app:destination="@id/BookmarkFragment" />
 
         <action
-            android:id="@+id/toAddReminderDetail"
+            android:id="@+id/toAddReminderDetailV1"
             app:destination="@id/AddReminderFragment" />
 
         <action
-            android:id="@+id/toAddRepeatDetail"
+            android:id="@+id/toAddRepeatDetailV1"
             app:destination="@id/AddRepeatFragment" />
         <action
             android:id="@+id/toRatingFragment"

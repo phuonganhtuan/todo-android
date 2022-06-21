@@ -3,15 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="../../../../layout/custom_preview.xml" value="0.2641025641025641" />
-        <entry key="../../.gradle/caches/transforms-3/0535683983cf35b96fa2317cdbb21c66/transformed/jetified-AperoModuleAds-2.4.3/res/layout/layout_banner_control.xml" value="0.17481884057971014" />
-        <entry key="../../.gradle/caches/transforms-3/0535683983cf35b96fa2317cdbb21c66/transformed/jetified-AperoModuleAds-2.4.3/res/layout/load_fb_banner.xml" value="0.17481884057971014" />
-        <entry key="app/src/main/res/drawable/background_ad.xml" value="0.12" />
+        <entry key="../../../../../../layout/custom_preview.xml" value="0.3041025641025641" />
         <entry key="app/src/main/res/drawable/bg_border_grey.xml" value="0.1365" />
         <entry key="app/src/main/res/drawable/bg_border_primary.xml" value="0.1365" />
         <entry key="app/src/main/res/drawable/bg_checkbox_grey.xml" value="0.1365" />
-        <entry key="app/src/main/res/drawable/bg_corner_ads.xml" value="0.12" />
-        <entry key="app/src/main/res/drawable/bg_corner_left.xml" value="0.12" />
         <entry key="app/src/main/res/drawable/bg_dark_grey_rounded_16.xml" value="0.214" />
         <entry key="app/src/main/res/drawable/bg_fade_custom_time.xml" value="0.121" />
         <entry key="app/src/main/res/drawable/bg_fade_grey.xml" value="0.1365" />
@@ -59,7 +54,9 @@
         <entry key="app/src/main/res/drawable/bg_widget_9_round_top.xml" value="0.1785" />
         <entry key="app/src/main/res/drawable/custom_thumb.xml" value="0.1365" />
         <entry key="app/src/main/res/drawable/custom_track.xml" value="0.1365" />
-        <entry key="app/src/main/res/drawable/ic_app_icon.xml" value="0.1445" />
+        <entry key="app/src/main/res/drawable/ic_arrow_down.xml" value="0.1275" />
+        <entry key="app/src/main/res/drawable/ic_arrow_down_16.xml" value="0.1275" />
+        <entry key="app/src/main/res/drawable/ic_arrow_up_16.xml" value="0.1275" />
         <entry key="app/src/main/res/drawable/ic_calendar_outline.xml" value="0.121" />
         <entry key="app/src/main/res/drawable/ic_calendar_outlined.xml" value="0.121" />
         <entry key="app/src/main/res/drawable/ic_camera.xml" value="0.121" />
@@ -104,10 +101,9 @@
         <entry key="app/src/main/res/layout/activity_home.xml" value="0.10371376811594203" />
         <entry key="app/src/main/res/layout/activity_language.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_language_setting.xml" value="0.23108108108108108" />
-        <entry key="app/src/main/res/layout/activity_new_task.xml" value="0.10371376811594203" />
+        <entry key="app/src/main/res/layout/activity_new_task.xml" value="0.26914345561594205" />
         <entry key="app/src/main/res/layout/activity_noti_reminder.xml" value="0.10989583333333333" />
         <entry key="app/src/main/res/layout/activity_policy.xml" value="0.22072072072072071" />
-        <entry key="app/src/main/res/layout/activity_splash.xml" value="0.23233695652173914" />
         <entry key="app/src/main/res/layout/activity_task_detail.xml" value="0.10989583333333333" />
         <entry key="app/src/main/res/layout/activity_theme.xml" value="0.32133333333333336" />
         <entry key="app/src/main/res/layout/activity_time_format.xml" value="0.17387387387387387" />
@@ -120,10 +116,9 @@
         <entry key="app/src/main/res/layout/fragment_calendar.xml" value="0.10371376811594203" />
         <entry key="app/src/main/res/layout/fragment_default_reminder_type_dialog.xml" value="0.10989583333333333" />
         <entry key="app/src/main/res/layout/fragment_defautl_notification_ringtone.xml" value="0.32331288655598955" />
-        <entry key="app/src/main/res/layout/fragment_exit_dialog.xml" value="0.17481884057971014" />
         <entry key="app/src/main/res/layout/fragment_header.xml" value="0.10989583333333333" />
         <entry key="app/src/main/res/layout/fragment_mine.xml" value="0.10989583333333333" />
-        <entry key="app/src/main/res/layout/fragment_new_task.xml" value="0.4109014675052411" />
+        <entry key="app/src/main/res/layout/fragment_new_task.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_noti_reminder.xml" value="0.10989583333333333" />
         <entry key="app/src/main/res/layout/fragment_notification_help.xml" value="0.18020833333333333" />
         <entry key="app/src/main/res/layout/fragment_permis_dialog.xml" value="0.10989583333333333" />
@@ -133,12 +128,9 @@
         <entry key="app/src/main/res/layout/fragment_set_reminder.xml" value="0.10371376811594203" />
         <entry key="app/src/main/res/layout/fragment_set_repeat.xml" value="0.10371376811594203" />
         <entry key="app/src/main/res/layout/fragment_task_detail.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/fragment_task_detail_v1.xml" value="0.25729166666666664" />
+        <entry key="app/src/main/res/layout/fragment_task_detail_v1.xml" value="0.2828125" />
         <entry key="app/src/main/res/layout/fragment_tasks.xml" value="0.10989583333333333" />
         <entry key="app/src/main/res/layout/fragment_tasks_page.xml" value="0.10989583333333333" />
-        <entry key="app/src/main/res/layout/frament_load_exit_ads.xml" value="0.3339011925042589" />
-        <entry key="app/src/main/res/layout/item_attachment_album_view.xml" value="0.11752786220871327" />
-        <entry key="app/src/main/res/layout/item_attachment_picture_view.xml" value="0.11752786220871327" />
         <entry key="app/src/main/res/layout/item_calendar_task_page.xml" value="0.32133333333333336" />
         <entry key="app/src/main/res/layout/item_calendar_widget.xml" value="0.3256756756756757" />
         <entry key="app/src/main/res/layout/item_chart.xml" value="0.2898148148148148" />
@@ -155,14 +147,13 @@
         <entry key="app/src/main/res/layout/item_widget_standard_task.xml" value="0.3256756756756757" />
         <entry key="app/src/main/res/layout/item_widget_standard_task_2.xml" value="0.3256756756756757" />
         <entry key="app/src/main/res/layout/layout_add_calendar.xml" value="0.10371376811594203" />
+        <entry key="app/src/main/res/layout/layout_ads_native_large.xml" value="0.25" />
         <entry key="app/src/main/res/layout/layout_calendar.xml" value="0.32133333333333336" />
         <entry key="app/src/main/res/layout/layout_calendar_with_task.xml" value="0.32133333333333336" />
         <entry key="app/src/main/res/layout/layout_delete_task.xml" value="0.23108108108108108" />
-        <entry key="app/src/main/res/layout/layout_select_attachment.xml" value="0.11752786220871327" />
-        <entry key="app/src/main/res/layout/layout_select_attachment_list.xml" value="0.11752786220871327" />
-        <entry key="app/src/main/res/layout/layout_select_category.xml" value="0.11752786220871327" />
-        <entry key="app/src/main/res/layout/layout_shimmerframe.xml" value="0.17798913043478262" />
-        <entry key="app/src/main/res/layout/layout_shimmerframe_small.xml" value="0.17481884057971014" />
+        <entry key="app/src/main/res/layout/layout_select_attachment.xml" value="0.1675925925925926" />
+        <entry key="app/src/main/res/layout/layout_select_attachment_list.xml" value="0.2828125" />
+        <entry key="app/src/main/res/layout/layout_shimmerframe_small.xml" value="0.2828125" />
         <entry key="app/src/main/res/layout/layout_side_navigation_header.xml" value="0.10989583333333333" />
         <entry key="app/src/main/res/layout/layout_toolbar.xml" value="0.10371376811594203" />
         <entry key="app/src/main/res/layout/layout_widget_countdown.xml" value="0.18603603603603602" />
@@ -175,7 +166,6 @@
         <entry key="app/src/main/res/layout/layout_widget_standard.xml" value="0.3256756756756757" />
         <entry key="app/src/main/res/layout/layout_widget_standard_1.xml" value="0.22" />
         <entry key="app/src/main/res/layout/layout_widget_standard_2.xml" value="0.3256756756756757" />
-        <entry key="app/src/main/res/layout/view_ad_unified_small.xml" value="0.37404580152671757" />
         <entry key="app/src/main/res/menu/activity_main_drawer.xml" value="0.10989583333333333" />
         <entry key="app/src/main/res/menu/count_type_menu.xml" value="0.31216216216216214" />
         <entry key="app/src/main/res/menu/main_bottom_menu.xml" value="0.10989583333333333" />
@@ -186,6 +176,9 @@
         <entry key="app/src/main/res/menu/screen_lock_menu.xml" value="0.16354166666666667" />
         <entry key="app/src/main/res/menu/task_detail_menu.xml" value="0.2898148148148148" />
         <entry key="app/src/main/res/menu/widget_time_filter_menu.xml" value="0.3051920641620937" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.11" />
+        <entry key="app/src/main/res/mipmap/ic_launcher.xml" value="0.11" />
+        <entry key="app/src/main/res/mipmap/ic_launcher_round.xml" value="0.11" />
         <entry key="app/src/main/res/xml/widget_standard_info.xml" value="0.3256756756756757" />
       </map>
     </option>

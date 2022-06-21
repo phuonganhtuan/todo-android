@@ -71,8 +71,8 @@ class ThemeActivity : BaseActivity<ActivityThemeBinding>() {
 
     private fun initData() {
 
-        textures = textureIds.map { getDrawableCompat(it) }
-        sceneries = sceneryIds.map { getDrawableCompat(it) }
+        textures = textureIds.map { getDrawableCompat(it)!! }
+        sceneries = sceneryIds.map { getDrawableCompat(it)!! }
 
         colorAdapter.selectedIndex = 0
         colorAdapter.submitList(colors.map { item -> getColorDrawable(item) })
@@ -192,7 +192,7 @@ class ThemeActivity : BaseActivity<ActivityThemeBinding>() {
 
     private fun getColorDrawable(color: Int) = ContextCompat.getColor(this, color).toDrawable()
 
-    private fun getDrawableCompat(drawable: Int) = ContextCompat.getDrawable(this, drawable)!!
+    private fun getDrawableCompat(drawable: Int) = ContextCompat.getDrawable(this, drawable) ?: ContextCompat.getDrawable(this, R.drawable.ic_todo_app)
 
     private fun prepareInterTheme() {
 

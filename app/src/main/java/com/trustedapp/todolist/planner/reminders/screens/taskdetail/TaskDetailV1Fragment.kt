@@ -114,7 +114,7 @@ class TaskDetailV1Fragment : BaseFragment<FragmentTaskDetailV1Binding>() {
             categoriesPopup?.showAsDropDown(it, -50, -20)
         }
         buttonAttachment.setOnClickListener {
-            findNavController().navigate(R.id.toSelectAttachment)
+            findNavController().navigate(R.id.toSelectAttachmentV1)
         }
         categoryAdapter.setOnCatListener(object : OnCatInteractListener {
             override fun onCatClick(index: Int) {
@@ -159,7 +159,7 @@ class TaskDetailV1Fragment : BaseFragment<FragmentTaskDetailV1Binding>() {
             onCheckChangeReminder()
         }
         buttonAddCalendar.setOnClickListener {
-            findNavController().navigate(R.id.toAddCalendar)
+            findNavController().navigate(R.id.toAddCalendarV1)
         }
         textTaskName.addTextChangedListener {
             validateTask()
@@ -470,7 +470,7 @@ class TaskDetailV1Fragment : BaseFragment<FragmentTaskDetailV1Binding>() {
     }
 
     private fun createNewCategory() {
-        findNavController().navigate(R.id.toCreateCat)
+        findNavController().navigate(R.id.toCreateCatV1)
     }
 
     private fun setupCatsPopup(cats: List<CategoryEntity>) {
@@ -532,7 +532,7 @@ class TaskDetailV1Fragment : BaseFragment<FragmentTaskDetailV1Binding>() {
     }
 
     private fun onClickReminder() {
-        findNavController().navigate(R.id.toAddReminderDetail)
+        findNavController().navigate(R.id.toAddReminderDetailV1)
     }
 
     private fun onCheckChangeRepeat() = with(viewBinding) {
@@ -554,7 +554,7 @@ class TaskDetailV1Fragment : BaseFragment<FragmentTaskDetailV1Binding>() {
     }
 
     private fun onClickRepeat() {
-        findNavController().navigate(R.id.toAddRepeatDetail)
+        findNavController().navigate(R.id.toAddRepeatDetailV1)
     }
 
     private fun isAllowInterNewTaskAds(): Boolean {

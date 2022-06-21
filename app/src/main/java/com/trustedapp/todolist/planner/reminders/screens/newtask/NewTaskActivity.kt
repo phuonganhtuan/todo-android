@@ -16,6 +16,7 @@ import com.trustedapp.todolist.planner.reminders.appstate.AppState
 import com.trustedapp.todolist.planner.reminders.base.BaseActivity
 import com.trustedapp.todolist.planner.reminders.databinding.ActivityNewTaskBinding
 import com.trustedapp.todolist.planner.reminders.screens.home.HomeActivity
+import com.trustedapp.todolist.planner.reminders.screens.taskdetail.TaskDetailActivity
 import com.trustedapp.todolist.planner.reminders.utils.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -97,16 +98,18 @@ class NewTaskActivity : BaseActivity<ActivityNewTaskBinding>() {
     }
 
     private fun observeData() = with(viewModel) {
-        lifecycleScope.launchWhenStarted {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
+        lifecycleScope.launchWhenCreated {
+            repeatOnLifecycle(Lifecycle.State.CREATED) {
                 isAdded.collect {
                     if (it) {
 //                        requestOverlayPermission()
+                        hideKeyboard()
                         showToastMessage(getString(R.string.added_task))
                         if (isShowRating()) {
                             backToHomeAndShowRate()
                         } else {
                             finish()
+                            goToDetail()
                         }
                         AppState.setIsCreatedTask(true)
                     }
@@ -143,6 +146,13 @@ class NewTaskActivity : BaseActivity<ActivityNewTaskBinding>() {
         }
         previousActivity.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         startActivity(previousActivity)
+        goToDetail()
+    }
 
+    private fun goToDetail() {
+        val taskId = viewModel.addedTaskId.value
+        startActivity(Intent(this, TaskDetailActivity::class.java).apply {
+            putExtra(Constants.KEY_TASK_ID, taskId.toInt())
+        })
     }
 }

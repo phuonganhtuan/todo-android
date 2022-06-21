@@ -64,6 +64,8 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
     private var interstitialCreateAd: InterstitialAd? = null
     private var nativeAds: NativeAd? = null
 
+    private var isV1 = false
+
     override fun inflateViewBinding(
         container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -111,12 +113,20 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
             buttonAttachment,
             recyclerAttachment
         )
-        if (Firebase.remoteConfig.getString(SPUtils.KEY_NEW_TASK_NEW) == "v1") {
+
+        isV1 = Firebase.remoteConfig.getString(SPUtils.KEY_NEW_TASK_NEW) == "v1"
+
+        if (isV1) {
+            ads2.layoutAds.show()
+            layoutAds.gone()
             textDetail.gone()
             imageDetail.gone()
             imageDetail.setImageResource(R.drawable.ic_arrow_down_16)
             extendedViews.gone()
+            editTaskName.requestFocus()
         } else {
+            ads2.layoutAds.gone()
+            layoutAds.show()
             textDetail.gone()
             imageDetail.gone()
             extendedViews.gone()
@@ -457,13 +467,13 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
 //        }
     }
 
-    private fun updateVisibleNativeAdsWhenChangeKeyboard(isShow: Boolean) = with(viewBinding) {
-        if (nativeAds != null) {
-            layoutAds.apply {
-                if (isShow) gone() else show()
-            }
-        }
-    }
+//    private fun updateVisibleNativeAdsWhenChangeKeyboard(isShow: Boolean) = with(viewBinding) {
+//        if (nativeAds != null) {
+//            layoutAds.apply {
+//                if (isShow) gone() else show()
+//            }
+//        }
+//    }
 
     private fun createNewCategory() {
         findNavController().navigate(R.id.toCreateCat)
@@ -604,7 +614,7 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
             return
         }
 
-        Admod.getInstance().setOpenActivityAfterShowInterAds(true)
+//        Admod.getInstance().setOpenActivityAfterShowInterAds(true)
         Admod.getInstance()
             .forceShowInterstitial(
                 activity,
@@ -632,12 +642,21 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
 
     private fun loadAds() = with(viewBinding) {
         if (!FirebaseRemoteConfig.getInstance().getBoolean(SPUtils.KEY_NATIVE_CREATE_TASK)) {
+            ads2.layoutAds.gone()
             layoutAds.gone()
             return@with
         }
         if (!context?.isInternetAvailable()!!) {
             layoutAds.gone()
+            ads2.layoutAds.gone()
             return@with
+        }
+        if (isV1) {
+            layoutAds.gone()
+            ads2.layoutAds.show()
+        } else {
+            layoutAds.show()
+            ads2.layoutAds.gone()
         }
         skeletonLayout.showSkeleton()
         Admod.getInstance()
@@ -647,11 +666,19 @@ class NewTaskFragment : BaseFragment<FragmentNewTaskBinding>() {
                 object : AdCallback() {
                     override fun onUnifiedNativeAdLoaded(unifiedNativeAd: NativeAd) {
                         nativeAds = unifiedNativeAd
-                        skeletonLayout.showOriginal()
-                        imageAdDescLoading.gone()
-                        Admod.getInstance().populateUnifiedNativeAdView(unifiedNativeAd, adView)
-                        imageIcon.setImageDrawable(unifiedNativeAd.icon?.drawable)
-                        imageContent.setImageDrawable(unifiedNativeAd.mediaContent?.mainImage)
+                        if (isV1) {
+                            ads2.skeletonLayout.showOriginal()
+                            ads2.imageAdDescLoading.gone()
+                            Admod.getInstance().populateUnifiedNativeAdView(unifiedNativeAd, ads2.adView)
+                            ads2.imageIcon.setImageDrawable(unifiedNativeAd.icon?.drawable)
+                            ads2.imageContent.setImageDrawable(unifiedNativeAd.mediaContent?.mainImage)
+                        } else {
+                            skeletonLayout.showOriginal()
+                            imageAdDescLoading.gone()
+                            Admod.getInstance().populateUnifiedNativeAdView(unifiedNativeAd, adView)
+                            imageIcon.setImageDrawable(unifiedNativeAd.icon?.drawable)
+                            imageContent.setImageDrawable(unifiedNativeAd.mediaContent?.mainImage)
+                        }
                     }
                 })
     }
