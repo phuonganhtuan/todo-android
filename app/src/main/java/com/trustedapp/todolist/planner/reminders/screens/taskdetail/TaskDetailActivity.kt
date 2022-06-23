@@ -228,7 +228,7 @@ class TaskDetailActivity : BaseActivity<ActivityTaskDetailBinding>() {
         lifecycleScope.launchWhenStarted {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 NetworkState.isHasInternet.collect {
-//                    loadBannerAds()
+                    loadBannerAds()
                 }
             }
         }
