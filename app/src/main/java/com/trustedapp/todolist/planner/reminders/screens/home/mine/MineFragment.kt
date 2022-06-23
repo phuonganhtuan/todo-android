@@ -13,6 +13,7 @@ import com.trustedapp.todolist.planner.reminders.base.BaseFragment
 import com.trustedapp.todolist.planner.reminders.databinding.FragmentMineBinding
 import com.trustedapp.todolist.planner.reminders.screens.taskdetail.TaskDetailActivity
 import com.trustedapp.todolist.planner.reminders.utils.Constants
+import com.trustedapp.todolist.planner.reminders.utils.FirebaseLog
 import com.trustedapp.todolist.planner.reminders.utils.gone
 import com.trustedapp.todolist.planner.reminders.utils.show
 import dagger.hilt.android.AndroidEntryPoint
@@ -40,6 +41,7 @@ class MineFragment : BaseFragment<FragmentMineBinding>() {
         initViews()
         setupEvents()
         observeData()
+        FirebaseLog.logEventMineScreen()
     }
 
     private fun initViews() = with(viewBinding) {

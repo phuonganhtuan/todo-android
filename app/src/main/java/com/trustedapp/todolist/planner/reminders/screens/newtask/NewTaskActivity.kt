@@ -82,7 +82,9 @@ class NewTaskActivity : BaseActivity<ActivityNewTaskBinding>() {
 
     private fun setupEvents() = with(viewBinding) {
         layoutTop.button1.setOnClickListener { finish() }
-        layoutTop.button4.setOnClickListener { viewModel.setIsPressCreateTask(true) }
+        layoutTop.button4.setOnClickListener {
+            viewModel.setIsPressCreateTask(true)
+        }
     }
 
     private fun isShowRating(): Boolean {
@@ -109,9 +111,10 @@ class NewTaskActivity : BaseActivity<ActivityNewTaskBinding>() {
                             backToHomeAndShowRate()
                         } else {
                             finish()
-                            goToDetail()
+//                            goToDetail()
                         }
                         AppState.setIsCreatedTask(true)
+                        FirebaseLog.logEventClickDone()
                     }
                 }
             }

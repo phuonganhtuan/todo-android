@@ -47,6 +47,7 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>() {
         initData()
         setupEvents()
         observeData()
+        FirebaseLog.logEventCalendarScreen()
     }
 
     override fun onResume() {
@@ -180,6 +181,7 @@ class CalendarFragment : BaseFragment<FragmentCalendarBinding>() {
                 selectedDay.collect {
 //                    calendarAdapter.selectedDate = it
 //                    calendarAdapter.notifyDataSetChanged()
+                    FirebaseLog.logEventCalendarInCalendarScreen()
                 }
             }
         }

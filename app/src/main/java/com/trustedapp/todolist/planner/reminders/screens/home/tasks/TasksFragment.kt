@@ -17,6 +17,7 @@ import com.trustedapp.todolist.planner.reminders.screens.home.HomeActivity
 import com.trustedapp.todolist.planner.reminders.screens.home.tasks.page.TasksPageFragment
 import com.trustedapp.todolist.planner.reminders.screens.newtask.NewTaskActivity
 import com.trustedapp.todolist.planner.reminders.screens.search.SearchTaskActivity
+import com.trustedapp.todolist.planner.reminders.utils.FirebaseLog
 import com.trustedapp.todolist.planner.reminders.utils.hide
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -41,6 +42,7 @@ class TasksFragment : BaseFragment<FragmentTasksBinding>() {
         initData()
         setupEvents()
         observeData()
+        FirebaseLog.logEventTaskScreen()
     }
 
     private fun setupToolbar() = with(viewBinding.layoutTop) {

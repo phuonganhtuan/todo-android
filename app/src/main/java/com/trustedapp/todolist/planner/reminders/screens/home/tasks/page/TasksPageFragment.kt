@@ -78,11 +78,13 @@ class TasksPageFragment : BaseFragment<FragmentTasksPageBinding>() {
                 when (type) {
                     TaskPageType.TODAY -> {
                         todayTasks.collect {
+
                             adapter.submitList(it)
                             viewBinding.textTaskCount.text =
                                 "${requireContext().getStringByLocale(R.string.today_task)} (${it.count()})"
                             showOrHideNoTask(it.isNullOrEmpty())
                         }
+                        FirebaseLog.logEventTodayInTaskScreen()
                     }
                     TaskPageType.FUTURE -> {
                         futureTasks.collect {
@@ -92,6 +94,7 @@ class TasksPageFragment : BaseFragment<FragmentTasksPageBinding>() {
                                 "${requireContext().getStringByLocale(R.string.future_task)} (${it.count()})"
                             showOrHideNoTask(it.isNullOrEmpty())
                         }
+                        FirebaseLog.logEventFutureInTaskScreen()
                     }
                     TaskPageType.DONE -> {
                         doneTasks.collect {
@@ -100,6 +103,7 @@ class TasksPageFragment : BaseFragment<FragmentTasksPageBinding>() {
                                 "${requireContext().getStringByLocale(R.string.done_task)} (${it.count()})"
                             showOrHideNoTask(it.isNullOrEmpty())
                         }
+                        FirebaseLog.logEventCompleteInTaskScreen()
                     }
                 }
             }

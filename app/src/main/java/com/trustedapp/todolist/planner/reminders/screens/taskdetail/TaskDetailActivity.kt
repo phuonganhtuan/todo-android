@@ -219,6 +219,7 @@ class TaskDetailActivity : BaseActivity<ActivityTaskDetailBinding>() {
                         } else {
                             finish()
                         }
+                        FirebaseLog.logEventClickDone()
                     }
                 }
             }
