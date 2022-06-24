@@ -149,7 +149,7 @@ class NewTaskActivity : BaseActivity<ActivityNewTaskBinding>() {
         }
         previousActivity.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         startActivity(previousActivity)
-        goToDetail()
+//        goToDetail()
     }
 
     private fun goToDetail() {

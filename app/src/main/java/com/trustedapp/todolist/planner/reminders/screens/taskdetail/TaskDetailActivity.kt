@@ -71,10 +71,10 @@ class TaskDetailActivity : BaseActivity<ActivityTaskDetailBinding>() {
     }
 
     private fun loadBannerAds() = with(viewBinding) {
-        if (Firebase.remoteConfig.getBoolean(SPUtils.KEY_BANNER) && isInternetAvailable() == true) {
+        if (Firebase.remoteConfig.getBoolean(SPUtils.KEY_BANNER_EDIT_TASK) && isInternetAvailable() == true) {
             include.visibility = View.VISIBLE
             Admod.getInstance()
-                .loadBanner(this@TaskDetailActivity, getString(R.string.banner_ads_id))
+                .loadBanner(this@TaskDetailActivity, getString(R.string.banner_edit_ads_id))
         } else {
             include.visibility = View.GONE
         }

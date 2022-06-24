@@ -6,14 +6,14 @@ import com.google.firebase.ktx.Firebase
 
 class FirebaseLog {
     companion object {
-        const val EVENT_TASK_SCREEN = "event_man_task"
-        const val EVENT_CALENDAR_SCREEN = "event_man_calendar"
-        const val EVENT_MINE_SCREEN = "event_man_mine"
-        const val EVENT_TODAY_IN_TASK_SCREEN = "event_today_in_task_screen"
-        const val EVENT_FUTURE_IN_TASK_SCREEN = "event_future_in_task_screen"
-        const val EVENT_COMPLETE_IN_TASK_SCREEN = "event_complete_in_task_screen"
-        const val EVENT_CALENDAR_IN_CALENDAR_SCREEN = "event_calendar_in_calendar_screen"
-        const val EVENT_CLICK_DONE = "event_click_done"
+        const val EVENT_TASK_SCREEN = "Tasks"
+        const val EVENT_CALENDAR_SCREEN = "Calendar"
+        const val EVENT_MINE_SCREEN = "Mine"
+        const val EVENT_TODAY_IN_TASK_SCREEN = "Today"
+        const val EVENT_FUTURE_IN_TASK_SCREEN = "Future"
+        const val EVENT_COMPLETE_IN_TASK_SCREEN = "Completed"
+        const val EVENT_CALENDAR_IN_CALENDAR_SCREEN = "Table_calendar"
+        const val EVENT_CLICK_DONE = "Mark"
 
         fun logAnalytics(name: String, bundleData: Bundle) {
             Firebase.analytics.logEvent(name, bundleData)
